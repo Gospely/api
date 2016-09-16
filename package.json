@@ -1,0 +1,23 @@
+{
+  "name": "api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "koa": "^1.2.4",
+    "koa-basic-auth": "^1.1.2",
+    "koa-cors": "0.0.16",
+    "koa-i18n": "^1.2.0",
+    "koa-locale": "^1.2.0",
+    "koa-logger": "^1.3.0",
+    "koa-mount": "^1.3.0",
+    "koa-pg": "^1.0.0",
+    "koa-router": "^5.4.0",
+    "koa-static-cache": "^3.1.7"
+  }
+}
