@@ -7,8 +7,9 @@ module.exports = function(router) {
 		yield next;
 	})
 
-	router.get('/', controllers.index);
 
-	router.get('/users', controllers.users.get);
+		router.get('/', controllers.index);
+		router.get('/users', controllers.users.list);
+		router.get('/user', controllers.users.show);
 
 }
