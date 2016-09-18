@@ -9,6 +9,7 @@ var logger = require('koa-logger');
 var fun = require('./utils.js');
 var locale = require('koa-locale');
 var i18n = require('koa-i18n');
+var db = require('./models');
 
 app.use(logger({
 	"filename": "./log_file.log"
@@ -46,7 +47,14 @@ app.on('error', function(err, ctx){
   log.error('server error', err, ctx);
   this.body = fun.resp('500', err, ctx);
 });
+var setupDb;
+if (configs.sync) {
+    setupDb = db.sequelize.sync({force: true});
+}
 
-app.listen(configs.port, function () {
-  console.log('gospel api is running, listening on port ' + configs.port);
+Promise.resolve(setupDb)
+.then(function() {
+	app.listen(configs.port, function () {
+		console.log( new Date() + ': gospel api is running, listening on port ' + configs.port);
+	});
 });

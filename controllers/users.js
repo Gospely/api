@@ -18,7 +18,7 @@ function render(data) {
  */
 users.list=function *list() {
 
-  var users = yield models.User.getAll();
+  var users = yield models.gospel_users.getAll();
   this.body = yield  render(users);
 }
 
