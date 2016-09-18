@@ -30,8 +30,7 @@ module.exports = function(sequelize, DataTypes){
       createdAt: 'createat',
       updatedAt: 'updateat',
       classMethods:{
-
-          associate: (models) => {
+           associate: (models) => {
                       console.log("associate");
                   },
           loadAll: function*(){
@@ -41,8 +40,8 @@ module.exports = function(sequelize, DataTypes){
                 ]
               });
           },
-          add: function*(user){
-              var row = this.build(user);
+          create: function*(group){
+              var row = this.build(group);
               return yield row.save();
           }
       }

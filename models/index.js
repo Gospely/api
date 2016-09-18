@@ -22,7 +22,11 @@ var sequelize = new Sequelize('gospel', 'gospel', 'gospel', {
       findById: function*(id) {
           console.log(id);
           return yield this.find({where:{id:id}});
-      }
+      },
+      delete: function*(id){
+          console.log(1)
+          return yield this.update({isDeletted: 1},{where: {id: id}});
+      },
     },
     instanceMethods: {
 
@@ -61,6 +65,7 @@ function makeAssociation(modelName) {
 Object.keys(db).map(makeAssociation);
 
 // export references to sequelize
+
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 module.exports = db;

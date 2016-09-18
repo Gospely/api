@@ -34,10 +34,12 @@ if(configs.isDBAvailable) {
 	app.use(koaPg(configs.db.materDB));
 }
 
-app.use(cors({
+var options = {
 	headers: ['WWW-Authenticate', 'Server-Authorization'],
-	credentials: true
-}));
+	credentials: true,
+	origin: '*'
+};
+app.use(cors(options));
 
 app
   .use(router.routes())
