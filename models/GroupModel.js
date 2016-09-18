@@ -15,6 +15,7 @@ module.exports = function(sequelize, DataTypes){
       createdAt: 'createat',
       updatedAt: 'updateat',
         classMethods:{
+          
             getAll: function*(){
                 console.log(1)
                 return yield this.findAll();

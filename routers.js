@@ -8,7 +8,8 @@ module.exports = function(router) {
 		yield next;
 	})
 		router.get("/", controllers.index);
-		router.get("/users/", controllers.users.list);
+		router.get("/users", controllers.users.list);
+		router.get("/users/:id", controllers.users.show);
 		router.post("/users", controllers.users.create);
 		router.delete("/users/:id",controllers.users.remove);
 }

@@ -26,7 +26,7 @@ module.exports = function(sequelize, DataTypes){
                 ]
               });
           },
-          add: function*(type){
+          create: function*(type){
               var row = this.build(type);
               return yield row.save();
           }
