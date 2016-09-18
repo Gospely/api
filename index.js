@@ -17,14 +17,14 @@ app.use(logger({
 
 locale(app);
 
-app.use(i18n(app, {
-  directory: './locales',
-  locales: ['zh-cn', 'en-US'],
-  modes: [
-    'header',
-    function() {}
-  ]
-}))
+// app.use(i18n(app, {
+//   directory: './locales',
+//   locales: ['zh-cn', 'en-US'],
+//   modes: [
+//     'header',
+//     function() {}
+//   ]
+// }))
 
 if(configs.isAuth) {
 	app.use(auth({ name: 'tj', pass: 'tobi' }));

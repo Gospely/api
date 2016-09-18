@@ -18,7 +18,7 @@ function render(data) {
 /**
  * 获取所有
  */
-users.list=function *list(id) {
+users.list=function *list() {
 
   var users = yield models.gospel_users.getAll();
   this.body = yield  render(users);
@@ -33,7 +33,7 @@ users.show =function *show(id) {
   this.body = yield render(user);
 }
 
-users.create =function *create() {
+users.create = function *create() {
 	console.log("test");
 	if ('POST' != this.method) return yield next;
 	  var user = yield parse(this, {
@@ -51,7 +51,7 @@ users.create =function *create() {
 /**
  * 删除
  */
-users.remove = function *remove(id,next) {
+users.remove = function *remove(id) {
 
 		console.log("remove id:"+id);
   	if("DELETE" != this.method) return yield next;
