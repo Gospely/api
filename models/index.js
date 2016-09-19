@@ -16,20 +16,25 @@ var sequelize = new Sequelize('gospel', 'gospel', 'gospel', {
   define: {
     classMethods: {
       getAll: function*(){
-          console.log("getAll")
-          return yield this.findAll();
+
+          return yield this.findAll({
+                                    where: {
+                                      isDeleted: '0'
+                                    }
+                                  });
       },
       findById: function*(id) {
           console.log("find " + id);
-          return yield this.find({where:{id:id}});
+
+          return yield this.find({where:{id:id } });
       },
       delete: function*(id){
           console.log("delete" + id)
-          return yield this.update({isDeletted: 1},{where: {id: id}});
+          return yield this.update({isDeleted: 1},{where: {id: id, isDeleted: '0' } });
       },
       modify: function*(item) {
           console.log("update" + item.id);
-          return yield this.update(item,{where:{id:item.id}});
+          return yield this.update(item,{where:{id:item.id } });
       },
       create: function*(item) {
           console.log("create");

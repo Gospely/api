@@ -1,5 +1,5 @@
 var util = require('../utils.js');
-var products = require('./common');
+var users = {};
 
 
-module.exports = products;
+module.exports = users;

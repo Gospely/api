@@ -1,30 +1,27 @@
 var Sequelize = require("sequelize");
 
 module.exports = function(sequelize, DataTypes){
-    const application=sequelize.define("gospel_applications", {
+    const value_added = sequelize.define("gospel_value_addeds", {
 			id: {
 				type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4 ,
 				primaryKey: true
 			},
 	    name: DataTypes.STRING,
-      port: DataTypes.STRING,
-      sshPort: { type: DataTypes.INTEGER, field: "ssh_port", defaultValue: 21 },
-      source: DataTypes.STRING,
-      domain: DataTypes.STRING,
-      members: DataTypes.STRING,
-      team:DataTypes.STRING,
-      creator: DataTypes.STRING,
+      diskSize: { type: DataTypes.DOUBLE, field: "disk_size" },
+      price: DataTypes.DOUBLE,
+      unit: DataTypes.STRING,
+      timeLength: { type: DataTypes.DOUBLE, field: "time_length" },
       isDeleted: { type: DataTypes.INTEGER, field: "isdeleted", defaultValue: 0 }
 	  },{
 			timestamps: true,
       createdAt: 'createat',
       updatedAt: 'updateat',
       classMethods:{
-           associate: (models) => {
+          associate: (models) => {
                       console.log("associate");
                   }
       }
     });
-    return application;
+    return value_added;
 }

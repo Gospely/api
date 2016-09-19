@@ -11,7 +11,7 @@ module.exports = function(sequelize, DataTypes){
       owner: DataTypes.STRING,
       licencePhoto: { type: DataTypes.STRING, field: "licence_photo" },
       status: DataTypes.INTEGER,
-      isDeletted: { type: DataTypes.INTEGER, field: "isdeleted", defaultValue: 0 }
+      isDeleted: { type: DataTypes.INTEGER, field: "isdeleted", defaultValue: 0 }
 	  },{
 			timestamps: true,
       createdAt: 'createat',

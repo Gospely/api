@@ -16,7 +16,7 @@ module.exports = function(sequelize, DataTypes){
       photo: DataTypes.STRING,
       wechat: DataTypes.STRING,
       workspace: DataTypes.STRING,
-      isDeletted: { type: DataTypes.INTEGER, field: "isdeleted", defaultValue: 0 },
+      isDeleted: { type: DataTypes.INTEGER, field: "isdeleted", defaultValue: 0 },
       isBlocked: {type: DataTypes.INTEGER, field: "isblocked", defaultValue: 0 }
 	  },{
 			timestamps: true,

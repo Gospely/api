@@ -13,7 +13,7 @@ module.exports = function(sequelize, DataTypes){
       parent: DataTypes.STRING,
       peopleLimit: { type: DataTypes.INTEGER, field: "people_limit", defaultValue: 0 },
       format: DataTypes.STRING,
-      isDeletted: { type: DataTypes.INTEGER, field: "isdeleted", defaultValue: 0 }
+      isDeleted: { type: DataTypes.INTEGER, field: "isdeleted", defaultValue: 0 }
 	  },{
 			timestamps: true,
       createdAt: 'createat',

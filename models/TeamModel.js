@@ -10,7 +10,7 @@ module.exports = function(sequelize, DataTypes){
       members: DataTypes.JSONB,
       applications: DataTypes.JSONB,
       creator: DataTypes.STRING,
-      isDeletted: { type: DataTypes.INTEGER, field: "isdeleted", defaultValue: 0 }
+      isDeleted: { type: DataTypes.INTEGER, field: "isdeleted", defaultValue: 0 }
 	  },{
 			timestamps: true,
       createdAt: 'createat',

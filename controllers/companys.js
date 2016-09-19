@@ -1,6 +1,6 @@
 var util = require('../utils.js');
 
-var companys = require('./common');
+var companys = {};
 
 
 module.exports = companys;

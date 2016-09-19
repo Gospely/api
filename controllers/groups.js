@@ -1,5 +1,6 @@
 var util = require('../utils.js');
-var groups = require('./common');
+
+var groups = {};
 
 
 module.exports = groups;
