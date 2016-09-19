@@ -1,7 +1,7 @@
 var Sequelize = require("sequelize");
 
 module.exports = function(sequelize, DataTypes){
-    const user=sequelize.define("gospel_applications", {
+    const application=sequelize.define("gospel_applications", {
 			id: {
 				type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4 ,
@@ -23,19 +23,8 @@ module.exports = function(sequelize, DataTypes){
       classMethods:{
            associate: (models) => {
                       console.log("associate");
-                  },
-          loadAll: function*(){
-              return this.findAll({
-                include: [
-                  { model: Group }
-                ]
-              });
-          },
-          create: function*(application){
-              var row = this.build(application);
-              return yield row.save();
-          }
+                  }
       }
     });
-    return user;
+    return application;
 }

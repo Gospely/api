@@ -18,11 +18,7 @@ module.exports = function(sequelize, DataTypes){
       classMethods:{
          associate: (models) => {
                     console.log("associate");
-                  },
-          create: function*(group){
-              var row = this.build(group);
-              return yield row.save();
-          }
+                  }
       }
     });
     return team;

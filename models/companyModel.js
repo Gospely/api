@@ -1,15 +1,16 @@
 var Sequelize = require("sequelize");
 
 module.exports = function(sequelize, DataTypes){
-    const type = sequelize.define("gospel_types", {
+    const company = sequelize.define("gospel_companys", {
 			id: {
 				type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4 ,
 				primaryKey: true
 			},
 	    name: DataTypes.STRING,
-      description: DataTypes.STRING,
-      parent: DataTypes.STRING,
+      owner: DataTypes.STRING,
+      licencePhoto: { type: DataTypes.STRING, field: "licence_photo" },
+      status: DataTypes.INTEGER,
       isDeletted: { type: DataTypes.INTEGER, field: "isdeleted", defaultValue: 0 }
 	  },{
 			timestamps: true,
@@ -21,5 +22,5 @@ module.exports = function(sequelize, DataTypes){
                   }
       }
     });
-    return type;
+    return company;
 }

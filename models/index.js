@@ -16,17 +16,26 @@ var sequelize = new Sequelize('gospel', 'gospel', 'gospel', {
   define: {
     classMethods: {
       getAll: function*(){
-          console.log(1)
+          console.log("getAll")
           return yield this.findAll();
       },
       findById: function*(id) {
-          console.log(id);
+          console.log("find " + id);
           return yield this.find({where:{id:id}});
       },
       delete: function*(id){
-          console.log(1)
+          console.log("delete" + id)
           return yield this.update({isDeletted: 1},{where: {id: id}});
       },
+      update: function*(item) {
+          console.log("update" + item.id);
+          return yield this.update(item,{where:{id:item.id}});
+      },
+      create: function*(item) {
+          console.log("create");
+          var row = this.build(item);
+          return yield row.save();
+      }
     },
     instanceMethods: {
 
@@ -42,6 +51,7 @@ var sequelize = new Sequelize('gospel', 'gospel', 'gospel', {
  * @return {array}      returns array of models
  */
 function loadModel(file) {
+
     var model = sequelize.import(path.join(__dirname, file));
     db[model.name] = model;
 
@@ -65,7 +75,6 @@ function makeAssociation(modelName) {
 
 Object.keys(db).map(makeAssociation);
 
-// export references to sequelize
 
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;

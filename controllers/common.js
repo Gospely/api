@@ -86,4 +86,6 @@ common.delete = function *remove() {
 }
 
 common.render = render;
+common.models = models;
+
 module.exports = common;
