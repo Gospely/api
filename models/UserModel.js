@@ -1,8 +1,7 @@
 var Sequelize = require("sequelize");
-var Group = require("./GroupModel");
 
 module.exports = function(sequelize, DataTypes){
-    const user=sequelize.define("gospel_users", {
+    const user = sequelize.define("gospel_users", {
 			id: {
 				type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4 ,
@@ -11,13 +10,7 @@ module.exports = function(sequelize, DataTypes){
 	    name: DataTypes.STRING,
       type: DataTypes.STRING,
       team: DataTypes.STRING,
-      group:  {
-          type: DataTypes.STRING,
-          references: {
-            model: Group,
-            key: 'id'
-          }
-          },
+      group: DataTypes.STRING,
       company: DataTypes.STRING,
       qq: DataTypes.STRING,
       photo: DataTypes.STRING,
@@ -30,18 +23,11 @@ module.exports = function(sequelize, DataTypes){
       createdAt: 'createat',
       updatedAt: 'updateat',
       classMethods:{
-           associate: (models) => {
+          associate: (models) => {
                       console.log("associate");
                   },
-          loadAll: function*(){
-              return this.findAll({
-                include: [
-                  { model: Group }
-                ]
-              });
-          },
-          create: function*(group){
-              var row = this.build(group);
+          create: function*(user){
+              var row = this.build(user);
               return yield row.save();
           }
       }

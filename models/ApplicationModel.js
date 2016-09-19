@@ -1,6 +1,4 @@
 var Sequelize = require("sequelize");
-var Team = require("./TeamModel");
-var User = require("./UsersModel");
 
 module.exports = function(sequelize, DataTypes){
     const user=sequelize.define("gospel_applications", {
@@ -15,20 +13,8 @@ module.exports = function(sequelize, DataTypes){
       source: DataTypes.STRING,
       domain: DataTypes.STRING,
       members: DataTypes.STRING,
-      team: {
-          type: DataTypes.STRING,
-          references: {
-            model: Team,
-            key: 'id'
-          }
-          },
-      creator: {
-          type: DataTypes.STRING,
-          references: {
-            model: User,
-            key: 'id'
-          }
-          },
+      team:DataTypes.STRING,
+      creator: DataTypes.STRING,
       isDeletted: { type: DataTypes.INTEGER, field: "isdeleted", defaultValue: 0 }
 	  },{
 			timestamps: true,

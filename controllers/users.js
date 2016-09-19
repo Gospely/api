@@ -19,7 +19,11 @@ function render(data) {
  */
 users.list=function *list() {
 
-  var users = yield models.gospel_users.getAll();
+	models.gospel_users.belongsTo(models.gospel_groups, {foreignKey: 'group'});
+  var users = yield models.gospel_users.findAll({include: [
+		{ model: models.gospel_groups }
+	]
+});
   this.body = yield  render(users);
 }
 

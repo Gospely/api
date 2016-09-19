@@ -33,6 +33,7 @@ var sequelize = new Sequelize('gospel', 'gospel', 'gospel', {
     }
   }
 });
+
 /**
  * Takes a read file and passes it to sequelize import
  * Puts all references inside a DB object for easy getting

@@ -16,22 +16,14 @@ module.exports = function(sequelize, DataTypes){
       createdAt: 'createat',
       updatedAt: 'updateat',
       classMethods:{
-           associate: (models) => {
+          associate: (models) => {
                       console.log("associate");
                   },
-          loadAll: function*(){
-              return this.findAll({
-                include: [
-                  { model: Group }
-                ]
-              });
-          },
           create: function*(type){
               var row = this.build(type);
               return yield row.save();
           }
       }
     });
-
     return type;
 }
