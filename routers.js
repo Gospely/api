@@ -10,11 +10,11 @@ module.exports = function(router) {
 		var modelsName = file.split(".")[0];
 		if(modelsName != "common" && modelsName != "index"){
 
-			router.get("/"+modelsName, controllers[modelsName].list);
-			router.get("/"+modelsName+"/:id", controllers[modelsName].detail);
-			router.post("/"+modelsName, controllers[modelsName].create);
-			router.delete("/"+modelsName+"/:id",controllers[modelsName].delete);
-			router.put("/"+modelsName+":id",controllers[modelsName].update);
+			router.get("/"+modelsName, controllers.common.list);
+			router.get("/"+modelsName+"/:id", controllers.common.detail);
+			router.post("/"+modelsName, controllers.common.create);
+			router.delete("/"+modelsName+"/:id", controllers.common.delete);
+			router.put("/"+modelsName, controllers.common.update);
 		}
 	}
 	router.get('*', function *(next) {
@@ -22,9 +22,7 @@ module.exports = function(router) {
 		yield next;
 	})
 
+	//根据controllers下的文件配置单表的增删改差
 	reader.readDir(__dirname+"/controllers").map(initControllers);
 	router.get("/", controllers.index);
-
-
-
 }

@@ -27,7 +27,7 @@ var sequelize = new Sequelize('gospel', 'gospel', 'gospel', {
           console.log("delete" + id)
           return yield this.update({isDeletted: 1},{where: {id: id}});
       },
-      update: function*(item) {
+      modify: function*(item) {
           console.log("update" + item.id);
           return yield this.update(item,{where:{id:item.id}});
       },

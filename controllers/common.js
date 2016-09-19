@@ -47,7 +47,7 @@ common.update = function *update() {
   		console.log(item);
       if(item.id == null || item.id == undefined) return yield next;
 
-  	  var inserted = yield models[getModel(this)].update(item);
+  	  var inserted = yield models[getModel(this)].modify(item);
   	  if (!inserted) {
   	    this.throw(405, "couldn't be added.");
   	  }
@@ -77,8 +77,8 @@ common.delete = function *remove() {
 		var id = this.params.id;
 		console.log(id);
 
-	  var deleted = models[getModel(this)].delete(id);
-
+	  var deleted = yield models[getModel(this)].delete(id);
+    console.log(deleted);
 		if (!deleted) {
 			this.throw(405, "couldn't be delete.");
 		}
