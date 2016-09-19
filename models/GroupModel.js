@@ -4,7 +4,7 @@ module.exports = function(sequelize, DataTypes){
     const group = sequelize.define("gospel_groups", {
 			id: {
 				type: DataTypes.UUID,
-        defaultValue: DataTypes.UUIDV4 ,
+        defaultValue: DataTypes.UUIDV4,
 				primaryKey: true
 			},
 	    name: DataTypes.STRING,

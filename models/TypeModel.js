@@ -4,7 +4,7 @@ module.exports = function(sequelize, DataTypes){
     const type = sequelize.define("gospel_types", {
 			id: {
 				type: DataTypes.UUID,
-        defaultValue: DataTypes.UUIDV4 ,
+        defaultValue: DataTypes.UUIDV4,
 				primaryKey: true
 			},
 	    name: DataTypes.STRING,
