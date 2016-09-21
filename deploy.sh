@@ -8,4 +8,4 @@ git add .
 git commit -a -m "$msg"
 git push -u origin master
 #sync
-ssh root@119.29.243.71 'cd /var/www/gospely/api && git pull'
+ssh root@119.29.153.143 'docker exec -ti gospel_api git pull'
