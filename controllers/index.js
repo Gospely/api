@@ -9,7 +9,7 @@ module.exports = function() {
 	return {
 
 		index: function *(next) {
-			this.body = util.resp('200', 'gospel api');
+			this.body = util.resp('200', 'Gospel API List');
 		},
 		common: common,
 		groups: groups,
