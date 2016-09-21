@@ -25,4 +25,5 @@ module.exports = function(router) {
 	//根据controllers下的文件配置单表的增删改差
 	reader.readDir(__dirname+"/controllers").map(initControllers);
 	router.get("/", controllers.index);
+
 }

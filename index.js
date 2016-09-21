@@ -10,6 +10,17 @@ var fun = require('./utils.js');
 var locale = require('koa-locale');
 var i18n = require('koa-i18n');
 var db = require('./models');
+var mount = require('koa-mount');
+
+app.use(function *(next) {
+  try {
+    yield next;
+  } catch (err) {
+    this.status = err.status || 500;
+    this.body = err.message;
+    this.app.emit('error', err, this);
+  }
+});
 
 app.use(logger({
 	"filename": "./log_file.log"
@@ -27,7 +38,7 @@ locale(app);
 // }))
 
 if(configs.isAuth) {
-	app.use(auth({ name: 'tj', pass: 'tobi' }));
+	app.use(mount('/*', auth({ name: 'tobi', pass: 'ferret' })));
 }
 
 if(configs.isDBAvailable) {

@@ -24,6 +24,7 @@ function getModel(ctx) {
 //获取Model的数据列表, todo:过滤参数动态引入
 common.list= function *list() {
 
+		console.log(this.headers.hosts);
     var data = yield models[getModel(this)].getAll();
     this.body = yield  render(data);
 }
