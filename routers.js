@@ -2,6 +2,8 @@ var controllers = require('./controllers/index.js')();
 var models = require('./models');
 var reader = require('./utils/reader');
 
+var pay = require('./server/pay');
+
 
 module.exports = function(router) {
 
@@ -26,4 +28,8 @@ module.exports = function(router) {
 	reader.readDir(__dirname+"/controllers").map(initControllers);
 	router.get("/", controllers.index);
 
+	//添加微信支付和支付支付异步回调路由
+
+	pay.wechat.route(router);
+	pay.alipay.route(router);
 }

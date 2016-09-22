@@ -9,6 +9,12 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bluebird": "^3.4.6",
+    "co": "^4.4.0",
+    "co-body": "^4.2.0",
+    "crypto": "0.0.3",
+    "https": "1.0.0",
+    "iconv-lite": "^0.4.13",
     "koa": "^1.2.4",
     "koa-basic-auth": "^1.1.2",
     "koa-cors": "0.0.16",
@@ -19,15 +25,15 @@
     "koa-pg": "^1.0.0",
     "koa-router": "^5.4.0",
     "koa-static-cache": "^3.1.7",
+    "lodash": "^4.16.1",
+    "nodemailer": "0.7.1",
     "pg": "^6.1.0",
     "pg-hstore": "^2.3.2",
+    "querystring": "^0.2.0",
+    "request": "2.75.0",
     "sequelize": "^3.24.3",
-    "co": "^4.4.0",
-    "co-body": "^4.2.0",
-  	"querystring": "0.2.0",
-  	"request": "2.75.0",
-  	"https":  "1.0.0",
-    "nodemailer": "0.7.1",
-    "iconv-lite": "0.4.13" 
+    "xml2js": "^0.4.17",
+    "xmlbuilder": "^8.2.2",
+    "xmldom": "^0.1.22"
   }
 }
