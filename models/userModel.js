@@ -8,6 +8,8 @@ module.exports = function(sequelize, DataTypes){
 				primaryKey: true
 			},
 	    name: DataTypes.STRING,
+      phone: DataTypes.STRING,
+      password: DataTypes.STRING,
       type: DataTypes.STRING,
       team: DataTypes.STRING,
       group: DataTypes.STRING,

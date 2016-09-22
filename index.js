@@ -16,9 +16,10 @@ app.use(function *(next) {
   try {
     yield next;
   } catch (err) {
+    console.log('catch');
     this.status = err.status || 500;
     this.body = err.message;
-    this.app.emit('error', err, this);
+    console.log(err.message);
   }
 });
 

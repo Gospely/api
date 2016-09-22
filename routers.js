@@ -4,7 +4,6 @@ var pay = require('./server/pay');
 
 module.exports = function(router) {
 
-	console.log(router);
 	var controllers = new Controllers(router);
 
 	router.get('*', function *(next) {

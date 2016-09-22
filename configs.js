@@ -93,9 +93,15 @@ module.exports = {
 			{
 				name: '',
 				method:'post',
-				url: '/users/auth/login',
+				url: '/users/login',
 				controller: 'login'
-			}
+			},
+			{
+				name: '',
+				method:'post',
+				url: '/users/register',
+				controller: 'register'
+			},
 		]
 	}
 }
