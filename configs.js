@@ -86,5 +86,16 @@ module.exports = {
 	    user: "shark@dodora.cn", // 账号
 	    pass: "AIxrslwh1993" // 密码
 	  }
+	},
+
+	router_config: {
+		users: [
+			{
+				name: '',
+				method:'post',
+				url: '/users/auth/login',
+				controller: 'login'
+			}
+		]
 	}
 }

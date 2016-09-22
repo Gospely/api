@@ -1,32 +1,20 @@
-var controllers = require('./controllers/index.js')();
-var models = require('./models');
-var reader = require('./utils/reader');
-
+var Controllers = require('./controllers')
 var pay = require('./server/pay');
 
 
 module.exports = function(router) {
 
-	function initControllers(file) {
+	console.log(router);
+	var controllers = new Controllers(router);
 
-		var modelsName = file.split(".")[0];
-		if(modelsName != "common" && modelsName != "index"){
-
-			router.get("/"+modelsName, controllers.common.list);
-			router.get("/"+modelsName+"/:id", controllers.common.detail);
-			router.post("/"+modelsName, controllers.common.create);
-			router.delete("/"+modelsName+"/:id", controllers.common.delete);
-			router.put("/"+modelsName, controllers.common.update);
-		}
-	}
 	router.get('*', function *(next) {
 		console.log('ssss');
 		yield next;
-	})
+	});
+	router.get('/',controllers.index);
 
-	//根据controllers下的文件配置单表的增删改差
-	reader.readDir(__dirname+"/controllers").map(initControllers);
-	router.get("/", controllers.index);
+	//添加路由
+	controllers.route(router);
 
 	//添加微信支付和支付支付异步回调路由
 
