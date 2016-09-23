@@ -7,6 +7,7 @@
 var core_funcs = require('./alipay_core.function');
 var md5_f = require('../../utils/MD5');
 var DOMParser = require('xmldom').DOMParser;
+var http = require('http');
 
 function AlipaySubmit(alipay_config) {
     /**
@@ -14,7 +15,6 @@ function AlipaySubmit(alipay_config) {
      */
     this.alipay_gateway_new = 'https://mapi.alipay.com/gateway.do?';
     this.alipay_config = alipay_config;
-}
 
 /**
  * 生成签名结果
@@ -43,6 +43,7 @@ AlipaySubmit.prototype.buildRequestMysign = function(para_sort) {
  */
 AlipaySubmit.prototype.buildRequestPara = function(para_temp) {
     //除去待签名参数数组中的空值和签名参数
+  }
     var para_filter = core_funcs.paraFilter(para_temp);
 
     //对待签名参数数组排序

@@ -27,7 +27,10 @@ module.exports = function(sequelize, DataTypes){
       classMethods:{
           associate: (models) => {
                       console.log("associate");
-                  }
+                  },
+          isBind: function *(user){
+            
+          }
       }
     });
     return user;
