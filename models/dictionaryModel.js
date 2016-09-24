@@ -1,16 +1,15 @@
 var Sequelize = require("sequelize");
 
 module.exports = function(sequelize, DataTypes){
-    const privilege = sequelize.define("gospel_privileges", {
+    const dictionary = sequelize.define("gospel_dictionarys", {
 			id: {
 				type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,
 				primaryKey: true
 			},
-	    name: DataTypes.STRING,
-      router: DataTypes.STRING,
-      method: DataTypes.STRING,
-      groups: DataTypes.JSONB,
+	    key: DataTypes.STRING,
+      value: DataTypes.STRING,
+      type: DataTypes.STRING,
       isDeleted: { type: DataTypes.INTEGER, field: "isdeleted", defaultValue: 0 }
 	  },{
 			timestamps: true,
@@ -22,5 +21,5 @@ module.exports = function(sequelize, DataTypes){
                   }
       }
     });
-    return privilege;
+    return dictionary;
 }

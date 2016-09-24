@@ -1,16 +1,17 @@
 var Sequelize = require("sequelize");
 
 module.exports = function(sequelize, DataTypes){
-    const privilege = sequelize.define("gospel_privileges", {
+    const resource = sequelize.define("gospel_user_resources", {
 			id: {
 				type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,
 				primaryKey: true
 			},
-	    name: DataTypes.STRING,
-      router: DataTypes.STRING,
-      method: DataTypes.STRING,
-      groups: DataTypes.JSONB,
+	    owner: DataTypes.STRING,
+      diskSize: { type: DataTypes.INTEGER, field: "disk_size" },
+      diskUnit: { type: DataTypes.STRING, field: "disk_unit" },
+      bandwidth: { type: DataTypes.INTEGER, field: "disk_size" },
+      bandwidthUnit: { type: DataTypes.STRING,field: "bandwidth_unit" },
       isDeleted: { type: DataTypes.INTEGER, field: "isdeleted", defaultValue: 0 }
 	  },{
 			timestamps: true,
@@ -22,5 +23,5 @@ module.exports = function(sequelize, DataTypes){
                   }
       }
     });
-    return privilege;
+    return resource;
 }

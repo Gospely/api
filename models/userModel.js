@@ -8,10 +8,14 @@ module.exports = function(sequelize, DataTypes){
 				primaryKey: true
 			},
 	    name: DataTypes.STRING,
+      realname: DataTypes.STRING,
       phone: DataTypes.STRING,
       password: DataTypes.STRING,
+      identify: DataTypes.STRING,
+      ide: DataTypes.STRING,
+      openId: { type: DataTypes.INTEGER, field: "open_id" },
       type: DataTypes.STRING,
-      team: DataTypes.STRING,
+      teams: DataTypes.STRING,
       group: DataTypes.STRING,
       company: DataTypes.STRING,
       qq: DataTypes.STRING,
@@ -29,7 +33,7 @@ module.exports = function(sequelize, DataTypes){
                       console.log("associate");
                   },
           isBind: function *(user){
-            
+
           }
       }
     });

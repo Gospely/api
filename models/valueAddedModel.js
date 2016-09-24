@@ -7,11 +7,15 @@ module.exports = function(sequelize, DataTypes){
         defaultValue: DataTypes.UUIDV4,
 				primaryKey: true
 			},
-	    name: DataTypes.STRING,
-      diskSize: { type: DataTypes.DOUBLE, field: "disk_size" },
       price: DataTypes.DOUBLE,
-      unit: DataTypes.STRING,
-      timeLength: { type: DataTypes.DOUBLE, field: "time_length" },
+      name: DataTypes.STRING,
+      diskSize: { type: DataTypes.INTEGER, field: "disk_size" },
+      diskUnit: { type: DataTypes.STRING, field: "disk_unit" },
+      bandwidth: DataTypes.INTEGER,
+      timeUnit: { type: DataTypes.STRING, field: "time_unit" },
+      timeLength: { type: DataTypes.INTEGER, field: "time_length" },
+      cpuCore: { type: DataTypes.STRING, field: "cpu_core" },
+      cpuType: { type: DataTypes.STRING, field: "cpu_type" },
       isDeleted: { type: DataTypes.INTEGER, field: "isdeleted", defaultValue: 0 }
 	  },{
 			timestamps: true,

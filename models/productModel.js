@@ -9,10 +9,11 @@ module.exports = function(sequelize, DataTypes){
 			},
 	    name: DataTypes.STRING,
       price: DataTypes.DOUBLE,
-      defaultDisk: { type: DataTypes.DOUBLE, field: "default_disk", defaultValue: 0 },
       parent: DataTypes.STRING,
       peopleLimit: { type: DataTypes.INTEGER, field: "people_limit", defaultValue: 0 },
-      format: DataTypes.STRING,
+      unit: DataTypes.STRING,
+      defaultVolume: { type: DataTypes.STRING, field: "default_volume" },
+      timeLength: { type: DataTypes.STRING, field: "time_length" },
       isDeleted: { type: DataTypes.INTEGER, field: "isdeleted", defaultValue: 0 }
 	  },{
 			timestamps: true,

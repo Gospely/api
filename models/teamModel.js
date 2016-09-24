@@ -8,6 +8,7 @@ module.exports = function(sequelize, DataTypes){
 			},
 	    name: DataTypes.STRING,
       members: DataTypes.JSONB,
+      inviteLink: { type: "invite_link" , field: "invite_link" },
       applications: DataTypes.JSONB,
       creator: DataTypes.STRING,
       isDeleted: { type: DataTypes.INTEGER, field: "isdeleted", defaultValue: 0 }
