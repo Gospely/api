@@ -2,7 +2,7 @@ module.exports = {
 
 	isAuth: false,
 
-	port: 8088,
+	port: 8089,
 
 	isDBAvailable: false,
 

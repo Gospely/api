@@ -1,6 +1,7 @@
 var util = require('../utils.js');
 var models = require('../models');
 var parse = require('co-body');
+var md5_f = require('../utils/MD5');
 
 var common = {};
 
@@ -39,12 +40,15 @@ common.detail = function *detail(id) {
 common.update = function *update() {
 
     console.log("update");
-  	if ('PUT' != this.method) return yield next;
+  	if ('PUT' != this.method) this.throw(405, "method is not allowed");
   	  var item = yield parse(this, {
   	    limit: '1kb'
   	  });
   		console.log(item);
-      if(item.id == null || item.id == undefined) return yield next;
+			if(item.password != null && item.password != undefined && item.password != ''){
+					item.password = md5_f.md5Sign(item.password);
+			}
+      if(item.id == null || item.id == undefined) this.throw(405, "method is not allowed");
 
   	  var inserted = yield models[getModel(this)].modify(item);
   	  if (!inserted) {
@@ -58,7 +62,7 @@ common.create = function *create() {
 
 	console.log("create");
   	console.log(this);
-	if ('POST' != this.method) return yield next;
+	if ('POST' != this.method) this.throw(405, "method is not allowed");
 	  var item = yield parse(this, {
 	    limit: '1kb'
 	  });

@@ -19,6 +19,7 @@ module.exports = function(sequelize, DataTypes){
       group: DataTypes.STRING,
       company: DataTypes.STRING,
       qq: DataTypes.STRING,
+      email: DataTypes.STRING,
       photo: DataTypes.STRING,
       wechat: DataTypes.STRING,
       workspace: DataTypes.STRING,

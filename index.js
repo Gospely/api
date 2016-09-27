@@ -47,7 +47,7 @@ if(configs.isDBAvailable) {
 }
 
 var options = {
-	headers: ['WWW-Authenticate', 'Server-Authorization'],
+	headers: ['WWW-Authenticate', 'Server-Authorization','Content-Type'],
 	credentials: true,
 	origin: '*'
 };

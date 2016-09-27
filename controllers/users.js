@@ -24,6 +24,7 @@ users.login = function* (){
 
 users.register = function* () {
 
+console.log(this.method);
   if ('POST' != this.method) this.throw(405, "method is not allowed");
   var user = yield parse(this, {
     limit: '1kb'
