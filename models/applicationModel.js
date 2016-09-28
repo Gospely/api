@@ -9,14 +9,11 @@ module.exports = function(sequelize, DataTypes){
 			},
 	    name: DataTypes.STRING,
       port: DataTypes.STRING,
-      sshPort: { type: DataTypes.INTEGER, field: "ssh_port", defaultValue: 21 },
       source: DataTypes.STRING,
       domain: DataTypes.STRING,
-      members: DataTypes.STRING,
+      members: DataTypes.JSONB,
       team:DataTypes.STRING,
       creator: DataTypes.STRING,
-      volume: DataTypes.STRING,
-      dockerConfig: { type: DataTypes.STRING, field: "docker_config" },
       isDeleted: { type: DataTypes.INTEGER, field: "isdeleted", defaultValue: 0 }
 	  },{
 			timestamps: true,

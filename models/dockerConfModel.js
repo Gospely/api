@@ -1,7 +1,7 @@
 var Sequelize = require("sequelize");
 
 module.exports = function(sequelize, DataTypes){
-    const config = sequelize.define("gospel_docker_configs", {
+    const config = sequelize.define("gospel_dockers_configs", {
 			id: {
 				type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,

@@ -2,7 +2,6 @@ var util = require('../utils.js');
 var models = require('../models');
 var parse = require('co-body');
 var md5_f = require('../utils/MD5');
-
 var common = {};
 
 //数据渲染，todo:分页参数引入，异常信息引入
@@ -17,14 +16,14 @@ function render(data) {
 
 //根据请求url隐射到对应的Model，todo:实现方式简单粗暴，对命名约束要求高
 function getModel(ctx) {
-  var modelsName = "gospel_" + ctx.url.split("/")[1];
+  var modelsName = "gospel_" + ctx.url.split("?")[0].split("/")[1];
   return modelsName;
 }
 
 //获取Model的数据列表, todo:过滤参数动态引入
 common.list= function *list() {
-
-    var data = yield models[getModel(this)].getAll();
+	if ('GET' != this.method) this.throw(405, "method is not allowed");
+    var data = yield models[getModel(this)].getAll(this.query);
     this.body = yield  render(data);
 }
 
@@ -44,7 +43,6 @@ common.update = function *update() {
   	  var item = yield parse(this, {
   	    limit: '1kb'
   	  });
-  		console.log(item);
 			if(item.password != null && item.password != undefined && item.password != ''){
 					item.password = md5_f.md5Sign(item.password);
 			}

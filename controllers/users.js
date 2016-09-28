@@ -24,7 +24,7 @@ users.login = function* (){
 
 users.register = function* () {
 
-console.log(this.method);
+  console.log(this.method);
   if ('POST' != this.method) this.throw(405, "method is not allowed");
   var user = yield parse(this, {
     limit: '1kb'
@@ -40,5 +40,21 @@ console.log(this.method);
   }
   this.body = 'Done!';
 }
+users.updatePhoto = function* () {
 
+  if ('POST' != this.method) this.throw(405, "method is not allowed");
+  var user = yield parse(this, {
+    limit: '2MB'
+  });
+
+
+  if(user.id == null || user.id == undefined) this.throw(405, "method is not allowed");
+
+  var inserted = yield models.gospel_users.modify(user);
+  if (!inserted) {
+    this.throw(405, "couldn't be added.");
+  }
+  this.body = 'Done!';
+  this.body = 'Done!';
+}
 module.exports = users;

@@ -15,12 +15,11 @@ var sequelize = new Sequelize('gospel', 'gospel', 'gospel', {
   },
   define: {
     classMethods: {
-      getAll: function*(){
+      getAll: function*(item){
 
+          item.isDeleted = 0;
           return yield this.findAll({
-                                    where: {
-                                      isDeleted: '0'
-                                    }
+                                    where:item
                                   });
       },
       findById: function*(id) {

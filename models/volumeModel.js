@@ -1,7 +1,7 @@
 var Sequelize = require("sequelize");
 
 module.exports = function(sequelize, DataTypes){
-    const volume = sequelize.define("gospel_data_volumes", {
+    const volume = sequelize.define("gospel_volumes", {
 			id: {
 				type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,

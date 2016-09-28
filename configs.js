@@ -91,17 +91,27 @@ module.exports = {
 	router_config: {
 		users: [
 			{
-				name: '',
+				name: '登录',
 				method:'post',
 				url: '/users/login',
 				controller: 'login'
 			},
 			{
-				name: '',
+				name: '注册',
 				method:'post',
 				url: '/users/register',
 				controller: 'register'
 			},
+			{
+				name: '修改头像',
+				method:'post',
+				url: '/users/photo',
+				controller: 'updatePhoto'
+			},
 		]
+	},
+	file: {
+
+		basePath: '/image'
 	}
 }
