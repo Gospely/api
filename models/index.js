@@ -18,6 +18,20 @@ var sequelize = new Sequelize('gospel', 'gospel', 'gospel', {
       getAll: function*(item){
 
           item.isDeleted = 0;
+          if(item.cur != null && item.cur !=undefined){
+              var offset = (item.cur-1)*item.limit;
+              var limit = item.limit;
+              delete item['cur'];
+              delete item['limit'];
+
+              return yield this.findAll({
+                                        offset: offset,
+                                        limit: limit,
+                                        where: item
+                                      });
+
+          }
+
           return yield this.findAll({
                                     where:item
                                   });
@@ -39,8 +53,16 @@ var sequelize = new Sequelize('gospel', 'gospel', 'gospel', {
           console.log("create");
           var row = this.build(item);
           return yield row.save();
+      },
+      count: function* (item) {
+        item.isDeleted = 0;
+          return  yield this.findAll({
+                                    where: item,
+                                    attributes: [[sequelize.fn('COUNT', sequelize.col('id')), 'all']]
+                                  });
       }
     },
+
     instanceMethods: {
 
     }

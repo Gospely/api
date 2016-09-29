@@ -5,11 +5,12 @@ var md5_f = require('../utils/MD5');
 var common = {};
 
 //数据渲染，todo:分页参数引入，异常信息引入
-function render(data) {
+function render(data,all) {
 
 	return {
 		code: '1',
 		message: '',
+		all: all,
 		fields: data
 	}
 }
@@ -22,9 +23,22 @@ function getModel(ctx) {
 
 //获取Model的数据列表, todo:过滤参数动态引入
 common.list= function *list() {
+
 	if ('GET' != this.method) this.throw(405, "method is not allowed");
+
+		var limit = this.query.limit;
     var data = yield models[getModel(this)].getAll(this.query);
-    this.body = yield  render(data);
+		var count = yield models[getModel(this)].count(this.query);
+
+		var page = 1;
+		console.log(limit);
+		if( (count[0].dataValues.all % limit == 0)){
+
+				page = count[0].dataValues.all / limit;
+		}else{
+				page = (count[0].dataValues.all / limit) + 1;
+		}
+    this.body = yield  render(data,page);
 }
 
 //获取某条数据的详情
