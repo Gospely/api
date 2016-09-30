@@ -22,33 +22,48 @@ var sequelize = new Sequelize('gospel', 'gospel', 'gospel', {
               var offset = (item.cur-1)*item.limit;
               var limit = item.limit;
               var attributes = [];
-              if(item.show != null && item.show != undefined && item != ''){
+              if(item.show != null && item.show != undefined && item.show != ''){
                   attributes = item.show.split('_');
-              }
-              console.log(attributes);
-              delete item['cur'];
-              delete item['limit'];
-              delete item['show'];
+                  console.log(attributes);
+                  delete item['cur'];
+                  delete item['limit'];
+                  delete item['show'];
 
+                  return yield this.findAll({
+                                            offset: offset,
+                                            limit: limit,
+                                            where: item,
+                                            attributes: attributes
+                                          });
+
+              }else{
+                
+                delete item['limit'];
+                delete item['cur'];
+
+                return yield this.findAll({
+                                          offset: offset,
+                                          limit: limit,
+                                          where: item
+                                        });
+              }
+
+          }
+          console.log(item.show);
+          if(item.show != null && item.show != undefined && item.show != ''){
+              attributes = item.show.split('_');
+              delete item['show'];
+              console.log(attributes);
               return yield this.findAll({
-                                        offset: offset,
-                                        limit: limit,
-                                        where: item,
+                                        where:item,
                                         attributes: attributes
                                       });
+          }else{
+            return yield this.findAll({
+                                      where:item
+                                    });
+          }
 
-          }
-          
-          console.log(item.show);
-          if(item.show != null && item.show != undefined && item != ''){
-              attributes = item.show.split('_');
-          }
-          delete item['show'];
-          console.log(attributes);
-          return yield this.findAll({
-                                    where:item,
-                                    attributes: attributes
-                                  });
       },
       findById: function*(id) {
           console.log("find " + id);
