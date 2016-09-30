@@ -21,19 +21,33 @@ var sequelize = new Sequelize('gospel', 'gospel', 'gospel', {
           if(item.cur != null && item.cur !=undefined){
               var offset = (item.cur-1)*item.limit;
               var limit = item.limit;
+              var attributes = [];
+              if(item.show != null && item.show != undefined && item != ''){
+                  attributes = item.show.split('_');
+              }
+              console.log(attributes);
               delete item['cur'];
               delete item['limit'];
+              delete item['show'];
 
               return yield this.findAll({
                                         offset: offset,
                                         limit: limit,
-                                        where: item
+                                        where: item,
+                                        attributes: attributes
                                       });
 
           }
-
+          
+          console.log(item.show);
+          if(item.show != null && item.show != undefined && item != ''){
+              attributes = item.show.split('_');
+          }
+          delete item['show'];
+          console.log(attributes);
           return yield this.findAll({
-                                    where:item
+                                    where:item,
+                                    attributes: attributes
                                   });
       },
       findById: function*(id) {
