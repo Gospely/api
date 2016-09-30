@@ -28,6 +28,10 @@ common.list= function *list() {
 	if ('GET' != this.method) this.throw(405, "method is not allowed");
 
 		var limit = this.query.limit;
+
+		if(this.query.cur ==null || this.query.cur == '' || this.query.cur == undefined){
+			this.query.cur = 1;
+		}
 		var cur = this.query.cur;
     var data = yield models[getModel(this)].getAll(this.query);
 		var count = yield models[getModel(this)].count(this.query);
