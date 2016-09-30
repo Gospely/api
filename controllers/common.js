@@ -5,12 +5,13 @@ var md5_f = require('../utils/MD5');
 var common = {};
 
 //数据渲染，todo:分页参数引入，异常信息引入
-function render(data,all) {
+function render(data,all,cur) {
 
 	return {
 		code: '1',
 		message: '',
 		all: all,
+		cur: cur,
 		fields: data
 	}
 }
@@ -27,18 +28,17 @@ common.list= function *list() {
 	if ('GET' != this.method) this.throw(405, "method is not allowed");
 
 		var limit = this.query.limit;
+		var cur = this.query.cur;
     var data = yield models[getModel(this)].getAll(this.query);
 		var count = yield models[getModel(this)].count(this.query);
 
-		var page = 1;
 		console.log(limit);
-		if( (count[0].dataValues.all % limit == 0)){
+		console.log(count[0].dataValues.all);
+		console.log(limit);
+		var page = count[0].dataValues.all % limit == 0 ? count[0].dataValues.all / limit : Math.ceil(count[0].dataValues.all / limit) ;
 
-				page = count[0].dataValues.all / limit;
-		}else{
-				page = (count[0].dataValues.all / limit) + 1;
-		}
-    this.body = yield  render(data,page);
+
+    this.body = yield  render(data,page,cur);
 }
 
 //获取某条数据的详情
