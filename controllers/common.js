@@ -28,10 +28,8 @@ common.list= function *list() {
 	if ('GET' != this.method) this.throw(405, "method is not allowed");
 
 		var limit = this.query.limit;
+		var cur = this.query.cur ;
 
-		if(this.query.cur ==null || this.query.cur == '' || this.query.cur == undefined){
-			this.query.cur = 1;
-		}
 		var cur = this.query.cur;
     var data = yield models[getModel(this)].getAll(this.query);
 		var count = yield models[getModel(this)].count(this.query);
@@ -41,7 +39,9 @@ common.list= function *list() {
 		console.log(limit);
 		var page = count[0].dataValues.all % limit == 0 ? count[0].dataValues.all / limit : Math.ceil(count[0].dataValues.all / limit) ;
 
-
+		if(this.query.cur ==null || this.query.cur == '' || this.query.cur == undefined){
+			cur = 1;
+		}
     this.body = yield  render(data,page,cur);
 }
 

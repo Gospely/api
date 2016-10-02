@@ -18,7 +18,10 @@ var sequelize = new Sequelize('gospel', 'gospel', 'gospel', {
       getAll: function*(item){
 
           item.isDeleted = 0;
-          if(item.cur != null && item.cur !=undefined){
+          console.log(item);
+          if(item.cur != null && item.cur != undefined){
+
+              console.log("count");
               var offset = (item.cur-1)*item.limit;
               var limit = item.limit;
               var attributes = [];
@@ -37,7 +40,7 @@ var sequelize = new Sequelize('gospel', 'gospel', 'gospel', {
                                           });
 
               }else{
-                
+
                 delete item['limit'];
                 delete item['cur'];
 
@@ -59,6 +62,8 @@ var sequelize = new Sequelize('gospel', 'gospel', 'gospel', {
                                         attributes: attributes
                                       });
           }else{
+
+            console.log("no page ,no select");
             return yield this.findAll({
                                       where:item
                                     });
