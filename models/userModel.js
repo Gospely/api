@@ -31,7 +31,7 @@ module.exports = function(sequelize, DataTypes){
       updatedAt: 'updateat',
       classMethods:{
           associate: (models) => {
-                      console.log("associate");
+                    models['gospel_users'].hasMany(models['gospel_groups'],{as: 'groups', foreignKey: 'id' });
                   },
           isBind: function *(user){
 

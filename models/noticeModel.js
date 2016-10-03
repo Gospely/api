@@ -22,7 +22,11 @@ module.exports = function(sequelize, DataTypes){
       classMethods:{
           associate: (models) => {
                       console.log("associate");
-                  }
+                  },
+          getAllInit: function() {
+              return 'SELECT * FROM gospel_notices a left join gospel_notice_read b on a.id = b.notice_id WHERE user_id = :user ';
+          }
+
       }
     });
     return notice;
