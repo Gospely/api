@@ -24,7 +24,10 @@ module.exports = function(sequelize, DataTypes){
                       console.log("associate");
                   },
           getAllInit: function() {
-              return 'SELECT * FROM gospel_notices a left join gospel_notice_read b on a.id = b.notice_id WHERE user_id = :user ';
+              return 'SELECT * FROM gospel_notices a left join gospel_notice_read b on a.id = b.notice_id and a.isdeleted = 0 WHERE user_id = :user and b.read = :read';
+          },
+          countInit: function() {
+              return 'SELECT count(a.id) as all FROM gospel_notices a left join gospel_notice_read b on a.id = b.notice_id and a.isdeleted = 0 WHERE user_id = :user ';
           }
 
       }

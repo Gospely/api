@@ -33,11 +33,14 @@ common.list= function *list() {
 		var cur = this.query.cur;
     var data = yield models[getModel(this)].getAll(this.query);
 		var count = yield models[getModel(this)].count(this.query);
-
-		console.log(limit);
-		console.log(count[0].dataValues.all);
-		console.log(limit);
-		var page = count[0].dataValues.all % limit == 0 ? count[0].dataValues.all / limit : Math.ceil(count[0].dataValues.all / limit) ;
+		var total = 0;
+		if(count[0].dataValues == undefined){
+				total = count[0].all;
+				console.log("total" + total);
+		}else {
+				total = count[0].dataValues.all;
+		}
+		var page = total % limit == 0 ? total / limit : Math.ceil(total / limit) ;
 
 		if(this.query.cur ==null || this.query.cur == '' || this.query.cur == undefined){
 			cur = 1;

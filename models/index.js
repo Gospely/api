@@ -17,30 +17,21 @@ var sequelize = new Sequelize('gospel', 'gospel', 'gospel', {
     classMethods: {
       getAll: function*(item){
 
-          console.log();
-
-          if(this.getAllInit !=null && this.getAllInit != undefined){
-            if(sql != null && sql !=undefined){
-              return yield  sequelize.query(sql,
-                { replacements: { user: '1' }, type: sequelize.QueryTypes.SELECT })
-
-            }
-              var sql = this.getAllInit();
-          }
-
-
-
           item.isDeleted = 0;
+          //判断是否是分页
           if(item.cur != null && item.cur != undefined){
 
               var offset = (item.cur-1)*item.limit;
               var limit = item.limit;
               var attributes = [];
+              //判断是否是选择行查询
               if(item.show != null && item.show != undefined && item.show != ''){
                   attributes = item.show.split('_');
                   delete item['cur'];
                   delete item['limit'];
                   delete item['show'];
+
+
 
                   return yield this.findAll({
                                             offset: offset,
@@ -53,7 +44,20 @@ var sequelize = new Sequelize('gospel', 'gospel', 'gospel', {
 
                 delete item['limit'];
                 delete item['cur'];
+                console.log("wwwwww");
+                console.log(this.getAllInit);
+                //是否自定义查询
+                if(this.getAllInit !=null && this.getAllInit != undefined){
 
+                  var sql = this.getAllInit();
+                  if(sql != null && sql !=undefined){
+                      delete item['isDeleted'];
+                    return yield  sequelize.query(sql,
+                      { replacements: item, type: sequelize.QueryTypes.SELECT })
+
+                  }
+
+                }
                 return yield this.findAll({
                                           offset: offset,
                                           limit: limit,
@@ -72,6 +76,18 @@ var sequelize = new Sequelize('gospel', 'gospel', 'gospel', {
                                       });
           }else{
 
+            //是否自定义查询
+            if(this.getAllInit !=null && this.getAllInit != undefined){
+              var sql = this.getAllInit();
+              if(sql != null && sql !=undefined){
+                console.log(sql);
+                console.log(item);
+                return yield  sequelize.query(sql,
+                  { replacements: item, type: sequelize.QueryTypes.SELECT })
+
+              }
+
+            }
             console.log("no page ,no selec");
             return yield this.findAll({
                                       where:item
@@ -99,7 +115,20 @@ var sequelize = new Sequelize('gospel', 'gospel', 'gospel', {
       },
       count: function* (item) {
         item.isDeleted = 0;
-          return  yield this.findAll({
+
+        if(this.countInit !=null && this.countInit != undefined){
+          var sql = this.countInit();
+          console.log("count");
+          if(sql != null && sql !=undefined){
+            console.log(sql);
+            console.log(item);
+            return yield  sequelize.query(sql,
+              { replacements: item, type: sequelize.QueryTypes.SELECT })
+
+          }
+
+        }
+        return  yield this.findAll({
                                     where: item,
                                     attributes: [[sequelize.fn('COUNT', sequelize.col('id')), 'all']]
                                   });
