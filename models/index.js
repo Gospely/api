@@ -18,13 +18,18 @@ var sequelize = new Sequelize('gospel', 'gospel', 'gospel', {
       getAll: function*(item){
 
           console.log();
-          var sql = this.getAllInit();
 
-          if(sql != null && sql !=undefined){
-            return yield  sequelize.query(sql,
-              { replacements: { user: '1' }, type: sequelize.QueryTypes.SELECT })
+          if(this.getAllInit !=null && this.getAllInit != undefined){
+            if(sql != null && sql !=undefined){
+              return yield  sequelize.query(sql,
+                { replacements: { user: '1' }, type: sequelize.QueryTypes.SELECT })
 
+            }
+              var sql = this.getAllInit();
           }
+
+
+
           item.isDeleted = 0;
           if(item.cur != null && item.cur != undefined){
 
