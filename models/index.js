@@ -45,14 +45,13 @@ var sequelize = new Sequelize('gospel', 'gospel', 'gospel', {
                 delete item['limit'];
                 delete item['cur'];
                 console.log("wwwwww");
-                console.log(this.getAllInit);
                 //是否自定义查询
                 if(this.getAllInit !=null && this.getAllInit != undefined){
 
-                  var sql = this.getAllInit();
+                  var sql = this.getAllInit(item);
 
                   if(sql != null && sql !=undefined){
-                      sql = sql + " offset " + offset + "limit  "+limit;
+                      sql = sql + " offset " + offset + " limit "+limit;
                       delete item['isDeleted'];
                       return yield  sequelize.query(sql,
                       { replacements: item, type: sequelize.QueryTypes.SELECT })
@@ -80,7 +79,8 @@ var sequelize = new Sequelize('gospel', 'gospel', 'gospel', {
 
             //是否自定义查询
             if(this.getAllInit !=null && this.getAllInit != undefined){
-              var sql = this.getAllInit();
+              var sql = this.getAllInit(item);
+
               if(sql != null && sql !=undefined){
                 delete item['isDeleted'];
                 console.log(sql);
@@ -120,7 +120,7 @@ var sequelize = new Sequelize('gospel', 'gospel', 'gospel', {
         item.isDeleted = 0;
 
         if(this.countInit !=null && this.countInit != undefined){
-          var sql = this.countInit();
+          var sql = this.countInit(item);
           console.log("count");
           if(sql != null && sql !=undefined){
             console.log(sql);

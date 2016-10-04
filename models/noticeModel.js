@@ -23,11 +23,19 @@ module.exports = function(sequelize, DataTypes){
           associate: (models) => {
                       console.log("associate");
                   },
-          getAllInit: function() {
-              return 'SELECT * FROM gospel_notices a left join gospel_notice_read b on a.id = b.notice_id and a.isdeleted = 0 WHERE user_id = :user and b.read = :read';
+          getAllInit: function(item) {
+
+              if(item.read == null || item.read == undefined){
+                return "SELECT * FROM gospel_notices a left join gospel_notice_read b on a.id = b.notice_id and a.isdeleted = 0  where receiver = :user and b.read is null"
+              }
+              return 'SELECT * FROM gospel_notices a left join gospel_notice_read b on a.id = b.notice_id and a.isdeleted = 0 WHERE receiver = :user and b.read = :read';
           },
-          countInit: function() {
-              return 'SELECT count(a.id) as all FROM gospel_notices a left join gospel_notice_read b on a.id = b.notice_id and a.isdeleted = 0 WHERE user_id = :user ';
+          countInit: function(item) {
+
+              if(item.read == null || item.read == undefined){
+                  return 'SELECT count(a.id) as all FROM gospel_notices a left join gospel_notice_read b on a.id = b.notice_id and a.isdeleted = 0 WHERE receiver = :user and b.read is null';
+              }
+              return 'SELECT count(a.id) as all FROM gospel_notices a left join gospel_notice_read b on a.id = b.notice_id and a.isdeleted = 0 WHERE receiver = :user and b.read = :read';
           }
 
       }
