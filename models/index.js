@@ -50,9 +50,11 @@ var sequelize = new Sequelize('gospel', 'gospel', 'gospel', {
                 if(this.getAllInit !=null && this.getAllInit != undefined){
 
                   var sql = this.getAllInit();
+
                   if(sql != null && sql !=undefined){
+                      sql = sql + " offset " + offset + "limit  "+limit;
                       delete item['isDeleted'];
-                    return yield  sequelize.query(sql,
+                      return yield  sequelize.query(sql,
                       { replacements: item, type: sequelize.QueryTypes.SELECT })
 
                   }
@@ -80,6 +82,7 @@ var sequelize = new Sequelize('gospel', 'gospel', 'gospel', {
             if(this.getAllInit !=null && this.getAllInit != undefined){
               var sql = this.getAllInit();
               if(sql != null && sql !=undefined){
+                delete item['isDeleted'];
                 console.log(sql);
                 console.log(item);
                 return yield  sequelize.query(sql,
