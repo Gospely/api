@@ -10,7 +10,9 @@ module.exports = function(sequelize, DataTypes){
 	    name: DataTypes.STRING,
       memory: DataTypes.STRING,
       memoryUnit: { type: DataTypes.STRING, field:"memory_unit" },
+      cup: DataTypes.STRING,
       cpuType: { type: DataTypes.STRING, field: "cpu_type" },
+      free: DataTypes.BOOLEAN,
       isDeleted: { type: DataTypes.INTEGER, field: "isdeleted", defaultValue: 0 }
 	  },{
 			timestamps: true,
