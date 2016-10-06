@@ -10,6 +10,7 @@ module.exports = function(sequelize, DataTypes){
 	    name: DataTypes.STRING,
       description: DataTypes.STRING,
       label: DataTypes.INTEGER,
+      type:  DataTypes.INTEGER,
       isDeleted: { type: DataTypes.INTEGER, field: "isdeleted", defaultValue: 0 }
 	  },{
 			timestamps: true,
