@@ -10,6 +10,9 @@ module.exports = function(sequelize, DataTypes){
 	    name: DataTypes.STRING,
       creator: DataTypes.STRING,
       size: DataTypes.INTEGER,
+      rest: DataTypes.DOUBLE,
+      type: DataTypes.STRING,
+      link: DataTypes.STRING,
       unit: DataTypes.STRING,
       product: DataTypes.STRING,
       isDeleted: { type: DataTypes.INTEGER, field: "isdeleted", defaultValue: 0 }
