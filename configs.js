@@ -108,6 +108,13 @@ module.exports = {
 				url: '/users/photo',
 				controller: 'updatePhoto'
 			},
+			,
+			{
+				name: '邮箱激活',
+				method:'get',
+				url: '/users/authorization',
+				controller: 'authorization'
+			}
 		]
 	},
 	file: {
