@@ -14,6 +14,7 @@ module.exports = function(sequelize, DataTypes){
       members: DataTypes.JSONB,
       team:DataTypes.STRING,
       creator: DataTypes.STRING,
+      status: { type: DataTypes.INTEGER, field: "status", defaultValue: 0 },
       isDeleted: { type: DataTypes.INTEGER, field: "isdeleted", defaultValue: 0 }
 	  },{
 			timestamps: true,

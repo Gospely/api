@@ -80,7 +80,7 @@ common.update = function *update() {
 common.create = function *create() {
 
 	console.log("create");
-  	console.log(this);
+  console.log(this);
 	if ('POST' != this.method) this.throw(405, "method is not allowed");
 	  var item = yield parse(this, {
 	    limit: '1kb'

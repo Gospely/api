@@ -15,6 +15,8 @@ module.exports = function(sequelize, DataTypes){
       link: DataTypes.STRING,
       unit: DataTypes.STRING,
       product: DataTypes.STRING,
+      config: DataTypes.STRING,
+      expireAt: { type: DataTypes.STRING, field: "expireat" },
       isDeleted: { type: DataTypes.INTEGER, field: "isdeleted", defaultValue: 0 }
 	  },{
 			timestamps: true,
