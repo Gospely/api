@@ -38,7 +38,10 @@ var sequelize = new Sequelize('gospel', 'gospel', 'gospel', {
                                             offset: offset,
                                             limit: limit,
                                             where: item,
-                                            attributes: attributes
+                                            attributes: attributes,
+                                            order: [
+                                                    ['createat', 'DESC']
+                                                  ]
                                           });
 
               }else{
@@ -63,7 +66,10 @@ var sequelize = new Sequelize('gospel', 'gospel', 'gospel', {
                 return yield this.findAll({
                                           offset: offset,
                                           limit: limit,
-                                          where: item
+                                          where: item,
+                                          order: [
+                                                  ['createat', 'DESC']
+                                                ]
                                         });
               }
 
@@ -74,7 +80,10 @@ var sequelize = new Sequelize('gospel', 'gospel', 'gospel', {
               delete item['show'];
               return yield this.findAll({
                                         where:item,
-                                        attributes: attributes
+                                        attributes: attributes,
+                                        order: [
+                                                ['createat', 'DESC']
+                                              ]
                                       });
           }else{
 
@@ -94,7 +103,10 @@ var sequelize = new Sequelize('gospel', 'gospel', 'gospel', {
             }
             console.log("no page ,no selec");
             return yield this.findAll({
-                                      where:item
+                                      where:item,
+                                      order: [
+                                              ['createat', 'DESC']
+                                            ]
                                     });
           }
 
