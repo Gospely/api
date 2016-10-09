@@ -29,7 +29,7 @@ common.list= function *list() {
 
 		var limit = this.query.limit;
 		var cur = this.query.cur ;
-
+		console.log(this.query);
 		var cur = this.query.cur;
     var data = yield models[getModel(this)].getAll(this.query);
 		var count = yield models[getModel(this)].count(this.query);

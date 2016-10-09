@@ -17,6 +17,7 @@ var sequelize = new Sequelize('gospel', 'gospel', 'gospel', {
     classMethods: {
       getAll: function*(item){
 
+          console.log(item);
           item.isDeleted = 0;
           //判断是否是分页
           if(item.cur != null && item.cur != undefined){
