@@ -10,9 +10,10 @@ module.exports = function(sequelize, DataTypes){
 	    products: DataTypes.STRING,
       price: DataTypes.DOUBLE,
       status: DataTypes.INTEGER,
+      size: DataTypes.INTEGER,
+      unit: DataTypes.STRING,
+      unitPrice: { type: DataTypes.DOUBLE, field: "unit_price" },
       creator: DataTypes.INTEGER,
-      renewal: DataTypes.INTEGER,
-      valueAdded: { type: DataTypes.STRING, field: "value_added" },
       isDeleted: { type: DataTypes.INTEGER, field: "isdeleted", defaultValue: 0 }
 	  },{
 			timestamps: true,

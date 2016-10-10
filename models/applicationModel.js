@@ -11,6 +11,7 @@ module.exports = function(sequelize, DataTypes){
       port: DataTypes.STRING,
       source: DataTypes.STRING,
       domain: DataTypes.STRING,
+      docker: DataTypes.STRING,
       members: DataTypes.JSONB,
       team:DataTypes.STRING,
       creator: DataTypes.STRING,
