@@ -17,6 +17,7 @@ module.exports = function(sequelize, DataTypes){
       appLimit: { type: DataTypes.INTEGER, field: "app_limit", defaultValue: 0 },
       cpu: DataTypes.STRING,
       cpuType: { type: DataTypes.STRING, field: "cpu_type"},
+      free: DataTypes.BOOLEAN,
       memory: DataTypes.DOUBLE,
       memoryUnit: { type: DataTypes.STRING, field: "memory_unit" },
       max: DataTypes.INTEGER,
