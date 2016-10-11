@@ -115,6 +115,14 @@ module.exports = {
 				url: '/users/authorization',
 				controller: 'authorization'
 			}
+		],
+		orders: [
+			{
+				name: '下单',
+				method:'get',
+				url: '/orders/order',
+				controller: 'order'
+			}
 		]
 	},
 	file: {

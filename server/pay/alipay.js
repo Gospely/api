@@ -10,13 +10,9 @@ var xml2js = require('xml2js')
 var _ = require('lodash');
 
 var default_alipay_config = {
-    partner:'' //合作身份者id，以2088开头的16位纯数字
-    ,key:''//安全检验码，以数字和字母组成的32位字符
-    ,seller_email:'' //卖家支付宝帐户 必填
-    ,seller_id:''//卖家支付宝用户号 必填，可能和合作身份者id相同
-    ,host:'' //域名
-    ,cacert:'cacert.pem'//ca证书路径地址，用于curl中ssl校验 请保证cacert.pem文件在当前文件夹目录中
-    ,transport:'https' //访问模式,根据自己的服务器是否支持ssl访问，若支持请选择https；若不支持请选择http
+
+    cacert:'cacert.pem'//ca证书路径地址，用于curl中ssl校验 请保证cacert.pem文件在当前文件夹目录中
+    ,transport:'http' //访问模式,根据自己的服务器是否支持ssl访问，若支持请选择https；若不支持请选择http
     ,input_charset:'utf-8'//字符编码格式 目前支持 gbk 或 utf-8
     ,sign_type:"MD5"//签名方式 不需修改
     ,create_direct_pay_by_user_return_url : '/alipay/create_direct_pay_by_user/return_url'
@@ -64,12 +60,14 @@ Alipay.prototype.route = function(app){
  ,show_url:'' //商品展示地址 需以http://开头的完整路径，例如：http://www.xxx.com/myorder.html
  }*/
 
-Alipay.prototype.create_direct_pay_by_user = function(data, res){
+Alipay.prototype.create_direct_pay_by_user = function(data, ctx){
+
     assert.ok(data.out_trade_no && data.subject && data.total_fee);
 
     //建立请求
     var alipaySubmit = new AlipaySubmit(this.alipay_config);
 
+    console.log("data");
     var parameter = {
         service:'create_direct_pay_by_user'
         ,partner:this.alipay_config.partner
@@ -79,11 +77,13 @@ Alipay.prototype.create_direct_pay_by_user = function(data, res){
         ,seller_email:this.alipay_config.seller_email //卖家支付宝帐户 必填
         ,_input_charset:this.alipay_config['input_charset'].toLowerCase().trim()
     };
+
     _.merge(parameter,data);
 
     var url = alipaySubmit.buildRequestParaToString(parameter);
-    var form =alipaySubmit.buildRequestForm(parameter,'get','提交')
-    res.send(form);
+    var form =alipaySubmit.buildRequestForm(parameter,'get','提交');
+    console.log(form);
+    ctx.body = form;
 }
 
 
@@ -362,7 +362,7 @@ Alipay.prototype.create_partner_trade_by_buyer_return = function(req, res){
         if(verify_result) {//验证成功
             //商户订单号
             var out_trade_no = _GET['out_trade_no'];
-            //支付宝交易号
+            //支付宝交易号create_direct_pay_by_user_notify
             var trade_no = _GET['trade_no'];
             //交易状态
             var trade_status = _GET['trade_status'];

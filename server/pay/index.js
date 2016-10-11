@@ -2,10 +2,11 @@ var env = process.env.NODE_ENV || 'development';
 
 
 var ali_config = {
-	partner: '', //合作身份者id，以2088开头的16位纯数字
-	key: '', //安全检验码，以数字和字母组成的32位字符
-	seller_email: '', //卖家支付宝帐户 必填
-	host: '' //域名
+	partner:'2088421937560320' //合作身份者id，以2088开头的16位纯数字
+	,key:'5msupwk7dm3hmzgzbe2x89mz1kx17yb8'//安全检验码，以数字和字母组成的32位字符
+	,seller_email:'oauth@dodora.cn' //卖家支付宝帐户 必填
+	,seller_id:'2088421937560320'//卖家支付宝用户号 必填，可能和合作身份者id相同
+	,host:'api.gospely.com' //域名
 }
 
 var Alipay = require('./alipay').Alipay;

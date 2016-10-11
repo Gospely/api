@@ -15,7 +15,7 @@ function AlipaySubmit(alipay_config) {
      */
     this.alipay_gateway_new = 'https://mapi.alipay.com/gateway.do?';
     this.alipay_config = alipay_config;
-
+  }
 /**
  * 生成签名结果
  * @param para_sort 已排序要签名的数组
@@ -43,7 +43,7 @@ AlipaySubmit.prototype.buildRequestMysign = function(para_sort) {
  */
 AlipaySubmit.prototype.buildRequestPara = function(para_temp) {
     //除去待签名参数数组中的空值和签名参数
-  }
+
     var para_filter = core_funcs.paraFilter(para_temp);
 
     //对待签名参数数组排序
