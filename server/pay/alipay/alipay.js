@@ -10,8 +10,11 @@ var xml2js = require('xml2js')
 var _ = require('lodash');
 
 var default_alipay_config = {
-
-    cacert:'cacert.pem'//ca证书路径地址，用于curl中ssl校验 请保证cacert.pem文件在当前文件夹目录中
+    partner:'2088421937560320' //合作身份者id，以2088开头的16位纯数字
+    ,key:'5msupwk7dm3hmzgzbe2x89mz1kx17yb8'//安全检验码，以数字和字母组成的32位字符
+    ,seller_id:'2088421937560320'//卖家支付宝用户号 必填，可能和合作身份者id相同
+    ,host:'http://localhost:8089' //域名
+    ,cacert:'cacert.pem'//ca证书路径地址，用于curl中ssl校验 请保证cacert.pem文件在当前文件夹目录中
     ,transport:'http' //访问模式,根据自己的服务器是否支持ssl访问，若支持请选择https；若不支持请选择http
     ,input_charset:'utf-8'//字符编码格式 目前支持 gbk 或 utf-8
     ,sign_type:"MD5"//签名方式 不需修改
@@ -40,15 +43,15 @@ inherits(Alipay, EventEmitter);
 
 Alipay.prototype.route = function(app){
     var self = this;
-    app.get(this.alipay_config.create_direct_pay_by_user_return_url, function* (){ self.create_direct_pay_by_user_return(this.req, this.res) });
-    app.post(this.alipay_config.create_direct_pay_by_user_notify_url,function* (){ self.create_direct_pay_by_user_notify(this.req, this.res) });
-    app.post(this.alipay_config.refund_fastpay_by_platform_pwd_notify_url,function* (){ self.refund_fastpay_by_platform_pwd_notify(this.req, this.res) });
+    app.get(this.alipay_config.create_direct_pay_by_user_return_url, function(req, res){self.create_direct_pay_by_user_return(req, res)});
+    app.post(this.alipay_config.create_direct_pay_by_user_notify_url,function(req, res){self.create_direct_pay_by_user_notify(req, res)});
+    app.post(this.alipay_config.refund_fastpay_by_platform_pwd_notify_url,function(req, res){self.refund_fastpay_by_platform_pwd_notify(req, res)});
 
-    app.get(this.alipay_config.create_partner_trade_by_buyer_return_url, function* (){ self.create_partner_trade_by_buyer_return(this.req, this.res) });
-    app.post(this.alipay_config.create_partner_trade_by_buyer_notify_url,function* (){ self.create_partner_trade_by_buyer_notify(this.req, this.res) });
+    app.get(this.alipay_config.create_partner_trade_by_buyer_return_url, function(req, res){self.create_partner_trade_by_buyer_return(req, res)});
+    app.post(this.alipay_config.create_partner_trade_by_buyer_notify_url,function(req, res){self.create_partner_trade_by_buyer_notify(req, res)});
 
-    app.get(this.alipay_config.trade_create_by_buyer_return_url, function* (){ self.trade_create_by_buyer_return(this.req, this.res) });
-    app.post(this.alipay_config.trade_create_by_buyer_notify_url,function* (){ self.trade_create_by_buyer_notify(this.req, this.res) });
+    app.get(this.alipay_config.trade_create_by_buyer_return_url, function(req, res){self.trade_create_by_buyer_return(req, res)});
+    app.post(this.alipay_config.trade_create_by_buyer_notify_url,function(req, res){self.trade_create_by_buyer_notify(req, res)});
 }
 
 //支付宝即时到帐交易接口
@@ -61,15 +64,14 @@ Alipay.prototype.route = function(app){
  }*/
 
 Alipay.prototype.create_direct_pay_by_user = function(data, ctx){
-
     assert.ok(data.out_trade_no && data.subject && data.total_fee);
 
     //建立请求
     var alipaySubmit = new AlipaySubmit(this.alipay_config);
 
-    console.log("data");
     var parameter = {
-        service:'create_direct_pay_by_user'
+        service:'create_direct_pay_by_user',
+        seller_id: this.alipay_config.seller_id
         ,partner:this.alipay_config.partner
         ,payment_type:'1' //支付类型
         ,notify_url: this.alipay_config.host+this.alipay_config.create_direct_pay_by_user_notify_url//服务器异步通知页面路径,必填，不能修改, 需http://格式的完整路径，不能加?id=123这类自定义参数
@@ -77,13 +79,10 @@ Alipay.prototype.create_direct_pay_by_user = function(data, ctx){
         ,seller_email:this.alipay_config.seller_email //卖家支付宝帐户 必填
         ,_input_charset:this.alipay_config['input_charset'].toLowerCase().trim()
     };
-
     _.merge(parameter,data);
 
     var url = alipaySubmit.buildRequestParaToString(parameter);
-    var form =alipaySubmit.buildRequestForm(parameter,'get','提交');
-    console.log(form);
-    ctx.body = form;
+    ctx.redirect(url);
 }
 
 
@@ -352,8 +351,6 @@ Alipay.prototype.refund_fastpay_by_platform_pwd_notify = function(req, res){
 Alipay.prototype.create_partner_trade_by_buyer_return = function(req, res){
     var self = this;
 
-    console.log(res);
-    console.log('create_partner_trade_by_buyer_return');
     var _GET = req.query;
     //计算得出通知验证结果
     var alipayNotify = new AlipayNotify(this.alipay_config);
@@ -362,7 +359,7 @@ Alipay.prototype.create_partner_trade_by_buyer_return = function(req, res){
         if(verify_result) {//验证成功
             //商户订单号
             var out_trade_no = _GET['out_trade_no'];
-            //支付宝交易号create_direct_pay_by_user_notify
+            //支付宝交易号
             var trade_no = _GET['trade_no'];
             //交易状态
             var trade_status = _GET['trade_status'];

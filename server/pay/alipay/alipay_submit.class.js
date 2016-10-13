@@ -5,9 +5,8 @@
  */
 
 var core_funcs = require('./alipay_core.function');
-var md5_f = require('../../../utils/MD5');
+var md5_f = require('./alipay_md5.function');
 var DOMParser = require('xmldom').DOMParser;
-var http = require('http');
 
 function AlipaySubmit(alipay_config) {
     /**
@@ -15,7 +14,8 @@ function AlipaySubmit(alipay_config) {
      */
     this.alipay_gateway_new = 'https://mapi.alipay.com/gateway.do?';
     this.alipay_config = alipay_config;
-  }
+}
+
 /**
  * 生成签名结果
  * @param para_sort 已排序要签名的数组
@@ -29,8 +29,6 @@ AlipaySubmit.prototype.buildRequestMysign = function(para_sort) {
 
     var sign_type = this.alipay_config['sign_type'].trim().toUpperCase();
     if (sign_type == "MD5") {
-
-        console.log(this.alipay_config['key']);
         mysign = md5_f.md5Sign(prestr, this.alipay_config['key']);
     } else {
         mysign = "";
@@ -45,7 +43,6 @@ AlipaySubmit.prototype.buildRequestMysign = function(para_sort) {
  */
 AlipaySubmit.prototype.buildRequestPara = function(para_temp) {
     //除去待签名参数数组中的空值和签名参数
-
     var para_filter = core_funcs.paraFilter(para_temp);
 
     //对待签名参数数组排序
@@ -57,7 +54,6 @@ AlipaySubmit.prototype.buildRequestPara = function(para_temp) {
     //签名结果与签名方式加入请求提交参数组中
     para_sort['sign'] = mysign;
     para_sort['sign_type'] = this.alipay_config['sign_type'].trim().toUpperCase();
-
 
     return para_sort;
 }
@@ -104,7 +100,7 @@ AlipaySubmit.prototype.buildRequestForm = function (para_temp, method, button_na
 
     sHtml = sHtml + "<script>document.forms['alipaysubmit'].submit();</script>";
 
-    return sHtml;
+    return sHtml; 
 }
 
 /**

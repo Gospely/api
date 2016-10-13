@@ -144,7 +144,7 @@ exports.getHttpResponseGET = function(url,cacert_url, callback){
     };
     var req = https.request(options, function(res) {
         var responseText='';
-
+        
         res.on('data', function(chunk){
             responseText += chunk;
         });

@@ -5,7 +5,7 @@
  */
 
 var core_funcs = require('./alipay_core.function');
-var md5_f = require('../../../utils/MD5');
+var md5_f = require('./alipay_md5.function');
 
 function AlipayNotify(alipay_config){
     /**
@@ -42,7 +42,7 @@ AlipayNotify.prototype.verifyNotify = function(_POST, callback){
         }
         else{
         	callback(responseTxt == 'true' && isSign);
-        }
+        }       
     }
 }
 
@@ -69,8 +69,8 @@ AlipayNotify.prototype.verifyReturn = function(_GET, callback){
         }
         else{
         	callback(responseTxt == 'true' && isSign);
-        }
-
+        } 
+       
     }
 }
 
@@ -123,7 +123,7 @@ AlipayNotify.prototype.getResponse = function(notify_id, callback){
     }
     veryfy_url = veryfy_url + "partner=" + partner +  "&notify_id=" + notify_id;
 
-    core_funcs.getHttpResponseGET(veryfy_url, this.alipay_config['cacert'], callback);
+    core_funcs.getHttpResponseGET(veryfy_url, this.alipay_config['cacert'], callback);    
 }
 
 exports.AlipayNotify = AlipayNotify;
