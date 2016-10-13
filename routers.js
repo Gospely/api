@@ -15,7 +15,8 @@ module.exports = function(router) {
 	router.get('/',controllers.index);
 	var appId = 'wx48e0c6824ebf0d3a';
 	var secretKey= '4da6c51e080bc1fd7a17f6b51ceff345';
-	router.get('/weixin/login',getWechatAuths(appId,secretKey));
+	
+	router.get('/weixin/callback',getWechatAuths(appId,secretKey));
 
 	//添加路由
 	controllers.route(router);
