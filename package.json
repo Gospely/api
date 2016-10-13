@@ -13,6 +13,7 @@
     "bluebird": "^3.4.6",
     "co": "^4.4.0",
     "co-body": "^4.2.0",
+    "co-request": "^1.0.0",
     "crypto": "0.0.3",
     "https": "1.0.0",
     "iconv-lite": "^0.4.13",
@@ -28,6 +29,7 @@
     "koa-router": "^5.4.0",
     "koa-static-cache": "^3.1.7",
     "lodash": "^4.16.1",
+    "md5": "^2.1.0",
     "node-uuid": "^1.4.7",
     "nodemailer": "0.7.1",
     "pg": "^6.1.0",
@@ -35,10 +37,9 @@
     "querystring": "^0.2.0",
     "request": "2.75.0",
     "sequelize": "^3.24.3",
+    "superagent": "^2.1.0",
     "xml2js": "^0.4.17",
     "xmlbuilder": "^8.2.2",
-    "xmldom": "^0.1.22",
-    "md5": "^2.1.0",
-    "superagent": "^2.1.0"
+    "xmldom": "^0.1.22"
   }
 }

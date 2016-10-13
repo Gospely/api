@@ -1,115 +1,89 @@
-var request = require('request');
-var config = require('./config');
-var EventEmitter = require('events').EventEmitter;
-var inherits = require('util').inherits,
-var parser =  require('co-body');
-var _ = require('lodash');
-var models = require('../../models');
-var qs = require('querystring');
-var co = require('co');
+/**
+ *
+ * Created by lilun on 14-10-19.
+ *
+ * 这个模块用于向用户请求微信授权后与微信平台进行code、accessToken交互及获取的模块。
+ */
+var request = require('co-request');
+module.exports = getWechatAuths;
 
-function WXLogin = function (param){
-  EventEmitter.call(this);
-  this.default_config = {
-
-    gateway_url: 'https://api.weixin.qq.com'
-    connect_url: 'https://open.weixin.qq.com/connect/qrconnect',
-    access_token_url: '/sns/oauth2/access_token',
-    refresh_url: '/sns/oauth2/refresh_token',
-    userinfo_url: '/sns/userinfo',
-    auth_check_url: '/sns/auth',
-    weixin_login_url: '/users/login/weixin'
-  };
-
-}
-
-inherits(WXLogin,EventEmitter);
-
-WXLogin.prototype.route = function(router) {
-
-  router.get(config.redirect_url, function* (){ self.callback(this); });
-  router.get(this.default_config.weixin_login_url, function *(){ this.redirect(self.connect()); })
-}
-
-//重定向到微信扫码登录
-WXLogin.prototype.connect = function() {
-
-    var parameter = {
-        appid: config.wexin.appid,
-        redirect_uri: config.wexin.redirect_uri,
-        response_type: 'code',
-        scope: config.wexin.scope,
-        state: 'state' //随机生成，并在会话阶段记录
-    };
-    var url = this.default_config.connect_url+'?'+querystring(parameter);
-    return url;
-}
-
-
-function access(ctx) {
-
-
-}
-
-function refresh(ctx) {
-
-
-}
-
-function auth(ctx) {
-
-
-}
-function userInfo(ctx) {
-
-}
-WXLogin.prototype.callback = function(ctx){
-
-    var code = ctx.query.code;
-
-    var parameter = {
-        appid: config.wexin.appid,
-        secret: config.wexin.appsecret,
-        code: this.query.code,
-        grant_type: 'authorization_code'
-    };
-    var url = this.default_config.gateway_url+this.default_config.access_token_url+'?'+querystring(parameter);
-    co(function *(){
-
-        var accress_res = yield request.get(url);
-
-        //查询数据库，判断用户是否绑定，查询不到，错误提醒
-
-
-        //检查access_token是否合法
-        var parameter_auth = {
-            access_token: data.access_token,
-            openid: data.openid
-        };
-        url=this.default_config.gateway_url+this.default_config.auth_check_url+'?'+querystring(parameter_auth);
-
-        auth_res = yield request.get(url);
-
-
-
-        if(auth_res.errcode === '0'){
-
-          var parameter_auth = {
-              access_token: data.access_token,
-              openid: data.openid,
-              lang: 'cn'
-          };
-          url=this.default_config.gateway_url+this.default_config.userinfo_url+'?'+querystring(parameter_auth);
+function getWechatAuths(appid_, secret_) {
+    if (appid_ && secret_) {
+        appid = appid_;
+        secret = secret_;
+    } else {
+        return function *(next)
+        {
+            this.status = 400;
+            console.log('参数错误');
+            yield next;
         }
-
-    })();
-    //请求获取access_token
+    }
+    return function *(next)
+    {
+        var code = yield getCode(this);
+        console.log("getcode: " + code);
+        var res = yield getAccess_token(code);
+        if (res == null) return this.status = 400;
+        console.log("access_token: " + res.access_token);
+        console.log("openid: " + res.openid);
+        var userBase = yield getInfo(res.access_token, res.openid);
+        if (userBase = null)return this.status = 400;
+        this.status = 200;
+        yield next;
+    }
 }
 
-function submit (url,data) {
 
-  request.get(url, {form: data},function (err,httpResponse,body) {
-    console.log(body);
-  });
+function * getCode(ctx)
+{
+    var data = ctx.query;
+    var code = data.code;
+    //console.log("code: "+code);
+    return code;
+}
 
+function * getAccess_token(code)
+{
+    var u = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=" + appid + "&secret=" + secret + "&code=" + code + "&grant_type=authorization_code";
+    try {
+        var result = yield request({
+            uri: u,
+            method: 'GET',
+            timeout: 5000});
+        var response = result;
+        var body = result.body;
+        var data = JSON.parse(body);
+        if (result.statusCode == 200 && data.errcode === undefined) {
+            var res = {};
+            res.access_token = data.access_token;
+            res.openid = data.openid;
+            return res;
+        }
+        return null;
+    } catch (e) {
+        console.log('getAccess_token wrong');
+        return null;
+    }
+}
+
+function * getInfo(access_token, openid)
+{
+    try {
+        var u = "https://api.weixin.qq.com/sns/userinfo?access_token=" + access_token + "&openid=" + openid;
+        var result = yield request({
+            uri: u,
+            method: 'GET',
+            timeout: 5000});
+        var response = result;
+        var body = result.body;
+        console.log(body);
+        var data = JSON.parse(body);
+        if (result.statusCode == 200 && data.errcode === undefined)
+            return data;
+
+        return null;
+    } catch (e) {
+        return null;
+    }
 }

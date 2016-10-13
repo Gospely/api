@@ -114,7 +114,13 @@ module.exports = {
 				method:'get',
 				url: '/users/authorization',
 				controller: 'authorization'
-			}
+			},
+			{
+				name: '邮箱激活',
+				method:'get',
+				url: '/users/wechat',
+				controller: 'weixinLogin'
+			},
 		],
 		orders: [
 			{
@@ -128,5 +134,5 @@ module.exports = {
 	file: {
 
 		basePath: '/image'
-	}
+	},
 }

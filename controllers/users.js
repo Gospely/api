@@ -110,4 +110,13 @@ users.authorization = function* () {
           }
       }
 }
+users.weixinLogin = function * () {
+
+    var config = yield  models.gospel_configs.findById('wechat.login.config');
+
+    var url = "https://open.weixin.qq.com/connect/qrconnect?appid="+config.appid+"&redirect_uri=http://api.gospely.com/weixin/callback&response_type=code&scope=SCOPE&state=STATE#wechat_redirect";
+
+    url = encodeURI(url);
+    this.body = url;
+}
 module.exports = users;
