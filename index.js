@@ -1,7 +1,7 @@
 var app = require('koa')();
 var router = require('koa-router')();
 var routers = require('./routers.js')(router);
-var auth = require('koa-basic-auth');
+var auth = require('./server/auth/auth');
 var cors = require('koa-cors');
 var configs = require('./configs.js');
 var koaPg = require('koa-pg');
@@ -39,7 +39,7 @@ locale(app);
 // }))
 
 if(configs.isAuth) {
-	app.use(mount('/*', auth({ name: 'tobi', pass: 'ferret' })));
+	app.use(mount('/', auth({operate: 'basicAuth' })));
 }
 
 if(configs.isDBAvailable) {

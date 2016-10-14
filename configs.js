@@ -1,6 +1,6 @@
 module.exports = {
 
-	isAuth: false,
+	isAuth: true,
 
 	port: 8089,
 
@@ -8,6 +8,10 @@ module.exports = {
 
 	sync: false,
 
+	escape: [
+		'/users/login',
+		'/users/register'
+	],
 	dnspod:{
 
 			config: {
