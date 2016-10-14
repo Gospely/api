@@ -11,7 +11,7 @@ var locale = require('koa-locale');
 var i18n = require('koa-i18n');
 var db = require('./models');
 var mount = require('koa-mount');
-var session = require('koa-generic-session');
+var Session = require('koa-session-redis');
 
 var redisStore = require('koa-redis');
 var koa = require('koa');
@@ -56,13 +56,14 @@ var options = {
 };
 app.use(cors(options));
 
-app.keys = ['keys', 'keykeys'];
-app.use(session({
-  store: redisStore({
-      host: 'localhost',
-      port: '6379'
-  })
-}));
+app.keys = ['some secret hurr'];
+app.use(Session({
+  store: {
+        host: '127.0.0.1',
+        port: 6379,
+        ttl: 3600,
+        },
+    }));
 
 if(configs.isAuth) {
 	app.use(mount('/', auth({operate: 'basicAuth' })));

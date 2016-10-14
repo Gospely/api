@@ -32,19 +32,20 @@ module.exports = function(opts){
         //   this.throw(401);
         // }
         console.log(token);
-        var session = this.session;
-        session.user =  1;
-        if(token == null && token == undefined){
 
-
-            console.log("no auth");
-            this.status = 400
-            this.body = "no login";
-
-        }else{
-            console.log("session" + session.user);
-            yield next;
-        }
+        // if(token == null && token == undefined){
+        //
+        //
+        //     console.log("no auth");
+        //     this.status = 400
+        //     this.body = "no login";
+        //
+        // }else{
+        //
+        //
+        //     yield next;
+        // }
+        yield next;
       }
 
       break;

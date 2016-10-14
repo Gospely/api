@@ -19,9 +19,15 @@ users.login = function* (){
     this.throw(405, "couldn't login");
   }else{
 
+
+      this.session.user = {
+          token: uuid.v4(),
+          info: data[0]
+      }
+      console.log(this.session.user);
     //记录用户的登录，todo:基于redis实现
   }
-  this.body = 'Done!';
+  this.body = this.session.user;
 }
 
 users.register = function* () {
@@ -69,7 +75,7 @@ users.register = function* () {
   if (!inserted) {
     this.throw(405, "register failed");
   }else{
-
+      this.body = 'Done!'
     //注册成功
   }
   this.body = 'Done!';
