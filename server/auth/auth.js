@@ -19,27 +19,31 @@ module.exports = function(opts){
             yield next;
         }
 
+        console.log(this.method);
+
         //基础验证，即验证用户是否已经是登录状态
 
         //获取token
-        var token =  this.headers['Authorization'];
-
+        var token =  this.headers['authorization'];
         // //根据token查询redis用户详细信息
         // if (user && user.name == opts.name && user.pass == opts.pass) {
         //
         // } else {
         //   this.throw(401);
         // }
+        console.log(token);
+        var session = this.session;
+        session.user =  1;
         if(token == null && token == undefined){
+
 
             console.log("no auth");
             this.status = 400
             this.body = "no login";
 
         }else{
-
-          
-          yield next;
+            console.log("session" + session.user);
+            yield next;
         }
       }
 

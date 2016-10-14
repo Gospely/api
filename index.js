@@ -11,6 +11,11 @@ var locale = require('koa-locale');
 var i18n = require('koa-i18n');
 var db = require('./models');
 var mount = require('koa-mount');
+var session = require('koa-generic-session');
+
+var redisStore = require('koa-redis');
+var koa = require('koa');
+
 
 app.use(function *(next) {
   try {
@@ -38,21 +43,30 @@ locale(app);
 //   ]
 // }))
 
-if(configs.isAuth) {
-	app.use(mount('/', auth({operate: 'basicAuth' })));
-}
+
 
 if(configs.isDBAvailable) {
 	app.use(koaPg(configs.db.materDB));
 }
 
 var options = {
-	headers: ['WWW-Authenticate', 'Server-Authorization','Content-Type'],
+	headers: ['WWW-Authenticate', 'Server-Authorization','Content-Type','Authorization'],
 	credentials: true,
 	origin: '*'
 };
 app.use(cors(options));
 
+app.keys = ['keys', 'keykeys'];
+app.use(session({
+  store: redisStore({
+      host: 'localhost',
+      port: '6379'
+  })
+}));
+
+if(configs.isAuth) {
+	app.use(mount('/', auth({operate: 'basicAuth' })));
+}
 app
   .use(router.routes())
   .use(router.allowedMethods());
