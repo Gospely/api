@@ -75,7 +75,8 @@ function getWechatAuths(appid_, secret_) {
             phone:'110',
             password:'123'
           }
-          this.redirect("http://localhost:8088");
+          console.log(this.cookies.get('accessToken'));
+          this.redirect("http://dash.gospel.com");
         }
     }
 }

@@ -10,10 +10,10 @@ module.exports = {
 
 	cookie:{
 		signed: false ,
-		expires: 30*60*1000,
+		expires: new Date(Date.now + 30* 60 * 1000),
 		path: "/",
-		//domain: "gospely.com"
-		domain: "localhost"
+		domain: "gospely.com"
+		//domain: "localhost"
 	},
 
 	dnspod:{

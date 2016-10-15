@@ -11,7 +11,7 @@ module.exports = function(sequelize, DataTypes){
       inviteLink: { type: "invite_link" , field: "invite_link" },
       applications: DataTypes.JSONB,
       creator: DataTypes.STRING,
-      expireAt: { type: DataTypes.DATE, field: "expireatr" },
+      expireAt: { type: DataTypes.DATE, field: "expireat" },
       isDeleted: { type: DataTypes.INTEGER, field: "isdeleted", defaultValue: 0 }
 	  },{
 			timestamps: true,
