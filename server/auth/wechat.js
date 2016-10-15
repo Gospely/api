@@ -1,5 +1,7 @@
 var request = require('co-request');
 var models =require('../../models');
+var uuid = require('node-uuid');
+var config = require('../../configs');
 
 module.exports = getWechatAuths;
 
@@ -38,6 +40,7 @@ function getWechatAuths(appid_, secret_) {
         if(data.length == 0){
 
             //完善信息
+
             var isInsert = yield models.gospel_users.create({
               name:userBase['nickname'],
               photo:userBase['headimgurl'],
@@ -45,9 +48,33 @@ function getWechatAuths(appid_, secret_) {
               phone:'110',
               password:'123'
             });
+
+            var token = uuid.v4();
+
+            this.cookies.set('accessToken', token, config.cookie);
+
+            this.session[token] = {
+              name:userBase['nickname'],
+              photo:userBase['headimgurl'],
+              openId:userBase['unionid'],
+              phone:'110',
+              password:'123'
+            }
+
             this.redirect("http://www.baidu.com?openId= " + userBase['unionid']);
         }else{
           //设置登录
+          var token = uuid.v4();
+
+          this.cookies.set('accessToken', token, config.cookie);
+
+          this.session[token] = {
+            name:userBase['nickname'],
+            photo:userBase['headimgurl'],
+            openId:userBase['unionid'],
+            phone:'110',
+            password:'123'
+          }
           this.redirect("http://localhost:8088");
         }
     }

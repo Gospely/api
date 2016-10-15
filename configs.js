@@ -8,10 +8,14 @@ module.exports = {
 
 	sync: false,
 
-	escape: [
-		'/users/login',
-		'/users/register'
-	],
+	cookie:{
+		signed: false ,
+		expires: 30*60*1000,
+		path: "/",
+		//domain: "gospely.com"
+		domain: "localhost"
+	},
+
 	dnspod:{
 
 			config: {

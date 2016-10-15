@@ -61,8 +61,8 @@ Controllers.prototype.route = function(router){
 }
 Controllers.prototype.index = function *(next) {
 
-      var n = this.session.views || 0;
-      this.session.views = ++n;
+      var n = this.session['views'] || 0;
+      this.session['views'] = ++n;
 			this.body = util.resp('200', 'Gospel API List Version 1.0' + n + ' views');
 }
 
