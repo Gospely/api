@@ -13,6 +13,8 @@ module.exports = function(opts){
 
         console.log("mount");
 
+        console.log(this.session);
+
         if(this.url == '/users/login' || this.url == '/users/register'){
 
             console.log("login or register");
@@ -33,18 +35,19 @@ module.exports = function(opts){
         // }
         console.log(token);
 
-        // if(token == null && token == undefined){
-        //
-        //
-        //     console.log("no auth");
-        //     this.status = 400
-        //     this.body = "no login";
-        //
-        // }else{
-        //
-        //
-        //     yield next;
-        // }
+        if(token == null && token == undefined){
+
+            console.log("no auth");
+            this.status = 400
+            this.body = "no login";
+
+        }else{
+
+            var user = this.session[token];
+            console.log(user);
+            console.log(this.session.views);
+            yield next;
+        }
         yield next;
       }
 

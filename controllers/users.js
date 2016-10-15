@@ -4,8 +4,19 @@ var md5_f = require('../utils/MD5');
 var parse = require('co-body');
 var mail = require('../server/mail/email');
 var uuid = require('node-uuid');
+var config = require('../configs')
 var users = {};
 
+
+//数据渲染，todo:分页参数引入，异常信息引入
+function render(data,code,messge) {
+
+	return {
+		code: code,
+		message: messge,
+		fields: data
+	}
+}
 
 users.login = function* (){
 
@@ -15,19 +26,26 @@ users.login = function* (){
   });
   user.password = md5_f.md5Sign(user.password,'gospel_users');
   var data = yield models.gospel_users.findAll({where: user});
+  console.log(data.length);
   if(data == null|| data == undefined || data.length != 1){
-    this.throw(405, "couldn't login");
+
+      console.log("用户名或者密码错误");
+      this.body = render(null,-1,"用户名或者密码错误");
   }else{
 
+    console.log(this.session['test']);
+    var token = uuid.v4();
+    var user = data[0].dataValues;
+    user.password = '';
+    user.token = token;
+    this.cookies.set('accessToken', token, config.cookie);
+    this.session[token] = user;
+    this.session['test'] = 'test';
 
-      this.session.user = {
-          token: uuid.v4(),
-          info: data[0]
-      }
-      console.log(this.session.user);
+    console.log(user);
+    this.body = render(user,1,"登录成功");
     //记录用户的登录，todo:基于redis实现
   }
-  this.body = this.session.user;
 }
 
 users.register = function* () {

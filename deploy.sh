@@ -1,6 +1,6 @@
 echo "please enter commit info："
 
-read msg 
+read msg
 
 git pull origin master
 
