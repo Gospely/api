@@ -5,6 +5,8 @@ var config = require('../configs');
 var inherits = require('util').inherits,
     EventEmitter = require('events').EventEmitter;
 
+var redis = require('../server/redis/redis');
+
 function Controllers(){
 }
 
@@ -61,10 +63,16 @@ Controllers.prototype.route = function(router){
 }
 Controllers.prototype.index = function *(next) {
 
+      var val = yield redis.getKey('key');
+      console.log("val" + val);
       console.log(this.session);
       var n = this.session['views'] || 0;
       this.session['views'] = ++n;
       this.session['tesst'] = "test";
+      this.session.token = "1213";
+      console.log(this);
+      console.log(this.session);
+
 			this.body = util.resp('200', 'Gospel API List Version 1.0' + n + ' views');
 }
 

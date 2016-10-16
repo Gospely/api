@@ -133,7 +133,7 @@ module.exports = {
 		orders: [
 			{
 				name: '下单',
-				method:'get',
+				method:'post',
 				url: '/orders/order',
 				controller: 'order'
 			}

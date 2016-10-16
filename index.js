@@ -13,8 +13,8 @@ var db = require('./models');
 var mount = require('koa-mount');
 var Session = require('koa-session-redis');
 
-var koa = require('koa');
-
+var session = require('koa-generic-session');
+var redisStore = require('koa-redis');
 
 app.use(function *(next) {
   try {
@@ -47,13 +47,15 @@ locale(app);
 if(configs.isDBAvailable) {
 	app.use(koaPg(configs.db.materDB));
 }
-app.use(Session({
-  store: {
-        host: '127.0.0.1',
-        port: 6379,
-        ttl: 3600,
-        },
-    }));
+
+app.keys = ['keys', 'keykeys'];
+app.use(session({
+  store: redisStore({
+    host: '127.0.0.1',
+    port: 6379,
+    ttl: 3600,
+  })
+}));
 var options = {
 	headers: ['WWW-Authenticate', 'Server-Authorization','Content-Type','Authorization'],
 	credentials: true,
@@ -61,10 +63,8 @@ var options = {
 };
 app.use(cors(options));
 
-app.keys = ['some secret hurr'];
-
 if(configs.isAuth) {
-	app.use(mount('/', auth({operate: 'basicAuth' })));
+	app.use(mount('/', auth.basicAuth));
 }
 app
   .use(router.routes())

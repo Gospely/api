@@ -43,15 +43,15 @@ inherits(Alipay, EventEmitter);
 
 Alipay.prototype.route = function(app){
     var self = this;
-    app.get(this.alipay_config.create_direct_pay_by_user_return_url, function(req, res){self.create_direct_pay_by_user_return(req, res)});
-    app.post(this.alipay_config.create_direct_pay_by_user_notify_url,function(req, res){self.create_direct_pay_by_user_notify(req, res)});
-    app.post(this.alipay_config.refund_fastpay_by_platform_pwd_notify_url,function(req, res){self.refund_fastpay_by_platform_pwd_notify(req, res)});
+    app.get(this.alipay_config.create_direct_pay_by_user_return_url, function *(){ console.log("test");self.create_direct_pay_by_user_return(this)});
+    app.post(this.alipay_config.create_direct_pay_by_user_notify_url,function *(){self.create_direct_pay_by_user_notify(this.req, this.res)});
+    app.post(this.alipay_config.refund_fastpay_by_platform_pwd_notify_url,function *(){self.refund_fastpay_by_platform_pwd_notify(this.req, this.res)});
 
-    app.get(this.alipay_config.create_partner_trade_by_buyer_return_url, function(req, res){self.create_partner_trade_by_buyer_return(req, res)});
-    app.post(this.alipay_config.create_partner_trade_by_buyer_notify_url,function(req, res){self.create_partner_trade_by_buyer_notify(req, res)});
+    app.get(this.alipay_config.create_partner_trade_by_buyer_return_url, function *(){self.create_partner_trade_by_buyer_return(this.req, this.res)});
+    app.post(this.alipay_config.create_partner_trade_by_buyer_notify_url,function *(){self.create_partner_trade_by_buyer_notify(this.req, this.res)});
 
-    app.get(this.alipay_config.trade_create_by_buyer_return_url, function(req, res){self.trade_create_by_buyer_return(req, res)});
-    app.post(this.alipay_config.trade_create_by_buyer_notify_url,function(req, res){self.trade_create_by_buyer_notify(req, res)});
+    app.get(this.alipay_config.trade_create_by_buyer_return_url, function(req, res){self.trade_create_by_buyer_return(this.req, this.res)});
+    app.post(this.alipay_config.trade_create_by_buyer_notify_url,function(req, res){self.trade_create_by_buyer_notify(this.req, this.res)});
 }
 
 //支付宝即时到帐交易接口
@@ -82,7 +82,7 @@ Alipay.prototype.create_direct_pay_by_user = function(data, ctx){
     _.merge(parameter,data);
 
     var url = alipaySubmit.buildRequestParaToString(parameter);
-    ctx.redirect(url);
+    return url;
 }
 
 
@@ -242,10 +242,10 @@ Alipay.prototype.trade_create_by_buyer = function(data, res){
     res.send(html_text);
 }
 
-Alipay.prototype.trade_create_by_buyer_return = function(req, res){
+Alipay.prototype.trade_create_by_buyer_return = function(ctx){
     var self = this;
 
-    var _GET = req.query;
+    var _GET = ctx.query;
     //计算得出通知验证结果
     var alipayNotify = new AlipayNotify(this.alipay_config);
     //验证消息是否是支付宝发出的合法消息
@@ -271,12 +271,12 @@ Alipay.prototype.trade_create_by_buyer_return = function(req, res){
                 self.emit('trade_create_by_buyer_trade_finished', out_trade_no, trade_no);
             }
 
-            res.send("success");
+            ctx.body = 'success';
         }
         else{
             //验证失败
             self.emit("verify_fail");
-            res.send("fail");
+            ctx.body = 'fail'
         }
     });
 }
@@ -459,33 +459,46 @@ Alipay.prototype.create_direct_pay_by_user_notify = function(req, res){
     });
 }
 
-Alipay.prototype.create_direct_pay_by_user_return = function(req, res){
+Alipay.prototype.create_direct_pay_by_user_return = function(ctx){
     var self = this;
 
-    var _GET = req.query;
+    var _GET = ctx.query;
     //计算得出通知验证结果
+    console.log(ctx.query);
     var alipayNotify = new AlipayNotify(this.alipay_config);
     alipayNotify.verifyReturn(_GET, function(verify_result){
+
+        console.log("res" + verify_result);
         if(verify_result) {//验证成功
+
             //商户订单号
             var out_trade_no = _GET['out_trade_no'];
             //支付宝交易号
             var trade_no = _GET['trade_no'];
             //交易状态
             var trade_status = _GET['trade_status'];
-
+//http://localhost:8089/alipay/create_direct_pay_by_user/return_url?body=1&buyer_email=937257166%40qq.com&buyer_id=2088902389003345&exterface=create_direct_pay_by_user&is_success=T&notify_id=RqPnCoPT3K9%252Fvwbh3InWeOJE4RslIJAm2VLysouoMwlsNewPkZ%252BJqm8jRn7pD8692aLo&notify_time=2016-10-16+22%3A09%3A16&notify_type=trade_status_sync&out_trade_no=d602337c-8a29-4785-8110-f2c0f27003e5&payment_type=1&seller_email=oauth%40dodora.cn&seller_id=2088421937560320&subject=IDE&total_fee=0.01&trade_no=2016101621001004340286786461&trade_status=TRADE_SUCCESS&sign=bdc91ce835fc64d51b251b0d36b2dc13&sign_type=MD5
+            //
+// http://localhost:8089/alipay/create_direct_pay_by_user/return_url?
+// body=1&buyer_email=937257166%40qq.com&buyer_id=2088902389003345&exterface=create_direct_pay_by_user
+// &is_success=T&notify_id=RqPnCoPT3K9%252Fvwbh3InWeOJE4RslIJAm2VLysouoMwlsNewPkZ%252BJqm8jRn7pD8692aLo
+// &notify_time=2016-10-16+22%3A09%3A16&notify_type=trade_status_sync
+// &out_trade_no=d602337c-8a29-4785-8110-f2c0f27003e5&payment_type=1
+// &seller_email=oauth%40dodora.cn&seller_id=2088421937560320&subject=IDE
+// &total_fee=0.01&trade_no=2016101621001004340286786461&trade_status=TRADE_SUCCESS
+// &sign=bdc91ce835fc64d51b251b0d36b2dc13&sign_type=MD5
             // if(trade_status  == 'TRADE_FINISHED'){
             //     self.emit('create_direct_pay_by_user_trade_finished', out_trade_no, trade_no);
             // }
             // else if(trade_status == 'TRADE_SUCCESS'){
             //     self.emit('create_direct_pay_by_user_trade_success', out_trade_no, trade_no);
             // }
-            res.send("success");
+            ctx.body = 'success';
         }
         else {
             //验证失败
             self.emit("verify_fail");
-            res.send("fail");
+            ctx.body = 'fail';
         }
     });
 

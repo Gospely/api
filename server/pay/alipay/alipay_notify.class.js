@@ -42,7 +42,7 @@ AlipayNotify.prototype.verifyNotify = function(_POST, callback){
         }
         else{
         	callback(responseTxt == 'true' && isSign);
-        }       
+        }
     }
 }
 
@@ -51,6 +51,8 @@ AlipayNotify.prototype.verifyNotify = function(_POST, callback){
  * @return 验证结果
  */
 AlipayNotify.prototype.verifyReturn = function(_GET, callback){
+
+    console.log("verifyReturn");
     if(Object.keys(_GET).length == 0) {//判断POST来的数组是否为空
         callback(false);
     }
@@ -59,18 +61,21 @@ AlipayNotify.prototype.verifyReturn = function(_GET, callback){
         var isSign = this.getSignVeryfy(_GET, _GET["sign"]);
         //获取支付宝远程服务器ATN结果（验证是否是支付宝发来的消息）
         var responseTxt = 'true';
+        console.log(isSign);
         //验证
         //responsetTxt的结果不是true，与服务器设置问题、合作身份者ID、notify_id一分钟失效有关
         //isSign的结果不是true，与安全校验码、请求时的参数格式（如：带自定义参数等）、编码格式有关
         if (null != _GET["notify_id"]) {
             this.getResponse(_GET["notify_id"], function(responseTxt){
+              console.log(responseTxt);
             	callback(responseTxt == 'true' && isSign);
             });
+            callback(responseTxt == 'true' && isSign);
         }
         else{
         	callback(responseTxt == 'true' && isSign);
-        } 
-       
+        }
+
     }
 }
 
@@ -123,7 +128,7 @@ AlipayNotify.prototype.getResponse = function(notify_id, callback){
     }
     veryfy_url = veryfy_url + "partner=" + partner +  "&notify_id=" + notify_id;
 
-    core_funcs.getHttpResponseGET(veryfy_url, this.alipay_config['cacert'], callback);    
+    core_funcs.getHttpResponseGET(veryfy_url, this.alipay_config['cacert'], callback);
 }
 
 exports.AlipayNotify = AlipayNotify;

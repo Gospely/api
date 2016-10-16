@@ -20,6 +20,8 @@ function render(data,code,messge) {
 
 users.login = function* (){
 
+	console.log(this);
+	this.session.login = "login";
   if ('POST' != this.method) this.throw(405, "method is not allowed");
   var user = yield parse(this, {
     limit: '1kb'
@@ -33,16 +35,17 @@ users.login = function* (){
       this.body = render(null,-1,"用户名或者密码错误");
   }else{
 
-    console.log(this.session['test']);
+
     var token = uuid.v4();
+		console.log("user" + token);
     var user = data[0].dataValues;
     user.password = '';
     user.token = token;
     this.cookies.set('accessToken', token, config.cookie);
-    this.session[token] = user;
-    this.session['test'] = 'test';
+    this.session.token = user;
+		this.session.user = "test";
 
-    console.log(user);
+		console.log(this.session);
     this.body = render(user,1,"登录成功");
     //记录用户的登录，todo:基于redis实现
   }
