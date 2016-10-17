@@ -76,7 +76,7 @@ users.register = function* () {
          var mailOptions = {
 
            from: "龙猫科技 <shark@dodora.cn>", // 发件地址
-           to: "937257166@qq.com", // 收件列表
+           to: user.phone, // 收件列表
            subject: "Hello world", // 标题
            html: "<a href='"+active+"'>"+active+"</a></br>复制到浏览器访问" // html 内容
          }
