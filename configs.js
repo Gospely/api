@@ -7,7 +7,6 @@ module.exports = {
 	isDBAvailable: false,
 
 	sync: false,
-
 	cookie:{
 		signed: false ,
 		expires: new Date(Date.now + 30* 60 * 1000),

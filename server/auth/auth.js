@@ -6,13 +6,23 @@ var models = require('../../models');
 
 var config = require('../../configs');
 
+//数据渲染，todo:分页参数引入，异常信息引入
+function render(data,code,message) {
+
+	return {
+		code: code,
+		message: message,
+		fields: data
+	}
+}
 module.exports = {
 
     basicAuth: function *basicAuth(next){
 
             console.log("mount");
             console.log(this.url);
-            if(this.url == '/users/login' || this.url == '/users/register'){
+            var url = this.url.split("?")[0];
+            if(url == '/users/login' || url == '/users/register' || url == '/weixin/callback' ){
 
                 console.log("login or register");
                 yield next;
@@ -24,8 +34,8 @@ module.exports = {
                 if(token == null && token == undefined){
 
                     console.log("no auth");
-                    this.status = 400
-                    this.body = "no login";
+                    this.status = 200
+                    this.body = render(null,-100,'未登录!');
                 }else{
                   var code  = yield models.gospel_innersessions.findById(token);
                   if(code !=null && code !=undefined) {
@@ -39,13 +49,13 @@ module.exports = {
                       }else {
 
                           yield models.gospel_innersessions.delete(code);
-                          this.status = 400;
-                          this.body = '登录超时!';
+                          this.status = 200;
+                          this.body = render(null,-100,'登录超时!');
                       }
                   }else{
 
-                    this.status = 400;
-                    this.body = '登录超时!';
+                    this.status = 200;
+                    this.body = render(null,-100,'登录超时!');
                   }
                 }
               }
