@@ -20,7 +20,6 @@ function render(data,code,messge) {
 
 users.login = function* (){
 
-	this.session.login = "login";
   if ('POST' != this.method) this.throw(405, "method is not allowed");
   var user = yield parse(this, {
     limit: '1kb'
