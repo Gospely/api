@@ -28,7 +28,6 @@ common.list= function *list(next) {
 
 	if ('GET' != this.method) this.throw(405, "method is not allowed");
 
-		this.session.login = "login";
 		var limit = this.query.limit;
 		var cur = this.query.cur ;
 		console.log(this.query);
