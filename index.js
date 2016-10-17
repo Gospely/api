@@ -11,10 +11,7 @@ var locale = require('koa-locale');
 var i18n = require('koa-i18n');
 var db = require('./models');
 var mount = require('koa-mount');
-var Session = require('koa-session-redis');
 
-var session = require('koa-generic-session');
-var redisStore = require('koa-redis');
 
 app.use(function *(next) {
   try {
@@ -48,14 +45,6 @@ if(configs.isDBAvailable) {
 	app.use(koaPg(configs.db.materDB));
 }
 
-app.keys = ['keys', 'keykeys'];
-app.use(session({
-  store: redisStore({
-    host: '127.0.0.1',
-    port: 6379,
-    ttl: 3600,
-  })
-}));
 var options = {
 	headers: ['WWW-Authenticate', 'Server-Authorization','Content-Type','Authorization'],
 	credentials: true,
