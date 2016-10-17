@@ -1,6 +1,5 @@
 var Controllers = require('./controllers')
 var pay = require('./server/pay');
-
 var getWechatAuths = require('./server/auth/wechat');
 
 
@@ -12,7 +11,7 @@ module.exports = function(router) {
 		console.log('ssss');
 		yield next;
 	});
-	
+
 	router.get('/',controllers.index);
 	var appId = 'wx48e0c6824ebf0d3a';
 	var secretKey= '4da6c51e080bc1fd7a17f6b51ceff345';
@@ -26,4 +25,5 @@ module.exports = function(router) {
 
 	pay.wechat.route(router);
 	pay.alipay.route(router);
+
 }

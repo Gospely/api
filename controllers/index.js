@@ -17,19 +17,19 @@ Controllers.prototype.route = function(router){
 
 			var self = this;
 		 	var modelsName = file.split(".")[0];
+      console.log(modelsName);
+        //根据controllers下的文件配置单表的增删改查路由
+        reader.readDir(__dirname).map(function(file){
 
-			//根据controllers下的文件配置单表的增删改查路由
-			reader.readDir(__dirname).map(function(file){
+           if(modelsName != "common" && modelsName != "index" && modelsName != "fs"){
 
-				 if(modelsName != "common" && modelsName != "index"){
-
-					 router.get("/"+modelsName, common.list);
-					 router.get("/"+modelsName+"/:id", common.detail);
-					 router.post("/"+modelsName, common.create);
-					 router.delete("/"+modelsName+"/:id", common.delete);
-					 router.put("/"+modelsName, common.update);
-				 }
-			});
+             router.get("/"+modelsName, common.list);
+             router.get("/"+modelsName+"/:id", common.detail);
+             router.post("/"+modelsName, common.create);
+             router.delete("/"+modelsName+"/:id", common.delete);
+             router.put("/"+modelsName, common.update);
+           }
+        });
 
 		 	var controller = require('./'+modelsName);
 			var router_configs=config.router_config;

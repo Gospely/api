@@ -1,6 +1,6 @@
 module.exports = {
 
-	isAuth: true,
+	isAuth: false,
 
 	port: 8089,
 
@@ -135,6 +135,14 @@ module.exports = {
 				method:'post',
 				url: '/orders/order',
 				controller: 'order'
+			}
+		],
+		fs:[
+			{
+				name: '删除文件',
+				method:'get',
+				url: '/fs/delete',
+				controller: 'delete'
 			}
 		]
 	},
