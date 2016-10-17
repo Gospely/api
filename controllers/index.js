@@ -5,7 +5,6 @@ var config = require('../configs');
 var inherits = require('util').inherits,
     EventEmitter = require('events').EventEmitter;
 
-var redis = require('../server/redis/redis');
 
 function Controllers(){
 }

@@ -20,7 +20,6 @@ function render(data,code,messge) {
 
 users.login = function* (){
 
-	console.log(this);
 	this.session.login = "login";
   if ('POST' != this.method) this.throw(405, "method is not allowed");
   var user = yield parse(this, {
@@ -35,17 +34,19 @@ users.login = function* (){
       this.body = render(null,-1,"用户名或者密码错误");
   }else{
 
-
     var token = uuid.v4();
 		console.log("user" + token);
     var user = data[0].dataValues;
     user.password = '';
     user.token = token;
     this.cookies.set('accessToken', token, config.cookie);
-    this.session.token = user;
-		this.session.user = "test";
-
-		console.log(this.session);
+  	yield models.gospel_innersessions.create({
+				id: token,
+				code: token,
+				creater: user.id,
+				time: Date.now(),
+				limitTime: 30 * 60 *1000
+		});
     this.body = render(user,1,"登录成功");
     //记录用户的登录，todo:基于redis实现
   }
@@ -71,7 +72,7 @@ users.register = function* () {
        if (!isok) {
          console.log(user.phone);
          // 设置邮件内容
-         var active = "http://localhost:8089/users/authorization?code="+activeCode;
+         var active = "http://api.gospely.com/users/authorization?code="+activeCode;
          console.log(active);
          var mailOptions = {
 

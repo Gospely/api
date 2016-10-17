@@ -124,7 +124,7 @@ module.exports = {
 				controller: 'authorization'
 			},
 			{
-				name: '邮箱激活',
+				name: '微信登录',
 				method:'get',
 				url: '/users/wechat',
 				controller: 'weixinLogin'
