@@ -62,7 +62,7 @@ Controllers.prototype.route = function(router){
 }
 Controllers.prototype.index = function *(next) {
 
-			this.body = util.resp('200', 'Gospel API List Version 1.0' + n + ' views');
+			this.body = util.resp('200', 'Gospel API List Version 1.0 views');
 }
 
 module.exports = Controllers;
