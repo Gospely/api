@@ -6,6 +6,7 @@ var util = require('../utils.js'),
 	url = require('url');
 
 var exec = require('child_process').exec;
+var dir = require('node-dir');
 
 var 
 	config = {
@@ -77,37 +78,13 @@ var
 		});
 	},
 
-	listDir = function(dir) {
-
+	listDir = function(dirName) {
 		return new Promise(function(resolve, reject) {
-
-		  	var filesArr = [];
-
-		  	dir = ///$/.test(dir) ? dir : dir + '/';
-
-		  	(function dir(dirpath, fn) {
-		    	var files = Sys.fs.readdirSync(dirpath);
-		    	exports.async(files, function (item, next) {
-			      	var info = Sys.fs.statSync(dirpath + item);
-
-			      	if (info.isDirectory()) {
-			        	dir(dirpath + item + '/', function () {
-			          		next();
-			        	});
-			      	} else {
-			        	filesArr.push(dirpath + item);
-			        	callback && callback(dirpath + item);
-			        	next();
-			      	}
-		    	}, function (err) {
-		      		!err && fn && fn();
-		    	});
-		  	})(dir);
-
-		  return filesArr;
-
+			dir.paths(dirName, function(error, subdirs) {
+				if(error) reject(error);
+				resolve(subdirs);
+			});
 		});
-
 	},
 
 	GetQueryString = function(params, name) {
@@ -232,6 +209,55 @@ var fileSystem = {
 	},
 
 	ls: function* () {
+
+		try {
+			var files = yield listDir(config.baseDir + 'src'),
+				fileList = files.files,
+				dirs = files.dirs;
+
+			var result = [];
+
+			for (var i = 0; i < dirs.length; i++) {
+
+				var dir = dirs[i];
+				var tree = {};
+
+				var dirSplit = dir.split('/'),
+					dirName = dirSplit[dirSplit.length - 1];
+
+				tree[dir] = {
+					isDir: true,
+					name: dirName,
+					sub: []
+				};
+
+				for (var j = 0; j < fileList.length; j++) {
+					var file = fileList[j];
+
+					if(file.indexOf(dir) != -1) {
+
+						var fileSplit = file.split('/'),
+							fileName = fileSplit[fileSplit.length - 1];
+
+						tree[dir].sub.push({
+							path: file,
+							name: fileName,
+							isDir: false
+						});
+					}
+				};
+
+				result.push(tree);
+
+			};
+
+			console.log(result);
+
+
+			this.body = util.resp(200, '读取文件夹成功', result);
+		}catch(err) {
+			this.body = util.resp(500, '读取文件夹失败', err.toString());
+		}
 
 	}
 };
