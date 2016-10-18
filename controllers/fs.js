@@ -11,8 +11,9 @@ fileSystem.read =  function* (){
 	// fs.readFile();
 
 	console.log("tests");
-	this.body = 'fuck';
-	// util.resp(100, 'fuck', fileSystem);
+	// this.body = 'fuck';
+	var resp = util.initResp(this);
+	resp(100, 'fuck', fileSystem);
 
 }
 module.exports = fileSystem;
