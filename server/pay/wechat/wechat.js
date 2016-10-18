@@ -18,7 +18,7 @@ var default_wxpay_config = {
     certFile: __dirname + '/apiclient_cert.pem',
     keyFile: __dirname + '/apiclient_key.pem',
     caFile: __dirname + '/rootca.pem',
-    host: '', //网址
+    host: 'api.gospely.com', //网址
     wxpay_notify_url: '/pay/return_url/wxpay',   //通知的回调url
     wxpay_pay_url: 'https://api.mch.weixin.qq.com/pay/unifiedorder', //支付
     wxpay_refund_url: 'https://api.mch.weixin.qq.com/secapi/pay/refund' //退款
@@ -44,7 +44,7 @@ Wxpay.prototype.route = function(app) {
     app.post(this.wxpay_config.wxpay_notify_url, function *() {
 
         console.log('callback');
-        self.wxpay_notify(this.req, this.res)
+        self.wxpay_notify(data,this);
     });
 }
 
@@ -61,7 +61,7 @@ Wxpay.prototype.route = function(app) {
     time_expire:''//订单失效时间，格式为yyyyMMddHHmmss  选
     fee_type:''//货币类型 选
  }*/
-Wxpay.prototype.wxpay_pay = function(data, res) {
+Wxpay.prototype.wxpay_pay = function(data, ctx) {
     var wxpaySubmit = new WxpaySubmit(this.wxpay_config);
     var wxpayNotify = new WxpayNotify(this.wxpay_config);
 
@@ -84,7 +84,8 @@ Wxpay.prototype.wxpay_pay = function(data, res) {
     var postData = wxpaySubmit.buildRequestPara(parameter);
 
     return wxpayNotify.getHttpResponsePOST(this.wxpay_config.wxpay_pay_url, postData, infoList).then(result => {
-        return res.status(200).json(result);
+        console.log(result);
+        return ctx.body = result;
     });
 }
 
