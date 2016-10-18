@@ -84,8 +84,9 @@ Wxpay.prototype.wxpay_pay = function(data, ctx) {
     var postData = wxpaySubmit.buildRequestPara(parameter);
 
     return wxpayNotify.getHttpResponsePOST(this.wxpay_config.wxpay_pay_url, postData, infoList).then(result => {
-        console.log(result);
-        return ctx.body = result;
+
+        console.log("result" + result);
+        return result;
     });
 }
 

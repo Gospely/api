@@ -18,6 +18,7 @@ app.use(function *(next) {
     yield next;
   } catch (err) {
     console.log('catch');
+    console.log(err);
     this.status = err.status || 500;
     this.body = err.message;
     console.log(err.message);

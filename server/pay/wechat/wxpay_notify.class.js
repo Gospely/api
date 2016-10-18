@@ -16,6 +16,9 @@ function WxpayNotify(wxpay_config) {
  * @return 验证结果
  */
 WxpayNotify.prototype.verifyNotify = function(_POST, callback) {
+
+    console.log("verifyNotify");
+    console.log(_POST);
     if (Object.keys(_POST).length == 0) { //判断POST来的数组是否为空
         callback(false);
     } else {
@@ -53,7 +56,7 @@ WxpayNotify.prototype.getSignVerify = function(para_temp, sign) {
     //把数组所有元素，按照“参数=参数值”的模式用“&”字符拼接成字符串
     var prestr = core_funcs.createLinkstring(para_sort);
     console.error(prestr);
-    return md5_f.md5Verify(prestr, sign, this.wxpay_config['Key']);
+    return md5_f.md5Verify(prestr, sign, this.wxpay_config['key']);
 }
 
 /**
@@ -113,6 +116,7 @@ WxpayNotify.prototype.getHttpsResponsePOST = function(parsed_url, postData, info
                 pretty: true
             })
         }, function(error, res, body) {
+
             Promise.promisify(new xml2js.Parser({
                 explicitArray: false,
                 explicitRoot: false
