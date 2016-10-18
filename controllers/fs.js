@@ -5,9 +5,19 @@ var util = require('../utils.js'),
 
 var fileSystem = {};
 
-var config = {
-	baseDir: '/var/www/storage/codes/vue-f7/'
-};
+var 
+	config = {
+		baseDir: '/var/www/storage/codes/vue-f7/'
+	},
+	
+	readFile = function (fileName){
+	  return new Promise(function (resolve, reject){
+	    fs.readFile(fileName, {flag: 'r+', encoding: 'utf8'}, function(error, data){
+	      if (error) reject(error);
+	      resolve(data);
+	    });
+	  });
+	};
 
 process.platform === 'darwin' ? 
 	config.baseDir = '/var/www/apache/gospel/vue-f7' : 
@@ -16,15 +26,6 @@ process.platform === 'darwin' ?
 fileSystem.read = function* (){
 
 	var self = this;
-
-	var readFile = function (fileName){
-	  return new Promise(function (resolve, reject){
-	    fs.readFile(fileName, {flag: 'r+', encoding: 'utf8'}, function(error, data){
-	      if (error) reject(error);
-	      resolve(data);
-	    });
-	  });
-	};
 
 	try {
 		var fileContent = yield readFile(config.baseDir + '/index.html');
