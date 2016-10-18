@@ -100,6 +100,8 @@ os.platform() === 'darwin' ?
 	config.baseDir = '/var/www/apache/gospel/vue-f7/' : 
 	config.baseDir = '/var/www/storage/codes/vue-f7/' ;
 
+console.log(os.platform());
+
 var fileSystem = {
 
 	read: function* () {
