@@ -95,8 +95,6 @@ var
 	}
 
 
-console.log(os.platform());
-
 os.platform() === 'darwin' ? 
 
 	config.baseDir = '/var/www/apache/gospel/vue-f7/' : 
@@ -255,12 +253,9 @@ var fileSystem = {
 
 			};
 
-			console.log(result);
-
-
-			this.body = util.resp(200, '读取文件夹成功', result);
+			this.body = util.resp(200, '读取文件夹成功' + os.platform(), result);
 		}catch(err) {
-			this.body = util.resp(500, '读取文件夹失败', err.toString());
+			this.body = util.resp(500, '读取文件夹失败' + os.platform(), err.toString());
 		}
 
 	}
