@@ -202,7 +202,7 @@ module.exports = {
 				name: '复制文件夹',
 				method:'post',
 				url: '/fs/copydir',
-				controller: 'copydir'
+				controller: 'copy'
 			},
 			{
 				name: '移动文件夹',

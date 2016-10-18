@@ -229,10 +229,6 @@ var fileSystem = {
 
 	},
 
-	copydir: function* () {
-
-	},
-
 	ls: function* () {
 
 		try {
