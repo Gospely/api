@@ -137,11 +137,41 @@ module.exports = {
 				controller: 'order'
 			}
 		],
-		fs:[
+		fs: [
+			{
+				name: '读文件',
+				method:'get',
+				url: '/fs/read/:fileName',
+				controller: 'read'
+			},
+			{
+				name: '写文件',
+				method:'post',
+				url: '/fs/write',
+				controller: 'write'
+			},
+			{
+				name: '追加文件',
+				method:'post',
+				url: '/fs/append/',
+				controller: 'append'
+			},
 			{
 				name: '读取文件',
 				method:'get',
-				url: '/fs/read',
+				url: '/fs/read/:fileName',
+				controller: 'read'
+			},
+			{
+				name: '读取文件',
+				method:'get',
+				url: '/fs/read/:fileName',
+				controller: 'read'
+			},
+			{
+				name: '读取文件',
+				method:'get',
+				url: '/fs/read/:fileName',
 				controller: 'read'
 			}
 		]
