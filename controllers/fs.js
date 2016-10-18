@@ -1,10 +1,16 @@
-var util = require('../utils.js');
+var util = require('../utils.js'),
+	fs = require('fs'),
+	path = require('path');
 
-var fs = {};
+var fileSystem = {};
 
+fileSystem.baseDir = '/var/www/storage/codes/vue-f7/';
 
-fs.delete =  function* (){
+fileSystem.read =  function* (){
 
-  console.log("delete");
+	// fs.readFile();
+
+	util.resp(100, 'fuck', fileSystem);
+
 }
-module.exports = fs;
+module.exports = fileSystem;
