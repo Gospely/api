@@ -128,6 +128,12 @@ module.exports = {
 				url: '/users/wechat',
 				controller: 'weixinLogin'
 			},
+			{
+				name: '获取验证码',
+				method:'get',
+				url: '/users/code',
+				controller: 'authCode'
+			},
 		],
 		orders: [
 			{

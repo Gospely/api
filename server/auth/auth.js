@@ -59,7 +59,19 @@ module.exports = {
                   }
                 }
               }
-            }
+            },
+						permissions: function* (next) {
+
+								var url = this.url;
+
+								//escape url
+
+								//获取授权码
+								var token =  this.headers['authorization'];
+
+								//根据授权码获取用户的用户组
+
+						}
 
 }
 // module.exports = function(opts){
