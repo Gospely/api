@@ -139,10 +139,10 @@ module.exports = {
 		],
 		fs:[
 			{
-				name: '删除文件',
+				name: '读取文件',
 				method:'get',
-				url: '/fs/delete',
-				controller: 'delete'
+				url: '/fs/read',
+				controller: 'read'
 			}
 		]
 	},
