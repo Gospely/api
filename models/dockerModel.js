@@ -16,7 +16,7 @@ module.exports = function(sequelize, DataTypes){
       port: DataTypes.STRING,
       username: { type: DataTypes.STRING, defaultValue: "root"},
       password: DataTypes.STRING,
-      expireAt: { type: DataTypes.DATE, field: "expireatr" },
+      expireAt: { type: DataTypes.DATE, field: "expireat" },
       isDeleted: { type: DataTypes.INTEGER, field: "isdeleted", defaultValue: 0 },
 	  },{
 			timestamps: true,

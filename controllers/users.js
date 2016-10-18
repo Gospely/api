@@ -5,6 +5,7 @@ var parse = require('co-body');
 var mail = require('../server/mail/email');
 var uuid = require('node-uuid');
 var config = require('../configs')
+var ccap = require('ccap')();//Instantiated ccap class
 var users = {};
 
 
@@ -30,9 +31,38 @@ users.login = function* (){
   if(data == null|| data == undefined || data.length != 1){
 
       console.log("用户名或者密码错误");
-      this.body = render(null,-1,"用户名或者密码错误");
+			var innersessions = yield models.gospel_innersessions.findAll({where: {
+				phone: user.phone
+			}} );
+
+		if(innersessions.length != 1){
+
+				if(innersessions.length == 0){
+					//记录
+					yield models.gospel_innersessions.create({
+							phone: user.phone,
+							time: Date.now(),
+							count: 1,
+					});
+				}
+		}else{
+			 	var innersession = data[0].dataValues;
+				yield models.gospel_innersessions.modify({
+						id: innersession.id,
+						time: Date.now(),
+						count: innersession.count+1,
+				});
+		}
+    this.body = render(null,-1,"用户名或者密码错误");
   }else{
 
+		var innersessions = yield models.gospel_innersessions.findAll({where: {
+			phone: user.phone
+		}} );
+		if(innersessions.length == 1){
+				var innersession = data[0].dataValues;
+				models.gospel_innersessions.delete(innersession);
+		}
     var token = uuid.v4();
 		console.log("user" + token);
     var user = data[0].dataValues;
@@ -53,8 +83,6 @@ users.login = function* (){
 
 users.register = function* () {
 
-
-
   console.log(this.method);
   if ('POST' != this.method) this.throw(405, "method is not allowed");
   var user = yield parse(this, {
@@ -62,6 +90,7 @@ users.register = function* () {
   });
   user.password = md5_f.md5Sign(user.password,'gospel_users');
   console.log(user.password);
+	var inserted;
 
   if (user.phone != "") {
      console.log(user.phone);
@@ -69,7 +98,7 @@ users.register = function* () {
         isok= reg.test(user.phone );
         var activeCode = uuid.v4();
        if (!isok) {
-         console.log(user.phone);
+         console.log(user.phone + "email");
          // 设置邮件内容
          var active = "http://api.gospely.com/users/authorization?code="+activeCode;
          console.log(active);
@@ -86,12 +115,18 @@ users.register = function* () {
               code: activeCode,
               time: Date.now()
          };
-         var inserted  = yield  models.gospel_innersessions.create(authorization);
+				 user.isblocked = 1;
+         inserted  = yield  models.gospel_innersessions.create(authorization);
        }
-  }
-  user.isblocked = 1;
-  var inserted  = yield models.gospel_users.create(user);
 
+			 reg = /^(((13[0-9]{1})|(15[0-9]{1})|(18[0-9]{1}))+\d{8})$/;
+			 isok= reg.test(user.phone );
+			 if(!isok){
+				 	console.log(user.phon + "phone");
+
+					//校验验证吗
+			 }
+  }
 
   if (!inserted) {
     this.throw(405, "register failed");
@@ -145,5 +180,26 @@ users.weixinLogin = function * () {
 
     url = encodeURI(url);
     this.redirect(url);
+}
+
+users.authCode =  function() {
+
+	var ary = ccap.get();
+
+	var txt = ary[0];
+
+	var buf = ary[1];
+	console.log(txt);
+	this.body = buf;
+}
+users.phoneCode =  function() {
+
+	var ary = ccap.get();
+
+	var txt = ary[0];
+
+	var buf = ary[1];
+	console.log(txt);
+	this.body = buf;
 }
 module.exports = users;
