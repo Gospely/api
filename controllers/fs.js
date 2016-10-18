@@ -88,6 +88,16 @@ var
 		});
 	},
 
+	cp = function(file, newFile) {
+		return new Promise(function(resolve, reject) {
+			var cmd = 'cp -r ' + file + ' ' + newFile;
+			exec(cmd, function(error, data) {
+				if(error) reject(error);
+				resolve(data);
+			});
+		});
+	},
+
 	GetQueryString = function(params, name) {
 	    var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
 	    var r = params.match(reg);
@@ -100,7 +110,6 @@ os.platform() === 'darwin' ?
 	config.baseDir = '/var/www/apache/gospel/vue-f7/' : 
 	config.baseDir = '/var/www/storage/codes/vue-f7/' ;
 
-console.log(os.platform());
 
 var fileSystem = {
 
@@ -175,6 +184,18 @@ var fileSystem = {
 	},
 
 	copy: function* () {
+
+		var params = yield parse(this);
+
+		var file = GetQueryString(params, 'file')
+			newFile = GetQueryString(params, 'newFile');
+
+		try {
+			yield cp(config.baseDir + file, config.baseDir + newFile);
+			this.body = util.resp(200, '复制成功', {});
+		}catch(err) {
+			this.body = util.resp(200, '复制失败', err.toString());
+		}
 
 	},
 
