@@ -23,10 +23,11 @@ var
 
 	writeFile = function(fileName, content) {
 	  return new Promise(function (resolve, reject){
-	    fs.writeFile(fileName, content, function(error, data){
-	    	console.log(error);
-	      if (error) reject(error);
-	      resolve(data);
+	    fs.writeFile(fileName, content, function(error){
+	      if (error) {
+	      	reject(error);
+	      };
+	      resolve();
 	    });
 	  });
 	},
@@ -57,36 +58,39 @@ fileSystem.read = function* (){
 		var fileContent = yield readFile(config.baseDir + this.params.fileName);
 		self.body = util.resp(200, '读取成功', fileContent.toString());
 	}catch(err) {
-		self.body = util.resp(500, '读取失败', err);
+		self.body = util.resp(500, '读取失败', err.toString());
 	}
 
 };
 
 fileSystem.write = function* () {
 
-	var params = yield parse.text(this, {
-		strict: false
-	});
+	var params = yield parse(this);
 
 	var fileName = GetQueryString(params, 'fileName')
 		data = GetQueryString(params, 'data');
 
 	try {
-		var fileContent = yield writeFile(config.baseDir + fileName, data);
-		this.body = util.resp(200, '写入成功', fileContent.toString());
+		yield writeFile(config.baseDir + fileName, data);
+		this.body = util.resp(200, '写入成功', {});
 	}catch(err) {
-		this.body = util.resp(500, '写入失败', err);
+		this.body = util.resp(500, '写入失败', err.toString());
 	}
 
 };
 
 fileSystem.append = function* () {
 
+	var params = yield parse(this);
+
+	var fileName = GetQueryString(params, 'fileName')
+		data = GetQueryString(params, 'data');
+
 	try {
-		var fileContent = yield readFile(config.baseDir + this.params.fileName);
-		this.body = util.resp(200, '追加成功', fileContent.toString());
+		yield appendFile(config.baseDir + fileName, data);
+		this.body = util.resp(200, '追加成功', {});
 	}catch(err) {
-		this.body = util.resp(500, '追加失败', err);
+		this.body = util.resp(500, '追加失败', err.toString());
 	}
 
 }
