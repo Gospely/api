@@ -5,7 +5,7 @@ var util = require('../utils.js'),
 	parse = require('co-body'),
 	url = require('url');
 
-var fileSystem = {};
+var exec = require('child_process').exec;
 
 var 
 	config = {
@@ -39,61 +39,202 @@ var
 	      resolve(data);
 	    });
 	  });
-	}
+	},
 
-function GetQueryString(params, name){
-    var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
-    var r = params.match(reg);
-    if(r!=null)return unescape(r[2]); return null;
-}
+	removeFile = function(fileName) {
+		return new Promise(function (resolve, reject) {
+			fs.unlink(fileName, function(error, data) {
+				if(error) reject(error);
+				resolve(data);
+			});
+		});
+	},
+
+	renameFile = function(fileName, newFileName) {
+		return new Promise(function (resolve, reject) {
+			fs.rename(fileName, newFileName, function(error, data) {
+				if(error) reject(error);
+				resolve(data);
+			});
+		});
+	},
+
+	mkdir = function(fileName) {
+		return new Promise(function (resolve, reject) {
+			fs.mkdir(fileName, function(error, data) {
+				if(error) reject(error);
+				resolve(data);
+			});
+		});
+	},
+
+	rmdir = function(dir) {
+		return new Promise(function(resolve, reject) {
+			exec('rm -rf ' + dir,function(error, data) { 
+				if(error) reject(error);
+				resolve(data);
+			});
+		});
+	},
+
+	listDir = function(dir) {
+
+		return new Promise(function(resolve, reject) {
+
+		  	var filesArr = [];
+
+		  	dir = ///$/.test(dir) ? dir : dir + '/';
+
+		  	(function dir(dirpath, fn) {
+		    	var files = Sys.fs.readdirSync(dirpath);
+		    	exports.async(files, function (item, next) {
+			      	var info = Sys.fs.statSync(dirpath + item);
+
+			      	if (info.isDirectory()) {
+			        	dir(dirpath + item + '/', function () {
+			          		next();
+			        	});
+			      	} else {
+			        	filesArr.push(dirpath + item);
+			        	callback && callback(dirpath + item);
+			        	next();
+			      	}
+		    	}, function (err) {
+		      		!err && fn && fn();
+		    	});
+		  	})(dir);
+
+		  return filesArr;
+
+		});
+
+	},
+
+	GetQueryString = function(params, name) {
+	    var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+	    var r = params.match(reg);
+	    if(r!=null)return unescape(r[2]); return null;		
+	}
 
 process.platform === 'darwin' ? 
 
 	config.baseDir = '/var/www/apache/gospel/vue-f7/' : 
 	config.baseDir = '/var/www/storage/codes/vue-f7/' ;
 
-fileSystem.read = function* (){
+var fileSystem = {
 
-	try {
-		var fileContent = yield readFile(config.baseDir + this.params.fileName);
-		self.body = util.resp(200, '读取成功', fileContent.toString());
-	}catch(err) {
-		self.body = util.resp(500, '读取失败', err.toString());
+	read: function* () {
+
+		try {
+			var fileContent = yield readFile(config.baseDir + this.params.fileName);
+			this.body = util.resp(200, '读取成功', fileContent.toString());
+		}catch(err) {
+			this.body = util.resp(500, '读取失败', err.toString());
+		}
+
+	},
+
+	write: function* () {
+
+		var params = yield parse(this);
+
+		var fileName = GetQueryString(params, 'fileName')
+			data = GetQueryString(params, 'data');
+
+		try {
+			yield writeFile(config.baseDir + fileName, data);
+			this.body = util.resp(200, '写入成功', {});
+		}catch(err) {
+			this.body = util.resp(500, '写入失败', err.toString());
+		}
+
+	},
+
+	append: function* () {
+
+		var params = yield parse(this);
+
+		var fileName = GetQueryString(params, 'fileName')
+			data = GetQueryString(params, 'data');
+
+		try {
+			yield appendFile(config.baseDir + fileName, data);
+			this.body = util.resp(200, '追加成功', {});
+		}catch(err) {
+			this.body = util.resp(500, '追加失败', err.toString());
+		}
+
+	},
+
+	remove: function* () {
+
+		try {
+			var fileContent = yield removeFile(config.baseDir + this.params.fileName);
+			this.body = util.resp(200, '删除成功', this.params.fileName);
+		}catch(err) {
+			this.body = util.resp(500, '删除失败', err.toString());
+		}
+
+	},
+
+	rename: function* () {
+
+		var params = yield parse(this);
+
+		var fileName = GetQueryString(params, 'fileName')
+			newFileName = GetQueryString(params, 'newFileName');
+
+		try {
+			yield renameFile(config.baseDir + fileName, newFileName);
+			this.body = util.resp(200, '重命名成功', {});
+		}catch(err) {
+			this.body = util.resp(500, '重命名失败', err.toString());
+		}
+
+	},
+
+	copy: function* () {
+
+	},
+
+	mkdir: function* () {
+
+		var params = yield parse(this);
+
+		var dirName = GetQueryString(params, 'dirName');
+
+		try {
+			yield mkdir(config.baseDir + dirName);
+			this.body = util.resp(200, '创建文件夹成功', dirName);
+		}catch(err) {
+			this.body = util.resp(500, '创建文件夹失败', err.toString());
+		}
+
+	},
+
+	rmdir: function* () {
+
+		var params = yield parse(this);
+
+		var dirName = GetQueryString(params, 'dirName');
+
+		try {
+			yield rmdir(config.baseDir + dirName);
+			this.body = util.resp(200, '删除文件夹成功', dirName);
+		}catch(err) {
+			this.body = util.resp(500, '删除文件夹失败', err.toString());
+		}
+
+	},
+
+	copydir: function* () {
+
+	},
+
+	ls: function* () {
+
 	}
-
 };
-
-fileSystem.write = function* () {
-
-	var params = yield parse(this);
-
-	var fileName = GetQueryString(params, 'fileName')
-		data = GetQueryString(params, 'data');
-
-	try {
-		yield writeFile(config.baseDir + fileName, data);
-		this.body = util.resp(200, '写入成功', {});
-	}catch(err) {
-		this.body = util.resp(500, '写入失败', err.toString());
-	}
-
-};
-
-fileSystem.append = function* () {
-
-	var params = yield parse(this);
-
-	var fileName = GetQueryString(params, 'fileName')
-		data = GetQueryString(params, 'data');
-
-	try {
-		yield appendFile(config.baseDir + fileName, data);
-		this.body = util.resp(200, '追加成功', {});
-	}catch(err) {
-		this.body = util.resp(500, '追加失败', err.toString());
-	}
-
-}
 
 
 module.exports = fileSystem;

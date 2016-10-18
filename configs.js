@@ -157,22 +157,64 @@ module.exports = {
 				controller: 'append'
 			},
 			{
-				name: '读取文件',
+				name: '删除文件',
 				method:'get',
-				url: '/fs/read/:fileName',
-				controller: 'read'
+				url: '/fs/remove/:fileName',
+				controller: 'remove'
 			},
 			{
-				name: '读取文件',
-				method:'get',
-				url: '/fs/read/:fileName',
-				controller: 'read'
+				name: '复制文件',
+				method:'post',
+				url: '/fs/copy',
+				controller: 'copy'
 			},
 			{
-				name: '读取文件',
+				name: '移动文件',
+				method:'post',
+				url: '/fs/move',
+				controller: 'rename'
+			},
+			{
+				name: '重命名文件',
+				method:'post',
+				url: '/fs/rename',
+				controller: 'rename'
+			},
+			{
+				name: '创建文件夹',
+				method:'post',
+				url: '/fs/mkdir',
+				controller: 'mkdir'
+			},
+			{
+				name: '删除文件夹',
+				method:'post',
+				url: '/fs/rmdir',
+				controller: 'rmdir'
+			},
+			{
+				name: '复制文件夹',
+				method:'post',
+				url: '/fs/copydir',
+				controller: 'copydir'
+			},
+			{
+				name: '移动文件夹',
+				method:'post',
+				url: '/fs/dir/move',
+				controller: 'rename'
+			},
+			{
+				name: '重命名文件夹',
+				method:'post',
+				url: '/fs/dir/rename',
+				controller: 'rename'
+			},
+			{
+				name: '读取文件夹',
 				method:'get',
-				url: '/fs/read/:fileName',
-				controller: 'read'
+				url: '/fs/ls/:dirName',
+				controller: 'ls'
 			}
 		]
 	},
