@@ -253,9 +253,9 @@ var fileSystem = {
 
 			};
 
-			this.body = util.resp(200, '读取文件夹成功' + os.platform() + os.platform == 'darwin', result);
+			this.body = util.resp(200, '读取文件夹成功', result);
 		}catch(err) {
-			this.body = util.resp(500, '读取文件夹失败' + os.platform() + os.platform == 'darwin', err.toString());
+			this.body = util.resp(500, '读取文件夹失败', err.toString());
 		}
 
 	}
