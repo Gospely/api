@@ -5,6 +5,7 @@ var util = require('../utils.js'),
 	parse = require('co-body'),
 	url = require('url');
 
+var os = require('os');
 var exec = require('child_process').exec;
 var dir = require('node-dir');
 
@@ -93,7 +94,10 @@ var
 	    if(r!=null)return unescape(r[2]); return null;		
 	}
 
-process.platform === 'darwin' ? 
+
+console.log(os.platform());
+
+os.platform() === 'darwin' ? 
 
 	config.baseDir = '/var/www/apache/gospel/vue-f7/' : 
 	config.baseDir = '/var/www/storage/codes/vue-f7/' ;
