@@ -10,7 +10,9 @@ fileSystem.read =  function* (){
 
 	// fs.readFile();
 
-	util.resp(100, 'fuck', fileSystem);
+	console.log("tests");
+	this.body = 'fuck';
+	// util.resp(100, 'fuck', fileSystem);
 
 }
 module.exports = fileSystem;
