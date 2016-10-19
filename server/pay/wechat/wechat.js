@@ -47,9 +47,9 @@ Wxpay.prototype.route = function(app) {
 
 
       var data = yield parse(this.req, {
-          length: ctx.length,
+          length: this.length,
           limit: '1mb',
-          encoding: ctx.charset || 'utf-8'
+          encoding: this.charset || 'utf-8'
       });
       console.log(data);
       self.wxpay_notify(data,this);
