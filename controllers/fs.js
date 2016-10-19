@@ -219,7 +219,7 @@ var fileSystem = {
 			yield renameFile(config.baseDir + fileName, config.baseDir + newFileName);
 			this.body = util.resp(200, '重命名成功', {id: newFileName});
 		}catch(err) {
-			this.body = util.resp(500, '重命名失败', err.toString());
+			this.body = util.resp(500, '重命名失败' + newFileName, err.toString());
 		}
 
 	},
