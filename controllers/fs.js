@@ -211,7 +211,7 @@ var fileSystem = {
 		if(move) {
 			var isdir = isDir(config.baseDir + newFileName);
 			if(!isdir) {
-				newFileName = path.dirname(config.baseDir + newFileName);
+				newFileName = path.dirname(newFileName);
 			}
 		}
 
