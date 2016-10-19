@@ -228,7 +228,11 @@ var fileSystem = {
 
 		var params = yield parse(this);
 
-		var dirName = GetQueryString(params, 'dirName');
+		try {
+			var dirName = params.dirName;
+		}catch(err) {
+			var dirName = GetQueryString(params, 'dirName');
+		}
 
 		try {
 			yield mkdir(config.baseDir + dirName);
