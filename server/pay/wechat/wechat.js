@@ -13,6 +13,7 @@ var Promise = require('bluebird');
 var xmlbuilder = require('xmlbuilder');
 var qs = require('querystring');
 var extendBodyParser = require('./extend_body_parser').extendBodyParser;
+var parse = require('co-body');
 
 var default_wxpay_config = {
     certFile: __dirname + '/apiclient_cert.pem',
