@@ -23,6 +23,18 @@ module.exports ={
 							console.log(this.url);
 							var url = this.url.split("?")[0];
 							var method = this.method;
+
+							if(method == "GET" || method == "DELETE"){
+
+									var replacements = url.split('/');
+									console.log(replacements.length);
+									if(replacements.length >= 3){
+										url = url.replace(replacements[replacements.length - 1],"");
+										url = url+ ":id";
+										console.log(url);
+									}
+
+							}
 							//基础验证，即验证用户是否已经是登录状态
 							//获取token
 							var token =  this.headers['authorization'];
