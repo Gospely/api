@@ -192,7 +192,6 @@ var fileSystem = {
 		var params = yield parse(this);
 
 		try {
-			params = JSON.parse(params);
 			var fileName = params.fileName,
 				newFileName = params.newFileName;		
 		}catch(err) {
