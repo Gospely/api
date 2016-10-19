@@ -13,6 +13,7 @@ var Promise = require('bluebird');
 var xmlbuilder = require('xmlbuilder');
 var qs = require('querystring');
 var extendBodyParser = require('./extend_body_parser').extendBodyParser;
+var parse = require('raw-body');
 
 var default_wxpay_config = {
     certFile: __dirname + '/apiclient_cert.pem',
@@ -44,15 +45,14 @@ Wxpay.prototype.route = function(app) {
     console.log(this.wxpay_config.wxpay_notify_url);
     app.post(this.wxpay_config.wxpay_notify_url, function *() {
 
-      var data = yield parse(this, {
-        limit: '10kb'
+
+      var data = yield parse(this.req, {
+          length: this.length,
+          limit: '1mb',
+          encoding: this.charset || 'utf-8'
       });
       console.log(data);
-      var data2 = this.request.body
-
-      console.log(data2);
-
-        self.wxpay_notify(this.req,this.res);
+      self.wxpay_notify(data,this);
     });
 }
 
@@ -132,45 +132,45 @@ Wxpay.prototype.wxpay_refund = function(data, res) {
 /**
  *  支付结果异步通知
  */
-Wxpay.prototype.wxpay_notify = function(req, res) {
+Wxpay.prototype.wxpay_notify = function(data, ctx) {
     var self = this;
     var infoList = ['attach', 'time_end', 'rate', 'transaction_id', 'total_fee', 'out_trade_no', 'openid'];
     console.log('notify');
     Promise.promisify(new xml2js.Parser({
         explicitArray: false,
         explicitRoot: false
-    }).parseString)(req.body).then(function(_POST) {
+    }).parseString)(data).then(function(_POST) {
         if (_POST.return_code != 'SUCCESS' || _POST.result_code != 'SUCCESS')
-            res.send(xmlbuilder.create('xml', {
+            ctx.body = xmlbuilder.create('xml', {
                 headless: true
             }).ele({
                 return_code: 'FAIL'
             }).end({
                 pretty: true
-            }));
+            });
         //计算得出通知验证结果
         var wxpayNotify = new WxpayNotify(self.wxpay_config);
         //验证消息是否是微信发出的合法消息
         wxpayNotify.verifyNotify(_POST, function(verify_result) {
             if (verify_result) { //验证成功
                 self.emit('wxpay_trade_success', _.pick(_POST, infoList));
-                res.send(xmlbuilder.create('xml', {
+                ctx.body = xmlbuilder.create('xml', {
                     headless: true
                 }).ele({
                     return_code: 'SUCCESS'
                 }).end({
                     pretty: true
-                })); //请不要修改或删除
+                }); //请不要修改或删除
             } else {
                 //验证失败
                 self.emit("verify_fail");
-                res.send(xmlbuilder.create('xml', {
+                ctx.body = xmlbuilder.create('xml', {
                     headless: true
                 }).ele({
                     return_code: 'FAIL'
                 }).end({
                     pretty: true
-                }));
+                });
             }
         });
     })
