@@ -249,7 +249,8 @@ var fileSystem = {
 				tree[dir] = {
 					isDir: true,
 					name: dirName,
-					sub: []
+					sub: [],
+					id: i
 				};
 
 				for (var j = 0; j < fileList.length; j++) {
@@ -263,7 +264,9 @@ var fileSystem = {
 						tree[dir].sub.push({
 							path: file,
 							name: fileName,
-							isDir: false
+							isDir: false,
+							pId: i,
+							id: i * j
 						});
 					}
 				};
