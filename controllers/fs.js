@@ -255,7 +255,7 @@ var fileSystem = {
 
 		try {
 			yield rmdir(config.baseDir + dirName);
-			this.body = util.resp(200, '删除文件夹成功', {id: dirName});
+			this.body = util.resp(200, '删除文件夹成功', {id: dirName, whole: config.baseDir + dirName});
 		}catch(err) {
 			this.body = util.resp(500, '删除文件夹失败', err.toString());
 		}
