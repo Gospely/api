@@ -221,6 +221,18 @@ module.exports = {
 				method:'get',
 				url: '/fs/ls/:dirName',
 				controller: 'ls'
+			},
+			{
+				name: '按需读取文件或文件夹',
+				method: 'get',
+				url: '/fs/list/optional/:dirName',
+				controller: 'list'
+			},
+			{
+				name: '按需读取文件或文件夹(无参数)',
+				method: 'get',
+				url: '/fs/list/optional/',
+				controller: 'list'
 			}
 		]
 	},
