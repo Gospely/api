@@ -200,10 +200,19 @@ var fileSystem = {
 
 		try {
 			var fileName = params.fileName,
-				newFileName = params.newFileName;		
+				newFileName = params.newFileName,
+				move = params.move || false;	
 		}catch(err) {
 			var fileName = GetQueryString(params, 'fileName')
-				newFileName = GetQueryString(params, 'newFileName');
+				newFileName = GetQueryString(params, 'newFileName'),
+				move = GetQueryString(params, 'move') || false;
+		}
+
+		if(move) {
+			var isdir = isDir(config.baseDir + newFileName);
+			if(!isdir) {
+				newFileName = path.dirname(config.baseDir + newFileName);
+			}
 		}
 
 		try {
