@@ -1,6 +1,7 @@
 var util = require('../utils.js');
 var common = require('./common.js');
 var reader = require('../utils/reader');
+var models = require('../models');
 var config = require('../configs');
 var inherits = require('util').inherits,
     EventEmitter = require('events').EventEmitter;
@@ -18,6 +19,49 @@ Controllers.prototype.route = function(router){
 			var self = this;
 		 	var modelsName = file.split(".")[0];
       console.log(modelsName);
+
+                   if(config.isInit === 1){
+                     models.gospel_privileges.build({
+                       name: modelsName+ "查询",
+                       method: 'GET',
+                       router: "/"+modelsName,
+                       groups: "ab64c397-d323-4133-9541-479bbaaf6c52_100"
+                     }).save().then(function(res){
+                     },function(err){
+                     });;
+                     models.gospel_privileges.build({
+                       name: modelsName+ "根据ID获取信息",
+                       method: 'GET',
+                       router: "/"+modelsName+"/:id",
+                       groups: "ab64c397-d323-4133-9541-479bbaaf6c52_100"
+                     }).save().then(function(res){
+                     },function(err){
+                     });;
+                     models.gospel_privileges.build({
+                       name: modelsName+ "新增",
+                       method: 'POST',
+                       router: "/"+modelsName,
+                       groups: "ab64c397-d323-4133-9541-479bbaaf6c52_100"
+                     }).save().then(function(res){
+                     },function(err){
+                     });;
+                     models.gospel_privileges.build({
+                       name: modelsName+ "修改",
+                       method: 'PUT',
+                       router: "/"+modelsName,
+                       groups: "ab64c397-d323-4133-9541-479bbaaf6c52_100"
+                     }).save().then(function(res){
+                     },function(err){
+                     });;
+                      models.gospel_privileges.build({
+                       name: modelsName+ "删除",
+                       method: 'DELETE',
+                       router: "/"+modelsName+"/:id",
+                       groups: "ab64c397-d323-4133-9541-479bbaaf6c52_100"
+                     }).save().then(function(res){
+                     },function(err){
+                     });;
+                   }
         //根据controllers下的文件配置单表的增删改查路由
         reader.readDir(__dirname).map(function(file){
 
@@ -28,6 +72,7 @@ Controllers.prototype.route = function(router){
              router.post("/"+modelsName, common.create);
              router.delete("/"+modelsName+"/:id", common.delete);
              router.put("/"+modelsName, common.update);
+
            }
         });
 
@@ -39,6 +84,19 @@ Controllers.prototype.route = function(router){
 			if(router_configs[modelsName] !=null && router_configs[modelsName] != undefined){
 				router_configs[modelsName].map(function(router_conf){
 
+
+            if(config.isInit === 1){
+                models.gospel_privileges.build({
+                  name: router_conf.name,
+                  method: router_conf.method.toUpperCase(),
+                  router: router_conf.url,
+                  groups: router_conf.groups
+                }).save().then(function(res){
+                    console.log(res);
+                },function(err){
+                    console.log(err);
+                });
+            }
 						switch (router_conf.method) {
 							case 'post':
 										router.post(router_conf.url,controller[router_conf.controller]);

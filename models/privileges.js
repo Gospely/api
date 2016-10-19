@@ -10,7 +10,7 @@ module.exports = function(sequelize, DataTypes){
 	    name: DataTypes.STRING,
       router: DataTypes.STRING,
       method: DataTypes.STRING,
-      groups: DataTypes.JSONB,
+      groups: DataTypes.STRING,
       isDeleted: { type: DataTypes.INTEGER, field: "isdeleted", defaultValue: 0 }
 	  },{
 			timestamps: true,

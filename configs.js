@@ -2,6 +2,8 @@ module.exports = {
 
 	isAuth: false,
 
+	isInit: 0,
+
 	port: 8089,
 
 	isDBAvailable: false,
@@ -101,44 +103,51 @@ module.exports = {
 				name: '登录',
 				method:'post',
 				url: '/users/login',
-				controller: 'login'
+				controller: 'login',
+				groups: "ab64c397-d323-4133-9541-479bbaaf6c52_100"
 			},
 			{
 				name: '注册',
 				method:'post',
 				url: '/users/register',
-				controller: 'register'
+				controller: 'register',
+				groups: "ab64c397-d323-4133-9541-479bbaaf6c52_100"
 			},
 			{
 				name: '修改头像',
 				method:'post',
 				url: '/users/photo',
-				controller: 'updatePhoto'
+				controller: 'updatePhoto',
+				groups: "ab64c397-d323-4133-9541-479bbaaf6c52_100"
 			},
 			,
 			{
 				name: '邮箱激活',
 				method:'get',
 				url: '/users/authorization',
-				controller: 'authorization'
+				controller: 'authorization',
+				groups: "ab64c397-d323-4133-9541-479bbaaf6c52"
 			},
 			{
 				name: '微信登录',
 				method:'get',
 				url: '/users/wechat',
-				controller: 'weixinLogin'
+				controller: 'weixinLogin',
+				groups: "ab64c397-d323-4133-9541-479bbaaf6c52"
 			},
 			{
 				name: '获取验证码',
 				method:'get',
 				url: '/users/code',
-				controller: 'authCode'
+				controller: 'authCode',
+				groups: "ab64c397-d323-4133-9541-479bbaaf6c52"
 			},
 			{
 				name: '获取文件流',
 				method:'get',
 				url: '/users/files/:file',
-				controller: 'files'
+				controller: 'files',
+				groups: "ab64c397-d323-4133-9541-479bbaaf6c52_100"
 			},
 		],
 		orders: [
@@ -146,7 +155,8 @@ module.exports = {
 				name: '下单',
 				method:'post',
 				url: '/orders/order',
-				controller: 'order'
+				controller: 'order',
+				groups: "ab64c397-d323-4133-9541-479bbaaf6c52"
 			}
 		],
 		fs: [
@@ -154,91 +164,106 @@ module.exports = {
 				name: '读文件',
 				method:'get',
 				url: '/fs/read/:fileName',
-				controller: 'read'
+				controller: 'read',
+				groups: "ab64c397-d323-4133-9541-479bbaaf6c52_100"
 			},
 			{
 				name: '写文件',
 				method:'post',
 				url: '/fs/write',
-				controller: 'write'
+				controller: 'write',
+				groups: "ab64c397-d323-4133-9541-479bbaaf6c52_100"
 			},
 			{
 				name: '追加文件',
 				method:'post',
 				url: '/fs/append/',
-				controller: 'append'
+				controller: 'append',
+				groups: "ab64c397-d323-4133-9541-479bbaaf6c52_100"
 			},
 			{
 				name: '删除文件',
 				method:'get',
 				url: '/fs/remove/:fileName',
-				controller: 'remove'
+				controller: 'remove',
+				groups: "ab64c397-d323-4133-9541-479bbaaf6c52_100"
 			},
 			{
 				name: '复制文件',
 				method:'post',
 				url: '/fs/copy',
-				controller: 'copy'
+				controller: 'copy',
+				groups: "ab64c397-d323-4133-9541-479bbaaf6c52_100"
 			},
 			{
 				name: '移动文件',
 				method:'post',
 				url: '/fs/move',
-				controller: 'rename'
+				controller: 'rename',
+				groups: "ab64c397-d323-4133-9541-479bbaaf6c52_100"
 			},
 			{
 				name: '重命名文件',
 				method:'post',
 				url: '/fs/rename',
-				controller: 'rename'
+				controller: 'rename',
+				groups: "ab64c397-d323-4133-9541-479bbaaf6c52_100"
 			},
 			{
 				name: '创建文件夹',
 				method:'post',
 				url: '/fs/mkdir',
-				controller: 'mkdir'
+				controller: 'mkdir',
+				groups: "ab64c397-d323-4133-9541-479bbaaf6c52_100"
 			},
 			{
 				name: '删除文件夹',
 				method:'post',
 				url: '/fs/rmdir',
-				controller: 'rmdir'
+				controller: 'rmdir',
+				groups: "ab64c397-d323-4133-9541-479bbaaf6c52_100"
 			},
 			{
 				name: '复制文件夹',
 				method:'post',
 				url: '/fs/copydir',
-				controller: 'copy'
+				controller: 'copy',
+				groups: "ab64c397-d323-4133-9541-479bbaaf6c52_100"
 			},
 			{
 				name: '移动文件夹',
 				method:'post',
 				url: '/fs/dir/move',
-				controller: 'rename'
+				controller: 'rename',
+				groups: "ab64c397-d323-4133-9541-479bbaaf6c52_100"
 			},
 			{
 				name: '重命名文件夹',
 				method:'post',
 				url: '/fs/dir/rename',
-				controller: 'rename'
+				controller: 'rename',
+				groups: "ab64c397-d323-4133-9541-479bbaaf6c52_100"
 			},
 			{
 				name: '读取文件夹',
 				method:'get',
 				url: '/fs/ls/:dirName',
-				controller: 'ls'
+				controller: 'ls',
+				groups: "ab64c397-d323-4133-9541-479bbaaf6c52_100"
 			},
 			{
 				name: '按需读取文件或文件夹',
 				method: 'get',
 				url: '/fs/list/optional/:dirName',
-				controller: 'list'
+				controller: 'list',
+				groups: "ab64c397-d323-4133-9541-479bbaaf6c52_100"
 			},
 			{
 				name: '按需读取文件或文件夹(无参数)',
 				method: 'get',
 				url: '/fs/list/optional/',
-				controller: 'list'
+				controller: 'list',
+				groups: "ab64c397-d323-4133-9541-479bbaaf6c52_100"
 			}
 		]
 	},

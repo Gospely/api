@@ -67,6 +67,8 @@ module.exports ={
 															var groups = privilege.groups.split("_")
 															for (var i = groups.length - 1; i >= 0; i--) {
 																console.log("loop");
+																console.log(innersession.group);
+																console.log(groups[i]);
 																if(innersession.group == groups[i]) {
 																	pass = true;
 																	break;
