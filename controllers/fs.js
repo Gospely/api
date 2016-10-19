@@ -98,7 +98,7 @@ var
 	},
 
 	exists = function(path){
-	    return fs.existsSync(path);  
+	    return fs.existsSync(path);
 	},
 
 	isDir = function(path){  
@@ -298,17 +298,21 @@ var fileSystem = {
 
 				var node = {};
 
-				if(isDir(config.baseDir + file)) {
+				if(file == 'models') {
+					console.log(isDir(config.baseDir + file), config.baseDir + file);
+				}
+
+				if(isDir(config.baseDir + dirName + '/' + file)) {
 					node = {
 						text: file,
-						id: file,
+						id: dirName + '/' + file,
 						icon: 'folder',
 						children: true
 					};
 				}else {
 					node = {
 						text: file,
-						id: file,
+						id: dirName + '/' + file,
 						icon: 'file',
 						type: 'file file-11',
 						children: false
