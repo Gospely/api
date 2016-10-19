@@ -41,10 +41,12 @@ inherits(Wxpay, EventEmitter);
 //extendBodyParser 微信post的报文头部没有Content-Type=application/json不会被express的bodyParser处理
 Wxpay.prototype.route = function(app) {
     var self = this;
+    console.log(this.wxpay_config.wxpay_notify_url);
     app.post(this.wxpay_config.wxpay_notify_url, function *() {
 
+        console.log("data");
         console.log('callback');
-        self.wxpay_notify(data,this);
+        self.wxpay_notify(this.req,this.res);
     });
 }
 
@@ -126,7 +128,6 @@ Wxpay.prototype.wxpay_refund = function(data, res) {
  */
 Wxpay.prototype.wxpay_notify = function(req, res) {
     var self = this;
-
     var infoList = ['attach', 'time_end', 'rate', 'transaction_id', 'total_fee', 'out_trade_no', 'openid'];
     console.log('notify');
     Promise.promisify(new xml2js.Parser({
