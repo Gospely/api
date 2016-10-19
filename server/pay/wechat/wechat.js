@@ -45,15 +45,12 @@ Wxpay.prototype.route = function(app) {
     console.log(this.wxpay_config.wxpay_notify_url);
     app.post(this.wxpay_config.wxpay_notify_url, function *() {
 
-      var data = yield parse(this, {
-        limit: '10kb'
-      });
-      console.log(data);
       var data2 = this.request.body
+
 
       console.log(data2);
 
-        self.wxpay_notify(this.req,this.res);
+        self.wxpay_notify(data2,this.res);
     });
 }
 
@@ -133,14 +130,14 @@ Wxpay.prototype.wxpay_refund = function(data, res) {
 /**
  *  支付结果异步通知
  */
-Wxpay.prototype.wxpay_notify = function(req, res) {
+Wxpay.prototype.wxpay_notify = function(data, res) {
     var self = this;
     var infoList = ['attach', 'time_end', 'rate', 'transaction_id', 'total_fee', 'out_trade_no', 'openid'];
     console.log('notify');
     Promise.promisify(new xml2js.Parser({
         explicitArray: false,
         explicitRoot: false
-    }).parseString)(req.body).then(function(_POST) {
+    }).parseString)(data).then(function(_POST) {
         if (_POST.return_code != 'SUCCESS' || _POST.result_code != 'SUCCESS')
             res.send(xmlbuilder.create('xml', {
                 headless: true
