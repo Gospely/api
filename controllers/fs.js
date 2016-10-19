@@ -54,6 +54,9 @@ var
 
 	renameFile = function(fileName, newFileName) {
 		return new Promise(function (resolve, reject) {
+
+			console.log(fileName, newFileName);
+
 			fs.rename(fileName, newFileName, function(error, data) {
 				if(error) reject(error);
 				resolve(data);
@@ -188,11 +191,17 @@ var fileSystem = {
 
 		var params = yield parse(this);
 
-		var fileName = GetQueryString(params, 'fileName')
-			newFileName = GetQueryString(params, 'newFileName');
+		try {
+			params = JSON.parse(params);
+			var fileName = params.fileName,
+				newFileName = params.newFileName;		
+		}catch(err) {
+			var fileName = GetQueryString(params, 'fileName')
+				newFileName = GetQueryString(params, 'newFileName');
+		}
 
 		try {
-			yield renameFile(config.baseDir + fileName, newFileName);
+			yield renameFile(config.baseDir + fileName, config.baseDir + newFileName);
 			this.body = util.resp(200, '重命名成功', {});
 		}catch(err) {
 			this.body = util.resp(500, '重命名失败', err.toString());
