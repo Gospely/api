@@ -54,10 +54,16 @@ var
 
 	renameFile = function(fileName, newFileName) {
 		return new Promise(function (resolve, reject) {
-
-			console.log(fileName, newFileName);
-
 			fs.rename(fileName, newFileName, function(error, data) {
+				if(error) reject(error);
+				resolve(data);
+			});
+		});
+	},
+
+	mvFile = function(fileName, newFileName) {
+		return new Promise(function(resolve, reject) {
+			exec('mv ' + fileName + ' ' + newFileName, function(error, data) {
 				if(error) reject(error);
 				resolve(data);
 			});
@@ -216,10 +222,14 @@ var fileSystem = {
 		}
 
 		try {
-			yield renameFile(config.baseDir + fileName, config.baseDir + newFileName);
-			this.body = util.resp(200, '重命名成功', {id: newFileName});
+			if(!move) {
+				yield renameFile(config.baseDir + fileName, config.baseDir + newFileName);
+			}else {
+				yield mvFile(config.baseDir + fileName, config.baseDir + newFileName);
+			}
+			this.body = util.resp(200, move ? '移动文件成功' : '重命名成功', {id: newFileName});
 		}catch(err) {
-			this.body = util.resp(500, '重命名失败' + newFileName, err.toString());
+			this.body = util.resp(500, move ? '移动文件失败' : '重命名失败' + newFileName, err.toString());
 		}
 
 	},
