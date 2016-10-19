@@ -250,7 +250,7 @@ var fileSystem = {
 					isDir: true,
 					name: dirName,
 					sub: [],
-					id: i
+					id: i + 1
 				};
 
 				for (var j = 0; j < fileList.length; j++) {
@@ -265,8 +265,8 @@ var fileSystem = {
 							path: file,
 							name: fileName,
 							isDir: false,
-							pId: i,
-							id: i * j
+							pId: i + 1,
+							id: (i + 1) * j
 						});
 					}
 				};
