@@ -1,4 +1,5 @@
 var Sequelize = require("sequelize");
+var dnspod = require('../server/dnspod')
 
 module.exports = function(sequelize, DataTypes){
     const application=sequelize.define("gospel_applications", {
@@ -24,7 +25,19 @@ module.exports = function(sequelize, DataTypes){
       classMethods:{
            associate: (models) => {
                       console.log("associate");
-                  }
+                  },
+           create: function* (item){
+
+              //域名解析
+              var options = {
+                method: 'userDetail',
+                opp:'User.Detail',
+                param:{
+                  length: 5
+                }
+              }
+              yield client.parseDomain(options)
+           }
       }
     });
     return application;
