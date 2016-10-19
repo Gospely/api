@@ -236,7 +236,7 @@ var fileSystem = {
 
 		try {
 			yield mkdir(config.baseDir + dirName);
-			this.body = util.resp(200, '创建文件夹成功', dirName);
+			this.body = util.resp(200, '创建文件夹成功', {id: dirName});
 		}catch(err) {
 			this.body = util.resp(500, '创建文件夹失败', err.toString());
 		}
