@@ -66,7 +66,7 @@ var
 
 	mkdir = function(fileName) {
 		return new Promise(function (resolve, reject) {
-			fs.mkdir(fileName, function(error, data) {
+			exec('mkdir ' + fileName, function(error, data) {
 				if(error) reject(error);
 				resolve(data);
 			});
@@ -75,7 +75,7 @@ var
 
 	rmdir = function(dir) {
 		return new Promise(function(resolve, reject) {
-			exec('rm -rf ' + dir,function(error, data) { 
+			exec('rm -rf ' + dir, function(error, data) { 
 				if(error) reject(error);
 				resolve(data);
 			});
@@ -233,6 +233,8 @@ var fileSystem = {
 		}catch(err) {
 			var dirName = GetQueryString(params, 'dirName');
 		}
+
+		dirName = dirName.replace(' ', '');
 
 		try {
 			yield mkdir(config.baseDir + dirName);
