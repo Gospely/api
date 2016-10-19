@@ -43,9 +43,9 @@ inherits(Wxpay, EventEmitter);
 Wxpay.prototype.route = function(app) {
     var self = this;
     console.log(this.wxpay_config.wxpay_notify_url);
-    app.post(this.wxpay_config.wxpay_notify_url,extendBodyParser, function *() {
+    app.post(this.wxpay_config.wxpay_notify_url, function *() {
 
-      var data = this.request.body
+      var data = this.req.body
 
 
       console.log(this);
