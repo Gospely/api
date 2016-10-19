@@ -150,10 +150,10 @@ var fileSystem = {
 
 		try {
 			var fileName = params.fileName,
-				data = params.data;		
+				data = params.data || '';
 		}catch(err) {
 			var fileName = GetQueryString(params, 'fileName')
-				data = GetQueryString(params, 'data');
+				data = GetQueryString(params, 'data') || '';
 		}
 
 		fileName = fileName.replace(' ', '');
