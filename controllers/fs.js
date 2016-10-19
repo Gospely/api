@@ -148,12 +148,19 @@ var fileSystem = {
 
 		var params = yield parse(this);
 
-		var fileName = GetQueryString(params, 'fileName')
-			data = GetQueryString(params, 'data');
+		try {
+			var fileName = params.fileName,
+				data = params.data;		
+		}catch(err) {
+			var fileName = GetQueryString(params, 'fileName')
+				data = GetQueryString(params, 'data');
+		}
+
+		fileName = fileName.replace(' ', '');
 
 		try {
 			yield writeFile(config.baseDir + fileName, data);
-			this.body = util.resp(200, '写入成功', {});
+			this.body = util.resp(200, '写入成功', {id: fileName});
 		}catch(err) {
 			this.body = util.resp(500, '写入失败', err.toString());
 		}
