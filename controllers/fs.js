@@ -238,8 +238,18 @@ var fileSystem = {
 
 		var params = yield parse(this);
 
-		var file = GetQueryString(params, 'file')
-			newFile = GetQueryString(params, 'newFile');
+		try {
+			var file = params.file,
+				newFile = params.newFile;
+		}catch(err) {
+			var file = GetQueryString(params, 'file')
+				newFile = GetQueryString(params, 'newFile');
+		}
+
+		var isdir = isDir(config.baseDir + newFile);
+		if(!isdir) {
+			newFile = path.dirname(newFile);
+		}
 
 		try {
 			yield cp(config.baseDir + file, config.baseDir + newFile);
