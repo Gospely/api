@@ -143,15 +143,23 @@ users.updatePhoto = function* () {
     limit: '2MB'
   });
 
+	if(user.id == null || user.id == undefined) this.throw(405, "method is not allowed");
 
-  if(user.id == null || user.id == undefined) this.throw(405, "method is not allowed");
+	var base64Data = user.photo.replace(/^data:image\/\w+;base64,/, "");
+	var dataBuffer = new Buffer(base64Data, 'base64');
 
-  var inserted = yield models.gospel_users.modify(user);
-  if (!inserted) {
-    this.throw(405, "couldn't be added.");
-  }
-  this.body = 'Done!';
-  this.body = 'Done!';
+	try{
+				yield fs.writeFile(user.id + ".png", dataBuffer);
+				user.photo = "http://api.gospely.com/files/:" + user.id;
+				var inserted = yield models.gospel_users.modify(user);
+				if (!inserted) {
+					this.throw(405, "couldn't be added.");
+				}
+					this.body = util.resp(200, '修改成功', err.toString());
+	}catch(err) {
+				this.body = util.resp(500, '服务器异常', err.toString());
+	}
+
 }
 
 users.authorization = function* () {
@@ -192,14 +200,10 @@ users.authCode =  function() {
 	console.log(txt);
 	this.body = buf;
 }
+
+//手机验证码
 users.phoneCode =  function() {
 
-	var ary = ccap.get();
 
-	var txt = ary[0];
-
-	var buf = ary[1];
-	console.log(txt);
-	this.body = buf;
 }
 module.exports = users;
