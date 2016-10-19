@@ -134,6 +134,12 @@ module.exports = {
 				url: '/users/code',
 				controller: 'authCode'
 			},
+			{
+				name: '获取文件流',
+				method:'get',
+				url: '/users/files/:file',
+				controller: 'files'
+			},
 		],
 		orders: [
 			{
@@ -225,6 +231,6 @@ module.exports = {
 		]
 	},
 	file: {
-		basePath: '/image'
+		basePath: '/var/www/storage/profiles/'
 	},
 }

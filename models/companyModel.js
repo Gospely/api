@@ -11,6 +11,7 @@ module.exports = function(sequelize, DataTypes){
       owner: DataTypes.STRING,
       ownerIdentify: { type:DataTypes.STRING, field: "owner_identify" },
       creator: DataTypes.STRING,
+      reason: DataTypes.STRING,
       inviteLink: { type: "invite_link" , field: "invite_link" },
       licencePhoto: { type: DataTypes.STRING, field: "licence_photo" },
       status: DataTypes.INTEGER,

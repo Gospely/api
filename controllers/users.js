@@ -1,4 +1,5 @@
 var util = require('../utils.js');
+var fs = require('fs');
 var models =require('../models');
 var md5_f = require('../utils/MD5');
 var parse = require('co-body');
@@ -147,17 +148,16 @@ users.updatePhoto = function* () {
 
 	var base64Data = user.photo.replace(/^data:image\/\w+;base64,/, "");
 	var dataBuffer = new Buffer(base64Data, 'base64');
-
 	try{
-				yield fs.writeFile(user.id + ".png", dataBuffer);
-				user.photo = "http://api.gospely.com/files/:" + user.id;
+				// yield writeFile(config.file.basePath +  user.id + ".png", dataBuffer);
+				// user.photo = "http://api.gospely.com/files/" + user.id;
 				var inserted = yield models.gospel_users.modify(user);
 				if (!inserted) {
 					this.throw(405, "couldn't be added.");
 				}
-					this.body = util.resp(200, '修改成功', err.toString());
+				this.body = util.resp(1, '修改成功', null);
 	}catch(err) {
-				this.body = util.resp(500, '服务器异常', err.toString());
+				this.body = util.resp(1, '服务器异常', err.toString());
 	}
 
 }
@@ -205,5 +205,51 @@ users.authCode =  function() {
 users.phoneCode =  function() {
 
 
+}
+users.files = function* () {
+
+		var fileName = this.params.file;
+		try {
+			if(fileName !=null && fileName != undefined && fileName != '') {
+
+				fileName = fileName +  ".png";
+				console.log(fileName);
+				var bitmap = yield readFile(config.file.basePath+fileName);
+				var buf = base64_encode(bitmap);
+				console.log(buf);
+				this.body = buf;
+			}
+		} catch (e) {
+				console.log(e);
+		} finally {
+
+		}
+
+}
+
+readFile = function (fileName){
+	return new Promise(function (resolve, reject){
+		fs.readFile(fileName, {flag: 'r+', encoding: 'utf8'}, function(error, data){
+			if (error) reject(error);
+			resolve(data);
+		});
+	});
+},
+
+writeFile = function(fileName, content) {
+	return new Promise(function (resolve, reject){
+		fs.writeFile(fileName, content, function(error){
+			if (error) {
+				reject(error);
+			};
+			resolve();
+		});
+	});
+},
+base64_encode = function(bitmap) {
+    // read binary data
+		console.log("ss");
+    // convert binary data to base64 encoded string
+    return new Buffer(bitmap).toString('base64');
 }
 module.exports = users;
