@@ -21,9 +21,7 @@ function WxpaySubmit(wxpay_config) {
 WxpaySubmit.prototype.buildRequestMysign = function(para_sort) {
     //把数组所有元素，按照“参数=参数值”的模式用“&”字符拼接成字符串
     var prestr = core_funcs.createLinkstring(para_sort);
-
-    var mysign = md5_f.md5Sign(prestr, this.wxpay_config['Key']);
-
+    var mysign = md5_f.md5Sign(prestr, this.wxpay_config['key']);
     return mysign;
 }
 

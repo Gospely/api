@@ -3,9 +3,9 @@ var Wxpay = require('./wechat').Wxpay;
 
 
   var wechat_config = {
-    	appid: '',
-    	mch_id: '',
-    	Key: ''
+    	appid: 'wx4d314d95c8a48f99',
+    	mch_id: '1400493402',
+    	key: '4da6c51e080bc1fd7a17f6b51ceff345'
     }
 
 var wechat = new Wxpay(wechat_config);

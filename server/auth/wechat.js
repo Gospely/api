@@ -75,8 +75,8 @@ function getWechatAuths(appid_, secret_) {
               limitTime: 30 * 60 *1000
           });
 
-          //this.redirect("http://dash.gospely.com?token = " +token);
-          this.redirect("http://localhost:8088?token = " +token);
+          this.redirect(global.dashDomain + "?token = " +token);
+          //this.redirect("http://localhost:8088?token = " +token);
         }
     }
 }
