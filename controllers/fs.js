@@ -234,8 +234,8 @@ var fileSystem = {
 			var dirName = GetQueryString(params, 'dirName');
 		}
 
-		dirName.replace(' ', '_');
-		dirName.replace('node', 'folder');
+		dirName = dirName.replace(' ', '_');
+		dirName = dirName.replace('node', 'folder');
 
 		try {
 			yield mkdir(config.baseDir + dirName);
