@@ -234,9 +234,6 @@ var fileSystem = {
 			var dirName = GetQueryString(params, 'dirName');
 		}
 
-		dirName = dirName.replace(' ', '_');
-		dirName = dirName.replace('node', 'folder');
-
 		try {
 			yield mkdir(config.baseDir + dirName);
 			this.body = util.resp(200, '创建文件夹成功', {id: dirName});
