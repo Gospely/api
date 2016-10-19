@@ -13,7 +13,7 @@ var Promise = require('bluebird');
 var xmlbuilder = require('xmlbuilder');
 var qs = require('querystring');
 var extendBodyParser = require('./extend_body_parser').extendBodyParser;
-var parse = require('co-body');
+var parse = require('raw-body');
 
 var default_wxpay_config = {
     certFile: __dirname + '/apiclient_cert.pem',
@@ -45,12 +45,14 @@ Wxpay.prototype.route = function(app) {
     console.log(this.wxpay_config.wxpay_notify_url);
     app.post(this.wxpay_config.wxpay_notify_url, function *() {
 
-      var data = yield parse(this, { textTypes: ['text', 'xml'] });
 
-
+      var data = yield parse(this.req, {
+          length: ctx.length,
+          limit: '1mb',
+          encoding: ctx.charset || 'utf-8'
+      });
       console.log(data);
-
-        self.wxpay_notify(data,this);
+      self.wxpay_notify(data,this);
     });
 }
 
