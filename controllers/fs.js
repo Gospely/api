@@ -284,14 +284,16 @@ var fileSystem = {
 						text: file,
 						children: true,
 						id: file,
-						icon: 'folder'
+						icon: 'folder',
+						folder: dirName
 					});
 				}else {
 					node.children.push({
 						text: file,
 						children: false,
 						id: file,
-						icon: 'file file-11'
+						icon: 'file file-11',
+						folder: dirName
 					});
 				}
 
@@ -315,7 +317,8 @@ var fileSystem = {
 						text: file,
 						id: dirName + '/' + file,
 						icon: 'folder',
-						children: true
+						children: true,
+						folder: dirName + '/'
 					};
 				}else {
 					node = {
@@ -323,7 +326,8 @@ var fileSystem = {
 						id: dirName + '/' + file,
 						icon: 'file',
 						type: 'file file-11',
-						children: false
+						children: false,
+						folder: dirName + '/'
 					};
 				}
 
