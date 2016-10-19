@@ -154,13 +154,7 @@ Wxpay.prototype.wxpay_notify = function(data, ctx) {
         wxpayNotify.verifyNotify(_POST, function(verify_result) {
             if (verify_result) { //验证成功
                 self.emit('wxpay_trade_success', _.pick(_POST, infoList));
-                ctx.body = xmlbuilder.create('xml', {
-                    headless: true
-                }).ele({
-                    return_code: 'SUCCESS'
-                }).end({
-                    pretty: true
-                }); //请不要修改或删除
+                ctx.body =  //请不要修改或删除
             } else {
                 //验证失败
                 self.emit("verify_fail");
