@@ -88,6 +88,23 @@ var
 		});
 	},
 
+	readDir = function(dirName) {
+		return new Promise(function(resolve, reject) {
+			fs.readdir(dirName, function(error, data) {
+				if(error) reject(error);
+				resolve(data);
+			});
+		});
+	},
+
+	exists = function(path){
+	    return fs.existsSync(path);
+	},
+
+	isDir = function(path){  
+        return exists(path) && fs.statSync(path).isDirectory();  
+    },
+
 	cp = function(file, newFile) {
 		return new Promise(function(resolve, reject) {
 			var cmd = 'cp -r ' + file + ' ' + newFile;
@@ -226,6 +243,88 @@ var fileSystem = {
 		}catch(err) {
 			this.body = util.resp(500, '删除文件夹失败', err.toString());
 		}
+
+	},
+
+	list: function* () {
+
+		var dirName = this.params.dirName || '',
+			result = [];
+
+		dirName = this.query.id || dirName;
+
+		var files = yield readDir(config.baseDir + dirName);
+
+		if(dirName == '') {
+
+			var node = {
+				text: 'root',
+				children: [],
+				id: config.baseDir,
+				icon: 'folder',
+				state: {
+					opened: true,
+					disabled: true
+				}
+			}
+
+			for (var i = 0; i < files.length; i++) {
+				var file = files[i];
+
+				if(isDir(config.baseDir + file)) {
+					node.children.push({
+						text: file,
+						children: true,
+						id: file,
+						icon: 'folder'
+					});
+				}else {
+					node.children.push({
+						text: file,
+						children: false,
+						id: file,
+						icon: 'file file-11'
+					});
+				}
+
+			};
+
+			result.push(node);
+
+		}else {
+
+			for (var i = 0; i < files.length; i++) {
+				var file = files[i];
+
+				var node = {};
+
+				if(file == 'models') {
+					console.log(isDir(config.baseDir + file), config.baseDir + file);
+				}
+
+				if(isDir(config.baseDir + dirName + '/' + file)) {
+					node = {
+						text: file,
+						id: dirName + '/' + file,
+						icon: 'folder',
+						children: true
+					};
+				}else {
+					node = {
+						text: file,
+						id: dirName + '/' + file,
+						icon: 'file',
+						type: 'file file-11',
+						children: false
+					};
+				}
+
+				result.push(node);
+			};
+
+		}
+
+		this.body = result;
 
 	},
 
