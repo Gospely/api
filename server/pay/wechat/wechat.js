@@ -44,8 +44,8 @@ Wxpay.prototype.route = function(app) {
     console.log(this.wxpay_config.wxpay_notify_url);
     app.post(this.wxpay_config.wxpay_notify_url, function *() {
 
-        console.log("data");
-        console.log('callback');
+        console.log(this.body);
+        
         self.wxpay_notify(this.req,this.res);
     });
 }
