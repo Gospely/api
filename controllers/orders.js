@@ -28,6 +28,7 @@ orders.order = function* () {
         fee_type:'',//货币类型 选
       },this);
       console.log(pay_url);
+      this.body = pay_url;
   }else{
     var url = pay.alipay.create_direct_pay_by_user(  {
         out_trade_no: orders.out_trade_no//商户订单号, 商户网站订单系统中唯一订单号，必填

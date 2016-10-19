@@ -12,6 +12,11 @@ var i18n = require('koa-i18n');
 var db = require('./models');
 var mount = require('koa-mount');
 
+// global.appDomain = 'http://localhost:8089'
+// global.dashDomain = 'http://localhost:8088'
+
+global.appDomain = 'http://api.gospely.com'
+global.dashDomain = 'http://dash.gospely.com'
 
 app.use(function *(next) {
   try {
