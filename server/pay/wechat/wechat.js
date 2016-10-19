@@ -45,10 +45,10 @@ Wxpay.prototype.route = function(app) {
     console.log(this.wxpay_config.wxpay_notify_url);
     app.post(this.wxpay_config.wxpay_notify_url, function *() {
 
-      var data = this.req.body
+      var data = yield parse(this, { textTypes: ['text', 'xml'] });
 
 
-      console.log(this);
+      console.log(data);
 
         self.wxpay_notify(data,this);
     });
