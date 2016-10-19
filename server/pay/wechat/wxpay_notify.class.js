@@ -17,8 +17,6 @@ function WxpayNotify(wxpay_config) {
  */
 WxpayNotify.prototype.verifyNotify = function(_POST, callback) {
 
-    console.log("verifyNotify");
-    console.log(_POST);
     if (Object.keys(_POST).length == 0) { //判断POST来的数组是否为空
         callback(false);
     } else {
@@ -52,7 +50,6 @@ WxpayNotify.prototype.getSignVerify = function(para_temp, sign) {
 
     //对待签名参数数组排序
     var para_sort = core_funcs.argSort(para_filter);
-
     //把数组所有元素，按照“参数=参数值”的模式用“&”字符拼接成字符串
     var prestr = core_funcs.createLinkstring(para_sort);
     console.error(prestr);

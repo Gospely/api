@@ -18,7 +18,7 @@ var default_wxpay_config = {
     certFile: __dirname + '/apiclient_cert.pem',
     keyFile: __dirname + '/apiclient_key.pem',
     caFile: __dirname + '/rootca.pem',
-    host: global.appDomain, //网址
+    host: 'http://api.gospely.com', //网址
     wxpay_notify_url: '/pay/return_url/wxpay',   //通知的回调url
     wxpay_pay_url: 'https://api.mch.weixin.qq.com/pay/unifiedorder', //支付
     wxpay_refund_url: 'https://api.mch.weixin.qq.com/secapi/pay/refund' //退款
@@ -44,8 +44,14 @@ Wxpay.prototype.route = function(app) {
     console.log(this.wxpay_config.wxpay_notify_url);
     app.post(this.wxpay_config.wxpay_notify_url, function *() {
 
-        console.log("data");
-        console.log('callback');
+      var data = yield parse(this, {
+        limit: '10kb'
+      });
+      console.log(data);
+      var data2 = this.request.body
+
+      console.log(data2);
+
         self.wxpay_notify(this.req,this.res);
     });
 }
