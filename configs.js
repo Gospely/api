@@ -227,7 +227,7 @@ module.exports = {
 				method: 'get',
 				url: '/fs/list/optional/:dirName',
 				controller: 'list'
-			},
+			},		
 			{
 				name: '按需读取文件或文件夹(无参数)',
 				method: 'get',

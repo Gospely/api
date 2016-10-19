@@ -251,7 +251,7 @@ var fileSystem = {
 		var dirName = this.params.dirName || '',
 			result = [];
 
-			console.log(this.params.id);
+		dirName = this.query.id || dirName;
 
 		var files = yield readDir(config.baseDir + dirName);
 
@@ -281,7 +281,7 @@ var fileSystem = {
 				}else {
 					node.children.push({
 						text: file,
-						children: true,
+						children: false,
 						id: file,
 						icon: 'file file-11'
 					});
