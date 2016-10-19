@@ -16,7 +16,7 @@ module.exports = {
 	},
 
 	dnspod:{
-
+			baseDomain: 'gospely.com',
 			config: {
 				login_token: "18845,cf418d9ac9fe775becd700e2496c1809",
 				format: "json",
@@ -233,7 +233,7 @@ module.exports = {
 				method: 'get',
 				url: '/fs/list/optional/:dirName',
 				controller: 'list'
-			},		
+			},
 			{
 				name: '按需读取文件或文件夹(无参数)',
 				method: 'get',
