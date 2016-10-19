@@ -9,8 +9,9 @@ module.exports = function(sequelize, DataTypes){
 			},
 	    code: DataTypes.STRING,
       creator: DataTypes.STRING,
+      group: DataTypes.STRING,
       time: DataTypes.BIGINT,
-      limitTime: { type: DataTypes.BIGINT, field: "limit_time", defaultValue: 60000} 
+      limitTime: { type: DataTypes.BIGINT, field: "limit_time", defaultValue: 60000}
 	  },{
 			timestamps: false,
       classMethods:{

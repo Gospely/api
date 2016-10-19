@@ -33,7 +33,6 @@ app.use(function *(next) {
 app.use(logger({
 	"filename": "./log_file.log"
 }));
-
 locale(app);
 
 // app.use(i18n(app, {

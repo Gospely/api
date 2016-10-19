@@ -75,6 +75,7 @@ users.login = function* (){
 				code: token,
 				creater: user.id,
 				time: Date.now(),
+				group: user.group,
 				limitTime: 30 * 60 *1000
 		});
     this.body = render(user,1,"登录成功");
