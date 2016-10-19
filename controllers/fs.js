@@ -246,11 +246,12 @@ var fileSystem = {
 				var dirSplit = dir.split('/'),
 					dirName = dirSplit[dirSplit.length - 1];
 
-				tree[dir] = {
+				tree[i] = {
 					isDir: true,
 					name: dirName,
 					sub: [],
-					id: i + 1
+					id: i + 1,
+					path: dir
 				};
 
 				for (var j = 0; j < fileList.length; j++) {
@@ -261,7 +262,7 @@ var fileSystem = {
 						var fileSplit = file.split('/'),
 							fileName = fileSplit[fileSplit.length - 1];
 
-						tree[dir].sub.push({
+						tree[i].sub.push({
 							path: file,
 							name: fileName,
 							isDir: false,
