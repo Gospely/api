@@ -5,11 +5,11 @@ var md5_f = require('../utils/MD5');
 var common = {};
 
 //数据渲染，todo:分页参数引入，异常信息引入
-function render(data,all,cur) {
+function render(data,all,cur,code,message) {
 
 	return {
-		code: '1',
-		message: '',
+		code: code,
+		message: message,
 		all: all,
 		cur: cur,
 		fields: data
@@ -46,7 +46,7 @@ common.list= function *list(next) {
 		if(this.query.cur ==null || this.query.cur == '' || this.query.cur == undefined){
 			cur = 1;
 		}
-    this.body = yield  render(data,page,cur);
+    this.body =  render(data,page,cur,1);
 }
 
 //获取某条数据的详情
@@ -54,7 +54,7 @@ common.detail = function *detail(id) {
 
     var id = this.params.id;
     var data = yield models[getModel(this)].findById(id);
-    this.body = yield render(data);
+    this.body = render(data,null,null,1);
 }
 
 //更新某条记录
@@ -74,7 +74,7 @@ common.update = function *update() {
   	  if (!inserted) {
   	    this.throw(405, "couldn't be added.");
   	  }
-  	  this.body = 'Done!';
+  	  this.body = render(data,null,null,2);
 }
 
 //新增一条记录
@@ -91,7 +91,7 @@ common.create = function *create() {
 	  if (!inserted) {
 	    this.throw(405, "couldn't be added.");
 	  }
-	  this.body = 'Done!';
+	  this.body = render(null,null,null,3,'新增成功');
 }
 
 //根据主键删除一条记录
@@ -105,7 +105,7 @@ common.delete = function *remove() {
 		if (!deleted) {
 			this.throw(405, "couldn't be delete.");
 		}
-		this.body = 'Done!';
+		this.body = render(null,null,null,4,'删除成功');
 }
 
 common.render = render;

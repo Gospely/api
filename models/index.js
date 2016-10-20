@@ -89,6 +89,7 @@ var sequelize = new Sequelize('gospel', 'gospel', 'gospel', {
 
             //是否自定义查询
             if(this.getAllInit !=null && this.getAllInit != undefined){
+
               var sql = this.getAllInit(item);
 
               if(sql != null && sql !=undefined){
