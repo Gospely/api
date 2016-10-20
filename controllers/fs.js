@@ -143,9 +143,12 @@ var fileSystem = {
 
 		var params = yield parse(this);
 
-		console.log(this.params);
-
 		try {
+
+			if(typeof params == 'string') {
+				params = JSON.parse(params);
+			}
+
 			var fileName = params.fileName;
 		}catch(err) {
 			var fileName = GetQueryString(params, 'fileName');
