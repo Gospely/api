@@ -74,7 +74,7 @@ common.update = function *update() {
   	  if (!inserted) {
   	    this.throw(405, "couldn't be added.");
   	  }
-  	  this.body = render(data,null,null,2);
+  	  this.body = render(null,null,null,2);
 }
 
 //新增一条记录
@@ -107,7 +107,13 @@ common.delete = function *remove() {
 		}
 		this.body = render(null,null,null,4,'删除成功');
 }
+common.count = function* count() {
 
+		var count = yield models[getModel(this)].count(this.query);
+		var total = count[0].dataValues.all;
+		console.log("count");
+		this.body =  render(total,null,null,1);
+}
 common.render = render;
 common.models = models;
 

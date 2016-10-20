@@ -131,12 +131,11 @@ users.register = function* () {
   }
 
   if (!inserted) {
-    this.throw(405, "register failed");
+    	this.throw(405, "register failed");
   }else{
-      this.body = 'Done!'
+      this.body = render(user,1,"注册成功");
     //注册成功
   }
-  this.body = 'Done!';
 }
 users.updatePhoto = function* () {
 
@@ -169,15 +168,15 @@ users.authorization = function* () {
 
       var data = yield models.gospel_innersessions.getAll(this.query);
       if(data.length != 1){
-          this.body = '失效!';
+          this.body = render(user,-1,"激活失效");
       }else{
           console.log(data[0].dataValues.time - Date.now());
           if((Date.now() -data[0].dataValues.time) <= data[0].dataValues.limitTime){
 
               //更新用户状态
-              this.body = 'Done!';
+							this.body = render(user,-1,"激活成功");
           }else {
-              this.body = '超时!';
+              this.body = render(user,-1,"激活链接超时");
           }
       }
 }
