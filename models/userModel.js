@@ -13,6 +13,7 @@ module.exports = function(sequelize, DataTypes){
       password: DataTypes.STRING,
       identify: DataTypes.STRING,
       ide: DataTypes.STRING,
+      ideName: { type: DataTypes.INTEGER, field: "idename" },
       openId: { type: DataTypes.INTEGER, field: "open_id" },
       type: DataTypes.STRING,
       teams: DataTypes.STRING,
