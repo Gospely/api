@@ -30,26 +30,43 @@ module.exports = function(sequelize, DataTypes){
           },
           modify: function* (item) {
 
-              function buildGrups(arr){}
+              function buildGrups(arr){
+                  var str = '';
+                  for(var i = 0; i<=arr.length - 1; i++){
+                      if(str != ''){
+                        str = str +"_" + arr[i];
+                      }else{
+                        str = arr[i];
+                      }
+
+                  }
+                  return str;
+              }
               if(item.operate != null && item.operate != undefined && item.operate != ''){
 
-                  if(operate == 'delete'){
+                  if(item.operate == 'delete'){
                       var privilege = yield this.findById(item.privilege);
                       var privileges= privilege.groups.split('_');
                       var temp = new Array();
 
-                      for(var i = 0; i<privileges.length-1; i++){
+                      for(var i = 0; i <= privileges.length-1; i++){
 
-                          if(item.group == privileges[i]){
-                              temp = privileges.splice(i+1,1);
-                              break;
+                          if(item.group != privileges[i]){
+                              temp.push(privileges[i]);
                           }
                       }
-                      buildGrups(temp);
+                      item.group = buildGrups(temp);
 
                   }
+                  if(item.operate == 'delete'){
 
+                      var privilege = yield this.findById(item.privilege);
+                      var privileges= privilege.groups.split('_');
+                      privileges.push(item.group);
+                      item.group = buildGrups(item.group);
+                  }
               }
+              delete item['operate'];
               return yield this.update(item,{where:{id:item.id } });
           }
       }
