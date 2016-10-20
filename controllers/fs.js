@@ -141,8 +141,18 @@ var fileSystem = {
 
 	read: function* () {
 
+		var params = yield parse(this);
+
+		console.log(this.params);
+
 		try {
-			var fileContent = yield readFile(config.baseDir + this.params.fileName);
+			var fileName = params.fileName;
+		}catch(err) {
+			var fileName = GetQueryString(params, 'fileName');
+		}
+
+		try {
+			var fileContent = yield readFile(config.baseDir + fileName);
 			this.body = util.resp(200, '读取成功', fileContent.toString());
 		}catch(err) {
 			this.body = util.resp(500, '读取失败', err.toString());

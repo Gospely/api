@@ -162,8 +162,8 @@ module.exports = {
 		fs: [
 			{
 				name: '读文件',
-				method:'get',
-				url: '/fs/read/:fileName',
+				method:'post',
+				url: '/fs/read',
 				controller: 'read',
 				groups: "ab64c397-d323-4133-9541-479bbaaf6c52_100"
 			},
