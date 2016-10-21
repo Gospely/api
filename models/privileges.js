@@ -158,7 +158,7 @@ module.exports = function(sequelize, DataTypes){
                       var privilege = yield this.findById(item.id);
                       var privileges= privilege.groups.split('_');
                       privileges.push(item.groups);
-                      item.groups = buildGrups(item.groups);
+                      item.groups = buildGrups(privileges);
                   }
               }
               delete item['operate'];
