@@ -149,7 +149,7 @@ module.exports = function(sequelize, DataTypes){
                               temp.push(privileges[i]);
                           }
                       }
-                      item.group = buildGrups(temp);
+                      item.groups = buildGrups(temp);
 
                   }
                   if(item.operate == 'open'){
@@ -157,7 +157,7 @@ module.exports = function(sequelize, DataTypes){
                       var privilege = yield this.findById(item.privilege);
                       var privileges= privilege.groups.split('_');
                       privileges.push(item.group);
-                      item.group = buildGrups(item.group);
+                      item.groups = buildGrups(item.group);
                   }
               }
               delete item['operate'];
