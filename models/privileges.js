@@ -11,6 +11,7 @@ module.exports = function(sequelize, DataTypes){
       router: DataTypes.STRING,
       method: DataTypes.STRING,
       groups: DataTypes.STRING,
+      open: {type: DataTypes.BOOLEAN,  field: "open", defaultValue: false},
       isDeleted: { type: DataTypes.INTEGER, field: "isdeleted", defaultValue: 0 }
 	  },{
 			timestamps: true,
@@ -20,13 +21,106 @@ module.exports = function(sequelize, DataTypes){
           associate: (models) => {
                       console.log("associate");
                   },
-          getAllInit: function(item) {
-              console.log(item);
-              return "SELECT * FROM gospel_privileges where groups like '%"+ item.group +"_%' or groups " + "like '%"+item.group+"_%'";
-          },
-          countInit: function(item) {
+          getAll: function* (item) {
 
-              return "SELECT count(id) FROM gospel_privileges where groups like '%" + item.group + "_%' or groups " + "like '%"+item.group+"_%'";
+            function check(groups,group) {
+
+
+                for (var i = 0; i < groups.length; i++) {
+
+                    if(groups[i] == group){
+
+                      return true;
+                    }
+                }
+                return false;
+            }
+
+            console.log(item);
+            var group = item.groups;
+            delete item['groups'];
+
+            item.isDeleted = 0;
+            //判断是否是分页
+            console.log(item);
+            var privileges;
+            if(item.cur != null && item.cur != undefined){
+
+                var offset = (item.cur-1)*item.limit;
+                var limit = item.limit;
+                var attributes = [];
+                //判断是否是选择行查询
+                if(item.show != null && item.show != undefined && item.show != ''){
+                    attributes = item.show.split('_');
+                    delete item['cur'];
+                    delete item['limit'];
+                    delete item['show'];
+
+
+
+                    privileges =  yield this.findAll({
+                                              offset: offset,
+                                              limit: limit,
+                                              where: item,
+                                              attributes: attributes,
+                                              order: [
+                                                      ['createat', 'DESC']
+                                                    ]
+                                            });
+
+                }else{
+
+                  delete item['limit'];
+                  delete item['cur'];
+                  console.log("wwwwww");
+                  privileges =  yield this.findAll({
+                                            offset: offset,
+                                            limit: limit,
+                                            where: item,
+                                            order: [
+                                                    ['createat', 'DESC']
+                                                  ]
+                                          });
+                }
+
+            }else{
+                console.log(item.show);
+                if(item.show != null && item.show != undefined && item.show != ''){
+                    attributes = item.show.split('_');
+                    delete item['show'];
+                    privileges = yield this.findAll({
+                                              where:item,
+                                              attributes: attributes,
+                                              order: [
+                                                      ['createat', 'DESC']
+                                                    ]
+                                            });
+                }else{
+
+                  console.log("no page ,no selec");
+                  privileges =  yield this.findAll({
+                                            where:item,
+                                            order: [
+                                                    ['createat', 'DESC']
+                                                  ]
+                                          });
+
+
+              }
+            }
+
+            for (var i = 0; i < privileges.length; i++) {
+                privileges[i].open = check(privileges[i].groups.split("_"),group);
+            }
+            return privileges;
+          },
+          count: function* (item) {
+
+            delete item['groups'];
+            return  yield this.findAll({
+                                        where: item,
+                                        attributes: [[sequelize.fn('COUNT', sequelize.col('id')), 'all']]
+                                      });
           },
           modify: function* (item) {
 
@@ -44,7 +138,7 @@ module.exports = function(sequelize, DataTypes){
               }
               if(item.operate != null && item.operate != undefined && item.operate != ''){
 
-                  if(item.operate == 'delete'){
+                  if(item.operate == 'close'){
                       var privilege = yield this.findById(item.privilege);
                       var privileges= privilege.groups.split('_');
                       var temp = new Array();
@@ -58,7 +152,7 @@ module.exports = function(sequelize, DataTypes){
                       item.group = buildGrups(temp);
 
                   }
-                  if(item.operate == 'delete'){
+                  if(item.operate == 'open'){
 
                       var privilege = yield this.findById(item.privilege);
                       var privileges= privilege.groups.split('_');

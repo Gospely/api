@@ -14,6 +14,7 @@ module.exports = function(sequelize, DataTypes){
       creator: DataTypes.STRING,
       application: DataTypes.STRING,
       record: DataTypes.STRING,
+      sub: DataTypes.BOOLEAN,
       isDeleted: { type: DataTypes.INTEGER, field: "isdeleted", defaultValue: 0 },
 	  },{
 			timestamps: true,
@@ -30,10 +31,10 @@ module.exports = function(sequelize, DataTypes){
                 opp: 'recordCreate',
                 param: {
                       domain: config.dnspod.baseDomain,
-                      sub_domain: "god",
+                      sub_domain: domain.domain,
                       record_type: 'A',
                       record_line: '默认',
-                      value:'120.76.235.234',
+                      value:  domain.ip,
                       mx: '10'
                 }
             }
@@ -41,6 +42,10 @@ module.exports = function(sequelize, DataTypes){
             domain.record = data.record.id
             var row = this.build(domain);
             return yield row.save();
+          },
+          delete: function* (id) {
+
+
           }
       }
     });
