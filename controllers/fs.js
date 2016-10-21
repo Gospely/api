@@ -156,7 +156,11 @@ var fileSystem = {
 
 		try {
 			var fileContent = yield readFile(config.baseDir + fileName);
-			this.body = util.resp(200, '读取成功', fileContent.toString());
+			this.body = util.resp(200, '读取成功', {
+				content: fileContent,
+				fileName: fileName,
+				extname: path.extname(fileName)
+			});
 		}catch(err) {
 			this.body = util.resp(500, '读取失败', err.toString());
 		}
