@@ -22,20 +22,25 @@ module.exports = function(sequelize, DataTypes){
       classMethods:{
           associate: (models) => {
                   },
-          findById : function *(domain){
+          create : function *(domain){
 
             console.log(dnspod);
-            dnspod.recordCreate({
-                domain: config.dnspod.baseDomain,
-                sub_domain: "god",
-                record_type: 'A',
-                record_line: '默认',
-                value:'120.76.235.234',
-                mx: '10'
-            }).on('recordCreate',function* (err, data) {
-                  console.log(data);
-                  return yield row.save();
-            });
+            var options = {
+                method: 'recordCreate',
+                opp: 'recordCreate',
+                param: {
+                      domain: config.dnspod.baseDomain,
+                      sub_domain: "god",
+                      record_type: 'A',
+                      record_line: '默认',
+                      value:'120.76.235.234',
+                      mx: '10'
+                }
+            }
+            var data = yield dnspod.domainOperate(options);
+            domain.record = data.record.id
+            var row = this.build(domain);
+            return yield row.save();
           }
       }
     });
