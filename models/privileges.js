@@ -140,7 +140,7 @@ module.exports = function(sequelize, DataTypes){
               if(item.operate != null && item.operate != undefined && item.operate != ''){
 
                   if(item.operate == 'close'){
-                      var privilege = yield this.findById(item.privilege);
+                      var privilege = yield this.findById(item.id);
                       var privileges= privilege.groups.split('_');
                       var temp = new Array();
 
@@ -155,7 +155,7 @@ module.exports = function(sequelize, DataTypes){
                   }
                   if(item.operate == 'open'){
 
-                      var privilege = yield this.findById(item.privilege);
+                      var privilege = yield this.findById(item.id);
                       var privileges= privilege.groups.split('_');
                       privileges.push(item.groups);
                       item.groups = buildGrups(item.groups);
