@@ -124,6 +124,7 @@ module.exports = function(sequelize, DataTypes){
           },
           modify: function* (item) {
 
+              console.log(item);
               function buildGrups(arr){
                   var str = '';
                   for(var i = 0; i<=arr.length - 1; i++){
@@ -145,7 +146,7 @@ module.exports = function(sequelize, DataTypes){
 
                       for(var i = 0; i <= privileges.length-1; i++){
 
-                          if(item.group != privileges[i]){
+                          if(item.groups != privileges[i]){
                               temp.push(privileges[i]);
                           }
                       }
@@ -156,8 +157,8 @@ module.exports = function(sequelize, DataTypes){
 
                       var privilege = yield this.findById(item.privilege);
                       var privileges= privilege.groups.split('_');
-                      privileges.push(item.group);
-                      item.groups = buildGrups(item.group);
+                      privileges.push(item.groups);
+                      item.groups = buildGrups(item.groups);
                   }
               }
               delete item['operate'];
