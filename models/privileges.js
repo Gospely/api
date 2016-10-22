@@ -108,7 +108,7 @@ module.exports = function(sequelize, DataTypes){
 
               }
             }
-            if(items.groups != null && items.groups != undefined items.groups != ''){
+            if(group != null && group != undefined && group != ''){
               for (var i = 0; i < privileges.length; i++) {
                   privileges[i].open = check(privileges[i].groups.split("_"),group);
               }
