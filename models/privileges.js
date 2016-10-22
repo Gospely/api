@@ -108,10 +108,12 @@ module.exports = function(sequelize, DataTypes){
 
               }
             }
-
-            for (var i = 0; i < privileges.length; i++) {
-                privileges[i].open = check(privileges[i].groups.split("_"),group);
+            if(items.groups != null && items.groups != undefined items.groups != ''){
+              for (var i = 0; i < privileges.length; i++) {
+                  privileges[i].open = check(privileges[i].groups.split("_"),group);
+              }
             }
+
             return privileges;
           },
           count: function* (item) {

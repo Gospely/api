@@ -36,7 +36,7 @@ common.list= function *list(next) {
 		var count = yield models[getModel(this)].count(this.query);
 		var total = 0;
 		if(count[0].dataValues == undefined){
-				total = count[0].all;
+		total = count[0].all;
 				console.log("total" + total);
 		}else {
 				total = count[0].dataValues.all;
