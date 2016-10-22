@@ -109,8 +109,15 @@ module.exports = function(sequelize, DataTypes){
               }
             }
             if(group != null && group != undefined && group != ''){
-              for (var i = 0; i < privileges.length -1; i++) {
-                  privileges[i].open = check(privileges[i].groups.split("_"),group);
+
+              for (var i = 0; i < privileges.length - 1; i++) {
+
+                  if(privileges[i].groups == null || privileges[i].groups == undefined || privileges[i].groups == ''){
+                    privileges[i].open = false;
+                  }else{
+                    privileges[i].open = check(privileges[i].groups.split("_"),group);
+                  }
+
               }
             }
 
