@@ -8,6 +8,7 @@ var uuid = require('node-uuid');
 var config = require('../configs')
 var ccap = require('ccap')();//Instantiated ccap class
 var users = {};
+var message = require('../server/message/message')
 
 
 //数据渲染，todo:分页参数引入，异常信息引入
@@ -190,7 +191,7 @@ users.weixinLogin = function * () {
     this.redirect(url);
 }
 
-users.authCode =  function() {
+users.authCode =  function*() {
 
 	var ary = ccap.get();
 
@@ -205,6 +206,36 @@ users.authCode =  function() {
 users.phoneCode =  function() {
 
 
+	var range=function(start,end)
+	 {
+	          var array=[];
+	          for(var i=start;i<end;++i) array.push(i);
+	          return array;
+	};
+	var randomstr = range(0,6).map(function(x){
+	 return Math.floor(Math.random()*10);
+	}).join(''));
+
+	var phone = this.query.phone;
+
+	var options = {
+
+			mobile: phone,
+			msg: '【江西龙猫科技】'+randomstr +'，是您的短信验证码，请在60秒内提交验证码',
+			needstatus: false
+	}
+
+
+	message(options);
+	var id = uuid.v4();
+	var innersession = yield models.gospel_innersessions.create({
+		id: id,
+		token: randomstr,
+		time: Date.now(),
+		limitTime: 60 * 1000,
+		phone: phone
+	})
+	this.body = render(id,1,"获取验证码成功");
 }
 users.files = function* () {
 

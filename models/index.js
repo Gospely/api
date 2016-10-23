@@ -128,6 +128,7 @@ var sequelize = new Sequelize('gospel', 'gospel', 'gospel', {
       create: function*(item) {
           console.log("create");
           var row = this.build(item);
+          console.log(row);
           return yield row.save();
       },
       count: function* (item) {
