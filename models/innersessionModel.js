@@ -11,6 +11,7 @@ module.exports = function(sequelize, DataTypes){
       creator: DataTypes.STRING,
       group: DataTypes.STRING,
       time: DataTypes.BIGINT,
+      phone: DataTypes.STRING,
       limitTime: { type: DataTypes.BIGINT, field: "limit_time", defaultValue: 60000}
 	  },{
 			timestamps: false,

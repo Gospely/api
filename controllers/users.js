@@ -92,6 +92,11 @@ users.register = function* () {
     limit: '1kb'
   });
   user.password = md5_f.md5Sign(user.password,'gospel_users');
+	user.type = 'common';
+	user.ide = '1';
+	user.ideName = '个人版';
+
+
   console.log(user.password);
 	var inserted;
 
@@ -100,31 +105,65 @@ users.register = function* () {
        var reg = /^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/;
         isok= reg.test(user.phone );
         var activeCode = uuid.v4();
-       if (!isok) {
+       if (isok) {
          console.log(user.phone + "email");
-         // 设置邮件内容
-         var active = "http://api.gospely.com/users/authorization?code="+activeCode;
-         console.log(active);
-         var mailOptions = {
 
-           from: "龙猫科技 <shark@dodora.cn>", // 发件地址
-           to: user.phone, // 收件列表
-           subject: "Hello world", // 标题
-           html: "<a href='"+active+"'>"+active+"</a></br>复制到浏览器访问" // html 内容
-         }
-         mail(mailOptions);
+				 //判断是否已经注册le
+				 var data = models.gospel_users.getAll({
+					 email: user.phone
+				 });
 
-         var authorization = {
-              code: activeCode,
-              time: Date.now()
-         };
-				 user.isblocked = 1;
-         inserted  = yield  models.gospel_innersessions.create(authorization);
+				 if(data.length >=1){
+					 		this.body = render(null,-1,"该邮箱已经注册");
+				 }else{
+					 // 设置邮件内容
+						 var active = "http://api.gospely.com/users/authorization?code="+activeCode;
+						 console.log(active);
+						 var mailOptions = {
+
+							 from: "龙猫科技 <shark@dodora.cn>", // 发件地址
+							 to: user.phone, // 收件列表
+							 subject: "Hello world", // 标题
+							 html: "<a href='"+active+"'>"+active+"</a></br>复制到浏览器访问" // html 内容
+						 }
+						 mail(mailOptions);
+
+						 var authorization = {
+									code: activeCode,
+									time: Date.now()
+						 };
+						user.isblocked = 1;
+						user.email = user.phone;
+						user.phone = '';
+						inserted  = yield  models.gospel_innersessions.create(authorization);
+						inserted  = yield  models.gospel_users.create(user);
+						this.body = render(user,-1,"验证码错误，请重新获取");
+				 }
+
        }
 
 			 reg = /^(((13[0-9]{1})|(15[0-9]{1})|(18[0-9]{1}))+\d{8})$/;
 			 isok= reg.test(user.phone );
+			 console.log(isok);
 			 if(!isok){
+
+					var token = user.toke;
+					var authCode = user.authCode;
+
+					var innersession = yield models.gospel_innersessions.findById(token);
+
+					if((Date.now() -innersession.time) <= innersession.limitTime){
+
+              //更新用户状态
+							if(innersession.code == authCode){
+								inserted  = yield  models.gospel_users.create(user);
+								this.body = render(user,1,"注册成功");
+							}else{
+								this.body = render(null,-1,"验证码错误，请重新获取");
+							}
+          }else {
+              this.body = render(null,-1,"验证码超时，请重新获取");
+          }
 				 	console.log(user.phon + "phone");
 
 					//校验验证吗
@@ -203,7 +242,7 @@ users.authCode =  function*() {
 }
 
 //手机验证码
-users.phoneCode =  function() {
+users.phoneCode =  function*() {
 
 
 	var range=function(start,end)
@@ -214,7 +253,7 @@ users.phoneCode =  function() {
 	};
 	var randomstr = range(0,6).map(function(x){
 	 return Math.floor(Math.random()*10);
-	}).join(''));
+	}).join('');
 
 	var phone = this.query.phone;
 
@@ -230,7 +269,7 @@ users.phoneCode =  function() {
 	var id = uuid.v4();
 	var innersession = yield models.gospel_innersessions.create({
 		id: id,
-		token: randomstr,
+		code: randomstr,
 		time: Date.now(),
 		limitTime: 60 * 1000,
 		phone: phone

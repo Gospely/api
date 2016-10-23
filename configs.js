@@ -143,6 +143,13 @@ module.exports = {
 				groups: "ab64c397-d323-4133-9541-479bbaaf6c52"
 			},
 			{
+				name: '获取手机验证码',
+				method:'get',
+				url: '/users/phone/code',
+				controller: 'phoneCode',
+				groups: "ab64c397-d323-4133-9541-479bbaaf6c52"
+			},
+			{
 				name: '获取文件流',
 				method:'get',
 				url: '/users/files/:file',
