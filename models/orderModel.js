@@ -12,6 +12,7 @@ module.exports = function(sequelize, DataTypes){
       status: DataTypes.INTEGER,
       size: DataTypes.INTEGER,
       unit: DataTypes.STRING,
+      orderNo: {type: DataTypes.STRING, field: "order_no"},
       timeSize: { type: DataTypes.INTEGER, field: "time_size" },
       timeUnit: { type: DataTypes.STRING, field: "time_unit" },
       unitPrice: { type: DataTypes.DOUBLE, field: "unit_price" },
