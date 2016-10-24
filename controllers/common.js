@@ -88,12 +88,17 @@ common.create = function *create() {
 	    limit: '1kb'
 	  });
 		console.log(item);
-		//yield = models[getModel(this)].findAll(item);
-	  var inserted = yield models[getModel(this)].create(item);
-	  if (!inserted) {
-	    this.throw(405, "couldn't be added.");
-	  }
-	  this.body = render(null,null,null,3,'新增成功');
+		var data = yield models[getModel(this)].findAll(item);
+
+		if(data.length > 0){
+			this.body = render(null,null,null,-1,'该数据已存在');
+		}else{
+			var inserted = yield models[getModel(this)].create(item);
+			if (!inserted) {
+				this.throw(405, "couldn't be added.");
+			}
+			this.body = render(null,null,null,1,'新增成功');
+		}
 }
 
 //根据主键删除一条记录
