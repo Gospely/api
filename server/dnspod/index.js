@@ -10,10 +10,10 @@ client.domainOperate = function (options) {
         .on(options.opp, function (err, data) {
             console.log(data);
             if (err) {
-                reject();
+                reject(err);
                 throw err;
             } else {
-                resolve();
+                resolve(data);
             }
         });
   });

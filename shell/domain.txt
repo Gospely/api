@@ -1,13 +1,12 @@
-ssh root@gospely.com
-sudo tee /etc/nginx/conf.d/api.gospely.com.conf <<- 'EOF'
-upstream nodejs__upstream_${name} {
-        server 127.0.0.1:9999;
+tee /etc/nginx/conf.d/domain.conf <<- 'EOF'
+upstream nodejs__upstream_domain {
+        server 127.0.0.1:port;
         keepalive 64;
 }
 
 server {
         listen 80;
-        server_name www.${name} ${name};
+        server_name www.domain domain;
         #access_log /var/log/nginx/moiveme.log;
         location / {
           proxy_set_header   X-Real-IP            $remote_addr;
@@ -16,8 +15,7 @@ server {
           proxy_set_header   X-NginX-Proxy    true;
           proxy_set_header   Connection "";
           proxy_http_version 1.1;
-          proxy_pass         http://nodejs__upstream_${name};
+          proxy_pass         http://nodejs__upstream_domain;
         }
 }
 EOF
-echo 'success'

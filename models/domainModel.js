@@ -39,7 +39,11 @@ module.exports = function(sequelize, DataTypes){
                 }
             }
             var data = yield dnspod.domainOperate(options);
-            domain.record = data.record.id
+            try {
+              domain.record = data.record.id
+            } catch (e) {
+              throw e;
+            }
             var row = this.build(domain);
             return yield row.save();
           },
