@@ -88,7 +88,7 @@ common.create = function *create() {
 	    limit: '1kb'
 	  });
 		console.log(item);
-		var data = yield models[getModel(this)].findAll(item);
+		var data = yield models[getModel(this)].getAll(item);
 
 		if(data.length > 0){
 			this.body = render(null,null,null,-1,'该数据已存在');
