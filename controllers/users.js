@@ -23,10 +23,12 @@ function render(data,code,messge) {
 
 users.login = function* (){
 
+
   if ('POST' != this.method) this.throw(405, "method is not allowed");
   var user = yield parse(this, {
     limit: '1kb'
   });
+	delete user['id'];
   user.password = md5_f.md5Sign(user.password,'gospel_users');
   var data = yield models.gospel_users.findAll({where: user});
   console.log(data.length);
