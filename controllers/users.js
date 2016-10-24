@@ -147,7 +147,7 @@ users.register = function* () {
 			 console.log(isok);
 			 if(!isok){
 
-					var token = user.toke;
+					var token = user.token;
 					var authCode = user.authCode;
 
 					var innersession = yield models.gospel_innersessions.findById(token);
