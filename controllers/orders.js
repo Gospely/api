@@ -2,6 +2,7 @@ var util = require('../utils.js');
 var pay = require('../server/pay');
 var uuid = require('node-uuid');
 var parse = require('co-body');
+var _md5 = require('../utils/MD5')
 
 var orders = {};
 
@@ -12,8 +13,9 @@ orders.order = function* () {
     limit: '10kB'
   });
 
-
-  orders.out_trade_no = uuid.v4();
+  if(orders.out_trade_no == null || orders.out_trade_no == undefined){
+    orders.out_trade_no = _md5.md5Sign("gospel",uuid.v4);
+  }
   if(orders.type == 'wechat') {
       var pay_url = yield pay.wechat.wxpay_pay({
         body: 'test',//商品描述,
