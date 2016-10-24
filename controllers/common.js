@@ -1,5 +1,6 @@
 var util = require('../utils.js');
 var models = require('../models');
+var reader = require('../utils/reader');
 var parse = require('co-body');
 var md5_f = require('../utils/MD5');
 var common = {};
@@ -116,5 +117,15 @@ common.count = function* count() {
 }
 common.render = render;
 common.models = models;
+
+reader.readDir(__dirname).map(function(file){
+
+	 var modelsName = file.split(".")[0];
+	 console.log("model" + modelsName);
+	 if(modelsName != "common" && modelsName != "index" && modelsName != "fs"){
+		 var controller = require('./'+modelsName);
+		 common[modelsName] = controller;
+	 }
+});
 
 module.exports = common;

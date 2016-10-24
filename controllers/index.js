@@ -14,6 +14,7 @@ inherits(Controllers,EventEmitter);
 
 Controllers.prototype.route = function(router){
 
+  console.log("dsd"+common);
 	reader.readDir(__dirname).map(function(file){
 
 			var self = this;
@@ -75,12 +76,31 @@ Controllers.prototype.route = function(router){
 
            if(modelsName != "common" && modelsName != "index" && modelsName != "fs"){
 
-             router.get("/"+modelsName, common.list);
-             router.get("/"+modelsName+"/:id", common.detail);
-             router.post("/"+modelsName, common.create);
-             router.delete("/"+modelsName+"/:id", common.delete);
-             router.put("/"+modelsName, common.update);
-             router.get("/"+modelsName+ "/number" , common.count);
+             if(common[modelsName].list == null || common[modelsName].list == undefined){
+               router.get("/"+modelsName, common.list);
+             }else{
+               router.get("/"+modelsName, common[modelsName].list);
+             }
+             if(common[modelsName].detail == null || common[modelsName].detail == undefined){
+               router.get("/"+modelsName+"/:id", common.detail);
+             }else{
+               router.get("/"+modelsName+"/:id", common[modelsName].detail);
+             }
+             if(common[modelsName].create == null || common[modelsName].create == undefined){
+               router.post("/"+modelsName, common.create);
+             }else{
+               router.post("/"+modelsName, common[modelsName].create);
+             }
+             if(common[modelsName].delete == null || common[modelsName].delete == undefined){
+               router.delete("/"+modelsName+"/:id", common.delete);
+             }else{
+               router.delete("/"+modelsName+"/:id", common[modelsName].delete);
+             }
+             if(common[modelsName].count == null || common[modelsName].count == undefined){
+               router.get("/"+modelsName+ "/number" , common.count);
+             }else{
+               router.get("/"+modelsName+ "/number" , common[modelsName].count);
+             }
            }
         });
 
