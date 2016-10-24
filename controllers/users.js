@@ -50,7 +50,7 @@ users.login = function* (){
 					});
 				}
 		}else{
-			 	var innersession = data[0].dataValues;
+			 	var innersession = innersessions[0].dataValues;
 				yield models.gospel_innersessions.modify({
 						id: innersession.id,
 						time: Date.now(),
@@ -93,6 +93,7 @@ users.register = function* () {
   var user = yield parse(this, {
     limit: '1kb'
   });
+	delete user['id'];
   user.password = md5_f.md5Sign(user.password,'gospel_users');
 	user.type = 'common';
 	user.ide = '1';
@@ -149,7 +150,7 @@ users.register = function* () {
 			 console.log(isok);
 			 if(!isok){
 
-					var token = user.token;
+					var token = user.toke;
 					var authCode = user.authCode;
 
 					var innersession = yield models.gospel_innersessions.findById(token);
