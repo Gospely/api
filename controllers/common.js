@@ -88,6 +88,7 @@ common.create = function *create() {
 	    limit: '1kb'
 	  });
 		console.log(item);
+		//yield = models[getModel(this)].findAll(item);
 	  var inserted = yield models[getModel(this)].create(item);
 	  if (!inserted) {
 	    this.throw(405, "couldn't be added.");
