@@ -3,6 +3,8 @@ var models = require('../models');
 var config = require('../configs');
 var shells = require('../shell');
 var parse = require('co-body');
+var transliteration = require('transliteration');
+var portManager = require('../port')
 
 var applications = {};
 
@@ -14,29 +16,36 @@ applications.create = function*() {
     var application = yield parse(this, {
       limit: '1kb'
     });
-    console.log(application);
+
     //应用中文转英文
+    var domain  = application.name;
+    var reg = /[\u4e00-\u9FA5]+/;
+    var res = reg.test(domain);
+
+    if(res){
+      var tr = transliteration.transliterate
+      domain = tr(domain);
+    }
+
+    var port = yield portManager.generatePort();
+    console.log(port + domain);
     var inserted = yield  models.gospel_domains.create({
-        domain: application.name + "-" +application.creator,
+        domain: domain + "-" +application.creator,
         ip: '120.76.235.234',
         creator: application.creator
     });
 
-    var port = "8888";
-    //需要加判断端口是否占用
-
     try{
         var data = yield shells.domain({
           user: application.creator,
-          domain: application.name  + "-" + application.creator + "." + config.dnspod.baseDomain,
-          port: "8888",
+          domain: domain  + "-" + application.creator + "." + config.dnspod.baseDomain,
+          port: port,
         });
         console.log(data);
         var inserted = yield models.gospel_applications.create(application);
     }catch(err){
         console.log(err);
     }
-
 }
 
 module.exports = applications;
