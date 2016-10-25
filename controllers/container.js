@@ -6,18 +6,18 @@ var exec = require('child_process').exec,
 	request = require('request');
 
 var execCMD = function(cmd) {
-	return new Promise(function(resolve, reject) {
-		exec(baseCMD + cmd, function(error, data) {
-			if(error) reject(error);
-			resolve(data);
+		return new Promise(function(resolve, reject) {
+			exec(baseCMD + cmd, function(error, data) {
+				if(error) reject(error);
+				resolve(data);
+			});
 		});
-	});
-},
+	},
 
 	dockerStats = function(containerName) {
 		return new Promise(function(resolve, reject) {
 			request.get({url: 
-					'http://gospely.com:2375/containers/' + containerName + '/stats?stream=0'
+					'http://' + remoteIp + ':2375/containers/' + containerName + '/stats?stream=0'
 				},
 			    function(error, response, body){
 			        if(error) reject(error);
