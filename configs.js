@@ -169,22 +169,22 @@ module.exports = {
 		container: [
 			{
 				name: '启动容器',
-				method:'post',
-				url: '/container/start',
+				method:'get',
+				url: '/container/start/:containerName',
 				controller: 'start',
 				groups: "ab64c397-d323-4133-9541-479bbaaf6c52"
 			},
 			{
 				name: '停止容器',
-				method:'post',
-				url: '/container/stop',
+				method:'get',
+				url: '/container/stop/:containerName',
 				controller: 'stop',
 				groups: "ab64c397-d323-4133-9541-479bbaaf6c52"
 			},
 			{
 				name: '重启容器',
-				method:'post',
-				url: '/container/restart',
+				method:'get',
+				url: '/container/restart/:containerName',
 				controller: 'restart',
 				groups: "ab64c397-d323-4133-9541-479bbaaf6c52"
 			},
@@ -193,6 +193,13 @@ module.exports = {
 				method:'get',
 				url: '/container/inspect/:containerName',
 				controller: 'inspect',
+				groups: "ab64c397-d323-4133-9541-479bbaaf6c52"
+			},
+			{
+				name: '监控容器运行状态',
+				method:'get',
+				url: '/container/stats/:containerName',
+				controller: 'stats',
 				groups: "ab64c397-d323-4133-9541-479bbaaf6c52"
 			}
 		],
