@@ -10,7 +10,9 @@ var fun = require('./utils.js');
 var locale = require('koa-locale');
 var i18n = require('koa-i18n');
 var db = require('./models');
+var container = require('./container/index.js');
 var mount = require('koa-mount');
+
 
 
 app.use(function *(next) {
@@ -60,9 +62,11 @@ app.use(cors(options));
 if(configs.isAuth) {
 	app.use(mount('/', auth.basicAuth));
 }
+app.use(mount('/container', container.filter));
 app
   .use(router.routes())
   .use(router.allowedMethods());
+  console.log(container);
 
 app.on('error', function(err, ctx){
   log.error('server error', err, ctx);

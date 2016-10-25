@@ -16,7 +16,7 @@ var execCMD = function(cmd) {
 
 	dockerStats = function(containerName) {
 		return new Promise(function(resolve, reject) {
-			request.get({url: 
+			request.get({url:
 					'http://' + remoteIp + ':2375/containers/' + containerName + '/stats?stream=0'
 				},
 			    function(error, response, body){
@@ -31,8 +31,8 @@ var container = {
 
 	start: function* () {
 		try {
-			yield execCMD('docker start ' + this.params.containerName);
-			this.body = util.resp(200, '启动成功', this.params);
+			yield execCMD('docker start ' + this.containerName);
+			this.body = util.resp(200, '启动成功', this.containerName);
 		}catch(err) {
 			this.body = util.resp(500, '启动失败', err.toString());
 		}
@@ -40,8 +40,8 @@ var container = {
 
 	stop: function* () {
 		try {
-			yield execCMD('docker stop ' + this.params.containerName);
-			this.body = util.resp(200, '停止成功', this.params);
+			yield execCMD('docker stop ' + this.containerName);
+			this.body = util.resp(200, '停止成功', this.containerName);
 		}catch(err) {
 			this.body = util.resp(500, '停止失败', err.toString());
 		}
@@ -49,15 +49,17 @@ var container = {
 
 	restart: function* () {
 		try {
-			yield execCMD('docker restart ' + this.params.containerName);
-			this.body = util.resp(200, '重启成功', this.params);
+			yield execCMD('docker restart ' + this.containerName);
+			this.body = util.resp(200, '重启成功', this.containerName);
 		}catch(err) {
 			this.body = util.resp(500, '重启失败', err.toString());
 		}
 	},
 
 	inspect: function* () {
-		var containerName = this.params.containerName;
+
+		console.log(this.containerName);
+		var containerName = this.containerName;
 
 		try {
 			var info = yield execCMD('docker inspect ' + containerName);
@@ -69,7 +71,7 @@ var container = {
 	},
 
 	stats: function* () {
-		var containerName = this.params.containerName;
+		var containerName = this.containerName;
 
 		try {
 			var info = yield dockerStats(containerName);
