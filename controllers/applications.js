@@ -45,7 +45,27 @@ applications.create = function*() {
         console.log(data);
         if(data == 'success'){
           var inserted = yield models.gospel_applications.create(application);
-          this.body = common.render(null,null,null,1,'创建应用成功');
+
+          //创建并启动docker
+          var sshPort = yield portManager.generatePort();
+          var socketPort = yield portManager.generatePort();
+          if(sshPort == socketPort){
+
+            sshPort = yield portManager.generatePort();
+            socketPort = yield portManager.generatePort();
+          }
+          var data = shells.docker({
+            name: domain,
+            sshPort: sshPort,
+            socketPort: socketPort,
+            password: application.password
+          });
+          if(data == 'success'){
+            this.body = common.render(null,null,null,1,'创建应用成功');
+          }else{
+            this.body = common.render(null,null,null,-1,'创建应用失败');
+          }
+
         }else{
           this.body = common.render(null,null,null,-1,'创建应用失败');
         }

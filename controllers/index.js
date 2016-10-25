@@ -91,6 +91,11 @@ Controllers.prototype.route = function(router){
              }else{
                router.post("/"+modelsName, common[modelsName].create);
              }
+             if(common[modelsName].update == null || common[modelsName].update == undefined){
+               router.put("/"+modelsName, common.update);
+             }else{
+               router.put("/"+modelsName, common[modelsName].create);
+             }
              if(common[modelsName].delete == null || common[modelsName].delete == undefined){
                router.delete("/"+modelsName+"/:id", common.delete);
              }else{

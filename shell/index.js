@@ -17,5 +17,13 @@ shells.domain = function*(options){
       });
   });
 }
-
+shells.docker = function*(options) {
+  return new Promise(function(resolve, reject) {
+    var bash = "ssh root@gospely.com " + cmd + " && cd /root/gospely/allocate && ./start.js -n " + options.name + " -p " + options.socketPort + " -s " + options.sshPort + " -a " + options.appPort + " -w " + options.password + " && echo 'sucess'";
+      exec(bash, function(err,data){
+        if (err) reject(err);
+	      resolve(data);
+      });
+  });
+}
 module.exports = shells;
