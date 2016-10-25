@@ -166,6 +166,36 @@ module.exports = {
 				groups: "ab64c397-d323-4133-9541-479bbaaf6c52"
 			}
 		],
+		container: [
+			{
+				name: '启动容器',
+				method:'post',
+				url: '/container/start',
+				controller: 'start',
+				groups: "ab64c397-d323-4133-9541-479bbaaf6c52"
+			},
+			{
+				name: '停止容器',
+				method:'post',
+				url: '/container/stop',
+				controller: 'stop',
+				groups: "ab64c397-d323-4133-9541-479bbaaf6c52"
+			},
+			{
+				name: '重启容器',
+				method:'post',
+				url: '/container/restart',
+				controller: 'restart',
+				groups: "ab64c397-d323-4133-9541-479bbaaf6c52"
+			},
+			{
+				name: '查看容器信息',
+				method:'get',
+				url: '/container/inspect/:containerName',
+				controller: 'inspect',
+				groups: "ab64c397-d323-4133-9541-479bbaaf6c52"
+			}
+		],
 		fs: [
 			{
 				name: '读文件',
