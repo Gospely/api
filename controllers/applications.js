@@ -5,6 +5,7 @@ var shells = require('../shell');
 var parse = require('co-body');
 var transliteration = require('transliteration');
 var portManager = require('../port')
+var common = require('./common')
 
 var applications = {};
 
@@ -42,9 +43,16 @@ applications.create = function*() {
           port: port,
         });
         console.log(data);
-        var inserted = yield models.gospel_applications.create(application);
+        if(data == 'success'){
+          var inserted = yield models.gospel_applications.create(application);
+          this.body = common.render(null,null,null,1,'创建应用成功');
+        }else{
+          this.body = common.render(null,null,null,-1,'创建应用失败');
+        }
+
     }catch(err){
         console.log(err);
+        throw err;
     }
 }
 
