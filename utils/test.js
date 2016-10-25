@@ -11,3 +11,4 @@ file = file.replace(new RegExp('domain','gm'),"test.gospely.com");
 // });
 console.log(file);
 console.log(cmd);
+console.log(__dirname);

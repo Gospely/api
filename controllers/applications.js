@@ -24,13 +24,19 @@ applications.create = function*() {
 
     var port = "8888";
     //需要加判断端口是否占用
-    var data = yield shells.domain({
-      user: application.creator,
-      domain: application.name + "." + config.dnspod.baseDomain,
-      port: "8888",
-    });
-    console.log(data);
-    var inserted = yield models.gospel_application.create(application);
+
+    try{
+        var data = yield shells.domain({
+          user: application.creator,
+          domain: application.name  + "-" + application.creator + "." + config.dnspod.baseDomain,
+          port: "8888",
+        });
+        console.log(data);
+        var inserted = yield models.gospel_applications.create(application);
+    }catch(err){
+        console.log(err);
+    }
+
 }
 
 module.exports = applications;

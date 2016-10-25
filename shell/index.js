@@ -4,7 +4,7 @@ var exec = require('child_process').exec;
 var shells = {};
 
 shells.domain = function*(options){
-  var file = '/Users/apple/dodora/api/shell/domain.txt';
+  var file = __dirname + "/domain.txt";
   var cmd = fs.readFileSync(file, "utf8");
   cmd = cmd.replace('user',options.user).replace('port',options.port);
   cmd = cmd.replace(new RegExp('domain','gm'),options.domain);
