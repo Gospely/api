@@ -11,7 +11,7 @@ shells.domain = function*(options){
   console.log(cmd);
   return new Promise(function(resolve, reject) {
     options.user = '';
-      exec("ssh root@gospely.com " + cmd , function(err,data){
+      exec("ssh root@gospely.com " + cmd +" && service nginx restart && echo 'success'", function(err,data){
         if (err) reject(err);
 	      resolve(data);
       });
