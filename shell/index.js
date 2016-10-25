@@ -11,19 +11,35 @@ shells.domain = function*(options){
   console.log(cmd);
   return new Promise(function(resolve, reject) {
     options.user = '';
-      exec("ssh root@gospely.com " + cmd +" && service nginx restart && echo 'success'", function(err,data){
+    cmd = cmd.trim();
+      exec("ssh root@gospely.com " + cmd, function(err,data){
         if (err) reject(err);
-	      resolve(data);
+	      resolve("success");
       });
   });
 }
 shells.docker = function*(options) {
+  console.log(options);
   return new Promise(function(resolve, reject) {
-    var bash = "ssh root@gospely.com " + cmd + " && cd /root/gospely/allocate && ./start.js -n " + options.name + " -p " + options.socketPort + " -s " + options.sshPort + " -a " + options.appPort + " -w " + options.password + " && echo 'sucess'";
+    var bash = "ssh root@gospely.com " + "/root/gospely/allocate/start.js -n " + options.name + " -m " + options.memory + " -p " + options.socketPort + " -s " + options.sshPort + " -a " + options.appPort + " -w " + options.password + " && echo 'sucess'";
       exec(bash, function(err,data){
+        console.log(err);
+        console.log(data);
         if (err) reject(err);
-	      resolve(data);
+	      resolve("success");
       });
   });
+}
+shells.nginx = function*() {
+
+  return new Promise(function(resolve, reject) {
+    exec("ssh root@gospely.com " + " service nginx restart && echo 'success'", function(err,data){
+      console.log(data);
+      console.log(err);
+      if (err) reject(err);
+      resolve(data);
+  });
+
+  })
 }
 module.exports = shells;

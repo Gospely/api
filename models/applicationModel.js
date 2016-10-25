@@ -25,18 +25,6 @@ module.exports = function(sequelize, DataTypes){
       classMethods:{
            associate: (models) => {
                       console.log("associate");
-                  },
-           create: function* (item){
-
-              //域名解析
-              var options = {
-                method: 'userDetail',
-                opp:'User.Detail',
-                param:{
-                  length: 5
-                }
-              }
-              yield client.parseDomain(options)
            }
       }
     });

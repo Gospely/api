@@ -4,10 +4,21 @@ var config = require('../configs');
 var shells = require('../shell');
 var parse = require('co-body');
 var transliteration = require('transliteration');
-var portManager = require('../port')
-var common = require('./common')
+var portManager = require('../port');
+var common = require('./common');
 
 var applications = {};
+//数据渲染，todo:分页参数引入，异常信息引入
+function render(data,all,cur,code,message) {
+
+	return {
+		code: code,
+		message: message,
+		all: all,
+		cur: cur,
+		fields: data
+	}
+}
 
 applications.create = function*() {
 
@@ -25,13 +36,13 @@ applications.create = function*() {
 
     if(res){
       var tr = transliteration.transliterate
-      domain = tr(domain);
+      domain = tr(domain).replace(new RegExp(" ",'gm'),"").toLocaleLowerCase();
     }
 
     var port = yield portManager.generatePort();
     console.log(port + domain);
     var inserted = yield  models.gospel_domains.create({
-        domain: domain + "-" +application.creator,
+        domain: domain + "_" +application.creator,
         ip: '120.76.235.234',
         creator: application.creator
     });
@@ -39,11 +50,13 @@ applications.create = function*() {
     try{
         var data = yield shells.domain({
           user: application.creator,
-          domain: domain  + "-" + application.creator + "." + config.dnspod.baseDomain,
+          domain: domain  + "_" + application.creator,
           port: port,
         });
         console.log(data);
         if(data == 'success'){
+          // var data = yield shells.nginx();
+          // console.log(data);
           var inserted = yield models.gospel_applications.create(application);
 
           //创建并启动docker
@@ -54,20 +67,21 @@ applications.create = function*() {
             sshPort = yield portManager.generatePort();
             socketPort = yield portManager.generatePort();
           }
-          var data = shells.docker({
+          var data = yield shells.docker({
             name: domain,
             sshPort: sshPort,
             socketPort: socketPort,
             password: application.password
           });
+          console.log(data);
           if(data == 'success'){
-            this.body = common.render(null,null,null,1,'创建应用成功');
+            this.body = render(null,null,null,1,'创建应用成功');
           }else{
-            this.body = common.render(null,null,null,-1,'创建应用失败');
+            this.body = render(null,null,null,-1,'创建应用失败');
           }
 
         }else{
-          this.body = common.render(null,null,null,-1,'创建应用失败');
+          this.body = render(null,null,null,-1,'创建应用失败');
         }
 
     }catch(err){

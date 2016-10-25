@@ -1,4 +1,4 @@
-tee /etc/nginx/conf.d/domain.conf <<- 'EOF'
+tee /etc/nginx/conf.d/domain.gospely.com.conf <<- 'EOF'
 upstream nodejs__upstream_domain {
         server 127.0.0.1:port;
         keepalive 64;
@@ -6,7 +6,7 @@ upstream nodejs__upstream_domain {
 
 server {
         listen 80;
-        server_name www.domain domain;
+        server_name www.domain.gospely.com domain.goepely.com;
         #access_log /var/log/nginx/moiveme.log;
         location / {
           proxy_set_header   X-Real-IP            $remote_addr;

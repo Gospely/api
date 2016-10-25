@@ -13,7 +13,7 @@ port.generatePort = function* (){
    var loop = true;
    while(loop){
 
-     port =  genNumber(1024,49151);
+     port =  genNumber(1024,9999);
      var data = yield checkBind(port);
      console.log(data);
      loop = data.isBind;
