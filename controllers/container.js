@@ -73,7 +73,7 @@ var container = {
 
 		try {
 			var info = yield dockerStats(containerName);
-			this.body = util.resp(200, '监控容器运行状态成功', info);
+			this.body = util.resp(200, '监控容器运行状态成功', info.body);
 		}catch(err) {
 			this.body = util.resp(500, '监控容器运行状态失败', err.toString());
 		}
