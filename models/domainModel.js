@@ -14,6 +14,7 @@ module.exports = function(sequelize, DataTypes){
       creator: DataTypes.STRING,
       application: DataTypes.STRING,
       record: DataTypes.STRING,
+      subDomain: { type: DataTypes.STRING, field: "sub_domain" },
       sub: DataTypes.BOOLEAN,
       isDeleted: { type: DataTypes.INTEGER, field: "isdeleted", defaultValue: 0 },
 	  },{
@@ -53,11 +54,8 @@ module.exports = function(sequelize, DataTypes){
               return "failed";
             }
 
-          },
-          delete: function* (id) {
-
-
           }
+
       }
     });
     return domain;

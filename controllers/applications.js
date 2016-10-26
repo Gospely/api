@@ -40,13 +40,15 @@ applications.create = function*() {
     }
 		application.id = uuid.v4();
     var inserted = yield  models.gospel_domains.create({
-        domain: domain + "_" +application.creator,
+				subDomain: domain + "_" +application.creator,
+        domain: config.dnspod.baseDomain,
         ip: '120.76.235.234',
 				application: application.id,
-        creator: application.creator
+        creator: application.creator,
+				sub: true
     });
 		console.log(inserted);
-		if(inserted.code = 'failed') {
+		if(inserted.code == 'failed') {
 				this.body = render(null,null,null,-1, "二级域名解析失败，请重命名应用名");
 		}else{
 			try{
@@ -59,8 +61,6 @@ applications.create = function*() {
 	        if(data == 'success'){
 	          // var data = yield shells.nginx();
 	          // console.log(data);
-
-
 	          //创建并启动docker
 	          application.sshPort = yield portManager.generatePort();
 	          application.socketPort = yield portManager.generatePort();
@@ -90,7 +90,6 @@ applications.create = function*() {
 	          }else{
 	            this.body = render(null,null,null,-1,'创建应用失败');
 	          }
-
 	        }else{
 	          this.body = render(null,null,null,-1,'创建应用失败');
 	        }

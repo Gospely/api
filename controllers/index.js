@@ -94,11 +94,12 @@ Controllers.prototype.route = function(router){
              if(common[modelsName].update == null || common[modelsName].update == undefined){
                router.put("/"+modelsName, common.update);
              }else{
-               router.put("/"+modelsName, common[modelsName].create);
+               router.put("/"+modelsName, common[modelsName].update);
              }
              if(common[modelsName].delete == null || common[modelsName].delete == undefined){
                router.delete("/"+modelsName+"/:id", common.delete);
              }else{
+               console.log("delete" + modelsName);
                router.delete("/"+modelsName+"/:id", common[modelsName].delete);
              }
              if(common[modelsName].count == null || common[modelsName].count == undefined){

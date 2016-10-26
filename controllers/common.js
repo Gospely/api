@@ -130,6 +130,9 @@ reader.readDir(__dirname).map(function(file){
 	 console.log("model" + modelsName);
 	 if(modelsName != "common" && modelsName != "index" && modelsName != "fs"){
 		 var controller = require('./'+modelsName);
+		 if(modelsName == 'domains'){
+			 console.log(controller);
+		 }
 		 common[modelsName] = controller;
 	 }
 });
