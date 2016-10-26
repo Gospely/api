@@ -22,13 +22,12 @@ function render(data,all,cur,code,message) {
 
 applications.create = function*() {
 
-  console.log("create");
-  console.log(this);
+
   if ('POST' != this.method) this.throw(405, "method is not allowed");
     var application = yield parse(this, {
       limit: '1kb'
     });
-
+		console.log(application);
     //应用中文转英文
     var domain  = application.name;
     var reg = /[\u4e00-\u9FA5]+/;
@@ -57,22 +56,31 @@ applications.create = function*() {
         if(data == 'success'){
           // var data = yield shells.nginx();
           // console.log(data);
-          var inserted = yield models.gospel_applications.create(application);
+
 
           //创建并启动docker
           var sshPort = yield portManager.generatePort();
           var socketPort = yield portManager.generatePort();
-          if(sshPort == socketPort){
+					if(sshPort == socketPort){
 
-            sshPort = yield portManager.generatePort();
             socketPort = yield portManager.generatePort();
           }
+					var appPort  = yield portManager.generatePort();
+					if(appPort == socketPort){
+							appPort  = yield portManager.generatePort();
+					}
           var data = yield shells.docker({
-            name: domain,
+            name: application.creator + "_" + domain,
             sshPort: sshPort,
             socketPort: socketPort,
-            password: application.password
+						appPort: appPort,
+            password: application.password,
+						memory: application.memory,
           });
+					application.docker = 'gospel_project_' + application.creator + domain;
+					application.status = 1;
+					delete application['memory'];
+					var inserted = yield models.gospel_applications.create(application);
           console.log(data);
           if(data == 'success'){
             this.body = render(null,null,null,1,'创建应用成功');

@@ -22,6 +22,7 @@ shells.docker = function*(options) {
   console.log(options);
   return new Promise(function(resolve, reject) {
     var bash = "ssh root@gospely.com " + "/root/gospely/allocate/start.js -n " + options.name + " -m " + options.memory + " -p " + options.socketPort + " -s " + options.sshPort + " -a " + options.appPort + " -w " + options.password + " && echo 'sucess'";
+    console.log(bash);
       exec(bash, function(err,data){
         console.log(err);
         console.log(data);
