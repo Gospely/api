@@ -80,13 +80,13 @@ applications.create = function*() {
 	            password: application.password,
 							memory: application.memory,
 	          });
-						application.docker = 'gospel_project_' + application.creator + domain;
+						application.docker = 'gospel_project_' + application.creator + "_" + domain;
 						application.status = 1;
 						delete application['memory'];
 						var inserted = yield models.gospel_applications.create(application);
 	          console.log(data);
 	          if(data == 'success'){
-	            this.body = render(null,null,null,1,'创建应用成功');
+	            this.body = render(inserted,null,null,1,'创建应用成功');
 	          }else{
 	            this.body = render(null,null,null,-1,'创建应用失败');
 	          }

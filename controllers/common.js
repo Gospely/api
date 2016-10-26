@@ -75,7 +75,7 @@ common.update = function *update() {
   	  if (!inserted) {
   	    this.throw(405, "couldn't be added.");
   	  }
-  	  this.body = render(null,null,null,2);
+  	  this.body = render(inserted,null,null,2);
 }
 
 //新增一条记录
@@ -97,7 +97,7 @@ common.create = function *create() {
 			if (!inserted) {
 				this.throw(405, "couldn't be added.");
 			}
-			this.body = render(null,null,null,1,'新增成功');
+			this.body = render(inserted,null,null,1,'新增成功');
 		}
 }
 
@@ -112,7 +112,7 @@ common.delete = function *remove() {
 		if (!deleted) {
 			this.throw(405, "couldn't be delete.");
 		}
-		this.body = render(null,null,null,4,'删除成功');
+		this.body = render(deleted,null,null,4,'删除成功');
 }
 common.count = function* count() {
 
