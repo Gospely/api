@@ -3,6 +3,7 @@ var models = require('../models');
 var config = require('../configs');
 var shells = require('../shell');
 var parse = require('co-body');
+var uuid = require('node-uuid')
 var transliteration = require('transliteration');
 var portManager = require('../port');
 var common = require('./common');
@@ -37,65 +38,69 @@ applications.create = function*() {
       var tr = transliteration.transliterate
       domain = tr(domain).replace(new RegExp(" ",'gm'),"").toLocaleLowerCase();
     }
-
-    var port = yield portManager.generatePort();
-    console.log(port + domain);
+		application.id = uuid.v4();
     var inserted = yield  models.gospel_domains.create({
         domain: domain + "_" +application.creator,
         ip: '120.76.235.234',
+				application: application.id,
         creator: application.creator
     });
+		console.log(inserted);
+		if(inserted.code = 'failed') {
+				this.body = render(null,null,null,-1, "二级域名解析失败，请重命名应用名");
+		}else{
+			try{
+	        var data = yield shells.domain({
+	          user: application.creator,
+	          domain: domain  + "_" + application.creator,
+	          port: port,
+	        });
+	        console.log(data);
+	        if(data == 'success'){
+	          // var data = yield shells.nginx();
+	          // console.log(data);
 
-    try{
-        var data = yield shells.domain({
-          user: application.creator,
-          domain: domain  + "_" + application.creator,
-          port: port,
-        });
-        console.log(data);
-        if(data == 'success'){
-          // var data = yield shells.nginx();
-          // console.log(data);
 
+	          //创建并启动docker
+	          application.sshPort = yield portManager.generatePort();
+	          application.socketPort = yield portManager.generatePort();
+						if(application.sshPort == application.socketPort){
 
-          //创建并启动docker
-          var sshPort = yield portManager.generatePort();
-          var socketPort = yield portManager.generatePort();
-					if(sshPort == socketPort){
+	            application.socketPort = yield portManager.generatePort();
+	          }
+						application.appPort  = yield portManager.generatePort();
+						if(application.appPort == application.socketPort){
+								application.appPort  = yield portManager.generatePort();
+						}
+	          var data = yield shells.docker({
+	            name: application.creator + "_" + domain,
+	            sshPort: application.sshPort,
+	            socketPort: application.socketPort,
+							appPort: application.appPort,
+	            password: application.password,
+							memory: application.memory,
+	          });
+						application.docker = 'gospel_project_' + application.creator + domain;
+						application.status = 1;
+						delete application['memory'];
+						var inserted = yield models.gospel_applications.create(application);
+	          console.log(data);
+	          if(data == 'success'){
+	            this.body = render(null,null,null,1,'创建应用成功');
+	          }else{
+	            this.body = render(null,null,null,-1,'创建应用失败');
+	          }
 
-            socketPort = yield portManager.generatePort();
-          }
-					var appPort  = yield portManager.generatePort();
-					if(appPort == socketPort){
-							appPort  = yield portManager.generatePort();
-					}
-          var data = yield shells.docker({
-            name: application.creator + "_" + domain,
-            sshPort: sshPort,
-            socketPort: socketPort,
-						appPort: appPort,
-            password: application.password,
-						memory: application.memory,
-          });
-					application.docker = 'gospel_project_' + application.creator + domain;
-					application.status = 1;
-					delete application['memory'];
-					var inserted = yield models.gospel_applications.create(application);
-          console.log(data);
-          if(data == 'success'){
-            this.body = render(null,null,null,1,'创建应用成功');
-          }else{
-            this.body = render(null,null,null,-1,'创建应用失败');
-          }
+	        }else{
+	          this.body = render(null,null,null,-1,'创建应用失败');
+	        }
 
-        }else{
-          this.body = render(null,null,null,-1,'创建应用失败');
-        }
+	    }catch(err){
+	        console.log(err);
+	        throw err;
+	    }
+		}
 
-    }catch(err){
-        console.log(err);
-        throw err;
-    }
 }
 
 module.exports = applications;

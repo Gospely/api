@@ -38,14 +38,21 @@ module.exports = function(sequelize, DataTypes){
                       mx: '10'
                 }
             }
-            var data = yield dnspod.domainOperate(options);
+
             try {
-              domain.record = data.record.id
+              var data = yield dnspod.domainOperate(options);
+              if(data.status.code == '1'){
+                domain.record = data.record.id
+                var row = this.build(domain);
+                return {code: 'success', message: yield row.save() };
+              }else{
+                return {code: 'failed' ,message: data.status.message };
+              }
+
             } catch (e) {
-              throw e;
+              return "failed";
             }
-            var row = this.build(domain);
-            return yield row.save();
+
           },
           delete: function* (id) {
 

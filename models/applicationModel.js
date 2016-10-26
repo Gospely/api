@@ -10,6 +10,8 @@ module.exports = function(sequelize, DataTypes){
 			},
 	    name: DataTypes.STRING,
       port: DataTypes.STRING,
+      sshPort: { type: DataTypes.STRING, field: 'ssh_port'},
+      socketPort: { type: DataTypes.STRING, field: 'socket_port'},
       source: DataTypes.STRING,
       domain: DataTypes.STRING,
       docker: DataTypes.STRING,
