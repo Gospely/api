@@ -52,26 +52,28 @@ applications.create = function*() {
 				this.body = render(null,null,null,-1, "二级域名解析失败，请重命名应用名");
 		}else{
 			try{
+					application.appPort  = yield portManager.generatePort();
 	        var data = yield shells.domain({
 	          user: application.creator,
 	          domain: domain  + "_" + application.creator,
-	          port: port,
+	          port: application.appPort,
 	        });
 	        console.log(data);
 	        if(data == 'success'){
 	          // var data = yield shells.nginx();
 	          // console.log(data);
 	          //创建并启动docker
-	          application.sshPort = yield portManager.generatePort();
-	          application.socketPort = yield portManager.generatePort();
+
+						application.socketPort = yield portManager.generatePort();
+						if(application.appPort == application.socketPort){
+							application.appPort  = yield portManager.generatePort();
+						}
+	        	application.sshPort = yield portManager.generatePort();
 						if(application.sshPort == application.socketPort){
 
 	            application.socketPort = yield portManager.generatePort();
 	          }
-						application.appPort  = yield portManager.generatePort();
-						if(application.appPort == application.socketPort){
-								application.appPort  = yield portManager.generatePort();
-						}
+
 	          var data = yield shells.docker({
 	            name: application.creator + "_" + domain,
 	            sshPort: application.sshPort,
@@ -82,6 +84,7 @@ applications.create = function*() {
 	          });
 						application.docker = 'gospel_project_' + application.creator + "_" + domain;
 						application.status = 1;
+						application.domain = domain;
 						delete application['memory'];
 						var inserted = yield models.gospel_applications.create(application);
 	          console.log(data);

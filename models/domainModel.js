@@ -32,7 +32,7 @@ module.exports = function(sequelize, DataTypes){
                 opp: 'recordCreate',
                 param: {
                       domain: config.dnspod.baseDomain,
-                      sub_domain: domain.domain,
+                      sub_domain: domain.subDomain,
                       record_type: 'A',
                       record_line: '默认',
                       value:  domain.ip,

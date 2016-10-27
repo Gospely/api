@@ -80,18 +80,18 @@ domains.delete = function*() {
 
     if(result.status.code == '1'){
 
-      var options = {
-        method: 'recordRemove',
-        opp: 'recordRemove',
-        param: {
-              domain: domain.domain,
-        }
-      }
-      var deleted = yield models.gospel_domains.delete(id);
+      // var options = {
+      //   method: 'recordRemove',
+      //   opp: 'recordRemove',
+      //   param: {
+      //         domain: domain.domain,
+      //   }
+      // }
+      // var deleted = yield models.gospel_domains.delete(id);
 
-      this.body = render(deleted,null,null,1,'删除成功');
+      this.body = render(result,null,null,1,'删除成功');
     }else{
-      this.body = render(deleted,null,null,-1,result.status.message + ',域名解绑失败');
+      this.body = render(result,null,null,-1,result.status.message + ',域名解绑失败');
     }
 
 }
@@ -102,27 +102,73 @@ domains.update = function*() {
     var item = yield parse(this, {
       limit: '1kb'
     });
-  var domain = yield models.gospel_domains.findById(item.id);
-  var options = {
-    method: 'recordModify',
-    opp: "recordModify",
-    param: {
-      domain: domain.domain,
-      subDomain: item.domain,
-      record_line_id: domain.record,
-      record_type: 'A',
-      record_line: '默认',
-      value:  domain.ip,
-      mx: '10'
-    }
-  }
-  var result = yield dnspod.domainOperate(options);
+	console.log(item);
+	var checkDomains = yield models.gospel_domains.getAll({
+		subDomain: item.subDomain
+	});
+	console.log(checkDomains);
+	if(checkDomains.length != 0){
 
-  if(result.status.code == '1'){
-    this.body = render(deleted,null,null,1,'修改成功');
-  }else{
-    this.body = render(deleted,null,null,-1,result.status.message + ',修改失败');
-  }
+		this.body = render(item,null,null,-1,'该二级域名被占用');
+	}else{
+
+		var domains = yield models.gospel_domains.getAll({
+			subDomain: item.oldDomain,
+			application: item.application,
+			record: '245836342'
+		});
+		console.log(domains);
+		if(domains.length == 1){
+
+			var domain = domains[0];
+			console.log(domain);
+			var options = {
+		    method: 'recordRemove',
+		    opp: "recordRemove",
+		    param: {
+		      domain: domain.domain,
+		      record_id: domain.record,
+		    }
+		  }
+		  var result = yield dnspod.domainOperate(options);
+			console.log(result);
+		  if(result.status.code == '1'){
+
+				var options = {
+					method: 'recordCreate',
+					opp: 'recordCreate',
+					param: {
+						domain: domain.domain,
+						sub_domain: item.subDomain,
+						record_type: 'A',
+						record_line: '默认',
+						value:  domain.ip,
+						mx: '10'
+					}
+				}
+				result = yield dnspod.domainOperate(options);
+				if(result.status.code == '1') {
+					var inserted = yield models.gospel_domains.update({
+						id: domain.id,
+						record: result.record.id,
+						subDomain: item.subDomain
+					})
+
+					inserted = yield models.gospel_applications.update({
+						id: item.application,
+						domain: item.subDomain + "." + domain.domain
+					});
+					this.body = render(domains,null,null,1,'修改成功');
+				}else{
+					this.body = render(domains,null,null,1,'修改失败');
+				}
+
+		  }else{
+		    this.body = render(domains,null,null,-1,result.status.message + ',修改失败');
+		  }
+		}else{
+			this.body = render(domains,null,null,-1," " + ',修改失败');
+		}
+	}
 }
-
 module.exports = domains;
