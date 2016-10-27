@@ -148,13 +148,13 @@ domains.update = function*() {
 				}
 				result = yield dnspod.domainOperate(options);
 				if(result.status.code == '1') {
-					var inserted = yield models.gospel_domains.update({
+					var inserted = yield models.gospel_domains.modify({
 						id: domain.id,
 						record: result.record.id,
 						subDomain: item.subDomain
 					})
 
-					inserted = yield models.gospel_applications.update({
+					inserted = yield models.gospel_applications.modify({
 						id: item.application,
 						domain: item.subDomain + "." + domain.domain
 					});
