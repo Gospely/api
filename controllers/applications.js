@@ -40,7 +40,7 @@ applications.create = function*() {
     }
 		application.id = uuid.v4();
     var inserted = yield  models.gospel_domains.create({
-				subDomain: domain + "_" +application.creator,
+				subDomain: domain + "-" +application.creator,
         domain: config.dnspod.baseDomain,
         ip: '120.76.235.234',
 				application: application.id,
@@ -55,7 +55,7 @@ applications.create = function*() {
 					application.appPort  = yield portManager.generatePort();
 	        var data = yield shells.domain({
 	          user: application.creator,
-	          domain: domain  + "_" + application.creator,
+	          domain: domain  + "-" + application.creator,
 	          port: application.appPort,
 	        });
 	        console.log(data);
@@ -81,6 +81,7 @@ applications.create = function*() {
 							appPort: application.appPort,
 	            password: application.password,
 							memory: application.memory,
+							file: application.imageName
 	          });
 						application.docker = 'gospel_project_' + application.creator + "_" + domain;
 						application.status = 1;

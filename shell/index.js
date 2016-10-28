@@ -8,6 +8,9 @@ shells.domain = function*(options){
   var cmd = fs.readFileSync(file, "utf8");
   cmd = cmd.replace('user',options.user).replace('port',options.port);
   cmd = cmd.replace(new RegExp('domain','gm'),options.domain);
+  var name  = options.domain.replace('-','_');
+  cmd = cmd.replace(new RegExp('projectname','gm'),name);
+  cmd = cmd.replace(new RegExp('domain','gm'),options.domain);
   console.log(cmd);
   return new Promise(function(resolve, reject) {
     options.user = '';
@@ -21,7 +24,7 @@ shells.domain = function*(options){
 shells.docker = function*(options) {
   console.log(options);
   return new Promise(function(resolve, reject) {
-    var bash = "ssh root@gospely.com " + "/root/gospely/allocate/start.js -n " + options.name + " -m " + options.memory + " -p " + options.socketPort + " -s " + options.sshPort + " -a " + options.appPort + " -w " + options.password + " && echo 'sucess'";
+    var bash = "ssh root@gospely.com " + "/root/gospely/allocate/start.js -n " + options.name + " -m "  + options.memory + " -f " + options.file + " -p " + options.socketPort + " -s " + options.sshPort + " -a " + options.appPort + " -w " + options.password + " && echo 'sucess'";
     console.log(bash);
       exec(bash, function(err,data){
         console.log(err);
