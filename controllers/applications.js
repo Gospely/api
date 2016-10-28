@@ -52,7 +52,7 @@ applications.create = function*() {
 				this.body = render(null,null,null,-1, "二级域名解析失败，请重命名应用名");
 		}else{
 			try{
-					application.appPort  = yield portManager.generatePort();
+					application.port  = yield portManager.generatePort();
 	        var data = yield shells.domain({
 	          user: application.creator,
 	          domain: domain  + "-" + application.creator,
@@ -65,8 +65,8 @@ applications.create = function*() {
 	          //创建并启动docker
 
 						application.socketPort = yield portManager.generatePort();
-						if(application.appPort == application.socketPort){
-							application.appPort  = yield portManager.generatePort();
+						if(application.port == application.socketPort){
+							application.port  = yield portManager.generatePort();
 						}
 	        	application.sshPort = yield portManager.generatePort();
 						if(application.sshPort == application.socketPort){
@@ -78,7 +78,7 @@ applications.create = function*() {
 	            name: application.creator + "_" + domain,
 	            sshPort: application.sshPort,
 	            socketPort: application.socketPort,
-							appPort: application.appPort,
+							appPort: application.port,
 	            password: application.password,
 							memory: application.memory,
 							file: application.imageName
