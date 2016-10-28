@@ -11,7 +11,7 @@ var dir = require('node-dir');
 
 var 
 	config = {
-		baseDir: '/var/www/storage/codes/vue-f7/'
+		baseDir: ''
 	},
 
 	readFile = function (fileName){
@@ -133,8 +133,8 @@ var
 
 os.platform() === 'darwin' ? 
 
-	config.baseDir = '/var/www/apache/gospel/vue-f7/' : 
-	config.baseDir = '/var/www/storage/codes/vue-f7/' ;
+	config.baseDir = '/var/www/apache/gospel/' : 
+	config.baseDir = '/var/www/storage/codes/' ;
 
 
 var fileSystem = {
