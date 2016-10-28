@@ -136,7 +136,6 @@ os.platform() === 'darwin' ?
 	config.baseDir = '/var/www/apache/gospel/' : 
 	config.baseDir = '/var/www/storage/codes/' ;
 
-
 var fileSystem = {
 
 	read: function* () {
