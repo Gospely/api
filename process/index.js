@@ -1,40 +1,16 @@
 var processes = {};
 
 var data = {};
-var nodes = [];
-var current = 0;
+var result = {};
 
-function Processes(){
-	current = 0;
-}
-Processes.prototype.excute = function* () {
+module.exports = function (options){
 
-	try {
+	var data = options.data;
 
-		if(nodes[current] != null && nodes[current] != undefined){
-			nodes[current].do(data[current]);
-			current++;
+	return {
 
-		}else{
-			current--;
-		}
-		yield next;
-	} catch (e) {
-		yield self.rollback();
-		yield self.handlerError(e);
+		data: options.data,
+		next: "test"
+
 	}
-}
-processes.handlerError = function(err)* {
-
-	this.body =  {
-		code: -1,
-		message: err.message,
-		all: null,
-		cur: null,
-		fields: null
-	}
-}
-
-processes.next = function()*{
-
 }
