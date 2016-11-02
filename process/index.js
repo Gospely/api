@@ -10,7 +10,7 @@ module.exports = function (options){
 	return {
 
 		data: options.data,
-		next: "test"
+		next: 
 
 	}
 }
