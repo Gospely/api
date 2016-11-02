@@ -1,16 +1,33 @@
-var processes = {};
+var build = require("./node");
 
-var data = {};
-var result = {};
+var node = build.init({
+	do: function() {
+		console.log("first do");
+	},
+	data: 'first data',
+	undo: function() {
+		console.log("undo first");
+	},
+})
+node = build.buildNext(node, {
+	do: function() {
+			console.log("second do");
+		},
+	data: 'second data',
+	undo: function() {
+		console.log("undo second");
+	},
+});
 
-module.exports = function (options){
+node = build.buildNext(node, {
+	do: function() {
+			console.log("third do");
+			throw ("err")
+		},
+	data: 'third data',
+	undo: function() {
+		console.log("undo third");
+	},
+});
 
-	var data = options.data;
-
-	return {
-
-		data: options.data,
-		next: 
-
-	}
-}
+node.excute();
