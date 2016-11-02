@@ -11,40 +11,42 @@ module.exports = {
 			excutable: true,
 			last: temp,
 			next: null,
-			excute: function(){
+			excute: function* (){
 
 				var self = this;
 				if(self.excutable) {
 						console.log(self.data);
 						self.excutable = false;
 						try {
-								options.do();
+								console.log('do');
+								yield options.do();
 								if(self.next != null){
-									self.next.excute();
+									yield self.next.excute();
 								}else {
 									console.log("finish");
 								}
 						} catch (e) {
-							self.rollback();
+							yield self.rollback();
 						}
 
 				}else{
 					if(self.last != null){
-							self.last.excute();
+							yield self.last.excute();
 					}else{
 						console.log("back to begin");
 					}
 				}
 
 			},
-			rollback: function() {
+			rollback: function* () {
+				console.log("r");
 				var self = this;
 				if(self.last != null){
-					options.undo();
+					yield options.undo();
 					console.log("test");
-					self.last.rollback();
+					yield self.last.rollback();
 				}else{
-					self.rollback();
+					yield self.rollback();
 				}
 
 			}
@@ -58,25 +60,33 @@ module.exports = {
 			excutable: true,
 			last: null,
 			next: null,
-			excute: function(){
+			excute: function* (){
 				var self = this;
 
 				if(self.excutable) {
-						console.log(self.data);
-						self.excutable = false;
-						options.do();
-						self.next.excute();
+
+						try {
+							console.log(self.data);
+							self.excutable = false;
+							yield options.do();
+							yield self.next.excute();
+						} catch (e) {
+							yield options.undo();
+							yield self.rollback();
+						} finally {
+
+						}
 				}else{
-					self.rollback();
+					yield self.rollback();
 					if(self.last != null){
-							self.last.excute();
+							yield self.last.excute();
 					}else{
 						console.log("stop");
 					}
 				}
 
 			},
-			rollback: function() {
+			rollback: function*() {
 					console.log('rollback finish');
 			}
 		};

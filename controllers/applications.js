@@ -7,6 +7,7 @@ var uuid = require('node-uuid')
 var transliteration = require('transliteration');
 var portManager = require('../port');
 var common = require('./common');
+var processes =  require('../process');
 
 var applications = {};
 //数据渲染，todo:分页参数引入，异常信息引入
@@ -60,7 +61,7 @@ applications.create = function*() {
 	        });
 	        console.log(data);
 	        if(data == 'success'){
-	          // var data = yield shells.nginx();
+	          var data = yield shells.nginx();
 	          // console.log(data);
 	          //创建并启动docker
 
@@ -106,4 +107,82 @@ applications.create = function*() {
 
 }
 
+applications.list = function* () {
+
+	var domain = 'test1111';
+  var data ={
+			subDomain: domain + "-" +1,
+			domain: config.dnspod.baseDomain,
+			ip: '120.76.235.234',
+			application: 11111,
+			creator: 1,
+			sub: true
+	};
+	console.log("test");
+	var node = processes.init({
+		do: function*() {
+			var self = this;
+			var inserted = yield models.gospel_domains.create(self.data);
+
+			if(inserted.code == 'failed') {
+					throw("二级域名解析失败，请重命名应用名");
+			}
+		},
+		data: {
+				subDomain: domain + "-" +1,
+				domain: config.dnspod.baseDomain,
+				ip: '120.76.235.234',
+				application: 11111,
+				creator: 1,
+				sub: true
+		},
+		undo: function*() {
+			console.log(data);
+			console.log("undo first");
+		},
+	})
+
+	node = processes.buildNext(node, {
+		do: function*() {
+				var self = this;
+				var result = yield shells.domain(self.data);
+				if(result != 'success'){
+						throw('创建应用失败');
+				}
+			},
+		data: {
+			user: 1,
+			domain: domain  + "-" + 1,
+			port: 1111,
+		},
+		undo: function*() {
+
+			var self = this;
+			var name = self.data.domain.replace('-','_')
+			yield shells.delNginxConf(name);
+			yield shells.nginx();
+			console.log("undo second");
+		},
+	});
+	node = processes.buildNext(node, {
+		do: function*() {
+				console.log("third do");
+			},
+		data: 'third data',
+		undo: function*() {
+			console.log("undo third");
+		},
+	});
+	node = processes.buildNext(node, {
+		do: function*() {
+				console.log("fourth do");
+			},
+		data: 'third data',
+		undo: function*() {
+			console.log("undo fourth");
+		},
+	});
+	yield node.excute();
+
+}
 module.exports = applications;

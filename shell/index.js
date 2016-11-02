@@ -46,4 +46,15 @@ shells.nginx = function*() {
 
   })
 }
+shells.delNginxConf = function*(projectname) {
+  return new Promise(function(resolve, reject) {
+    exec("ssh root@gospely.com " + " rm /etc/nginx/conf.d/" +projectname+ ".gospely.com.conf", function(err,data){
+      console.log(data);
+      console.log(err);
+      if (err) reject(err);
+      resolve(data);
+  });
+
+  })
+}
 module.exports = shells;
