@@ -3,8 +3,10 @@ module.exports = {
 
 		var temp = node;
 		while (null != temp.next) {
+			console.log('loop');
 				temp = temp.next;
 		}
+
 		temp.next = {
 			data: options.data,
 			excutable: true,
@@ -24,9 +26,6 @@ module.exports = {
 									console.log("finish");
 								}
 						} catch (e) {
-							console.log(e);
-							console.log(self);
-							options.undo();
 							self.rollback();
 						}
 
@@ -43,13 +42,15 @@ module.exports = {
 				var self = this;
 				if(self.last != null){
 					options.undo();
+					console.log("test");
 					self.last.rollback();
 				}else{
-					console.log('rollback finish');
+					self.rollback();
 				}
 
 			}
 		};
+		console.log(temp.last);
 		return node;
 	},
 	init: function(options) {
@@ -78,13 +79,7 @@ module.exports = {
 
 			},
 			rollback: function() {
-				var self = this;
-				if(self.last != null){
-					options.undo();
-					self.last.rollback();
-				}else{
 					console.log('rollback finish');
-				}
 			}
 		};
 	}

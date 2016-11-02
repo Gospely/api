@@ -18,16 +18,22 @@ node = build.buildNext(node, {
 		console.log("undo second");
 	},
 });
-
 node = build.buildNext(node, {
 	do: function() {
 			console.log("third do");
-			throw ("err")
 		},
 	data: 'third data',
 	undo: function() {
 		console.log("undo third");
 	},
 });
-
+node = build.buildNext(node, {
+	do: function() {
+			console.log("fourth do");
+		},
+	data: 'third data',
+	undo: function() {
+		console.log("undo fourth");
+	},
+});
 node.excute();
