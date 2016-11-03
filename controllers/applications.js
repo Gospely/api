@@ -131,7 +131,7 @@ applications.create = function*() {
 					}
 				},
 			data:{
-				name: application.creator + "_" + domain,
+				name: domain + "_" + application.creator,
 				sshPort: application.sshPort,
 				socketPort: application.socketPort,
 				appPort: application.appPort,
@@ -154,7 +154,7 @@ applications.create = function*() {
 		});
 
 		//将应用记录存储到数据库
-		application.docker = 'gospel_project_' + application.creator + "_" + domain;
+		application.docker = 'gospel_project_' + domain + "_" + application.creator;
 		application.status = 1;
 		application.domain = domain;
 		delete application['memory'];
@@ -182,5 +182,61 @@ applications.create = function*() {
 		}else{
 			this.body = render(application,null,null,-1,'创建失败');
 		}
+}
+
+applications.delete =  function *() {
+
+
+	var id = this.params.id;
+	var application = yield models.gospel_applications.findById(id);
+	//将中文英语名转英文
+	var domain  = application.domain;
+	// var reg = /[\u4e00-\u9FA5]+/;
+	// var res = reg.test(domain);
+	//
+	// if(res){
+	// 	var tr = transliteration.transliterate
+	// 	domain = tr(domain).replace(new RegExp(" ",'gm'),"").toLocaleLowerCase();
+	// }
+
+	//获取应用的二级域名
+	var domains = yield models.gospel_domains.getAll({
+		subDomain: application.domain + "-" +application.creator,
+		sub: true,
+	})
+	console.log(domains);
+	var options = {
+		method: 'recordRemove',
+		opp: 'recordRemove',
+		param: {
+					domain: "gospely.com",
+					record_id: domains[0].record
+		}
+	}
+	//解绑二级域名
+	yield dnspod.domainOperate(options);
+	//删除二级域名
+	yield models.gospel_domains.delete(domains[0].id);
+
+
+
+	var name = domain + '_' + application.creator
+	//删除nginx配置文件
+	yield shells.delNginxConf(name);
+	yield shells.nginx();
+	//删除docker
+	yield shells.stopDocker({
+		name: domain + "_" + application.creator,
+	});
+	yield shells.rmDocker({
+		name: domain + "_" + application.creator
+	});
+	//删除项目文件资源
+	yield shells.rmFile("/var/www/storage/codes/" + application.creator + "_" + application.name)
+	var inserted = yield models.gospel_applications.delete(application.id);
+	if (!deleted) {
+		this.throw(405, "couldn't be delete.");
+	}
+	this.body = render(deleted,null,null,4,'删除成功');
 }
 module.exports = applications;
