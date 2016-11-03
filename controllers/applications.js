@@ -148,6 +148,7 @@ applications.create = function*() {
 				yield shells.rmDocker({
 					name: self.data.name
 				});
+				yield shells.rmFile("/var/www/storage/codes/" + self.data.name)
 				console.log("undo docker");
 			},
 		});
