@@ -163,6 +163,7 @@ applications.create = function*() {
 						var self = this;
 						var inserted = yield models.gospel_applications.create(self.data);
 						self.data = inserted;
+						application = inserted;
 						if(!inserted){
 								throw('创建应用失败');
 						}
@@ -177,9 +178,9 @@ applications.create = function*() {
 		var result = yield node.excute();
 		console.log(result);
 		if(result){
-			this.body = render(null,null,null,1,'创建成功');
+			this.body = render(application,null,null,1,'创建成功');
 		}else{
-			this.body = render(null,null,null,-1,'创建失败');
+			this.body = render(application,null,null,-1,'创建失败');
 		}
 }
 module.exports = applications;
