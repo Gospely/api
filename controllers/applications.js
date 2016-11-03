@@ -179,7 +179,7 @@ applications.create = function*() {
 		if(result){
 			this.body = render(null,null,null,1,'创建成功');
 		}else{
-			this.body = render(null,null,null,1,'创建失败');
+			this.body = render(null,null,null,-1,'创建失败');
 		}
 }
 module.exports = applications;
