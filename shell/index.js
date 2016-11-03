@@ -57,4 +57,30 @@ shells.delNginxConf = function*(projectname) {
 
   })
 }
+
+shells.rmDocker = function*(docker){
+
+  return new Promise(function(resolve,reject) {
+    exec("ssh root@gospely.com " + "docker rm  gospel_project_" + docker.name, function(err,data){
+
+      console.log(data);
+      console.log(err);
+      if(err) reject(err);
+      resolve(data);
+    });
+  })
+}
+shells.stopDocker = function*(docker){
+
+  return new Promise(function(resolve,reject) {
+    exec("ssh root@gospely.com " + "docker stop  gospel_project_" + docker.name, function(err,data){
+
+      console.log(data);
+      console.log(err);
+      if(err) reject(err);
+      resolve(data);
+    });
+  })
+}
+
 module.exports = shells;

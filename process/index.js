@@ -21,12 +21,15 @@ module.exports = {
 								console.log('do');
 								yield options.do();
 								if(self.next != null){
-									yield self.next.excute();
+									return yield self.next.excute();
 								}else {
 									console.log("finish");
+									return true;
 								}
 						} catch (e) {
-							yield self.rollback();
+
+							console.log(e);
+							return yield self.rollback();
 						}
 
 				}else{
@@ -39,16 +42,15 @@ module.exports = {
 
 			},
 			rollback: function* () {
-				console.log("r");
 				var self = this;
+				yield options.undo();
 				if(self.last != null){
-					yield options.undo();
-					console.log("test");
+
 					yield self.last.rollback();
 				}else{
 					yield self.rollback();
 				}
-
+				return false;
 			}
 		};
 		return node;
@@ -69,16 +71,17 @@ module.exports = {
 							console.log(self.data);
 							self.excutable = false;
 							yield options.do();
-							yield self.next.excute();
+							return yield self.next.excute();
 						} catch (e) {
-							yield options.undo();
-							yield self.rollback();
+							console.log(e);
+							return yield self.rollback();
 						} finally {
 
 						}
 				}else{
 					yield self.rollback();
 					if(self.last != null){
+
 							yield self.last.excute();
 					}else{
 						console.log("stop");
@@ -87,7 +90,11 @@ module.exports = {
 
 			},
 			rollback: function*() {
+
+					var self = this;
+					yield options.undo();
 					console.log('rollback finish');
+					return false;
 			}
 		};
 	}
