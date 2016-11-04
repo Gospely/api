@@ -86,9 +86,10 @@ module.exports ={
 																	break;
 																}
 															};
+															console.log(pass);
 															if(pass){
 
-																if((Date.now() -innersession.time) <= innersession.limitTime){
+																if((Date.now() - innersession.time) <= innersession.limitTime){
 
 																		yield models.gospel_innersessions.modify({
 																				id: innersession.id,
@@ -105,7 +106,7 @@ module.exports ={
 															}else{
 																	//
 																	this.status = 200;
-																	this.body = render(null,-101,'无权限操作');
+																	this.body = render(null,-100,'无权限操作');
 															}
 													}
 
