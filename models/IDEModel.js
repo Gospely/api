@@ -10,7 +10,8 @@ module.exports = function(sequelize, DataTypes){
 	    name: DataTypes.STRING,
       product: DataTypes.STRING,
       creator: DataTypes.INTEGER,
-      volume: DataTypes.STRING,
+      volume: { type: DataTypes.STRING,  defaultValue: '10' },
+      unit: { type: DataTypes.STRING,  defaultValue: 'G' },
       expireAt: { type: DataTypes.STRING, field: "expireat" },
       isDeleted: { type: DataTypes.INTEGER, field: "isdeleted", defaultValue: 0 }
 	  },{

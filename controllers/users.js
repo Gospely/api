@@ -98,13 +98,14 @@ users.register = function* () {
 	user.type = 'common';
 	user.ide = '1';
 	user.ideName = '个人版';
+	user.group = 'ab64c397-d323-4133-9541-479bbaaf6c52';
 
 
   console.log(user.password);
 	var inserted;
 
   if (user.phone != "") {
-     console.log(user.phone);
+     console.log(user);
        var reg = /^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/;
         isok= reg.test(user.phone );
         var activeCode = uuid.v4();
@@ -145,29 +146,33 @@ users.register = function* () {
 
        }
 
-			 reg = /^(((13[0-9]{1})|(15[0-9]{1})|(18[0-9]{1}))+\d{8})$/;
+			 reg = /^1[34578]\d{9}$/;
 			 isok= reg.test(user.phone );
 			 console.log(isok);
-			 if(!isok){
+			 if(isok){
 
-					var token = user.toke;
+					var token = user.token;
 					var authCode = user.authCode;
 
 					var innersession = yield models.gospel_innersessions.findById(token);
+					if(innersession.phone == user.phone) {
+						if((Date.now() -innersession.time) <= innersession.limitTime){
 
-					if((Date.now() -innersession.time) <= innersession.limitTime){
+								//更新用户状态
+								if(innersession.code == authCode){
+									inserted  = yield  models.gospel_users.create(user);
+									this.body = render(user,1,"注册成功");
+								}else{
+									this.body = render(null,-1,"验证码错误，请重新获取");
+								}
+						}else {
+								this.body = render(null,-1,"验证码超时，请重新获取");
+						}
+					}else {
+						this.body = render(null,-1,"注册失败，手机号或验证码错误");
+					}
 
-              //更新用户状态
-							if(innersession.code == authCode){
-								inserted  = yield  models.gospel_users.create(user);
-								this.body = render(user,1,"注册成功");
-							}else{
-								this.body = render(null,-1,"验证码错误，请重新获取");
-							}
-          }else {
-              this.body = render(null,-1,"验证码超时，请重新获取");
-          }
-				 	console.log(user.phon + "phone");
+				 	console.log(user.phone + "phone");
 
 					//校验验证吗
 			 }
@@ -176,7 +181,26 @@ users.register = function* () {
   if (!inserted) {
     	this.throw(405, "register failed");
   }else{
-      this.body = render(user,1,"注册成功");
+
+		yield	models.gospel_ides.create({
+				name: '个人版',
+				creator: inserted.id,
+				product: '1'
+			})
+
+			var token = uuid.v4();
+			console.log("user" + token);
+
+	    inserted.dataValues.token = token;
+	  	yield models.gospel_innersessions.create({
+					id: token,
+					code: token,
+					creater: inserted.id,
+					time: Date.now(),
+					group: inserted.group,
+					limitTime: 30 * 60 *1000
+			});
+      this.body = render(inserted,1,"注册成功");
     //注册成功
   }
 }
@@ -278,6 +302,20 @@ users.phoneCode =  function*() {
 		phone: phone
 	})
 	this.body = render(id,1,"获取验证码成功");
+}
+
+users.validator = function *() {
+
+	var user = this.query;
+	console.log(user);
+	var data = yield models.gospel_users.findAll({where: user});
+
+	if(data.length !=0) {
+		this.body = render(null,-1,"已被注册");
+	}else{
+		this.body = render(null,1,"");
+	}
+
 }
 users.files = function* () {
 

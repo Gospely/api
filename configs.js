@@ -1,6 +1,6 @@
 module.exports = {
 
-	isAuth: false,
+	isAuth: true,
 
 	isInit: 0,
 
@@ -155,6 +155,13 @@ module.exports = {
 				method:'get',
 				url: '/users/files/:file',
 				controller: 'files',
+				groups: "ab64c397-d323-4133-9541-479bbaaf6c52_100"
+			},
+			{
+				name: '检查是否被注册',
+				method:'get',
+				url: '/users/validator',
+				controller: 'validator',
 				groups: "ab64c397-d323-4133-9541-479bbaaf6c52_100"
 			},
 		],

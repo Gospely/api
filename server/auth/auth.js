@@ -24,17 +24,7 @@ module.exports ={
 							var url = this.url.split("?")[0];
 							var method = this.method;
 
-							if(method == "GET" || method == "DELETE"){
 
-									var replacements = url.split('/');
-									console.log(replacements.length);
-									if(replacements.length >= 3){
-										url = url.replace(replacements[replacements.length - 1],"");
-										url = url+ ":id";
-										console.log(url);
-									}
-
-							}
 							//基础验证，即验证用户是否已经是登录状态
 							//获取token
 							var token =  this.headers['authorization'];
@@ -50,6 +40,17 @@ module.exports ={
 										yield next;
 								}else{
 
+									if(method == "GET" || method == "DELETE"){
+
+											var replacements = url.split('/');
+											console.log(replacements.length);
+											if(replacements.length >= 3){
+												url = url.replace(replacements[replacements.length - 1],"");
+												url = url+ ":id";
+												console.log(url);
+											}
+
+									}
 									if(token == null || token == undefined  || token == '' ){
 
 										console.log("no login");
@@ -126,7 +127,7 @@ module.exports ={
 									'/users/login', '/users/register',
 									'/users/wechat', '/weixin/callback',
 									'/alipay/create_direct_pay_by_user/return_url', '/alipay/create_direct_pay_by_user/notify_url',
-									'/pay/return_url/wxpay'
+									'/pay/return_url/wxpay','/users/phone/code','/users/validator'
 								];
 								var isHasNoneAuthRoute = false;
 
