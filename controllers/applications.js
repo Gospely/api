@@ -40,6 +40,7 @@ applications.create = function*() {
       var tr = transliteration.transliterate
       domain = tr(domain).replace(new RegExp(" ",'gm'),"").toLocaleLowerCase();
     }
+		domain = domain.replace('_','');
 		application.id = uuid.v4();
   	//二级域名解析
 		var node = processes.init({
@@ -81,7 +82,7 @@ applications.create = function*() {
 		});
 
 		//nginx配置文件
-		application.appPort = yield portManager.generatePort();
+		application.port = yield portManager.generatePort();
 		node = processes.buildNext(node, {
 			do: function*() {
 
@@ -95,7 +96,7 @@ applications.create = function*() {
 			data:{
 				user: application.creator,
 				domain: domain  + "-" + application.creator,
-				port: application.appPort,
+				port: application.port,
 			},
 			undo: function*() {
 
@@ -114,8 +115,8 @@ applications.create = function*() {
 		//创建并启动docker
 
 		application.socketPort = yield portManager.generatePort();
-		if(application.appPort == application.socketPort){
-			application.appPort  = yield portManager.generatePort();
+		if(application.port == application.socketPort){
+			application.port  = yield portManager.generatePort();
 		}
 		application.sshPort = yield portManager.generatePort();
 		if(application.sshPort == application.socketPort){
@@ -134,7 +135,7 @@ applications.create = function*() {
 				name: domain + "_" + application.creator,
 				sshPort: application.sshPort,
 				socketPort: application.socketPort,
-				appPort: application.appPort,
+				appPort: application.port,
 				password: application.password,
 				memory: application.memory,
 				file: application.imageName
@@ -156,7 +157,7 @@ applications.create = function*() {
 		//将应用记录存储到数据库
 		application.docker = 'gospel_project_' + domain + "_" + application.creator;
 		application.status = 1;
-		application.domain = domain;
+		application.domain = domain + "-" + application.creator;
 		delete application['memory'];
 		node = processes.buildNext(node, {
 			do: function*() {
@@ -201,7 +202,7 @@ applications.delete =  function *() {
 
 	//获取应用的二级域名
 	var domains = yield models.gospel_domains.getAll({
-		subDomain: application.domain + "-" +application.creator,
+		subDomain: application.domain,
 		sub: true,
 	})
 	console.log(domains);
@@ -220,19 +221,19 @@ applications.delete =  function *() {
 
 
 
-	var name = domain + '_' + application.creator
+	var name = domain.replace("-","_");
 	//删除nginx配置文件
 	yield shells.delNginxConf(name);
 	yield shells.nginx();
 	//删除docker
 	yield shells.stopDocker({
-		name: domain + "_" + application.creator,
+		name: name,
 	});
 	yield shells.rmDocker({
-		name: domain + "_" + application.creator
+		name: name,
 	});
 	//删除项目文件资源
-	yield shells.rmFile("/var/www/storage/codes/" + application.creator + "_" + application.name)
+	yield shells.rmFile("/var/www/storage/codes/" + domain)
 	var inserted = yield models.gospel_applications.delete(application.id);
 	if (!deleted) {
 		this.throw(405, "couldn't be delete.");

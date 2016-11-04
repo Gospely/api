@@ -13,6 +13,7 @@ module.exports = function(sequelize, DataTypes){
       git: DataTypes.STRING,
       dockerfile: DataTypes.STRING,
       type:  DataTypes.INTEGER,
+      parent: DataTypes.STRING,
       isDeleted: { type: DataTypes.INTEGER, field: "isdeleted", defaultValue: 0 }
 	  },{
 			timestamps: true,
