@@ -24,6 +24,11 @@ module.exports ={
 							var url = this.url.split("?")[0];
 							var method = this.method;
 
+							var replacements = url.split('/');
+
+							if(replacements[1] == 'fs'){
+								url= "/fs";
+							}
 
 							//基础验证，即验证用户是否已经是登录状态
 							//获取token
@@ -48,6 +53,12 @@ module.exports ={
 
 												if(replacements[1] == 'container'){
 													url = url+ ":containerName";
+												}else{
+													url = url+ ":id";
+												}
+
+												if(replacements[1] == 'fs'){
+														url = url+ ":fileName";
 												}else{
 													url = url+ ":id";
 												}
@@ -131,7 +142,7 @@ module.exports ={
 									'/users/login', '/users/register',
 									'/users/wechat', '/weixin/callback',
 									'/alipay/create_direct_pay_by_user/return_url', '/alipay/create_direct_pay_by_user/notify_url',
-									'/pay/return_url/wxpay','/users/phone/code','/users/validator'
+									'/pay/return_url/wxpay','/users/phone/code','/users/validator','/applications','/fs'
 								];
 								var isHasNoneAuthRoute = false;
 
