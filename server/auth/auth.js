@@ -43,10 +43,14 @@ module.exports ={
 									if(method == "GET" || method == "DELETE"){
 
 											var replacements = url.split('/');
-											console.log(replacements.length);
 											if(replacements.length >= 3){
 												url = url.replace(replacements[replacements.length - 1],"");
-												url = url+ ":id";
+
+												if(replacements[1] == 'container'){
+													url = url+ ":containerName";
+												}else{
+													url = url+ ":id";
+												}
 												console.log(url);
 											}
 

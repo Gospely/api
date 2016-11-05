@@ -53,11 +53,11 @@ applications.create = function*() {
 				}
 			},
 			data: {
-					subDomain: domain + "-" +application.creator,
+					subDomain: domain + "-" +application.userName,
 	        domain: config.dnspod.baseDomain,
 	        ip: '120.76.235.234',
 					application: application.id,
-	        creator: application.creator,
+	        creator: application.userName,
 					sub: true
 	    },
 			undo: function*() {
@@ -94,8 +94,8 @@ applications.create = function*() {
 					}
 				},
 			data:{
-				user: application.creator,
-				domain: domain  + "-" + application.creator,
+				user: application.userName,
+				domain: domain  + "-" + application.userName,
 				port: application.port,
 			},
 			undo: function*() {
@@ -132,7 +132,7 @@ applications.create = function*() {
 					}
 				},
 			data:{
-				name: domain + "_" + application.creator,
+				name: domain + "_" + application.userName,
 				sshPort: application.sshPort,
 				socketPort: application.socketPort,
 				appPort: application.port,
@@ -155,9 +155,9 @@ applications.create = function*() {
 		});
 
 		//将应用记录存储到数据库
-		application.docker = 'gospel_project_' + domain + "_" + application.creator;
+		application.docker = 'gospel_project_' + domain + "_" + application.userName;
 		application.status = 1;
-		application.domain = domain + "-" + application.creator;
+		application.domain = domain + "-" + application.userName;
 		delete application['memory'];
 		node = processes.buildNext(node, {
 			do: function*() {
