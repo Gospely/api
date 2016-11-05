@@ -26,6 +26,7 @@ module.exports ={
 
 							var replacements = url.split('/');
 
+							//开放fs操作
 							if(replacements[1] == 'fs'){
 								url= "/fs";
 							}
