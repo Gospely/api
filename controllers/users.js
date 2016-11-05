@@ -183,7 +183,7 @@ users.register = function* () {
   }else{
 
 		yield	models.gospel_ides.create({
-				id: user.ide
+				id: user.ide,
 				name: '个人版',
 				creator: inserted.id,
 				product: '1'
