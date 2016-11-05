@@ -94,7 +94,7 @@ applications.create = function*() {
 					}
 				},
 			data:{
-				user: application.userName,
+				user: application.creator,
 				domain: domain  + "-" + application.userName,
 				port: application.port,
 			},
