@@ -24,12 +24,6 @@ module.exports ={
 							var url = this.url.split("?")[0];
 							var method = this.method;
 
-							var replacements = url.split('/');
-
-							//开放fs操作
-							if(replacements[1] == 'fs'){
-								url= "/fs";
-							}
 
 							//基础验证，即验证用户是否已经是登录状态
 							//获取token
@@ -40,7 +34,13 @@ module.exports ={
 							if(method == "OPTIONS"){
 									yield next;
 							}else {
-								if(excape(url) ){
+
+								//放行
+								var replacements = url.split('/');
+								if(replacements[1] == 'fs'){
+									url = 'fs';
+								}
+								if(excape(url)){
 
 										console.log("none auth route" + url);
 										yield next;
@@ -49,17 +49,12 @@ module.exports ={
 									if(method == "GET" || method == "DELETE"){
 
 											var replacements = url.split('/');
+											console.log(replacements);
 											if(replacements.length >= 3){
 												url = url.replace(replacements[replacements.length - 1],"");
 
-												if(replacements[1] == 'container'){
-													url = url+ ":containerName";
-												}else{
-													url = url+ ":id";
-												}
-
-												if(replacements[1] == 'fs'){
-														url = url+ ":fileName";
+												if(replacements[1] == 'container' || replacements[1] == 'file'){
+													url = url+ ":" +replacements[1]+ "Name";
 												}else{
 													url = url+ ":id";
 												}
@@ -143,7 +138,7 @@ module.exports ={
 									'/users/login', '/users/register',
 									'/users/wechat', '/weixin/callback',
 									'/alipay/create_direct_pay_by_user/return_url', '/alipay/create_direct_pay_by_user/notify_url',
-									'/pay/return_url/wxpay','/users/phone/code','/users/validator','/applications','/fs'
+									'/pay/return_url/wxpay','/users/phone/code','/users/validator','applications','fs'
 								];
 								var isHasNoneAuthRoute = false;
 
