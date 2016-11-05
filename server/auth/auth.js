@@ -38,7 +38,7 @@ module.exports ={
 								//放行
 								var replacements = url.split('/');
 								if(replacements[1] == 'fs'){
-									url = 'fs';
+									url = '/fs';
 								}
 								if(excape(url)){
 
@@ -138,7 +138,7 @@ module.exports ={
 									'/users/login', '/users/register',
 									'/users/wechat', '/weixin/callback',
 									'/alipay/create_direct_pay_by_user/return_url', '/alipay/create_direct_pay_by_user/notify_url',
-									'/pay/return_url/wxpay','/users/phone/code','/users/validator','applications','fs'
+									'/pay/return_url/wxpay','/users/phone/code','/users/validator','applications','/fs'
 								];
 								var isHasNoneAuthRoute = false;
 
