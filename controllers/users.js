@@ -96,7 +96,7 @@ users.register = function* () {
 	delete user['id'];
   user.password = md5_f.md5Sign(user.password,'gospel_users');
 	user.type = 'common';
-	user.ide = '1';
+	user.ide = uuid.v4();
 	user.ideName = '个人版';
 	user.group = 'ab64c397-d323-4133-9541-479bbaaf6c52';
 
@@ -183,6 +183,7 @@ users.register = function* () {
   }else{
 
 		yield	models.gospel_ides.create({
+				id: user.ide,
 				name: '个人版',
 				creator: inserted.id,
 				product: '1'

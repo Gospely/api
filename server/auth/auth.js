@@ -34,7 +34,16 @@ module.exports ={
 							if(method == "OPTIONS"){
 									yield next;
 							}else {
-								if(excape(url) ){
+
+								//放行
+								var replacements = url.split('/');
+								if(replacements[1] == 'fs'){
+									url = '/fs';
+								}
+								if(replacements[1] == 'applications'){
+									url = '/applications';
+								}
+								if(excape(url)){
 
 										console.log("none auth route" + url);
 										yield next;
@@ -43,10 +52,15 @@ module.exports ={
 									if(method == "GET" || method == "DELETE"){
 
 											var replacements = url.split('/');
-											console.log(replacements.length);
+											console.log(replacements);
 											if(replacements.length >= 3){
 												url = url.replace(replacements[replacements.length - 1],"");
-												url = url+ ":id";
+
+												if(replacements[1] == 'container' || replacements[1] == 'file'){
+													url = url+ ":" +replacements[1]+ "Name";
+												}else{
+													url = url+ ":id";
+												}
 												console.log(url);
 											}
 
@@ -127,7 +141,7 @@ module.exports ={
 									'/users/login', '/users/register',
 									'/users/wechat', '/weixin/callback',
 									'/alipay/create_direct_pay_by_user/return_url', '/alipay/create_direct_pay_by_user/notify_url',
-									'/pay/return_url/wxpay','/users/phone/code','/users/validator'
+									'/pay/return_url/wxpay','/users/phone/code','/users/validator','/applications','/fs'
 								];
 								var isHasNoneAuthRoute = false;
 
