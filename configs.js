@@ -314,8 +314,8 @@ module.exports = {
 			},
 			{
 				name: '按需读取文件或文件夹',
-				method: 'get',
-				url: '/fs/list/optional/:dirName',
+				method: 'post',
+				url: '/fs/list/optional/file',
 				controller: 'list',
 				groups: "ab64c397-d323-4133-9541-479bbaaf6c52_100"
 			},
