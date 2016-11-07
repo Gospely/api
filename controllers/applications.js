@@ -214,30 +214,39 @@ applications.delete =  function *() {
 					record_id: domains[0].record
 		}
 	}
-	//解绑二级域名
-	yield dnspod.domainOperate(options);
-	//删除二级域名
-	yield models.gospel_domains.delete(domains[0].id);
+
+	try {
+		//解绑二级域名
+		yield dnspod.domainOperate(options);
+		//删除二级域名
+		yield models.gospel_domains.delete(domains[0].id);
 
 
 
-	var name = domain.replace("-","_");
-	//删除nginx配置文件
-	yield shells.delNginxConf(name);
-	yield shells.nginx();
-	//删除docker
-	yield shells.stopDocker({
-		name: name,
-	});
-	yield shells.rmDocker({
-		name: name,
-	});
-	//删除项目文件资源
-	yield shells.rmFile("/var/www/storage/codes/" + domain)
-	var inserted = yield models.gospel_applications.delete(application.id);
-	if (!deleted) {
-		this.throw(405, "couldn't be delete.");
+		var name = domain.replace("-","_");
+		//删除nginx配置文件
+		yield shells.delNginxConf(name);
+		yield shells.nginx();
+		//删除docker
+		yield shells.stopDocker({
+			name: name,
+		});
+		yield shells.rmDocker({
+			name: name,
+		});
+		//删除项目文件资源
+		yield shells.rmFile("/var/www/storage/codes/" + domain)
+	} catch (e) {
+		console.log(e);
+	}finally{
+
+			var inserted = yield models.gospel_applications.delete(application.id);
+			if (!inserted) {
+				this.throw(405, "couldn't be delete.");
+			}
+			this.body = render(inserted,null,null,1,'删除成功');
 	}
-	this.body = render(deleted,null,null,4,'删除成功');
+
+
 }
 module.exports = applications;

@@ -61,7 +61,7 @@ shells.delNginxConf = function*(projectname) {
 shells.rmDocker = function*(docker){
 
   return new Promise(function(resolve,reject) {
-    exec("ssh root@gospely.com " + "docker rm  gospel_project_" + docker.name, function(err,data){
+    exec("ssh root@gospely.com " + "docker rm -f  gospel_project_" + docker.name, function(err,data){
 
       console.log(data);
       console.log(err);
