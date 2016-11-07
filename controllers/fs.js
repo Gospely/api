@@ -321,16 +321,7 @@ var fileSystem = {
 		var dirName = this.params.dirName || '',
 			result = [];
 
-		var query = yield parse(this),
-			queryDirName = '';
-
-		if(query) {
-			query = JSON.parse(query);
-			queryDirName = query.dirName;
-		}
-
 		dirName = this.query.id || dirName;
-		dirName = dirName || queryDirName;
 
 		var files = yield readDir(config.baseDir + dirName);
 
