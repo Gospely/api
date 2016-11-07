@@ -9,7 +9,7 @@ var os = require('os');
 var exec = require('child_process').exec;
 var dir = require('node-dir');
 
-var 
+var
 	config = {
 		baseDir: ''
 	},
@@ -81,7 +81,7 @@ var
 
 	rmdir = function(dir) {
 		return new Promise(function(resolve, reject) {
-			exec('rm -rf ' + dir, function(error, data) { 
+			exec('rm -rf ' + dir, function(error, data) {
 				if(error) reject(error);
 				resolve(data);
 			});
@@ -110,8 +110,8 @@ var
 	    return fs.existsSync(path);
 	},
 
-	isDir = function(path){  
-        return exists(path) && fs.statSync(path).isDirectory();  
+	isDir = function(path){
+        return exists(path) && fs.statSync(path).isDirectory();
     },
 
 	cp = function(file, newFile) {
@@ -127,13 +127,13 @@ var
 	GetQueryString = function(params, name) {
 	    var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
 	    var r = params.match(reg);
-	    if(r!=null)return unescape(r[2]); return null;		
+	    if(r!=null)return unescape(r[2]); return null;
 	}
 
 
-os.platform() === 'darwin' ? 
+os.platform() === 'darwin' ?
 
-	config.baseDir = '/var/www/apache/gospel/' : 
+	config.baseDir = '/var/www/apache/gospel/' :
 	config.baseDir = '/var/www/storage/codes/' ;
 
 var fileSystem = {
@@ -223,7 +223,7 @@ var fileSystem = {
 		try {
 			var fileName = params.fileName,
 				newFileName = params.newFileName,
-				move = params.move || false;	
+				move = params.move || false;
 		}catch(err) {
 			var fileName = GetQueryString(params, 'fileName')
 				newFileName = GetQueryString(params, 'newFileName'),
