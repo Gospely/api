@@ -57,7 +57,7 @@ applications.create = function*() {
 	        domain: config.dnspod.baseDomain,
 	        ip: '120.76.235.234',
 					application: application.id,
-	        creator: application.userName,
+	        creator: application.creator,
 					sub: true
 	    },
 			undo: function*() {
@@ -138,7 +138,7 @@ applications.create = function*() {
 				appPort: application.port,
 				password: application.password,
 				memory: application.memory,
-				file: application.imageName
+				file: application.image
 			},
 			undo: function*() {
 
