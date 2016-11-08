@@ -28,7 +28,26 @@ users.login = function* (){
   var user = yield parse(this, {
     limit: '1kb'
   });
+	console.log(user);
+	if(user.code_token !=null && user.code_token != undefined && user.code_token != '') {
+		var innersession = yield models.gospel_innersessions.findById(user.code_token);
+
+		if(innersession.code.toUpperCase() == user.code.toUpperCase()){
+				yield checkPwd(user,this);
+		}else{
+			  this.body = render(null,-1,"验证码错误");
+		}
+	}else{
+			yield checkPwd(user,this);
+	}
+
+}
+
+function * checkPwd(user,ctx) {
+
 	delete user['id'];
+	delete user['code_token'];
+	delete user['code'];
   user.password = md5_f.md5Sign(user.password,'gospel_users');
   var data = yield models.gospel_users.findAll({where: user});
   console.log(data.length);
@@ -57,7 +76,7 @@ users.login = function* (){
 						count: innersession.count+1,
 				});
 		}
-    this.body = render(null,-1,"用户名或者密码错误");
+    ctx.body = render(null,-1,"用户名或者密码错误");
   }else{
 
 		var innersessions = yield models.gospel_innersessions.findAll({where: {
@@ -72,7 +91,6 @@ users.login = function* (){
     var user = data[0].dataValues;
     user.password = '';
     user.token = token;
-    this.cookies.set('accessToken', token, config.cookie);
   	yield models.gospel_innersessions.create({
 				id: token,
 				code: token,
@@ -81,9 +99,15 @@ users.login = function* (){
 				group: user.group,
 				limitTime: 30 * 60 *1000
 		});
-    this.body = render(user,1,"登录成功");
+    ctx.body = render(user,1,"登录成功");
     //记录用户的登录，todo:基于redis实现
   }
+}
+
+users.logout =  function*() {
+
+	var id = this.parms.id;
+	models.gospel_innersessions.delete(id);
 }
 
 users.register = function* () {
@@ -265,8 +289,16 @@ users.authCode =  function*() {
 	var txt = ary[0];
 
 	var buf = ary[1];
+	var token = uuid.v4();
+	yield models.gospel_innersessions.create({
+		id: token,
+		code: txt,
+		time: Date.now(),
+		limitTime: 2 * 60 *1000
+	});
+	var s ="data:image/png;base64," + buf.toString('base64');
 	console.log(txt);
-	this.body = buf;
+	this.body = render({token: token,buf: s},1,"激活链接超时");
 }
 
 //手机验证码

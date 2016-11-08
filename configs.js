@@ -164,6 +164,13 @@ module.exports = {
 				controller: 'validator',
 				groups: "ab64c397-d323-4133-9541-479bbaaf6c52_100"
 			},
+			{
+				name: '登',
+				method:'get',
+				url: '/users/validator',
+				controller: 'validator',
+				groups: "ab64c397-d323-4133-9541-479bbaaf6c52_100"
+			},
 		],
 		orders: [
 			{
