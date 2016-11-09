@@ -1,0 +1,30 @@
+apt-get install software-properties-common
+apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xcbcb082a1bb943db
+add-apt-repository 'deb http://sfo1.mirrors.digitalocean.com/mariadb/repo/10.0/ubuntu trusty main'
+
+apt-get update &&
+DEBIAN_FRONTEND=nointeractive apt-get install -y mariadb-server && \
+	 apt-get clean && \
+	 rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
+		 sed -i 's/^\(bind-address\s.*\)/# \1/' /etc/mysql/my.cnf && \
+		 echo "mysqld_safe &" > /tmp/config && \
+		 echo "mysqladmin --silent --wait=30 ping || exit 1" >> /tmp/config && \
+		 echo "mysql -e 'GRANT ALL PRIVILEGES ON *.* TO \"root\"@\"%\" WITH GRANT OPTION;'" >> /tmp/config && \
+		 bash /tmp/config && \
+		 rm -f /tmp/config
+
+mysqladmin -u root password pwd
+
+/etc/init.d/mysql stop
+
+mysqld_safe --user=mysql --skip-grant-tables --skip-networking &
+mysql -u root mysql
+
+UPDATE user SET Password=PASSWORD('[password]') where USER='root';
+
+FLUSH PRIVILEGES;
+quit
+
+/etc/init.d/mysql restart
+
+sudo apt-get install mysql-server mysql-client

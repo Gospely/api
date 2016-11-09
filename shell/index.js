@@ -94,4 +94,16 @@ shells.rmFile =  function*(fileName) {
      });
    })
 }
+shells.buidDB = function*(options) {
+
+  return new Promise(function(resolve,reject) {
+    exec("ssh root@gospely.com " + "rm -rf " + fileName, function(err,data){
+
+      console.log(data);
+      console.log(err);
+      if(err) reject(err);
+      resolve(data);
+    });
+  })
+}
 module.exports = shells;
