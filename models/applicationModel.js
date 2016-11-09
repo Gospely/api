@@ -19,6 +19,7 @@ module.exports = function(sequelize, DataTypes){
       members: DataTypes.JSONB,
       team:DataTypes.STRING,
       creator: DataTypes.STRING,
+      payStatus: { type: DataTypes.INTEGER, field: "pay_status"},
       status: { type: DataTypes.INTEGER, field: "status", defaultValue: 0 },
       isDeleted: { type: DataTypes.INTEGER, field: "isdeleted", defaultValue: 0 }
 	  },{
