@@ -1,14 +1,10 @@
 var util = require('../utils.js');
 var models = require('../models');
 var config = require('../configs');
-var shells = require('../shell');
 var parse = require('co-body');
 var uuid = require('node-uuid')
-var transliteration = require('transliteration');
-var portManager = require('../port');
 var common = require('./common');
-var processes =  require('../process');
-var dnspod = require('../server/dnspod');
+var _md5 = require('../utils/MD5')
 
 var applications = {};
 //数据渲染，todo:分页参数引入，异常信息引入
@@ -43,10 +39,18 @@ applications.create = function*() {
 
 		var inserted = yield models.gospel_applications.create(application);
 		inserted.products = products;
-		yield processes.app_start(inserted);
+		var result = yield processes.app_start(inserted);
+		if(result) {
+			this.body = render(inserted,null,null,1,"创建成功");
+		}else{
+			this.body = render(inserted,null,null,-1,"创建失败");
+		}
 	}else{
+
+
 		var order = yield models.gospel_orders.create({
 			products: application.products,
+			orderNo: _md5.md5Sign("gospel",uuid.v4()),
 			name: "付费Docker",
 			price: application.price,
 			status: 1,
@@ -66,6 +70,8 @@ applications.create = function*() {
 		delete application['unitPrice'];
 		delete application['free'];
 		var inserted = yield models.gospel_applications.create(application);
+
+		this.body = render(inserted,null,null,1,"创建成功,你选择的是收费配置，请尽快去支付");
 	}
 }
 

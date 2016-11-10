@@ -13,9 +13,7 @@ orders.order = function* () {
     limit: '10kB'
   });
 
-  if(orders.out_trade_no == null || orders.out_trade_no == undefined){
-    orders.out_trade_no = _md5.md5Sign("gospel",uuid.v4);
-  }
+  
   if(orders.type == 'wechat') {
       var pay_url = yield pay.wechat.wxpay_pay({
         body: 'test',//商品描述,
