@@ -15,7 +15,7 @@ var mount = require('koa-mount');
 
 
 
-app.use(function *(next) {
+app.use(function*(next) {
   try {
     global.appDomain = 'http://localhost:8089'
     global.dashDomain = 'http://localhost:8088'
@@ -33,7 +33,7 @@ app.use(function *(next) {
 });
 
 app.use(logger({
-	"filename": "./log_file.log"
+  "filename": "./log_file.log"
 }));
 locale(app);
 
@@ -48,38 +48,43 @@ locale(app);
 
 
 
-if(configs.isDBAvailable) {
-	app.use(koaPg(configs.db.materDB));
+if (configs.isDBAvailable) {
+  app.use(koaPg(configs.db.materDB));
 }
 
 var options = {
-	headers: ['WWW-Authenticate', 'Server-Authorization','Content-Type','Authorization'],
-	credentials: true,
-	origin: '*'
+  headers: ['WWW-Authenticate', 'Server-Authorization', 'Content-Type',
+    'Authorization'
+  ],
+  credentials: true,
+  origin: '*'
 };
 app.use(cors(options));
 
-if(configs.isAuth) {
-	app.use(mount('/', auth.basicAuth));
+if (configs.isAuth) {
+  app.use(mount('/', auth.basicAuth));
 }
 app.use(mount('/container', container.filter));
 app
   .use(router.routes())
   .use(router.allowedMethods());
-  console.log(container);
+console.log(container);
 
-app.on('error', function(err, ctx){
+app.on('error', function(err, ctx) {
   log.error('server error', err, ctx);
   this.body = fun.resp('500', err, ctx);
 });
 var setupDb;
 if (configs.sync) {
-    setupDb = db.sequelize.sync({force: true});
+  setupDb = db.sequelize.sync({
+    force: true
+  });
 }
 
 Promise.resolve(setupDb)
-.then(function() {
-	app.listen(configs.port, function () {
-		console.log( new Date() + ': gospel api is running, listening on port ' + configs.port);
-	});
-});
+  .then(function() {
+    app.listen(configs.port, function() {
+      console.log(new Date() +
+        ': gospel api is running, listening on port ' + configs.port);
+    });
+  });

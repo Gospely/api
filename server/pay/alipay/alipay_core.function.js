@@ -1,7 +1,7 @@
 var qs = require('querystring');
 var fs = require('fs');
 var https = require('https');
-var http =require('http');
+var http = require('http');
 //var Iconv  = require('iconv').Iconv;
 
 /* *
@@ -14,10 +14,10 @@ var http =require('http');
  * @param para 需要拼接的对象
  * return 拼接完成以后的字符串
  */
-exports.createLinkstring = function(para){
-    //return qs.stringify(para);
+exports.createLinkstring = function(para) {
+	//return qs.stringify(para);
 	var ls = '';
-	for(var k in para){
+	for (var k in para) {
 		ls = ls + k + '=' + para[k] + '&';
 	}
 	ls = ls.substring(0, ls.length - 1);
@@ -29,8 +29,8 @@ exports.createLinkstring = function(para){
  * @param para 需要拼接的对象
  * return 拼接完成以后的字符串
  */
-exports.createLinkstringUrlencode = function(para){
-    return qs.stringify(para);
+exports.createLinkstringUrlencode = function(para) {
+	return qs.stringify(para);
 }
 
 /**
@@ -38,18 +38,17 @@ exports.createLinkstringUrlencode = function(para){
  * @param para 签名参对象
  * return 去掉空值与签名参数后的新签名参对象
  */
-exports.paraFilter = function(para){
-    var para_filter = new Object();
-    for (var key in para){
-        if(key == 'sign' || key == 'sign_type' || para[key] == ''){
-            continue;
-        }
-        else{
-            para_filter[key] = para[key];
-        }
-    }
+exports.paraFilter = function(para) {
+	var para_filter = new Object();
+	for (var key in para) {
+		if (key == 'sign' || key == 'sign_type' || para[key] == '') {
+			continue;
+		} else {
+			para_filter[key] = para[key];
+		}
+	}
 
-    return para_filter;
+	return para_filter;
 }
 
 /**
@@ -57,14 +56,14 @@ exports.paraFilter = function(para){
  * @param para 排序前的对象
  * return 排序后的对象
  */
-exports.argSort = function(para){
-    var result = new Object();
-    var keys = Object.keys(para).sort();
-    for (var i = 0; i < keys.length; i++){
-        var k = keys[i];
-        result[k] = para[k];
-    }
-    return result;
+exports.argSort = function(para) {
+	var result = new Object();
+	var keys = Object.keys(para).sort();
+	for (var i = 0; i < keys.length; i++) {
+		var k = keys[i];
+		result[k] = para[k];
+	}
+	return result;
 }
 
 /**
@@ -72,10 +71,10 @@ exports.argSort = function(para){
  * 注意：服务器需要开通fopen配置
  * @param word 要写入日志里的文本内容 默认值：空值
  */
-exports.logResult = function(word){
-    word = word || '';
-    var str = "执行日期：" + Date().toString() + "\n" + word + "\n";
-    fs.appendFile('log.txt', str);
+exports.logResult = function(word) {
+	word = word || '';
+	var str = "执行日期：" + Date().toString() + "\n" + word + "\n";
+	fs.appendFile('log.txt', str);
 }
 
 /**
@@ -89,40 +88,41 @@ exports.logResult = function(word){
  * @param input_charset 编码格式。默认值：空值
  * return 远程输出的数据
  */
-exports.getHttpResponsePOST = function(url, cacert_url, para, input_charset, callback){
-    input_charset = input_charset || '';
-    if(input_charset.trim() != ''){
-        url = url + "_input_charset=" + input_charset;
-    }
+exports.getHttpResponsePOST = function(url, cacert_url, para, input_charset,
+	callback) {
+	input_charset = input_charset || '';
+	if (input_charset.trim() != '') {
+		url = url + "_input_charset=" + input_charset;
+	}
 
-    var parsed_url = require('url').parse(url);
+	var parsed_url = require('url').parse(url);
 
-    var para_str = qs.stringify(para);
+	var para_str = qs.stringify(para);
 
-    var options = {
-        hostname:parsed_url.host,
-        port:443,
-        path:parsed_url.path,
-        method:'POST',
-        cert:fs.readFileSync(cacert_url),
-        headers:{
-            'Content-Type':'application/x-www-form-urlencoded',
-            'Content-Length':para_str.length
-        }
-    };
+	var options = {
+		hostname: parsed_url.host,
+		port: 443,
+		path: parsed_url.path,
+		method: 'POST',
+		cert: fs.readFileSync(cacert_url),
+		headers: {
+			'Content-Type': 'application/x-www-form-urlencoded',
+			'Content-Length': para_str.length
+		}
+	};
 
-    var req = https.request(options, function(res) {
-        var responseText='';
-        res.on('data', function(chunk){
-            responseText += chunk;
-        });
-        res.on('end', function(){
+	var req = https.request(options, function(res) {
+		var responseText = '';
+		res.on('data', function(chunk) {
+			responseText += chunk;
+		});
+		res.on('end', function() {
 			callback && callback(responseText);
-        });
-    });
+		});
+	});
 
-    req.write(para_str);
-    req.end();
+	req.write(para_str);
+	req.end();
 }
 
 /**
@@ -132,28 +132,28 @@ exports.getHttpResponsePOST = function(url, cacert_url, para, input_charset, cal
  * @param url 指定URL完整路径地址
  * return 远程输出的数据
  */
-exports.getHttpResponseGET = function(url,cacert_url, callback){
-    var parsed_url = require('url').parse(url);
+exports.getHttpResponseGET = function(url, cacert_url, callback) {
+	var parsed_url = require('url').parse(url);
 
-    var options = {
-        hostname:parsed_url.host,
-        // port:443,
-        path:parsed_url.path,
-        method:'GET'
-        // cert:fs.readFileSync(cacert_url)
-    };
-    var req = https.request(options, function(res) {
-        var responseText='';
-        
-        res.on('data', function(chunk){
-            responseText += chunk;
-        });
-        res.on('end', function(){
-           callback && callback(responseText);
-        });
-    });
+	var options = {
+		hostname: parsed_url.host,
+		// port:443,
+		path: parsed_url.path,
+		method: 'GET'
+			// cert:fs.readFileSync(cacert_url)
+	};
+	var req = https.request(options, function(res) {
+		var responseText = '';
 
-    req.end();
+		res.on('data', function(chunk) {
+			responseText += chunk;
+		});
+		res.on('end', function() {
+			callback && callback(responseText);
+		});
+	});
+
+	req.end();
 }
 
 /**
@@ -163,18 +163,17 @@ exports.getHttpResponseGET = function(url,cacert_url, callback){
  * @param _input_charset 输入的编码格式
  * return 编码后的字符串
  */
-exports.charsetEncode = function(input,_output_charset ,_input_charset) {
-    var output = "";
-    _output_charset  = _output_charset ||_input_charset;
-    if(_input_charset == _output_charset || input == null) {
-        output = input;
-    }
-    else {
-            //var iconv = new Iconv(_input_charset,_output_charset);
-            //output = iconv.convert(input);
-    }
+exports.charsetEncode = function(input, _output_charset, _input_charset) {
+	var output = "";
+	_output_charset = _output_charset || _input_charset;
+	if (_input_charset == _output_charset || input == null) {
+		output = input;
+	} else {
+		//var iconv = new Iconv(_input_charset,_output_charset);
+		//output = iconv.convert(input);
+	}
 
-    return output;
+	return output;
 }
 
 /**
@@ -184,16 +183,15 @@ exports.charsetEncode = function(input,_output_charset ,_input_charset) {
  * @param _input_charset 输入的解码格式
  * return 解码后的字符串
  */
-exports.charsetDecode = function(input,_input_charset ,_output_charset){
-    var output = "";
-    _input_charset = _input_charset || _output_charset;
-    if(_input_charset == _output_charset || input == null) {
-        output = input;
-    }
-    else{
-        //var iconv = new Iconv(_input_charset,_output_charset);
-        //output = iconv.convert(input);
-    }
+exports.charsetDecode = function(input, _input_charset, _output_charset) {
+	var output = "";
+	_input_charset = _input_charset || _output_charset;
+	if (_input_charset == _output_charset || input == null) {
+		output = input;
+	} else {
+		//var iconv = new Iconv(_input_charset,_output_charset);
+		//output = iconv.convert(input);
+	}
 
-    return output;
+	return output;
 }

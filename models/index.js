@@ -15,141 +15,166 @@ var sequelize = new Sequelize('gospel', 'gospel', 'gospel', {
   },
   define: {
     classMethods: {
-      getAll: function*(item){
+      getAll: function*(item) {
 
-          console.log(item);
-          item.isDeleted = 0;
-          //判断是否是分页
-          if(item.cur != null && item.cur != undefined){
+        console.log(item);
+        item.isDeleted = 0;
+        //判断是否是分页
+        if (item.cur != null && item.cur != undefined) {
 
-              var offset = (item.cur-1)*item.limit;
-              var limit = item.limit;
-              var attributes = [];
-              //判断是否是选择行查询
-              if(item.show != null && item.show != undefined && item.show != ''){
-                  attributes = item.show.split('_');
-                  delete item['cur'];
-                  delete item['limit'];
-                  delete item['show'];
+          var offset = (item.cur - 1) * item.limit;
+          var limit = item.limit;
+          var attributes = [];
+          //判断是否是选择行查询
+          if (item.show != null && item.show != undefined && item.show !=
+            '') {
+            attributes = item.show.split('_');
+            delete item['cur'];
+            delete item['limit'];
+            delete item['show'];
 
 
 
-                  return yield this.findAll({
-                                            offset: offset,
-                                            limit: limit,
-                                            where: item,
-                                            attributes: attributes,
-                                            order: [
-                                                    ['createat', 'DESC']
-                                                  ]
-                                          });
+            return yield this.findAll({
+              offset: offset,
+              limit: limit,
+              where: item,
+              attributes: attributes,
+              order: [
+                ['createat', 'DESC']
+              ]
+            });
 
-              }else{
+          } else {
 
-                delete item['limit'];
-                delete item['cur'];
-                console.log("wwwwww");
-                //是否自定义查询
-                if(this.getAllInit !=null && this.getAllInit != undefined){
-
-                  var sql = this.getAllInit(item);
-
-                  if(sql != null && sql !=undefined){
-                      sql = sql + " offset " + offset + " limit "+limit;
-                      delete item['isDeleted'];
-                      return yield  sequelize.query(sql,
-                      { replacements: item, type: sequelize.QueryTypes.SELECT })
-
-                  }
-
-                }
-                return yield this.findAll({
-                                          offset: offset,
-                                          limit: limit,
-                                          where: item,
-                                          order: [
-                                                  ['createat', 'DESC']
-                                                ]
-                                        });
-              }
-
-          }
-          console.log(item.show);
-          if(item.show != null && item.show != undefined && item.show != ''){
-              attributes = item.show.split('_');
-              delete item['show'];
-              return yield this.findAll({
-                                        where:item,
-                                        attributes: attributes,
-                                        order: [
-                                                ['createat', 'DESC']
-                                              ]
-                                      });
-          }else{
-
+            delete item['limit'];
+            delete item['cur'];
+            console.log("wwwwww");
             //是否自定义查询
-            if(this.getAllInit !=null && this.getAllInit != undefined){
+            if (this.getAllInit != null && this.getAllInit != undefined) {
 
               var sql = this.getAllInit(item);
 
-              if(sql != null && sql !=undefined){
+              if (sql != null && sql != undefined) {
+                sql = sql + " offset " + offset + " limit " + limit;
                 delete item['isDeleted'];
-                console.log(sql);
-                console.log(item);
-                return yield  sequelize.query(sql,
-                  { replacements: item, type: sequelize.QueryTypes.SELECT })
+                return yield sequelize.query(sql, {
+                  replacements: item,
+                  type: sequelize.QueryTypes.SELECT
+                })
 
               }
 
             }
-            console.log("no page ,no selec");
             return yield this.findAll({
-                                      where:item,
-                                      order: [
-                                              ['createat', 'DESC']
-                                            ]
-                                    });
+              offset: offset,
+              limit: limit,
+              where: item,
+              order: [
+                ['createat', 'DESC']
+              ]
+            });
           }
+
+        }
+        console.log(item.show);
+        if (item.show != null && item.show != undefined && item.show !=
+          '') {
+          attributes = item.show.split('_');
+          delete item['show'];
+          return yield this.findAll({
+            where: item,
+            attributes: attributes,
+            order: [
+              ['createat', 'DESC']
+            ]
+          });
+        } else {
+
+          //是否自定义查询
+          if (this.getAllInit != null && this.getAllInit != undefined) {
+
+            var sql = this.getAllInit(item);
+
+            if (sql != null && sql != undefined) {
+              delete item['isDeleted'];
+              console.log(sql);
+              console.log(item);
+              return yield sequelize.query(sql, {
+                replacements: item,
+                type: sequelize.QueryTypes.SELECT
+              })
+
+            }
+
+          }
+          console.log("no page ,no selec");
+          return yield this.findAll({
+            where: item,
+            order: [
+              ['createat', 'DESC']
+            ]
+          });
+        }
 
       },
       findById: function*(id) {
-          console.log("find " + id);
+        console.log("find " + id);
 
-          return yield this.find({where:{id:id } });
+        return yield this.find({
+          where: {
+            id: id
+          }
+        });
       },
-      delete: function*(id){
-          console.log("delete" + id)
-          return yield this.update({isDeleted: 1},{where: {id: id, isDeleted: '0' } });
+      delete: function*(id) {
+        console.log("delete" + id)
+        return yield this.update({
+          isDeleted: 1
+        }, {
+          where: {
+            id: id,
+            isDeleted: '0'
+          }
+        });
       },
       modify: function*(item) {
-          console.log("update" + item.id);
-          return yield this.update(item,{where:{id:item.id } });
+        console.log("update" + item.id);
+        return yield this.update(item, {
+          where: {
+            id: item.id
+          }
+        });
       },
       create: function*(item) {
-          console.log("create");
-          var row = this.build(item);
-          console.log(row);
-          return yield row.save();
+        console.log("create");
+        var row = this.build(item);
+        console.log(row);
+        return yield row.save();
       },
-      count: function* (item) {
+      count: function*(item) {
         item.isDeleted = 0;
 
-        if(this.countInit !=null && this.countInit != undefined){
+        if (this.countInit != null && this.countInit != undefined) {
           var sql = this.countInit(item);
           console.log("count");
-          if(sql != null && sql !=undefined){
+          if (sql != null && sql != undefined) {
             console.log(sql);
             console.log(item);
-            return yield  sequelize.query(sql,
-              { replacements: item, type: sequelize.QueryTypes.SELECT })
+            return yield sequelize.query(sql, {
+              replacements: item,
+              type: sequelize.QueryTypes.SELECT
+            })
 
           }
 
         }
-        return  yield this.findAll({
-                                    where: item,
-                                    attributes: [[sequelize.fn('COUNT', sequelize.col('id')), 'all']]
-                                  });
+        return yield this.findAll({
+          where: item,
+          attributes: [
+            [sequelize.fn('COUNT', sequelize.col('id')), 'all']
+          ]
+        });
       }
     },
 
@@ -168,10 +193,10 @@ var sequelize = new Sequelize('gospel', 'gospel', 'gospel', {
  */
 function loadModel(file) {
 
-    var model = sequelize.import(path.join(__dirname, file));
-    db[model.name] = model;
+  var model = sequelize.import(path.join(__dirname, file));
+  db[model.name] = model;
 
-    return model;
+  return model;
 }
 
 // read all the models inside the models/ directory and load them
@@ -184,9 +209,9 @@ reader.readDir(__dirname).map(loadModel);
  * @param  {string} modelName Name of the model
  */
 function makeAssociation(modelName) {
-    if (typeof db[modelName].associate === 'function') {
-        db[modelName].associate(db);
-    }
+  if (typeof db[modelName].associate === 'function') {
+    db[modelName].associate(db);
+  }
 }
 
 Object.keys(db).map(makeAssociation);

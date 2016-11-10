@@ -8,7 +8,7 @@ var _md5 = require('../utils/MD5')
 
 var applications = {};
 //数据渲染，todo:分页参数引入，异常信息引入
-function render(data,all,cur,code,message) {
+function render(data, all, cur, code, message) {
 
 	return {
 		code: code,
@@ -22,14 +22,14 @@ function render(data,all,cur,code,message) {
 applications.create = function*() {
 
 
-  if ('POST' != this.method) this.throw(405, "method is not allowed");
-    var application = yield parse(this, {
-      limit: '1kb'
-    });
-		console.log(application);
-	if(application.free) {
+	if ('POST' != this.method) this.throw(405, "method is not allowed");
+	var application = yield parse(this, {
+		limit: '1kb'
+	});
+	console.log(application);
+	if (application.free) {
 
-		var products =  application.products;
+		var products = application.products;
 		delete application['products'];
 		delete application['price'];
 		delete application['size'];
@@ -40,17 +40,17 @@ applications.create = function*() {
 		var inserted = yield models.gospel_applications.create(application);
 		inserted.products = products;
 		var result = yield processes.app_start(inserted);
-		if(result) {
-			this.body = render(inserted,null,null,1,"创建成功");
-		}else{
-			this.body = render(inserted,null,null,-1,"创建失败");
+		if (result) {
+			this.body = render(inserted, null, null, 1, "创建成功");
+		} else {
+			this.body = render(inserted, null, null, -1, "创建失败");
 		}
-	}else{
+	} else {
 
 
 		var order = yield models.gospel_orders.create({
 			products: application.products,
-			orderNo: _md5.md5Sign("gospel",uuid.v4()),
+			orderNo: _md5.md5Sign("gospel", uuid.v4()),
 			name: "付费Docker",
 			price: application.price,
 			status: 1,
@@ -71,17 +71,17 @@ applications.create = function*() {
 		delete application['free'];
 		var inserted = yield models.gospel_applications.create(application);
 
-		this.body = render(inserted,null,null,1,"创建成功,你选择的是收费配置，请尽快去支付");
+		this.body = render(inserted, null, null, 1, "创建成功,你选择的是收费配置，请尽快去支付");
 	}
 }
 
-applications.delete =  function *() {
+applications.delete = function*() {
 
 
 	var id = this.params.id;
 	var application = yield models.gospel_applications.findById(id);
 	//将中文英语名转英文
-	var domain  = application.domain;
+	var domain = application.domain;
 	// var reg = /[\u4e00-\u9FA5]+/;
 	// var res = reg.test(domain);
 	//
@@ -100,8 +100,8 @@ applications.delete =  function *() {
 		method: 'recordRemove',
 		opp: 'recordRemove',
 		param: {
-					domain: "gospely.com",
-					record_id: domains[0].record
+			domain: "gospely.com",
+			record_id: domains[0].record
 		}
 	}
 
@@ -113,7 +113,7 @@ applications.delete =  function *() {
 
 
 
-		var name = domain.replace("-","_");
+		var name = domain.replace("-", "_");
 		//删除nginx配置文件
 		yield shells.delNginxConf(name);
 		yield shells.nginx();
@@ -128,13 +128,13 @@ applications.delete =  function *() {
 		yield shells.rmFile("/var/www/storage/codes/" + domain)
 	} catch (e) {
 		console.log(e);
-	}finally{
+	} finally {
 
-			var inserted = yield models.gospel_applications.delete(application.id);
-			if (!inserted) {
-				this.throw(405, "couldn't be delete.");
-			}
-			this.body = render(inserted,null,null,1,'删除成功');
+		var inserted = yield models.gospel_applications.delete(application.id);
+		if (!inserted) {
+			this.throw(405, "couldn't be delete.");
+		}
+		this.body = render(inserted, null, null, 1, '删除成功');
 	}
 
 
