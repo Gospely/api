@@ -67,7 +67,7 @@ common.update = function *update() {
   	    limit: '1kb'
   	  });
 			if(item.password != null && item.password != undefined && item.password != ''){
-					item.password = md5_f.md5Sign(item.password);
+					item.password = md5_f.md5Sign(item.password,"gospel_users");
 			}
       if(item.id == null || item.id == undefined) this.throw(405, "method is not allowed");
 
