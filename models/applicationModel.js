@@ -20,6 +20,7 @@ module.exports = function(sequelize, DataTypes){
       team:DataTypes.STRING,
       creator: DataTypes.STRING,
       payStatus: { type: DataTypes.INTEGER, field: "pay_status"},
+      orderNo: { type: DataTypes.INTEGER, field: "order_no"},
       status: { type: DataTypes.INTEGER, field: "status", defaultValue: 0 },
       isDeleted: { type: DataTypes.INTEGER, field: "isdeleted", defaultValue: 0 }
 	  },{

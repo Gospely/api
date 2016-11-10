@@ -350,6 +350,31 @@ users.validator = function *() {
 	}
 
 }
+users.getEmailCode = function* () {
+
+	var range=function(start,end)
+	 {
+	          var array=[];
+	          for(var i=start;i<end;++i) array.push(i);
+	          return array;
+	};
+	var randomstr = range(0,6).map(function(x){
+	 return Math.floor(Math.random()*10);
+	}).join('');
+
+	var email = this.query.email;
+
+	var mailOptions = {
+
+		from: "龙猫科技 <shark@dodora.cn>", // 发件地址
+		to: user.phone, // 收件列表
+		subject: "Hello world", // 标题
+		html: "你的验证码是" + randomstr // html 内容
+	}
+	mail(mailOptions);
+
+
+}
 users.files = function* () {
 
 		var fileName = this.params.file;
