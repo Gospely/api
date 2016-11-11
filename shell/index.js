@@ -119,4 +119,74 @@ shells.buidDB = function*(options) {
     });
   })
 }
+
+//docker db operation
+
+//stop db
+shells.stopDB = function*(options) {
+
+  return new Promise(function(resolve, reject) {
+    exec("ssh root@gospely.com " + " docker exec -it " + options.docker +
+      "/etc/init.d/mysql stop",
+      function(err,
+        data) {
+
+        console.log(data);
+        console.log(err);
+        if (err) reject(err);
+        resolve(data);
+      });
+  })
+}
+
+//restart
+shells.restartDB = function*(options) {
+
+  return new Promise(function(resolve, reject) {
+    exec("ssh root@gospely.com " + " docker exec -it " + options.docker +
+      " /etc/init.d/mysql restart ",
+      function(err,
+        data) {
+
+        console.log(data);
+        console.log(err);
+        if (err) reject(err);
+        resolve(data);
+      });
+  })
+}
+
+//start
+shells.startDB = function*(options) {
+
+  return new Promise(function(resolve, reject) {
+    exec("ssh root@gospely.com " + " docker exec -it " + options.docker +
+      " /etc/init.d/mysql start ",
+      function(err,
+        data) {
+
+        console.log(data);
+        console.log(err);
+        if (err) reject(err);
+        resolve(data);
+      });
+  })
+}
+
+//unstall db
+shells.rmDB = function*(options) {
+
+  return new Promise(function(resolve, reject) {
+    exec("ssh root@gospely.com " + " docker exec -it " + options.docker +
+      " apt-get remove " + operation.db,
+      function(err,
+        data) {
+
+        console.log(data);
+        console.log(err);
+        if (err) reject(err);
+        resolve(data);
+      });
+  })
+}
 module.exports = shells;
