@@ -13,6 +13,7 @@ module.exports = function(sequelize, DataTypes) {
     status: DataTypes.INTEGER,
     size: DataTypes.INTEGER,
     unit: DataTypes.STRING,
+    type: DataTypes.STRING,
     orderNo: {
       type: DataTypes.STRING,
       field: "order_no"

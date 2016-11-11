@@ -178,7 +178,23 @@ shells.rmDB = function*(options) {
 
   return new Promise(function(resolve, reject) {
     exec("ssh root@gospely.com " + " docker exec -it " + options.docker +
-      " apt-get remove " + operation.db,
+      " apt-get remove " + options.db,
+      function(err,
+        data) {
+        console.log(data);
+        console.log(err);
+        if (err) reject(err);
+        resolve(data);
+      });
+  })
+}
+
+//数据卷扩容
+shells.extendsVolume = function*() {
+  return new Promise(function(resolve, reject) {
+    exec("ssh root@gospely.com " +
+      "  /root/gospely/deploy/extend/extends.js -c" + options.docker +
+      " -s " + options.size,
       function(err,
         data) {
 

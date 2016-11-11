@@ -12,6 +12,11 @@ module.exports = function(sequelize, DataTypes) {
     phone: DataTypes.STRING,
     password: DataTypes.STRING,
     identify: DataTypes.STRING,
+    volume: DataTypes.STRING,
+    volumeSize: {
+      type: DataTypes.INTEGER,
+      field: 'volume_size'
+    },
     ide: DataTypes.STRING,
     ideName: {
       type: DataTypes.INTEGER,

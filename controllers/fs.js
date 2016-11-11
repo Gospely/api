@@ -14,48 +14,51 @@ var
 		baseDir: ''
 	},
 
-	readFile = function (fileName){
-	  return new Promise(function (resolve, reject){
-	    fs.readFile(fileName, {flag: 'r+', encoding: 'utf8'}, function(error, data){
-	      if (error) reject(error);
-	      resolve(data);
-	    });
-	  });
+	readFile = function(fileName) {
+		return new Promise(function(resolve, reject) {
+			fs.readFile(fileName, {
+				flag: 'r+',
+				encoding: 'utf8'
+			}, function(error, data) {
+				if (error) reject(error);
+				resolve(data);
+			});
+		});
 	},
 
 	writeFile = function(fileName, content) {
-	  return new Promise(function (resolve, reject){
-	    fs.writeFile(fileName, content, function(error){
-	      if (error) {
-	      	reject(error);
-	      };
-	      resolve();
-	    });
-	  });
+		return new Promise(function(resolve, reject) {
+			fs.writeFile(fileName, content, function(error) {
+				if (error) {
+					reject(error);
+				};
+				resolve();
+			});
+		});
 	},
 
 	appendFile = function(fileName, content) {
-	  return new Promise(function (resolve, reject){
-	    fs.appendFile(fileName, content, function(error, data){
-	      if (error) reject(error);
-	      resolve(data);
-	    });
-	  });
+		return new Promise(function(resolve, reject) {
+			fs.appendFile(fileName, content, function(error, data) {
+				if (error) reject(error);
+				resolve(data);
+			});
+		});
 	},
 
 	removeFile = function(fileName) {
-		return new Promise(function (resolve, reject) {
+		return new Promise(function(resolve, reject) {
 			fs.unlink(fileName, function(error, data) {
-				if(error) reject(error);
+				if (error) reject(error);
 				resolve(data);
 			});
 		});
 	},
 
 	renameFile = function(fileName, newFileName) {
-		return new Promise(function (resolve, reject) {
+		return new Promise(function(resolve, reject) {
 			fs.rename(fileName, newFileName, function(error, data) {
-				if(error) reject(error);
+				if (error) reject(error);
 				resolve(data);
 			});
 		});
@@ -64,16 +67,16 @@ var
 	mvFile = function(fileName, newFileName) {
 		return new Promise(function(resolve, reject) {
 			exec('mv ' + fileName + ' ' + newFileName, function(error, data) {
-				if(error) reject(error);
+				if (error) reject(error);
 				resolve(data);
 			});
 		});
 	},
 
 	mkdir = function(fileName) {
-		return new Promise(function (resolve, reject) {
+		return new Promise(function(resolve, reject) {
 			exec('mkdir ' + fileName, function(error, data) {
-				if(error) reject(error);
+				if (error) reject(error);
 				resolve(data);
 			});
 		});
@@ -82,7 +85,7 @@ var
 	rmdir = function(dir) {
 		return new Promise(function(resolve, reject) {
 			exec('rm -rf ' + dir, function(error, data) {
-				if(error) reject(error);
+				if (error) reject(error);
 				resolve(data);
 			});
 		});
@@ -91,7 +94,7 @@ var
 	listDir = function(dirName) {
 		return new Promise(function(resolve, reject) {
 			dir.paths(dirName, function(error, subdirs) {
-				if(error) reject(error);
+				if (error) reject(error);
 				resolve(subdirs);
 			});
 		});
@@ -100,56 +103,57 @@ var
 	readDir = function(dirName) {
 		return new Promise(function(resolve, reject) {
 			fs.readdir(dirName, function(error, data) {
-				if(error) reject(error);
+				if (error) reject(error);
 				resolve(data);
 			});
 		});
 	},
 
-	exists = function(path){
-	    return fs.existsSync(path);
+	exists = function(path) {
+		return fs.existsSync(path);
 	},
 
-	isDir = function(path){
-        return exists(path) && fs.statSync(path).isDirectory();
-    },
+	isDir = function(path) {
+		return exists(path) && fs.statSync(path).isDirectory();
+	},
 
 	cp = function(file, newFile) {
 		return new Promise(function(resolve, reject) {
 			var cmd = 'cp -r ' + file + ' ' + newFile;
 			exec(cmd, function(error, data) {
-				if(error) reject(error);
+				if (error) reject(error);
 				resolve(data);
 			});
 		});
 	},
 
 	GetQueryString = function(params, name) {
-	    var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
-	    var r = params.match(reg);
-	    if(r!=null)return unescape(r[2]); return null;
+		var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+		var r = params.match(reg);
+		if (r != null) return unescape(r[2]);
+		return null;
 	}
 
 
 os.platform() === 'darwin' ?
 
 	config.baseDir = '/var/www/apache/gospel/' :
-	config.baseDir = '/var/www/storage/codes/' ;
+	config.baseDir = '/var/www/storage/codes/';
 
 var fileSystem = {
 
-	read: function* () {
+	read: function*() {
 
 		var params = yield parse(this);
 
 		try {
 
-			if(typeof params == 'string') {
+			if (typeof params == 'string') {
 				params = JSON.parse(params);
 			}
 
 			var fileName = params.fileName;
-		}catch(err) {
+		} catch (err) {
 			var fileName = GetQueryString(params, 'fileName');
 		}
 
@@ -160,63 +164,65 @@ var fileSystem = {
 				fileName: fileName,
 				extname: path.extname(fileName)
 			});
-		}catch(err) {
+		} catch (err) {
 			this.body = util.resp(500, '读取失败', err.toString());
 		}
 
 	},
 
-	write: function* () {
+	write: function*() {
 
 		var params = yield parse(this);
 
 		try {
 			var fileName = params.fileName,
 				data = params.data || '';
-		}catch(err) {
+		} catch (err) {
 			var fileName = GetQueryString(params, 'fileName')
-				data = GetQueryString(params, 'data') || '';
+			data = GetQueryString(params, 'data') || '';
 		}
 
 		fileName = fileName.replace(' ', '');
 
 		try {
 			yield writeFile(config.baseDir + fileName, data);
-			this.body = util.resp(200, '写入成功', {id: fileName});
-		}catch(err) {
+			this.body = util.resp(200, '写入成功', {
+				id: fileName
+			});
+		} catch (err) {
 			this.body = util.resp(500, '写入失败', err.toString());
 		}
 
 	},
 
-	append: function* () {
+	append: function*() {
 
 		var params = yield parse(this);
 
 		var fileName = GetQueryString(params, 'fileName')
-			data = GetQueryString(params, 'data');
+		data = GetQueryString(params, 'data');
 
 		try {
 			yield appendFile(config.baseDir + fileName, data);
 			this.body = util.resp(200, '追加成功', {});
-		}catch(err) {
+		} catch (err) {
 			this.body = util.resp(500, '追加失败', err.toString());
 		}
 
 	},
 
-	remove: function* () {
+	remove: function*() {
 
 		try {
 			var fileContent = yield removeFile(config.baseDir + this.params.fileName);
 			this.body = util.resp(200, '删除成功', this.params.fileName);
-		}catch(err) {
+		} catch (err) {
 			this.body = util.resp(500, '删除失败', err.toString());
 		}
 
 	},
 
-	rename: function* () {
+	rename: function*() {
 
 		var params = yield parse(this);
 
@@ -224,65 +230,67 @@ var fileSystem = {
 			var fileName = params.fileName,
 				newFileName = params.newFileName,
 				move = params.move || false;
-		}catch(err) {
+		} catch (err) {
 			var fileName = GetQueryString(params, 'fileName')
-				newFileName = GetQueryString(params, 'newFileName'),
+			newFileName = GetQueryString(params, 'newFileName'),
 				move = GetQueryString(params, 'move') || false;
 		}
 
-		if(move) {
+		if (move) {
 			var isdir = isDir(config.baseDir + newFileName);
-			if(!isdir) {
+			if (!isdir) {
 				newFileName = path.dirname(newFileName);
 			}
 		}
 
 		try {
-			if(!move) {
+			if (!move) {
 				yield renameFile(config.baseDir + fileName, config.baseDir + newFileName);
-			}else {
+			} else {
 				yield mvFile(config.baseDir + fileName, config.baseDir + newFileName);
 			}
-			this.body = util.resp(200, move ? '移动文件成功' : '重命名成功', {id: newFileName});
-		}catch(err) {
+			this.body = util.resp(200, move ? '移动文件成功' : '重命名成功', {
+				id: newFileName
+			});
+		} catch (err) {
 			this.body = util.resp(500, move ? '移动文件失败' : '重命名失败' + newFileName, err.toString());
 		}
 
 	},
 
-	copy: function* () {
+	copy: function*() {
 
 		var params = yield parse(this);
 
 		try {
 			var file = params.file,
 				newFile = params.newFile;
-		}catch(err) {
+		} catch (err) {
 			var file = GetQueryString(params, 'file')
-				newFile = GetQueryString(params, 'newFile');
+			newFile = GetQueryString(params, 'newFile');
 		}
 
 		var isdir = isDir(config.baseDir + newFile);
-		if(!isdir) {
+		if (!isdir) {
 			newFile = path.dirname(newFile);
 		}
 
 		try {
 			yield cp(config.baseDir + file, config.baseDir + newFile);
 			this.body = util.resp(200, '复制成功', {});
-		}catch(err) {
+		} catch (err) {
 			this.body = util.resp(200, '复制失败', err.toString());
 		}
 
 	},
 
-	mkdir: function* () {
+	mkdir: function*() {
 
 		var params = yield parse(this);
 
 		try {
 			var dirName = params.dirName;
-		}catch(err) {
+		} catch (err) {
 			var dirName = GetQueryString(params, 'dirName');
 		}
 
@@ -290,33 +298,38 @@ var fileSystem = {
 
 		try {
 			yield mkdir(config.baseDir + dirName);
-			this.body = util.resp(200, '创建文件夹成功', {id: dirName});
-		}catch(err) {
+			this.body = util.resp(200, '创建文件夹成功', {
+				id: dirName
+			});
+		} catch (err) {
 			this.body = util.resp(500, '创建文件夹失败', err.toString());
 		}
 
 	},
 
-	rmdir: function* () {
+	rmdir: function*() {
 
 		var params = yield parse(this);
 
 		try {
 			var dirName = params.dirName;
-		}catch(err) {
+		} catch (err) {
 			var dirName = GetQueryString(params, 'dirName');
 		}
 
 		try {
 			yield rmdir(config.baseDir + dirName);
-			this.body = util.resp(200, '删除文件夹成功', {id: dirName, whole: config.baseDir + dirName});
-		}catch(err) {
+			this.body = util.resp(200, '删除文件夹成功', {
+				id: dirName,
+				whole: config.baseDir + dirName
+			});
+		} catch (err) {
 			this.body = util.resp(500, '删除文件夹失败', err.toString());
 		}
 
 	},
 
-	list: function* () {
+	list: function*() {
 
 		var dirName = this.params.dirName || '',
 			result = [];
@@ -325,7 +338,7 @@ var fileSystem = {
 
 		var files = yield readDir(config.baseDir + dirName);
 
-		if(dirName == '') {
+		if (dirName == '') {
 
 			var node = {
 				text: 'root',
@@ -341,7 +354,7 @@ var fileSystem = {
 			for (var i = 0; i < files.length; i++) {
 				var file = files[i];
 
-				if(isDir(config.baseDir + file)) {
+				if (isDir(config.baseDir + file)) {
 					node.children.push({
 						text: file,
 						children: true,
@@ -349,7 +362,7 @@ var fileSystem = {
 						icon: 'folder',
 						folder: dirName
 					});
-				}else {
+				} else {
 					node.children.push({
 						text: file,
 						children: false,
@@ -363,18 +376,18 @@ var fileSystem = {
 
 			result.push(node);
 
-		}else {
+		} else {
 
 			for (var i = 0; i < files.length; i++) {
 				var file = files[i];
 
 				var node = {};
 
-				if(file == 'models') {
+				if (file == 'models') {
 					console.log(isDir(config.baseDir + file), config.baseDir + file);
 				}
 
-				if(isDir(config.baseDir + dirName + '/' + file)) {
+				if (isDir(config.baseDir + dirName + '/' + file)) {
 					node = {
 						text: file,
 						id: dirName + '/' + file,
@@ -382,7 +395,7 @@ var fileSystem = {
 						children: true,
 						folder: dirName + '/'
 					};
-				}else {
+				} else {
 					node = {
 						text: file,
 						id: dirName + '/' + file,
@@ -402,7 +415,7 @@ var fileSystem = {
 
 	},
 
-	ls: function* () {
+	ls: function*() {
 
 		try {
 			var files = yield listDir(config.baseDir + 'src'),
@@ -430,7 +443,7 @@ var fileSystem = {
 				for (var j = 0; j < fileList.length; j++) {
 					var file = fileList[j];
 
-					if(file.indexOf(dir) != -1) {
+					if (file.indexOf(dir) != -1) {
 
 						var fileSplit = file.split('/'),
 							fileName = fileSplit[fileSplit.length - 1];
@@ -450,7 +463,7 @@ var fileSystem = {
 			};
 
 			this.body = util.resp(200, '读取文件夹成功', result);
-		}catch(err) {
+		} catch (err) {
 			this.body = util.resp(500, '读取文件夹失败', err.toString());
 		}
 
