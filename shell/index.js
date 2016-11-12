@@ -190,13 +190,46 @@ shells.rmDB = function*(options) {
 }
 
 //数据卷扩容
-shells.extendsVolume = function*() {
+shells.extendsVolume = function*(options) {
   return new Promise(function(resolve, reject) {
     exec("ssh root@gospely.com " +
-      "  /root/gospely/deploy/extend/extends.js -c" + options.docker +
-      " -s " + options.size,
+      "  /root/gospely/deploy/extend/extend.js -c " + options.docker +
+      " -s " + options.size + " && echo success",
       function(err,
         data) {
+
+        console.log(data);
+        console.log(err);
+        if (err) reject(err);
+        resolve(data);
+      });
+  })
+}
+
+//创建数据卷容器
+shells.createVolume = function*(options) {
+  return new Promise(function(resolve, reject) {
+    exec("ssh root@gospely.com " +
+      " docker run -itd -v /var/www/storage/" + options.user +
+      " --name=docker-volume-" + options.user +
+      " ubuntu /bin/bash && echo success",
+      function(err,
+        data) {
+
+        console.log(data);
+        console.log(err);
+        if (err) reject(err);
+        resolve(data);
+      });
+  })
+}
+
+shells.stopVolumeDocker = function*(options) {
+
+  return new Promise(function(resolve, reject) {
+    exec("ssh root@gospely.com " + "docker stop   docker-volume-" +
+      options.user + " && echo success",
+      function(err, data) {
 
         console.log(data);
         console.log(err);

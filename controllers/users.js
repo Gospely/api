@@ -9,6 +9,7 @@ var config = require('../configs')
 var ccap = require('ccap')(); //Instantiated ccap class
 var users = {};
 var message = require('../server/message/message')
+var shells = require('../shell')
 
 
 //数据渲染，todo:分页参数引入，异常信息引入
@@ -173,8 +174,20 @@ users.register = function*() {
 				user.email = user.phone;
 				user.phone = '';
 				inserted = yield models.gospel_innersessions.create(authorization);
+
+				//创建数据卷
+				user.id = uuid.v4();
+				user.volumeSize = 10;
+				user.volume = "docker-volume-" + user.id;
+
 				inserted = yield models.gospel_users.create(user);
-				this.body = render(user, -1, "验证码错误，请重新获取");
+				var result = yield shells.createVolume({
+					user: user.id
+				});
+				yield shells.stopVolumeDocker({
+					user: user.id
+				});
+				this.body = render(user, 1, "注册成功");
 			}
 
 		}
@@ -193,7 +206,18 @@ users.register = function*() {
 
 					//更新用户状态
 					if (innersession.code == authCode) {
+
+						user.volumeSize = 10;
+						user.id = uuid.v4();
+						user.volume = "docker-volume-" + user.id;
+
 						inserted = yield models.gospel_users.create(user);
+						var result = yield shells.createVolume({
+							user: inserted.id
+						});
+						yield shells.stopVolumeDocker({
+							user: user.id
+						});
 						this.body = render(user, 1, "注册成功");
 					} else {
 						this.body = render(null, -1, "验证码错误，请重新获取");

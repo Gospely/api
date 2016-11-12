@@ -35,33 +35,27 @@ var operate = {
 	volume: function*(order, ctx) {
 
 		console.log("volume");
+		console.log(order);
 		var user = yield models.gospel_users.findById(order.creator);
-		var currentSize = order.size;
+		var currentSize = parseInt(order.size) + parseInt(user.volumeSize);
+		console.log(currentSize);
 		if (order.unit = 'GB') {
-			order.size = (order.size * 1024 * 1024) / 512;
+			console.log("ss");
+			order.size = (currentSize * 1024 * 1024 * 1024) / 512;
 		} else {
-			order.size = order.size * 1024
+			order.size = currentSize.size * 1024 * 1024
 		}
 		var extend = {
 			size: order.size,
 			docker: user.volume
 		}
-		var result = shells.extendsVolume(extend);
+		yield shells.extendsVolume(extend);
 
-		if (result == 'success') {
 
-			yield models.gospel_users.update({
-				id: order.creator,
-				volumeSize: currentSize
-			});
-			ctx.body == {
-				code: 1,
-				message: "扩容成功"
-			}
-		} else {
-			//扩容失败
-		}
-
+		yield models.gospel_users.modify({
+			id: user.id,
+			volumeSize: currentSize
+		});
 	}
 }
 
