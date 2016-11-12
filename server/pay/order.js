@@ -45,10 +45,12 @@ var operate = {
 		} else {
 			order.size = currentSize.size * 1024 * 1024
 		}
+
 		var extend = {
 			size: order.size,
 			docker: user.volume
 		}
+		console.log(extend);
 		yield shells.extendsVolume(extend);
 
 

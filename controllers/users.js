@@ -184,9 +184,6 @@ users.register = function*() {
 				var result = yield shells.createVolume({
 					user: user.id
 				});
-				yield shells.stopVolumeDocker({
-					user: user.id
-				});
 				this.body = render(user, 1, "注册成功");
 			}
 
@@ -214,9 +211,6 @@ users.register = function*() {
 						inserted = yield models.gospel_users.create(user);
 						var result = yield shells.createVolume({
 							user: inserted.id
-						});
-						yield shells.stopVolumeDocker({
-							user: user.id
 						});
 						this.body = render(user, 1, "注册成功");
 					} else {
