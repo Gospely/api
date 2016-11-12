@@ -6,12 +6,12 @@ var orders = {
 
 	order_success: function*(orderNo, ctx) {
 
-		var orders = models.gospel_orders.getAll({
+		var orders = yield models.gospel_orders.getAll({
 			orderNo: orderNo
 		});
-
-		if (orders.length != 1) {
-			var order = orders.dataValues[0];
+		console.log(orders.length);
+		if (orders.length == 1) {
+			var order = orders[0].dataValues;
 			var result = yield operate[order.type](order, ctx);
 
 		} else {
@@ -27,13 +27,14 @@ var orders = {
 
 var operate = {
 	ide: function*(order, ctx) {
-
+		console.log("ide");
 	},
 	docker: function*(order, ctex) {
-
+		console.log("docker");
 	},
-	volume: function*(order, ctex) {
+	volume: function*(order, ctx) {
 
+		console.log("volume");
 		var user = yield models.gospel_users.findById(order.creator);
 		var currentSize = order.size;
 		if (order.unit = 'GB') {
@@ -53,7 +54,7 @@ var operate = {
 				id: order.creator,
 				volumeSize: currentSize
 			});
-			this.body == {
+			ctx.body == {
 				code: 1,
 				message: "扩容成功"
 			}

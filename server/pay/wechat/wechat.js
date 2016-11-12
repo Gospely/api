@@ -75,7 +75,7 @@ Wxpay.prototype.wxpay_pay = function(data, ctx) {
 
   var infoList = ['prepay_id', 'code_url'];
 
-  data.out_trade_no = data.out_trade_no + '_' + core_funcs.getRndStr(6);
+  data.out_trade_no = data.out_trade_no;
 
   //构造要请求的参数数组，无需改动
   var parameter = {
