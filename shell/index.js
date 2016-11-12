@@ -27,7 +27,7 @@ shells.docker = function*(options) {
       "/root/gospely/allocate/start.js -n " + options.name + " -m " +
       options.memory + " -f " + options.file + " -p " + options.socketPort +
       " -s " + options.sshPort + " -a " + options.appPort + " -w " +
-      options.password + " && echo 'sucess'";
+      options.password + " -o " + options.hostName + " && echo 'sucess'";
     console.log(bash);
     exec(bash, function(err, data) {
       console.log(err);
@@ -224,18 +224,4 @@ shells.createVolume = function*(options) {
   })
 }
 
-shells.stopVolumeDocker = function*(options) {
-
-  return new Promise(function(resolve, reject) {
-    exec("ssh root@gospely.com " + "docker stop   docker-volume-" +
-      options.user + " && echo success",
-      function(err, data) {
-
-        console.log(data);
-        console.log(err);
-        if (err) reject(err);
-        resolve(data);
-      });
-  })
-}
 module.exports = shells;

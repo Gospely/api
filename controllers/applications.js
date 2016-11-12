@@ -4,7 +4,8 @@ var config = require('../configs');
 var parse = require('co-body');
 var uuid = require('node-uuid')
 var common = require('./common');
-var _md5 = require('../utils/MD5')
+var processes = require('../process');
+var _md5 = require('../utils/MD5');
 
 var applications = {};
 //数据渲染，todo:分页参数引入，异常信息引入
@@ -47,7 +48,7 @@ applications.create = function*() {
 		}
 	} else {
 
-
+		application.id = uuid.v4();
 		var order = yield models.gospel_orders.create({
 			products: application.products,
 			orderNo: _md5.md5Sign("gospel", uuid.v4()),
@@ -57,7 +58,8 @@ applications.create = function*() {
 			timeSize: application.size,
 			timeUnit: application.unit,
 			unitPrice: application.unitPrice,
-			creator: application.creator
+			creator: application.creator,
+			application: application.id
 		});
 		application.orderNo = order.id;
 		application.payStatus = -1;

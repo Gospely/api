@@ -111,6 +111,7 @@ module.exports = {
 			unit = 'm'
 		} else {
 			unit = 'g'
+			application.memory = 1024 * application.memory;
 		}
 		application.memory = docker.memory + unit;
 
@@ -129,7 +130,8 @@ module.exports = {
 				appPort: application.port,
 				password: application.password,
 				memory: application.memory,
-				file: application.image
+				file: application.image,
+				hostName: domain
 			},
 			undo: function*() {
 
@@ -153,7 +155,16 @@ module.exports = {
 		node = processes.buildNext(node, {
 			do: function*() {
 				var self = this;
-				var inserted = yield models.gospel_applications.update(self.data);
+				var inserted = yield models.gospel_applications.modify({
+					id: application.id,
+					status: 1,
+					domain: application.domain,
+					docker: application.docker,
+					sshPort: application.sshPort,
+					port: application.port,
+					password: application.password,
+					socketPort: application.socketPort,
+				});
 				self.data = inserted;
 				application = inserted;
 				if (!inserted) {

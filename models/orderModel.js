@@ -8,6 +8,7 @@ module.exports = function(sequelize, DataTypes) {
       primaryKey: true
     },
     products: DataTypes.STRING,
+    application: DataTypes.STRING,
     name: DataTypes.STRING,
     price: DataTypes.DOUBLE,
     status: DataTypes.INTEGER,
