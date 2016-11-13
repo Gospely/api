@@ -19,103 +19,90 @@ var sequelize = new Sequelize('gospel', 'gospel', 'gospel', {
 
         console.log(item);
         item.isDeleted = 0;
+        var offset = (item.cur - 1) * item.limit;
+        var limit = item.limit;
         //判断是否是分页
-        if (item.cur != null && item.cur != undefined) {
+        if (this.getAllInit != null && this.getAllInit != undefined) {
 
-          var offset = (item.cur - 1) * item.limit;
-          var limit = item.limit;
-          var attributes = [];
-          //判断是否是选择行查询
+          var sql = this.getAllInit(item);
+
+          if (sql != null && sql != undefined) {
+            sql = sql + " offset " + offset + " limit " + limit;
+            delete item['isDeleted'];
+            return yield sequelize.query(sql, {
+              replacements: item,
+              type: sequelize.QueryTypes.SELECT
+            })
+
+          }
+
+        } else {
+          if (item.cur != null && item.cur != undefined) {
+
+
+            var attributes = [];
+            //判断是否是选择行查询
+            if (item.show != null && item.show != undefined && item.show !=
+              '') {
+              attributes = item.show.split('_');
+              delete item['cur'];
+              delete item['limit'];
+              delete item['show'];
+
+
+
+              return yield this.findAll({
+                offset: offset,
+                limit: limit,
+                where: item,
+                attributes: attributes,
+                order: [
+                  ['createat', 'DESC']
+                ]
+              });
+
+            } else {
+
+              delete item['limit'];
+              delete item['cur'];
+              console.log("wwwwww");
+              //是否自定义查询
+
+              return yield this.findAll({
+                offset: offset,
+                limit: limit,
+                where: item,
+                order: [
+                  ['createat', 'DESC']
+                ]
+              });
+            }
+
+          }
+          console.log(item.show);
           if (item.show != null && item.show != undefined && item.show !=
             '') {
             attributes = item.show.split('_');
-            delete item['cur'];
-            delete item['limit'];
             delete item['show'];
-
-
-
             return yield this.findAll({
-              offset: offset,
-              limit: limit,
               where: item,
               attributes: attributes,
               order: [
                 ['createat', 'DESC']
               ]
             });
-
           } else {
 
-            delete item['limit'];
-            delete item['cur'];
-            console.log("wwwwww");
-            //是否自定义查询
-            if (this.getAllInit != null && this.getAllInit != undefined) {
-
-              var sql = this.getAllInit(item);
-
-              if (sql != null && sql != undefined) {
-                sql = sql + " offset " + offset + " limit " + limit;
-                delete item['isDeleted'];
-                return yield sequelize.query(sql, {
-                  replacements: item,
-                  type: sequelize.QueryTypes.SELECT
-                })
-
-              }
-
-            }
+            console.log("no page ,no selec");
             return yield this.findAll({
-              offset: offset,
-              limit: limit,
               where: item,
               order: [
                 ['createat', 'DESC']
               ]
             });
           }
-
         }
-        console.log(item.show);
-        if (item.show != null && item.show != undefined && item.show !=
-          '') {
-          attributes = item.show.split('_');
-          delete item['show'];
-          return yield this.findAll({
-            where: item,
-            attributes: attributes,
-            order: [
-              ['createat', 'DESC']
-            ]
-          });
-        } else {
 
-          //是否自定义查询
-          if (this.getAllInit != null && this.getAllInit != undefined) {
-
-            var sql = this.getAllInit(item);
-
-            if (sql != null && sql != undefined) {
-              delete item['isDeleted'];
-              console.log(sql);
-              console.log(item);
-              return yield sequelize.query(sql, {
-                replacements: item,
-                type: sequelize.QueryTypes.SELECT
-              })
-
-            }
-
-          }
-          console.log("no page ,no selec");
-          return yield this.findAll({
-            where: item,
-            order: [
-              ['createat', 'DESC']
-            ]
-          });
-        }
 
       },
       findById: function*(id) {
