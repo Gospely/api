@@ -11,7 +11,10 @@ module.exports = function(sequelize, DataTypes) {
     application: DataTypes.STRING,
     name: DataTypes.STRING,
     price: DataTypes.DOUBLE,
-    status: DataTypes.INTEGER,
+    status: {
+      type: DataTypes.INTEGER,
+      defaultValue: 1
+    },
     size: DataTypes.INTEGER,
     unit: DataTypes.STRING,
     type: DataTypes.STRING,
