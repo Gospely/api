@@ -18,7 +18,7 @@ orders.order = function*() {
     var pay_url = yield pay.wechat.wxpay_pay({
       body: 'test', //商品描述,
       out_trade_no: order.out_trade_no, //商户订单号,
-      total_fee: order.price, //金额,
+      total_fee: order.price * 100, //金额,
       spbill_create_ip: '127.0.0.1', //终端IP,
       product_id: '', //商品id 选,
       detail: 'dodora', //商品详情 选

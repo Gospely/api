@@ -13,7 +13,6 @@ var orders = {
 		if (orders.length == 1) {
 			var order = orders[0].dataValues;
 			var result = yield operate[order.type](order, ctx);
-
 		} else {
 			ctx.body = {
 				code: -1,
@@ -26,12 +25,44 @@ var orders = {
 
 
 var operate = {
+	//IDE 版本升级和续费
 	ide: function*(order, ctx) {
+
+		var ide = yield models.gospel_products.findById(order.products);
+
+		yield models.gospel_users.modify({
+			id: order.creator,
+			ide: ide.id,
+			ideName: ide.name
+		});
+		var ides = yield models.gospel_ides.getAll({
+			creator: order.creator
+		});
+		var ide = ides[0].dataValues;
+		var date;
+
+		if (ide.expireAt == null) {
+			date = new Date();
+		} else {
+			date = new Date(ide.expireAt);
+		}
+
+		date = date.setMonth(date.getMonth() + 1 + order.timeSize);
+		yield models.gospel_ides.modify({
+			id: ides[0].dataValues.id,
+			expireAt: Date.parse(date)
+		});
 		console.log("ide");
 	},
-	docker: function*(order, ctex) {
+	//创建付费应用
+	docker: function*(order, ctx) {
+
+		var application = yield models.gospel_applicatons.findById(order.application);
+
+		var result = yield processor.app_start(application);
 		console.log("docker");
 	},
+	//数据卷扩容
 	volume: function*(order, ctx) {
 
 		console.log("volume");
