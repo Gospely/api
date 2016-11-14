@@ -413,13 +413,16 @@ users.volume = function*() {
 	var result = yield shells.volumeInfo({
 		docker: user.volume
 	});
+	console.log(result);
 	result = result.split('\n');
-	result = result[1].split(" ");
+	console.log(result);
+	result = result[1].split("  ");
+
 	result = {
 		name: result[0],
-		size: result[2],
-		used: result[4],
-		used_perccent: result[9]
+		size: result[1],
+		used: result[2],
+		used_perccent: result[4]
 	}
 	this.body = render(result, 1, 'success');
 }
