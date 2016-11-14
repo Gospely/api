@@ -13,6 +13,10 @@ var orders = {
 		if (orders.length == 1) {
 			var order = orders[0].dataValues;
 			var result = yield operate[order.type](order, ctx);
+			yield models.gospel_orders.modify({
+				id: order.id,
+				status: 2
+			})
 		} else {
 			ctx.body = {
 				code: -1,
@@ -27,14 +31,10 @@ var orders = {
 var operate = {
 	//IDE 版本升级和续费
 	ide: function*(order, ctx) {
+		console.log(order);
+		var product = yield models.gospel_products.findById(order.products);
 
-		var ide = yield models.gospel_products.findById(order.products);
 
-		yield models.gospel_users.modify({
-			id: order.creator,
-			ide: ide.id,
-			ideName: ide.name
-		});
 		var ides = yield models.gospel_ides.getAll({
 			creator: order.creator
 		});
@@ -48,19 +48,30 @@ var operate = {
 		}
 
 		date = date.setMonth(date.getMonth() + 1 + order.timeSize);
+		console.log(date);
 		yield models.gospel_ides.modify({
-			id: ides[0].dataValues.id,
-			expireAt: Date.parse(date)
+			id: ide.id,
+			expireAt: date,
+			name: product.name
+		});
+		yield models.gospel_users.modify({
+			id: order.creator,
+			ide: ide.id,
+			ideName: product.name
 		});
 		console.log("ide");
 	},
 	//创建付费应用
 	docker: function*(order, ctx) {
 
-		var application = yield models.gospel_applicatons.findById(order.application);
-
+		var application = yield models.gospel_applications.findById(order.application);
+		application.products = order.products;
 		var result = yield processor.app_start(application);
 		console.log("docker");
+		yield models.gospel_applications.modify({
+			id: application.id,
+			payStatus: 1
+		});
 	},
 	//数据卷扩容
 	volume: function*(order, ctx) {

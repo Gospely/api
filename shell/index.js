@@ -107,13 +107,18 @@ shells.rmFile = function*(fileName) {
 shells.buidDB = function*(options) {
 
   return new Promise(function(resolve, reject) {
-    exec("ssh root@gospely.com " + "rm -rf " + fileName, function(err,
-      data) {
-      console.log(data);
-      console.log(err);
-      if (err) reject(err);
-      resolve(data);
-    });
+    exec("ssh root@gospely.com  docker exec " + options.docker +
+      " sh /root/.db/db/mariadb_install.sh && sh /root/.db/db/mariadb_conf.sh root " +
+      options.password +
+      " && /root/gospely/delploy/shell/docker_expose.sh 3306:" +
+      options.port,
+      function(err,
+        data) {
+        console.log(data);
+        console.log(err);
+        if (err) reject(err);
+        resolve(data);
+      });
   })
 }
 

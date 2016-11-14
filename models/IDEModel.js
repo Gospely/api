@@ -19,7 +19,7 @@ module.exports = function(sequelize, DataTypes) {
       defaultValue: 'G'
     },
     expireAt: {
-      type: DataTypes.STRING,
+      type: DataTypes.DATE,
       field: "expireat"
     },
     isDeleted: {
