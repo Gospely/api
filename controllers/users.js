@@ -426,6 +426,13 @@ users.volume = function*() {
 	}
 	this.body = render(result, 1, 'success');
 }
+
+users.chartCount = function* () {
+
+	var data =  yield models.gospel_orders.chart_count();	
+
+	this.body = data;
+}
 users.files = function*() {
 
 	var fileName = this.params.file;

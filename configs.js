@@ -165,7 +165,13 @@ module.exports = {
 			url: '/users/volume/:id',
 			controller: 'volume',
 			groups: "ab64c397-d323-4133-9541-479bbaaf6c52_100"
-		}, ],
+		}, {
+			name: '',
+			method: 'get',
+			url: '/users/chart/count',
+			controller: 'chartCount',
+			groups: "ab64c397-d323-4133-9541-479bbaaf6c52_100"
+		},],
 		orders: [{
 			name: '下单',
 			method: 'post',
