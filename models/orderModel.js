@@ -47,6 +47,20 @@ module.exports = function(sequelize, DataTypes) {
     classMethods: {
       associate: (models) => {
         console.log("associate");
+      },
+      chart_count: function*(item) {
+
+        console.log("item");
+        var sql =
+          "select count( * ) count, type, to_char(createat, 'yyyy-MM-dd') str from gospel_orders group by str,type";
+        if (sql != null && sql != undefined) {
+          console.log(sql);
+          console.log(item);
+          var data = yield sequelize.query(sql);
+          console.log(data);
+
+        }
+
       }
     }
   });
