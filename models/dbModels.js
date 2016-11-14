@@ -8,6 +8,8 @@ module.exports = function(sequelize, DataTypes) {
 			primaryKey: true
 		},
 		application: DataTypes.STRING,
+		port: DataTypes.STRING,
+		name: DataTypes.STRING,
 		password: DataTypes.STRING,
 		type: DataTypes.STRING,
 		docker: DataTypes.STRING,

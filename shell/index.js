@@ -108,10 +108,22 @@ shells.buidDB = function*(options) {
 
   return new Promise(function(resolve, reject) {
     exec("ssh root@gospely.com  docker exec " + options.docker +
-      " sh /root/.db/db/mariadb_install.sh && sh /root/.db/db/mariadb_conf.sh root " +
-      options.password +
-      " && /root/gospely/delploy/shell/docker_expose.sh 3306:" +
-      options.port,
+      " rm /var/lib/dpkg/lock && rm /var/cache/apt/archives/lock && sh /root/.db/db/mariadb_install.sh && sh /root/.db/db/mariadb_conf.sh root " +
+      options.password,
+      function(err,
+        data) {
+        console.log(data);
+        console.log(err);
+        if (err) reject(err);
+        resolve(data);
+      });
+  })
+}
+shells.exposePort = function*(options) {
+  return new Promise(function(resolve, reject) {
+    exec(
+      "ssh root@gospely.com  sh /root/gospely/delploy/shell/docker_expose.sh " +
+      options.docker + " add " + options.dockerPort + ":" + options.port,
       function(err,
         data) {
         console.log(data);
