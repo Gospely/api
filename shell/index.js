@@ -71,7 +71,6 @@ shells.rmDocker = function*(docker) {
     exec("ssh root@gospely.com " + "docker rm -f  gospel_project_" +
       docker.name,
       function(err, data) {
-
         console.log(data);
         console.log(err);
         if (err) reject(err);
@@ -85,7 +84,6 @@ shells.stopDocker = function*(docker) {
     exec("ssh root@gospely.com " + "docker stop  gospel_project_" +
       docker.name,
       function(err, data) {
-
         console.log(data);
         console.log(err);
         if (err) reject(err);
@@ -111,7 +109,6 @@ shells.buidDB = function*(options) {
   return new Promise(function(resolve, reject) {
     exec("ssh root@gospely.com " + "rm -rf " + fileName, function(err,
       data) {
-
       console.log(data);
       console.log(err);
       if (err) reject(err);
@@ -208,20 +205,31 @@ shells.extendsVolume = function*(options) {
 
 //创建数据卷容器
 shells.createVolume = function*(options) {
+    return new Promise(function(resolve, reject) {
+      exec("ssh root@gospely.com " +
+        " docker run -itd -v /var/www/storage/" + options.user +
+        " --name=docker-volume-" + options.user +
+        " ubuntu /bin/bash && echo success",
+        function(err,
+          data) {
+          console.log(data);
+          console.log(err);
+          if (err) reject(err);
+          resolve(data);
+        });
+    })
+  }
+  //读取数据卷大小
+shells.volumeInfo = function(options) {
   return new Promise(function(resolve, reject) {
-    exec("ssh root@gospely.com " +
-      " docker run -itd -v /var/www/storage/" + options.user +
-      " --name=docker-volume-" + options.user +
-      " ubuntu /bin/bash && echo success",
-      function(err,
-        data) {
-
-        console.log(data);
-        console.log(err);
-        if (err) reject(err);
+    exec("ssh root@gospely.com " + " docker exec " + options.docker +
+      " df -H",
+      function(err, data) {
+        if (err)
+          reject(err);
         resolve(data);
-      });
-  })
+      })
+  });
 }
 
 module.exports = shells;

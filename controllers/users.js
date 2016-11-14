@@ -407,6 +407,22 @@ users.getEmailCode = function*() {
 
 
 }
+users.volume = function*() {
+	var user = yield models.gospel_users.findById(this.params.id);
+	console.log(user);
+	var result = yield shells.volumeInfo({
+		docker: user.volume
+	});
+	result = result.split('\n');
+	result = result[1].split(" ");
+	result = {
+		name: result[0],
+		size: result[2],
+		used: result[4],
+		used_perccent: result[9]
+	}
+	this.body = render(result, 1, 'success');
+}
 users.files = function*() {
 
 	var fileName = this.params.file;

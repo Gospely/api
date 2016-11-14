@@ -29,5 +29,4 @@ quit
 
 sudo apt-get install mysql-server mysql-client
 
-docker run -itd -v /var/www/storage/codes/test2312_shark:/root/workspace
-/test2312_shark -m 512m  -p 18270:3000 -p 15994:8086 -p 44768:22  -h shark:test2312 -w /root/workspace -v /var/www/gospely/socket:/root/.gospely/.socket --name="gospel_project_test2312_shark"  gospel_nodejs:4.4.4
+docker run -itd -v /var/www/storage/codes/test2312_shark:/root/workspace/test2312_shark -m 512m  -p 18270:3000 -p 15994:8086 -p 44768:22  -h shark:test2312 -w /root/workspace -v /var/www/gospely/socket:/root/.gospely/.socket --name="gospel_project_test2312_shark"  gospel_nodejs:4.4.4
