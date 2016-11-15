@@ -237,8 +237,8 @@ module.exports = {
 			groups: "ab64c397-d323-4133-9541-479bbaaf6c52_100"
 		}, {
 			name: '删除文件',
-			method: 'get',
-			url: '/fs/remove/:fileName',
+			method: 'post',
+			url: '/fs/remove/',
 			controller: 'remove',
 			groups: "ab64c397-d323-4133-9541-479bbaaf6c52_100"
 		}, {
