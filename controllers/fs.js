@@ -227,7 +227,7 @@ var fileSystem = {
 			var fileName = params.fileName;
 
 			var fileContent = yield removeFile(config.baseDir + fileName);
-			this.body = util.resp(200, '删除成功', this.params.fileName);
+			this.body = util.resp(200, '删除成功', fileName);
 		} catch (err) {
 			this.body = util.resp(500, '删除失败', err.toString());
 		}
