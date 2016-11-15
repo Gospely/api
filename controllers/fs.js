@@ -175,6 +175,9 @@ var fileSystem = {
 		var params = yield parse(this);
 
 		try {
+			if(typeof params == 'string') {
+				params = JSON.parse(params);
+			}			
 			var fileName = params.fileName,
 				data = params.data || '';
 		} catch (err) {
@@ -213,9 +216,18 @@ var fileSystem = {
 
 	remove: function*() {
 
+		var params = yield parse(this);
+
 		try {
-			var fileContent = yield removeFile(config.baseDir + this.params.fileName);
-			this.body = util.resp(200, '删除成功', this.params.fileName);
+
+			if(typeof params == 'string') {
+				params = JSON.parse(params);
+			}
+
+			var fileName = params.fileName;
+
+			var fileContent = yield removeFile(config.baseDir + fileName);
+			this.body = util.resp(200, '删除成功', fileName);
 		} catch (err) {
 			this.body = util.resp(500, '删除失败', err.toString());
 		}
@@ -227,6 +239,9 @@ var fileSystem = {
 		var params = yield parse(this);
 
 		try {
+			if(typeof params == 'string') {
+				params = JSON.parse(params);
+			}			
 			var fileName = params.fileName,
 				newFileName = params.newFileName,
 				move = params.move || false;
@@ -263,6 +278,9 @@ var fileSystem = {
 		var params = yield parse(this);
 
 		try {
+			if(typeof params == 'string') {
+				params = JSON.parse(params);
+			}			
 			var file = params.file,
 				newFile = params.newFile;
 		} catch (err) {
@@ -289,6 +307,9 @@ var fileSystem = {
 		var params = yield parse(this);
 
 		try {
+			if(typeof params == 'string') {
+				params = JSON.parse(params);
+			}
 			var dirName = params.dirName;
 		} catch (err) {
 			var dirName = GetQueryString(params, 'dirName');
@@ -312,6 +333,9 @@ var fileSystem = {
 		var params = yield parse(this);
 
 		try {
+			if(typeof params == 'string') {
+				params = JSON.parse(params);
+			}			
 			var dirName = params.dirName;
 		} catch (err) {
 			var dirName = GetQueryString(params, 'dirName');
