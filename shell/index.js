@@ -107,11 +107,30 @@ shells.rmFile = function*(fileName) {
 shells.buidDB = function*(options) {
 
   return new Promise(function(resolve, reject) {
-    exec("ssh root@gospely.com  docker exec " + options.docker +
-      " rm /var/lib/dpkg/lock && rm /var/cache/apt/archives/lock && sh /root/.db/db/mariadb_install.sh && sh /root/.db/db/mariadb_conf.sh root " +
-      options.password,
-      function(err,
-        data) {
+    var bash = '';
+    console.log(options);
+    if (options.type == 'mysql') {
+      bash =
+        'docker run -p ' + options.port + ':3306  --name ' + options.dbName +
+        ' -v /var/www/storage' + options.user +
+        '/dbs/mysql:/etc/mysql/conf.d -e MYSQL_ROOT_PASSWORD="' +
+        options.password + '" -d mariadb';
+    }
+    if (options.type == 'mongodb') {
+      bash =
+        'docker run -d -p ' + options.port + ':27017 -p ' + options.httpPort +
+        ':28017 --name ' + options.dbName + ' -e MONGODB_PASS="' +
+        options.password +
+        '" tutum/mongodb'
+    }
+    if (options.type == 'postgres') {
+      bash = 'docker run -p ' + options.port +
+        ':5432 --name ' + options.dbName +
+        ' -e POSTGRES_PASSWORD=' + options.password + ' -d postgres'
+    }
+    console.log(bash);
+    exec("ssh root@gospely.com " + bash + " && echo success",
+      function(err, data) {
         console.log(data);
         console.log(err);
         if (err) reject(err);

@@ -22,6 +22,7 @@ module.exports = {
 			var tr = transliteration.transliterate
 			domain = tr(domain).replace(new RegExp(" ", 'gm'), "").toLocaleLowerCase();
 		}
+		application.userName = application.userName.toLocaleLowerCase();
 		domain = domain.replace('_', '');
 		//二级域名解析
 		var node = processes.init({

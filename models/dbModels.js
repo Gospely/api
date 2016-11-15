@@ -13,6 +13,12 @@ module.exports = function(sequelize, DataTypes) {
 		password: DataTypes.STRING,
 		type: DataTypes.STRING,
 		docker: DataTypes.STRING,
+		creator: DataTypes.STRING,
+		httpPort: {
+			type: DataTypes,
+			field: 'http_port'
+		},
+		description: DataTypes.STRING,
 		isDeleted: {
 			type: DataTypes.INTEGER,
 			field: "isdeleted",
