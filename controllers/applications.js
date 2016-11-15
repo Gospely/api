@@ -140,17 +140,6 @@ applications.delete = function*() {
 		this.body = render(inserted, null, null, 1, '删除成功');
 	}
 
-	application.dbCreate = function*() {
 
-		var application = yield parse(this, {
-			limit: '1kb'
-		});
-
-		shells.buidDB({
-			docker: application.docker,
-			password: application.password
-		});
-
-	}
 }
 module.exports = applications;
