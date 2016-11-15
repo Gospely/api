@@ -427,12 +427,94 @@ users.volume = function*() {
 	this.body = render(result, 1, 'success');
 }
 
-users.chartCount = function* () {
+users.chartOrdersCount = function* () {
 
-	var data =  yield models.gospel_orders.chart_count();	
-
-	this.body = data;
+	var data =  yield models.gospel_orders.orders_count();
+	console.log(data[0]);
+	this.body = render(data[0], 1 ,'success');
 }
+
+users.chartUsersCount = function* (){
+	var userData = yield models.gospel_users.users_count();
+	var teamData = yield models.gospel_users.teams_count();
+	var data=[];
+	for (var i = 0; i < userData[0].length; i++) {
+		data.push(userData[0][i]);
+	}
+	for (var i = 0; i < teamData[0].length; i++) {
+		teamData[0][i].type='team';
+		data.push(teamData[0][i]);
+	}
+	this.body = render(data, 1 ,'success');
+}
+
+users.dashboardApi = function* (){
+	//总用户数
+	var userCount = yield models.gospel_users.count({});
+	//今日用户数
+	var todayUserCount = yield models.gospel_users.today_count();
+	//昨日用户数
+	var yesterdayUserCount = yield models.gospel_users.yesterday_count();
+	//企业用户数
+	var companyUserCount = yield models.gospel_users.company_count();
+	//付费用户数
+	var payUserCount = yield models.gospel_users.pay_count();
+	//活跃用户数
+	var activeUserCount = yield models.gospel_users.active_count();
+	//今日收益
+	var todayProfit = yield models.gospel_orders.today_profit();
+	//昨日收益
+	var yesterdayProfit = yield models.gospel_orders.yesterday_profit();
+	//今日新增订单数
+	var todayOrder = yield models.gospel_orders.today_orders();
+	//昨日新增订单数
+	var yesterdayOrder = yield models.gospel_orders.yesterday_orders();
+	//应用数
+	var appCount = yield models.gospel_applications.count({});
+	console.log(appCount);
+	//域名数
+	var domainCount = yield models.gospel_domains.count({});
+	console.log(domainCount);
+	//
+	var data = [];
+	userCount[0].dataValues.count=userCount[0].dataValues.all;
+	delete userCount[0].dataValues.all;
+	userCount[0].dataValues.type='allUser';
+	data.push(userCount[0].dataValues);
+	todayUserCount[0][0].type='todayUser';
+	data.push(todayUserCount[0][0]);
+	yesterdayUserCount[0][0].type='yesterdayUser';
+	data.push(yesterdayUserCount[0][0]);
+	companyUserCount[0][0].type='companyUser';
+	data.push(companyUserCount[0][0]);
+	payUserCount[0][0].type='payUser';
+	data.push(payUserCount[0][0]);
+	
+	todayProfit[0][0].sum=todayProfit.sum==null?0:todayProfit.sum;
+	todayProfit[0][0].type='todayProfit';
+	data.push(todayProfit[0][0]);
+	yesterdayProfit[0][0].sum=yesterdayProfit.sum==null?0:yesterdayProfit.sum;
+	yesterdayProfit[0][0].type='yesterdayProfit';
+	data.push(yesterdayProfit[0][0]);
+	todayOrder[0][0].type='todayOrder';
+	data.push(todayOrder[0][0]);
+	yesterdayOrder[0][0].type='yesterdayOrder';
+	data.push(yesterdayOrder[0][0]);
+
+	appCount[0].dataValues.count=appCount[0].dataValues.all;
+	delete appCount[0].dataValues.all;
+	appCount[0].dataValues.type='appCount';
+	data.push(appCount[0].dataValues);
+
+	domainCount[0].dataValues.count=domainCount[0].dataValues.all;
+	delete domainCount[0].dataValues.all;
+	domainCount[0].dataValues.type='domainCount';
+	data.push(domainCount[0].dataValues);
+
+	this.body = render(data,1,'success');
+}
+
+
 users.files = function*() {
 
 	var fileName = this.params.file;

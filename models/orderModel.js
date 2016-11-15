@@ -48,20 +48,72 @@ module.exports = function(sequelize, DataTypes) {
       associate: (models) => {
         console.log("associate");
       },
-      chart_count: function*(item) {
-
-        console.log("item");
+      //最近7天的订单数
+      orders_count: function*(item) {
+        console.log(item);
         var sql =
-          "select count( * ) count, type, to_char(createat, 'yyyy-MM-dd') str from gospel_orders group by str,type";
+        "select count( * ) count, type, to_char(createat, 'yyyy-MM-dd') str from gospel_orders where createat >= current_timestamp-interval '7 day' and createat <= current_timestamp group by str,type";
         if (sql != null && sql != undefined) {
           console.log(sql);
           console.log(item);
           var data = yield sequelize.query(sql);
           console.log(data);
-
+          return data;
         }
-
+      },
+      //今日收益
+      today_profit:function*(item){
+        console.log(item);
+        var sql =
+        "select sum( price ) from gospel_orders where createat >= current_timestamp-interval '1 day' and createat <= current_timestamp";
+        if (sql != null && sql != undefined) {
+          console.log(sql);
+          console.log(item);
+          var data = yield sequelize.query(sql);
+          console.log(data);
+          return data;
+        }
+      },
+      //昨日收益
+      yesterday_profit:function*(item){
+        console.log(item);
+        var sql =
+        "select sum( price ) from gospel_orders where createat >= current_timestamp-interval '2 day' and createat <= current_timestamp-interval '1 day'";
+        if (sql != null && sql != undefined) {
+          console.log(sql);
+          console.log(item);
+          var data = yield sequelize.query(sql);
+          console.log(data);
+          return data;
+        }
+      },
+      //今日新增订单
+      today_orders:function*(item){
+        console.log(item);
+        var sql =
+        "select count(*) from gospel_orders where createat >= current_timestamp-interval '1 day' and createat <= current_timestamp-interval '0 day'";
+        if (sql != null && sql != undefined) {
+          console.log(sql);
+          console.log(item);
+          var data = yield sequelize.query(sql);
+          console.log(data);
+          return data;
+        }
+      },
+      //昨日新增订单
+      yesterday_orders:function*(item){
+        console.log(item);
+        var sql =
+        "select count(*) from gospel_orders where createat >= current_timestamp-interval '2 day' and createat <= current_timestamp-interval '1 day'";
+        if (sql != null && sql != undefined) {
+          console.log(sql);
+          console.log(item);
+          var data = yield sequelize.query(sql);
+          console.log(data);
+          return data;
+        }
       }
+
     }
   });
   return order;

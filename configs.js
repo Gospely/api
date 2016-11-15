@@ -166,10 +166,22 @@ module.exports = {
 			controller: 'volume',
 			groups: "ab64c397-d323-4133-9541-479bbaaf6c52_100"
 		}, {
-			name: '',
+			name: '订单统计',
 			method: 'get',
-			url: '/users/chart/count',
-			controller: 'chartCount',
+			url: '/users/chart/orderscount',
+			controller: 'chartOrdersCount',
+			groups: "ab64c397-d323-4133-9541-479bbaaf6c52_100"
+		},{
+			name: '用户统计',
+			method: 'get',
+			url: '/users/chart/userscount',
+			controller: 'chartUsersCount',
+			groups: "ab64c397-d323-4133-9541-479bbaaf6c52_100"
+		},{
+			name: '控制面板api',
+			method: 'get',
+			url: '/users/dashboard',
+			controller: 'dashboardApi',
 			groups: "ab64c397-d323-4133-9541-479bbaaf6c52_100"
 		},],
 		orders: [{
