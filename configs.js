@@ -340,13 +340,13 @@ module.exports = {
 		}, {
 			name: 'Git push',
 			method: 'post',
-			url: '/fs/push/git',
+			url: '/fs/push/',
 			controller: 'gitPush',
 			groups: "ab64c397-d323-4133-9541-479bbaaf6c52_100"
 		}, {
 			name: 'Git pull',
 			method: 'post',
-			url: '/fs/pull/git',
+			url: '/fs/pull/',
 			controller: 'gitPull',
 			groups: "ab64c397-d323-4133-9541-479bbaaf6c52_100"
 		}, {
@@ -358,13 +358,13 @@ module.exports = {
 		}, {
 			name: 'Git Commit',
 			method: 'post',
-			url: '/fs/commit/git',
+			url: '/fs/commit',
 			controller: 'gitCommit',
 			groups: "ab64c397-d323-4133-9541-479bbaaf6c52_100"
 		}, {
 			name: 'Git Clone',
 			method: 'post',
-			url: '/fs/clone/git',
+			url: '/fs/clone',
 			controller: 'gitClone',
 			groups: "ab64c397-d323-4133-9541-479bbaaf6c52_100"
 		}]
