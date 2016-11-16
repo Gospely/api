@@ -466,7 +466,7 @@ var fileSystem = {
 			var result = yield shell(cmd);
 			this.body = util.resp(200, '执行成功', result);
 		} catch (err) {
-			this.body = util.resp(200, '执行失败', err.toString());
+			this.body = util.resp(500, '执行失败', err.toString());
 		}
 
 	},
@@ -498,7 +498,7 @@ var fileSystem = {
 
 			this.body = util.resp(200, '执行成功', flag);
 		} catch (err) {
-			this.body = util.resp(200, '执行失败', err.toString());
+			this.body = util.resp(500, '执行失败', err.toString());
 		}
 
 	},
@@ -521,7 +521,7 @@ var fileSystem = {
 			var result = yield shell("cd " + config.baseDir + dir + ' && git remote -v');
 			this.body = util.resp(200, '执行成功', result);
 		} catch (err) {
-			this.body = util.resp(200, '执行失败', err.toString());
+			this.body = util.resp(500, '执行失败', err.toString());
 		}
 	},
 
@@ -542,7 +542,7 @@ var fileSystem = {
 			var result = yield shell("cd " + config.baseDir + dir + ' && git push -u origin master');
 			this.body = util.resp(200, '执行成功', result);
 		} catch (err) {
-			this.body = util.resp(200, '执行失败', err.toString());
+			this.body = util.resp(500, '执行失败', err.toString());
 		}
 	},
 
@@ -563,7 +563,7 @@ var fileSystem = {
 			var result = yield shell("cd " + config.baseDir + dir + ' && git pull');
 			this.body = util.resp(200, '执行成功', result);
 		} catch (err) {
-			this.body = util.resp(200, '执行失败', err.toString());
+			this.body = util.resp(500, '执行失败', err.toString());
 		}
 	},
 
@@ -584,7 +584,7 @@ var fileSystem = {
 			var result = yield shell("cd " + config.baseDir + dir + ' && git add . && git commit');
 			this.body = util.resp(200, '执行成功', result);
 		} catch (err) {
-			this.body = util.resp(200, '执行失败', err.toString());
+			this.body = util.resp(500, '执行失败', err.toString());
 		}
 	},
 
@@ -607,7 +607,7 @@ var fileSystem = {
 			var result = yield shell("cd " + config.baseDir + dir + ' && git clone ' + origin);
 			this.body = util.resp(200, '执行成功', result);
 		} catch (err) {
-			this.body = util.resp(200, '执行失败', err.toString());
+			this.body = util.resp(500, '执行失败', err.toString());
 		}
 	},
 
@@ -630,7 +630,7 @@ var fileSystem = {
 			var result = yield shell("cd " + config.baseDir + dir + ' && git remote remove origin && git add origin ' + origin);
 			this.body = util.resp(200, '执行成功', result);
 		} catch (err) {
-			this.body = util.resp(200, '执行失败', err.toString());
+			this.body = util.resp(500, '执行失败', err.toString());
 		}
 	},
 

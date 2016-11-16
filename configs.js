@@ -350,7 +350,7 @@ module.exports = {
 			controller: 'gitPull',
 			groups: "ab64c397-d323-4133-9541-479bbaaf6c52_100"
 		}, {
-			name: 'Git pull',
+			name: 'Modify origin',
 			method: 'post',
 			url: '/fs/origin/modify',
 			controller: 'modifyGitOrigin',
