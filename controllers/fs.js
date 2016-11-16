@@ -136,7 +136,7 @@ var
 
 	shell = function(cmd) {
 		return new Promise(function(resolve, reject) {
-			exec(cmd, function(error, data) {
+			exec("ssh root@120.76.235.234 " + cmd, function(error, data) {
 				if (error) reject(error);
 				resolve(data);
 			});
@@ -486,7 +486,7 @@ var fileSystem = {
 		}
 
 		try {
-			var result = yield shell("cd " + config.baseDir + dir + ' && git status');
+			var result = yield shell("docker exec gospel_project_" + dir + " git --exec-path=~/workspace/ status");
 
 			var flag = false;
 
@@ -518,7 +518,7 @@ var fileSystem = {
 		}
 
 		try {
-			var result = yield shell("cd " + config.baseDir + dir + ' && git remote -v');
+			var result = yield shell("docker exec gospel_project_" + dir + " git --exec-path=~/workspace/ remote -v");
 			this.body = util.resp(200, '执行成功', result);
 		} catch (err) {
 			this.body = util.resp(500, '执行失败', err.toString());
@@ -539,7 +539,7 @@ var fileSystem = {
 		}
 
 		try {
-			var result = yield shell("cd " + config.baseDir + dir + ' && git push -u origin master');
+			var result = yield shell("docker exec gospel_project_" + dir + " git --exec-path=~/workspace/ push -u origin master");
 			this.body = util.resp(200, '执行成功', result);
 		} catch (err) {
 			this.body = util.resp(500, '执行失败', err.toString());
@@ -560,7 +560,7 @@ var fileSystem = {
 		}
 
 		try {
-			var result = yield shell("cd " + config.baseDir + dir + ' && git pull');
+			var result = yield shell("docker exec gospel_project_" + dir + " git --exec-path=~/workspace/ pull");
 			this.body = util.resp(200, '执行成功', result);
 		} catch (err) {
 			this.body = util.resp(500, '执行失败', err.toString());
@@ -581,7 +581,7 @@ var fileSystem = {
 		}
 
 		try {
-			var result = yield shell("cd " + config.baseDir + dir + ' && git add . && git commit');
+			var result = yield shell("docker exec gospel_project_" + dir + " git --exec-path=~/workspace/ add . && git --exec-path=~/workspace/ commit");
 			this.body = util.resp(200, '执行成功', result);
 		} catch (err) {
 			this.body = util.resp(500, '执行失败', err.toString());
