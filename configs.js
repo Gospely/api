@@ -319,7 +319,13 @@ module.exports = {
 			url: '/fs/list/optional/',
 			controller: 'list',
 			groups: "ab64c397-d323-4133-9541-479bbaaf6c52_100"
-		}]
+		}, {
+			name: '执行shell命令',
+			method: 'post',
+			url: '/fs/shell/',
+			controller: 'shell',
+			groups: "ab64c397-d323-4133-9541-479bbaaf6c52_100"
+		}, ]
 	},
 	file: {
 		basePath: '/var/www/storage/profiles/'

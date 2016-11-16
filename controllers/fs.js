@@ -132,6 +132,15 @@ var
 		var r = params.match(reg);
 		if (r != null) return unescape(r[2]);
 		return null;
+	},
+
+	shell = function(cmd) {
+		return new Promise(function(resolve, reject) {
+			exec(cmd, function(error, data) {
+				if (error) reject(error);
+				resolve(data);
+			});
+		});
 	}
 
 
@@ -436,6 +445,29 @@ var fileSystem = {
 		}
 
 		this.body = result;
+
+	},
+
+	shell: function*() {
+
+		var params = yield parse(this);
+
+		try {
+			if(typeof params == 'string') {
+				params = JSON.parse(params);
+			}
+			var cmd = params.cmd;
+
+		} catch (err) {
+			var cmd = GetQueryString(params, 'cmd');
+		}
+
+		try {
+			var result = yield shell(cmd);
+			this.body = util.resp(200, '执行成功', result);
+		} catch (err) {
+			this.body = util.resp(200, '执行失败', err.toString());
+		}
 
 	},
 
