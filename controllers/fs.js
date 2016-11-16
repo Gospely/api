@@ -486,7 +486,7 @@ var fileSystem = {
 		}
 
 		try {
-			var result = yield shell(config.baseDir + dir);
+			var result = yield shell("cd " + config.baseDir + dir + ' && git status');
 
 			var flag = false;
 
