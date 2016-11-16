@@ -525,6 +525,115 @@ var fileSystem = {
 		}
 	},
 
+	gitPush: function*() {
+		var params = yield parse(this);
+
+		try {
+			if(typeof params == 'string') {
+				params = JSON.parse(params);
+			}
+			var dir = params.dir;
+
+		} catch (err) {
+			var dir = GetQueryString(params, 'dir');
+		}
+
+		try {
+			var result = yield shell("cd " + config.baseDir + dir + ' && git push -u origin master');
+			this.body = util.resp(200, '执行成功', result);
+		} catch (err) {
+			this.body = util.resp(200, '执行失败', err.toString());
+		}
+	},
+
+	gitPull: function*() {
+		var params = yield parse(this);
+
+		try {
+			if(typeof params == 'string') {
+				params = JSON.parse(params);
+			}
+			var dir = params.dir;
+
+		} catch (err) {
+			var dir = GetQueryString(params, 'dir');
+		}
+
+		try {
+			var result = yield shell("cd " + config.baseDir + dir + ' && git pull');
+			this.body = util.resp(200, '执行成功', result);
+		} catch (err) {
+			this.body = util.resp(200, '执行失败', err.toString());
+		}
+	},
+
+	gitCommit: function*() {
+		var params = yield parse(this);
+
+		try {
+			if(typeof params == 'string') {
+				params = JSON.parse(params);
+			}
+			var dir = params.dir;
+
+		} catch (err) {
+			var dir = GetQueryString(params, 'dir');
+		}
+
+		try {
+			var result = yield shell("cd " + config.baseDir + dir + ' && git add . && git commit');
+			this.body = util.resp(200, '执行成功', result);
+		} catch (err) {
+			this.body = util.resp(200, '执行失败', err.toString());
+		}
+	},
+
+	gitClone: function*() {
+		var params = yield parse(this);
+
+		try {
+			if(typeof params == 'string') {
+				params = JSON.parse(params);
+			}
+			var origin = params.origin,
+				dir = params.dir;
+
+		} catch (err) {
+			var origin = GetQueryString(params, 'origin');
+			var dir = GetQueryString(params, 'dir');
+		}
+
+		try {
+			var result = yield shell("cd " + config.baseDir + dir + ' && git clone ' + origin);
+			this.body = util.resp(200, '执行成功', result);
+		} catch (err) {
+			this.body = util.resp(200, '执行失败', err.toString());
+		}
+	},
+
+	modifyGitOrigin: function*() {
+		var params = yield parse(this);
+
+		try {
+			if(typeof params == 'string') {
+				params = JSON.parse(params);
+			}
+			var origin = params.origin,
+				dir = params.dir;
+
+		} catch (err) {
+			var origin = GetQueryString(params, 'origin');
+			var dir = GetQueryString(params, 'dir');
+		}
+
+		try {
+			var result = yield shell("cd " + config.baseDir + dir + ' && git remote remove origin && git add origin ' + origin);
+			this.body = util.resp(200, '执行成功', result);
+		} catch (err) {
+			this.body = util.resp(200, '执行失败', err.toString());
+		}
+	},
+
 	ls: function*() {
 
 		try {

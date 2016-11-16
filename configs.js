@@ -337,6 +337,36 @@ module.exports = {
 			url: '/fs/origin/git',
 			controller: 'getGitOrigin',
 			groups: "ab64c397-d323-4133-9541-479bbaaf6c52_100"
+		}, {
+			name: 'Git push',
+			method: 'post',
+			url: '/fs/push/git',
+			controller: 'gitPush',
+			groups: "ab64c397-d323-4133-9541-479bbaaf6c52_100"
+		}, {
+			name: 'Git pull',
+			method: 'post',
+			url: '/fs/pull/git',
+			controller: 'gitPull',
+			groups: "ab64c397-d323-4133-9541-479bbaaf6c52_100"
+		}, {
+			name: 'Git pull',
+			method: 'post',
+			url: '/fs/origin/modify',
+			controller: 'modifyGitOrigin',
+			groups: "ab64c397-d323-4133-9541-479bbaaf6c52_100"
+		}, {
+			name: 'Git Commit',
+			method: 'post',
+			url: '/fs/commit/git',
+			controller: 'gitCommit',
+			groups: "ab64c397-d323-4133-9541-479bbaaf6c52_100"
+		}, {
+			name: 'Git Clone',
+			method: 'post',
+			url: '/fs/clone/git',
+			controller: 'gitClone',
+			groups: "ab64c397-d323-4133-9541-479bbaaf6c52_100"
 		}]
 	},
 	file: {
