@@ -539,7 +539,7 @@ var fileSystem = {
 		}
 
 		try {
-			var result = yield shell("ssh root@gospely.com docker exec gospel_project_" + dir + " sh /root/.gospely/.git_shell/.push.sh");
+			var result = yield shell("docker exec gospel_project_" + dir + " sh /root/.gospely/.git_shell/.push.sh");
 			this.body = util.resp(200, '执行成功', result);
 		} catch (err) {
 			this.body = util.resp(500, '执行失败', err.toString());
@@ -560,7 +560,7 @@ var fileSystem = {
 		}
 
 		try {
-			var result = yield shell("ssh root@gospely.com docker exec gospel_project_" + dir + " sh /root/.gospely/.git_shell/.pull.sh");
+			var result = yield shell("docker exec gospel_project_" + dir + " sh /root/.gospely/.git_shell/.pull.sh");
 			this.body = util.resp(200, '执行成功', result);
 		} catch (err) {
 			this.body = util.resp(500, '执行失败', err.toString());
@@ -581,7 +581,7 @@ var fileSystem = {
 		}
 
 		try {
-			var result = yield shell("ssh root@gospely.com docker exec gospel_project_" + dir + " sh /root/.gospely/.git_shell/.commit.sh");
+			var result = yield shell("docker exec gospel_project_" + dir + " sh /root/.gospely/.git_shell/.commit.sh");
 			this.body = util.resp(200, '执行成功', result);
 		} catch (err) {
 			this.body = util.resp(500, '执行失败', err.toString());
