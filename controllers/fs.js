@@ -134,12 +134,20 @@ var
 		return null;
 	},
 
-	shell = function(cmd) {
+	shell = function(cmd, ssh) {
+		ssh = ssh || true;
 		return new Promise(function(resolve, reject) {
-			exec("ssh root@120.76.235.234 " + cmd, function(error, data) {
-				if (error) reject(error);
-				resolve(data);
-			});
+			if(ssh) {
+				exec("ssh root@120.76.235.234 " + cmd, function(error, data) {
+					if (error) reject(error);
+					resolve(data);
+				});				
+			}else {
+				exec(cmd, function(error, data) {
+					if (error) reject(error);
+					resolve(data);
+				});
+			}
 		});
 	}
 
@@ -518,7 +526,7 @@ var fileSystem = {
 		}
 
 		try {
-			var result = yield shell("cd " + config.baseDir + dir + ' && git remote -v');
+			var result = yield shell("cd " + config.baseDir + dir + ' && git remote -v', false);
 			this.body = util.resp(200, '执行成功', result);
 		} catch (err) {
 			this.body = util.resp(500, '执行失败', err.toString());
