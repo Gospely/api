@@ -471,6 +471,38 @@ var fileSystem = {
 
 	},
 
+	isGitProject: function*() {
+
+		var params = yield parse(this);
+
+		try {
+			if(typeof params == 'string') {
+				params = JSON.parse(params);
+			}
+			var dir = params.dir;
+
+		} catch (err) {
+			var dir = GetQueryString(params, 'dir');
+		}
+
+		try {
+			var result = yield shell(config.baseDir + dir);
+
+			var flag = false;
+
+			if(result.indexOf('Not a git repository') != -1) {
+				flag = false
+			}else {
+				flag = true;
+			}
+
+			this.body = util.resp(200, '执行成功', flag);
+		} catch (err) {
+			this.body = util.resp(200, '执行失败', err.toString());
+		}
+
+	},
+
 	ls: function*() {
 
 		try {

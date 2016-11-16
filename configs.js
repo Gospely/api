@@ -325,7 +325,13 @@ module.exports = {
 			url: '/fs/shell/',
 			controller: 'shell',
 			groups: "ab64c397-d323-4133-9541-479bbaaf6c52_100"
-		}, ]
+		}, {
+			name: '判断是否为git项目',
+			method: 'post',
+			url: '/fs/git/',
+			controller: 'isGitProject',
+			groups: "ab64c397-d323-4133-9541-479bbaaf6c52_100"
+		}]
 	},
 	file: {
 		basePath: '/var/www/storage/profiles/'
