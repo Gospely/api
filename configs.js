@@ -331,6 +331,12 @@ module.exports = {
 			url: '/fs/git/',
 			controller: 'isGitProject',
 			groups: "ab64c397-d323-4133-9541-479bbaaf6c52_100"
+		}, {
+			name: '获取Git Origin源',
+			method: 'post',
+			url: '/fs/origin/git',
+			controller: 'getGitOrigin',
+			groups: "ab64c397-d323-4133-9541-479bbaaf6c52_100"
 		}]
 	},
 	file: {

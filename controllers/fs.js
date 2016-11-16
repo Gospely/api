@@ -471,7 +471,7 @@ var fileSystem = {
 
 	},
 
-	isGitProject: function*() {
+	isGitProject: function* () {
 
 		var params = yield parse(this);
 
@@ -501,6 +501,28 @@ var fileSystem = {
 			this.body = util.resp(200, '执行失败', err.toString());
 		}
 
+	},
+
+	getGitOrigin: function* () {
+
+		var params = yield parse(this);
+
+		try {
+			if(typeof params == 'string') {
+				params = JSON.parse(params);
+			}
+			var dir = params.dir;
+
+		} catch (err) {
+			var dir = GetQueryString(params, 'dir');
+		}
+
+		try {
+			var result = yield shell("cd " + config.baseDir + dir + ' && git remote -v');
+			this.body = util.resp(200, '执行成功', result);
+		} catch (err) {
+			this.body = util.resp(200, '执行失败', err.toString());
+		}
 	},
 
 	ls: function*() {
