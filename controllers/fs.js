@@ -635,7 +635,7 @@ var fileSystem = {
 		}
 
 		try {
-			var result = yield shell("git --git-dir=" + config.baseDir + dir + "/.git remote remove origin && git --git-dir=" + config.baseDir + dir + "/.git add origin " + origin);
+			var result = yield shell("git --git-dir=" + config.baseDir + dir + "/.git remote remove origin && git --git-dir=" + config.baseDir + dir + "/.git add origin master " + origin);
 			this.body = util.resp(200, '执行成功', result);
 		} catch (err) {
 			this.body = util.resp(500, '执行失败', err.toString());
