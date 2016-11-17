@@ -25,7 +25,8 @@ shells.docker = function*(options) {
   return new Promise(function(resolve, reject) {
     var bash = "ssh root@gospely.com " +
       "/root/gospely/allocate/start.js -n " + options.name + " -m " +
-      options.memory + " -f " + options.file + " -p " + options.socketPort +
+      options.memory + " -c " + options.creator + " -f " + options.file +
+      " -p " + options.socketPort +
       " -s " + options.sshPort + " -a " + options.appPort + " -w " +
       options.password + " -o " + options.hostName + " && echo 'sucess'";
     console.log(bash);
@@ -159,8 +160,8 @@ shells.exposePort = function*(options) {
 shells.stopDB = function*(options) {
 
   return new Promise(function(resolve, reject) {
-    exec("ssh root@gospely.com " + " docker exec -it " + options.docker +
-      "/etc/init.d/mysql stop",
+    exec("ssh root@gospely.com " + " docker stop " + options.docker +
+      " && echo success",
       function(err,
         data) {
 
@@ -176,8 +177,8 @@ shells.stopDB = function*(options) {
 shells.restartDB = function*(options) {
 
   return new Promise(function(resolve, reject) {
-    exec("ssh root@gospely.com " + " docker exec -it " + options.docker +
-      " /etc/init.d/mysql restart ",
+    exec("ssh root@gospely.com " + " docker restart " + options.docker +
+      " && echo success",
       function(err,
         data) {
 
@@ -193,8 +194,8 @@ shells.restartDB = function*(options) {
 shells.startDB = function*(options) {
 
   return new Promise(function(resolve, reject) {
-    exec("ssh root@gospely.com " + " docker exec -it " + options.docker +
-      " /etc/init.d/mysql start ",
+    exec("ssh root@gospely.com " + " docker stop " + options.docker +
+      " && echo success",
       function(err,
         data) {
 
@@ -209,9 +210,12 @@ shells.startDB = function*(options) {
 //unstall db
 shells.rmDB = function*(options) {
 
+
+  yield this.stopDB(options);
+
   return new Promise(function(resolve, reject) {
-    exec("ssh root@gospely.com " + " docker exec -it " + options.docker +
-      " apt-get remove " + options.db,
+    exec("ssh root@gospely.com " + " docker rm -f " + options.docker +
+      " && echo success",
       function(err,
         data) {
         console.log(data);
