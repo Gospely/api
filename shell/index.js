@@ -260,10 +260,23 @@ shells.createVolume = function*(options) {
     })
   }
   //读取数据卷大小
-shells.volumeInfo = function(options) {
+shells.volumeInfo = function*(options) {
   return new Promise(function(resolve, reject) {
     exec("ssh root@gospely.com " + " docker exec " + options.docker +
       " df -H",
+      function(err, data) {
+        if (err)
+          reject(err);
+        resolve(data);
+      })
+  });
+}
+
+//启动terminal
+shells.startTerminal = function*(options) {
+  return new Promise(function(resolve, reject) {
+    exec("ssh root@gospely.com " + " docker exec " + options.docker +
+      " bash -c '. /root/.nvm/nvm.sh && cd /root/.gospely/.socket && nvm use v4.6.0 && npm start",
       function(err, data) {
         if (err)
           reject(err);
