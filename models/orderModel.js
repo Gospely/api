@@ -52,7 +52,7 @@ module.exports = function(sequelize, DataTypes) {
       orders_count: function*(item) {
         console.log(item);
         var sql =
-        "select count( * ) count, type, to_char(createat, 'yyyy-MM-dd') str from gospel_orders where createat >= current_timestamp-interval '7 day' and createat <= current_timestamp group by str,type";
+        "select count( * ) count, type, to_char(createat, 'yyyy-MM-dd') str from gospel_orders where createat >= current_timestamp-interval '7 day' and createat <= current_timestamp and status ="+ item.status+"group by str,type";
         if (sql != null && sql != undefined) {
           console.log(sql);
           console.log(item);

@@ -115,7 +115,7 @@ module.exports = function(sequelize, DataTypes) {
       company_count:function*(item){
         console.log(item);
         var sql =
-        "select count( * ) count from gospel_users where type='company'";
+        "select count( * ) count from gospel_companys";
         if (sql != null && sql != undefined) {
           console.log(sql);
           console.log(item);
