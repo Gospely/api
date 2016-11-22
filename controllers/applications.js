@@ -5,6 +5,7 @@ var parse = require('co-body');
 var uuid = require('node-uuid')
 var common = require('./common');
 var processes = require('../process');
+var dnspod = require('../server/dnspod');
 var _md5 = require('../utils/MD5');
 
 var applications = {};

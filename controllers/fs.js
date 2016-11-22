@@ -132,6 +132,23 @@ var
 		var r = params.match(reg);
 		if (r != null) return unescape(r[2]);
 		return null;
+	},
+
+	shell = function(cmd, ssh) {
+		ssh = ssh || true;
+		return new Promise(function(resolve, reject) {
+			if(ssh) {
+				exec("ssh root@120.76.235.234 " + cmd, function(error, data) {
+					if (error) reject(error);
+					resolve(data);
+				});				
+			}else {
+				exec(cmd, function(error, data) {
+					if (error) reject(error);
+					resolve(data);
+				});
+			}
+		});
 	}
 
 
@@ -437,6 +454,196 @@ var fileSystem = {
 
 		this.body = result;
 
+	},
+
+	shell: function*() {
+
+		var params = yield parse(this);
+
+		try {
+			if(typeof params == 'string') {
+				params = JSON.parse(params);
+			}
+			var cmd = params.cmd;
+
+		} catch (err) {
+			var cmd = GetQueryString(params, 'cmd');
+		}
+
+		try {
+			var result = yield shell(cmd);
+			this.body = util.resp(200, '执行成功', result);
+		} catch (err) {
+			this.body = util.resp(500, '执行失败', err.toString());
+		}
+
+	},
+
+	isGitProject: function* () {
+
+		var params = yield parse(this);
+
+		try {
+			if(typeof params == 'string') {
+				params = JSON.parse(params);
+			}
+			var dir = params.dir;
+
+		} catch (err) {
+			var dir = GetQueryString(params, 'dir');
+		}
+
+		try {
+			var result = yield shell("git --git-dir=" + config.baseDir + dir + "/.git status");
+
+			var flag = false;
+
+			if(result.indexOf('Not a git repository') != -1) {
+				flag = false
+			}else {
+				flag = true;
+			}
+
+			this.body = util.resp(200, '执行成功', flag);
+		} catch (err) {
+			this.body = util.resp(500, '执行失败', err.toString());
+		}
+
+	},
+
+	getGitOrigin: function* () {
+
+		var params = yield parse(this);
+
+		try {
+			if(typeof params == 'string') {
+				params = JSON.parse(params);
+			}
+			var dir = params.dir;
+
+		} catch (err) {
+			var dir = GetQueryString(params, 'dir');
+		}
+
+		try {
+			var result = yield shell("git --git-dir=" + config.baseDir + dir + "/.git remote -v", false);
+			this.body = util.resp(200, '执行成功', result);
+		} catch (err) {
+			this.body = util.resp(500, '执行失败', err.toString());
+		}
+	},
+
+	gitPush: function*() {
+		var params = yield parse(this);
+
+		try {
+			if(typeof params == 'string') {
+				params = JSON.parse(params);
+			}
+			var dir = params.dir;
+
+		} catch (err) {
+			var dir = GetQueryString(params, 'dir');
+		}
+
+		try {
+			var result = yield shell("docker exec gospel_project_" + dir + " sh /root/.gospely/.git_shell/.push.sh");
+			this.body = util.resp(200, '执行成功', result);
+		} catch (err) {
+			this.body = util.resp(500, '执行失败', err.toString());
+		}
+	},
+
+	gitPull: function*() {
+		var params = yield parse(this);
+
+		try {
+			if(typeof params == 'string') {
+				params = JSON.parse(params);
+			}
+			var dir = params.dir;
+
+		} catch (err) {
+			var dir = GetQueryString(params, 'dir');
+		}
+
+		try {
+			var result = yield shell("docker exec gospel_project_" + dir + " sh /root/.gospely/.git_shell/.pull.sh");
+			this.body = util.resp(200, '执行成功', result);
+		} catch (err) {
+			this.body = util.resp(500, '执行失败', err.toString());
+		}
+	},
+
+	gitCommit: function*() {
+		var params = yield parse(this);
+
+		try {
+			if(typeof params == 'string') {
+				params = JSON.parse(params);
+			}
+			var dir = params.dir;
+
+		} catch (err) {
+			var dir = GetQueryString(params, 'dir');
+		}
+
+		try {
+			var result = yield shell("docker exec gospel_project_" + dir + " sh /root/.gospely/.git_shell/.commit.sh");
+			this.body = util.resp(200, '执行成功', result);
+		} catch (err) {
+			this.body = util.resp(500, '执行失败', err.toString());
+		}
+	},
+
+	gitClone: function*() {
+		var params = yield parse(this);
+
+		try {
+			if(typeof params == 'string') {
+				params = JSON.parse(params);
+			}
+			var origin = params.origin,
+				dir = params.dir;
+
+		} catch (err) {
+			var origin = GetQueryString(params, 'origin');
+			var dir = GetQueryString(params, 'dir');
+		}
+
+		try {
+			var result = yield shell("cd " + config.baseDir + dir + ' && git clone ' + origin);
+			this.body = util.resp(200, '执行成功', result);
+		} catch (err) {
+			this.body = util.resp(500, '执行失败', err.toString());
+		}
+	},
+
+	modifyGitOrigin: function*() {
+		var params = yield parse(this);
+
+		try {
+			if(typeof params == 'string') {
+				params = JSON.parse(params);
+			}
+			var origin = params.origin,
+				dir = params.dir;
+
+		} catch (err) {
+			var origin = GetQueryString(params, 'origin');
+			var dir = GetQueryString(params, 'dir');
+		}
+
+		try {
+			var result = yield shell("git --git-dir=" + config.baseDir + dir + "/.git remote remove origin && git --git-dir=" + config.baseDir + dir + "/.git remote add origin " + origin);
+			this.body = util.resp(200, '执行成功', result);
+		} catch (err) {
+			try {
+				var result = yield shell("git --git-dir=" + config.baseDir + dir + "/.git remote add origin " + origin);
+			} catch (err) {
+				this.body = util.resp(500, '执行失败', err.toString());
+			}
+		}
 	},
 
 	ls: function*() {

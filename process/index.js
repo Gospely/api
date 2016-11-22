@@ -132,7 +132,8 @@ module.exports = {
 				password: application.password,
 				memory: application.memory,
 				file: application.image,
-				hostName: domain
+				hostName: domain,
+				creator: application.creator
 			},
 			undo: function*() {
 

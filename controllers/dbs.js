@@ -59,4 +59,29 @@ dbs.create = function*() {
 	this.body = render(inserted, null, null, 1, '创建数据成功');
 }
 
+dbs.delete = function*() {
+
+	var id = this.params.id;
+	console.log(id);
+
+	var db = yield models.gospel_dbs.findById(id);
+	var user = yield models.gospel_users.findById(db.creator);
+
+	var dbName = '';
+	var reg = /[\u4e00-\u9FA5]+/;
+	var res = reg.test(db.name);
+	if (res) {
+		var tr = transliteration.transliterate
+		dbName = tr(db.name).replace(new RegExp(" ", 'gm'), "").toLocaleLowerCase();
+	} else {
+		dbName = db.name;
+	}
+
+	var result = yield shells.rmDB({
+		docker: user.name + '-db-' + dbName,
+	});
+	yield models.gospel_dbs.delete(id);
+	this.body = render(null, null, null, 1, '删除成功');
+}
+
 module.exports = dbs;
