@@ -10,6 +10,7 @@ var ccap = require('ccap')(); //Instantiated ccap class
 var users = {};
 var message = require('../server/message/message')
 var shells = require('../shell')
+var date = require('../utils/dateOpr');
 
 
 //数据渲染，todo:分页参数引入，异常信息引入
@@ -367,6 +368,31 @@ users.phoneCode = function*() {
 	})
 	this.body = render(id, 1, "获取验证码成功");
 }
+//验证手机验证码
+users.verifyPhoneCode=function*(){
+	var user = yield parse(this, {
+		limit: '2MB'
+	});
+	var token = user.token;
+	var authCode = user.authCode;
+
+	var innersession = yield models.gospel_innersessions.findById(token);
+	if (innersession.phone == user.phone) {
+		if ((Date.now() - innersession.time) <= innersession.limitTime) {
+			//更新用户状态
+			if (innersession.code == authCode) {
+				yield models.gospel_users.modify({phone:user.phone,id:user.id});
+				this.body = render(user, 1, "手机 验证成功");
+			} else {
+				this.body = render(null, -1, "验证码错误，请重新获取");
+			}
+		} else {
+			this.body = render(null, -1, "验证码超时，请重新获取");
+		}
+	} else {
+		this.body = render(null, -1, "注册失败，手机或验证码错误");
+	}
+}
 
 users.validator = function*() {
 
@@ -383,6 +409,8 @@ users.validator = function*() {
 	}
 
 }
+
+//发送邮箱验证码
 users.getEmailCode = function*() {
 
 	var range = function(start, end) {
@@ -399,14 +427,48 @@ users.getEmailCode = function*() {
 	var mailOptions = {
 
 		from: "龙猫科技 <shark@dodora.cn>", // 发件地址
-		to: user.phone, // 收件列表
+		to: email, // 收件列表
 		subject: "Hello world", // 标题
-		html: "你的验证码是" + randomstr // html 内容
+		html: "你的验证码是" + randomstr+" ,请在一个小时之内提交验证码" // html 内容
 	}
 	mail(mailOptions);
 
-
+	var id = uuid.v4();
+	var innersession = yield models.gospel_innersessions.create({
+		id: id,
+		code: randomstr,
+		time: Date.now(),
+		limitTime: 60 * 60000,//一个小时的过期时间
+		phone: email
+	})
+	this.body=render(id,1,"发送邮箱验证码成功");
 }
+//验证邮箱验证码
+users.verifyEmailCode = function* (){
+	var user = yield parse(this, {
+		limit: '2MB'
+	});
+	var token = user.token;
+	var authCode = user.authCode;
+
+	var innersession = yield models.gospel_innersessions.findById(token);
+	if (innersession.phone == user.phone) {
+		if ((Date.now() - innersession.time) <= innersession.limitTime) {
+			//更新用户状态
+			if (innersession.code == authCode) {
+				yield models.gospel_users.modify({email:user.phone,id:user.id});
+				this.body = render(user, 1, "邮箱验证成功");
+			} else {
+				this.body = render(null, -1, "验证码错误，请重新获取");
+			}
+		} else {
+			this.body = render(null, -1, "验证码超时，请重新获取");
+		}
+	} else {
+		this.body = render(null, -1, "注册失败，邮箱或验证码错误");
+	}
+}
+
 users.volume = function*() {
 	var user = yield models.gospel_users.findById(this.params.id);
 	console.log(user);
@@ -427,11 +489,60 @@ users.volume = function*() {
 	this.body = render(result, 1, 'success');
 }
 
+
 users.chartOrdersCount = function* () {
 
-	var data =  yield models.gospel_orders.orders_count();
-	console.log(data[0]);
-	this.body = render(data[0], 1 ,'success');
+	var payOrder =  yield models.gospel_orders.orders_count({status:2});//已支付订单数
+	payOrder=payOrder[0];
+	var unpayOrder = yield models.gospel_orders.orders_count({status:1});//未支付订单数
+	unpayOrder = unpayOrder[0];
+
+	//已支付订单
+	var payDate = [];
+	for (var i = 0; i < 3; i++) {
+		payDate[i]=[];
+		for (var j = 0; j< 7;j++) {
+			payDate[i][j]=0
+		}
+	}
+	console.log(payOrder);
+	for (var i = 0; i < payOrder.length; i++) {
+		if(payOrder[i].type=='app'){
+			date.getDateArr(payOrder[i].str,parseInt(payOrder[i].count),payDate[0]);
+		}
+		if(payOrder[i].type=='ide'){
+			date.getDateArr(payOrder[i].str,parseInt(payOrder[i].count),payDate[1]);
+		}
+		if(payOrder[i].type=='volume'){
+			date.getDateArr(payOrder[i].str,parseInt(payOrder[i].count),payDate[2]);
+		}
+	}
+
+	//未支付订单
+	var unpayDate = [];
+	for (var i = 0; i < 3; i++) {
+		unpayDate[i]=[];
+		for (var j = 0; j< 7;j++) {
+			unpayDate[i][j]=0
+		}
+	}
+	console.log(unpayOrder);
+	for (var i = 0; i < unpayOrder.length; i++) {
+		if(unpayOrder[i].type=='app'){
+			date.getDateArr(unpayOrder[i].str,parseInt(unpayOrder[i].count),unpayDate[0]);
+		}
+		if(unpayOrder[i].type=='ide'){
+			date.getDateArr(unpayOrder[i].str,parseInt(unpayOrder[i].count),unpayDate[1]);
+		}
+		if(unpayOrder[i].type=='volume'){
+			date.getDateArr(unpayOrder[i].str,parseInt(unpayOrder[i].count),unpayDate[2]);
+		}
+	}
+	var dataRes = {};
+	dataRes.pay=payDate;
+	dataRes.unpay=unpayDate;
+	console.log(dataRes);
+	this.body = render(dataRes, 1 ,'success');
 }
 
 users.chartUsersCount = function* (){
@@ -445,7 +556,27 @@ users.chartUsersCount = function* (){
 		teamData[0][i].type='team';
 		data.push(teamData[0][i]);
 	}
-	this.body = render(data, 1 ,'success');
+	var unpayDate = [];
+	for (var i = 0; i < 3; i++) {
+		unpayDate[i]=[];
+		for (var j = 0; j< 7;j++) {
+			unpayDate[i][j]=0
+		}
+	}
+	for (var i = 0; i < data.length; i++) {
+		if(data[i].type=='common'){
+			date.getDateArr(data[i].str,parseInt(data[i].count),unpayDate[0]);
+		}
+		if(data[i].type=='company'){
+			date.getDateArr(data[i].str,parseInt(data[i].count),unpayDate[1]);
+		}
+		if(data[i].type=='team'){
+			date.getDateArr(data[i].str,parseInt(data[i].count),unpayDate[2]);
+		}
+	}
+	console.log(data);
+	console.log(unpayDate);
+	this.body = render(unpayDate, 1 ,'success');
 }
 
 users.dashboardApi = function* (){

@@ -142,6 +142,24 @@ module.exports = {
 			controller: 'phoneCode',
 			groups: "ab64c397-d323-4133-9541-479bbaaf6c52"
 		}, {
+			name: '验证手机验证码',
+			method: 'post',
+			url: '/users/verifyphonecode',
+			controller: 'verifyPhoneCode',
+			groups: "ab64c397-d323-4133-9541-479bbaaf6c52"
+		},{
+			name: '获取邮箱验证码',
+			method: 'get',
+			url: '/users/email/code',
+			controller: 'getEmailCode',
+			groups: "ab64c397-d323-4133-9541-479bbaaf6c52"
+		}, {
+			name: '验证邮箱验证码',
+			method: 'post',
+			url: '/users/verifyemailcode',
+			controller: 'verifyEmailCode',
+			groups: "ab64c397-d323-4133-9541-479bbaaf6c52"
+		},{
 			name: '获取文件流',
 			method: 'get',
 			url: '/users/files/:file',
@@ -154,7 +172,7 @@ module.exports = {
 			controller: 'validator',
 			groups: "ab64c397-d323-4133-9541-479bbaaf6c52_100"
 		}, {
-			name: '登',
+			name: '登录验证',
 			method: 'get',
 			url: '/users/validator',
 			controller: 'validator',
