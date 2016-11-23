@@ -51,6 +51,7 @@ var operate = {
 		console.log(date);
 		yield models.gospel_ides.modify({
 			id: ide.id,
+			product: order.products,
 			expireAt: date,
 			name: product.name
 		});

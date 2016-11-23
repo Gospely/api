@@ -18,6 +18,15 @@ module.exports = function(sequelize, DataTypes) {
     size: DataTypes.INTEGER,
     unit: DataTypes.STRING,
     type: DataTypes.STRING,
+    balance: DataTypes.DOUBLE,
+    balanceTime: {
+      type: DataTypes.STRING,
+      field: 'balance_time'
+    },
+    balancePeriod: {
+      type: DataTypes.STRING,
+      field: 'balance_period'
+    }
     orderNo: {
       type: DataTypes.STRING,
       field: "order_no"
@@ -52,7 +61,7 @@ module.exports = function(sequelize, DataTypes) {
       orders_count: function*(item) {
         console.log(item);
         var sql =
-        "select count( * ) count, type, to_char(createat, 'yyyy-MM-dd') str from gospel_orders where createat >= current_timestamp-interval '7 day' and createat <= current_timestamp group by str,type";
+          "select count( * ) count, type, to_char(createat, 'yyyy-MM-dd') str from gospel_orders where createat >= current_timestamp-interval '7 day' and createat <= current_timestamp group by str,type";
         if (sql != null && sql != undefined) {
           console.log(sql);
           console.log(item);
@@ -62,10 +71,10 @@ module.exports = function(sequelize, DataTypes) {
         }
       },
       //今日收益
-      today_profit:function*(item){
+      today_profit: function*(item) {
         console.log(item);
         var sql =
-        "select sum( price ) from gospel_orders where createat >= current_timestamp-interval '1 day' and createat <= current_timestamp";
+          "select sum( price ) from gospel_orders where createat >= current_timestamp-interval '1 day' and createat <= current_timestamp";
         if (sql != null && sql != undefined) {
           console.log(sql);
           console.log(item);
@@ -75,10 +84,10 @@ module.exports = function(sequelize, DataTypes) {
         }
       },
       //昨日收益
-      yesterday_profit:function*(item){
+      yesterday_profit: function*(item) {
         console.log(item);
         var sql =
-        "select sum( price ) from gospel_orders where createat >= current_timestamp-interval '2 day' and createat <= current_timestamp-interval '1 day'";
+          "select sum( price ) from gospel_orders where createat >= current_timestamp-interval '2 day' and createat <= current_timestamp-interval '1 day'";
         if (sql != null && sql != undefined) {
           console.log(sql);
           console.log(item);
@@ -88,10 +97,10 @@ module.exports = function(sequelize, DataTypes) {
         }
       },
       //今日新增订单
-      today_orders:function*(item){
+      today_orders: function*(item) {
         console.log(item);
         var sql =
-        "select count(*) from gospel_orders where createat >= current_timestamp-interval '1 day' and createat <= current_timestamp-interval '0 day'";
+          "select count(*) from gospel_orders where createat >= current_timestamp-interval '1 day' and createat <= current_timestamp-interval '0 day'";
         if (sql != null && sql != undefined) {
           console.log(sql);
           console.log(item);
@@ -101,10 +110,10 @@ module.exports = function(sequelize, DataTypes) {
         }
       },
       //昨日新增订单
-      yesterday_orders:function*(item){
+      yesterday_orders: function*(item) {
         console.log(item);
         var sql =
-        "select count(*) from gospel_orders where createat >= current_timestamp-interval '2 day' and createat <= current_timestamp-interval '1 day'";
+          "select count(*) from gospel_orders where createat >= current_timestamp-interval '2 day' and createat <= current_timestamp-interval '1 day'";
         if (sql != null && sql != undefined) {
           console.log(sql);
           console.log(item);
