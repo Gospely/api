@@ -26,7 +26,7 @@ module.exports = function(sequelize, DataTypes) {
     balancePeriod: {
       type: DataTypes.STRING,
       field: 'balance_period'
-    }
+    },
     orderNo: {
       type: DataTypes.STRING,
       field: "order_no"
