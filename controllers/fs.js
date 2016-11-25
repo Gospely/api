@@ -141,7 +141,7 @@ var
 				exec("ssh root@120.76.235.234 " + cmd, function(error, data) {
 					if (error) reject(error);
 					resolve(data);
-				});				
+				});
 			}else {
 				exec(cmd, function(error, data) {
 					if (error) reject(error);
@@ -194,9 +194,10 @@ var fileSystem = {
 		try {
 			if(typeof params == 'string') {
 				params = JSON.parse(params);
-			}			
+			}
 			var fileName = params.fileName,
 				data = params.data || '';
+			console.log(data + fileName);
 		} catch (err) {
 			var fileName = GetQueryString(params, 'fileName')
 			data = GetQueryString(params, 'data') || '';
@@ -258,7 +259,7 @@ var fileSystem = {
 		try {
 			if(typeof params == 'string') {
 				params = JSON.parse(params);
-			}			
+			}
 			var fileName = params.fileName,
 				newFileName = params.newFileName,
 				move = params.move || false;
@@ -297,7 +298,7 @@ var fileSystem = {
 		try {
 			if(typeof params == 'string') {
 				params = JSON.parse(params);
-			}			
+			}
 			var file = params.file,
 				newFile = params.newFile;
 		} catch (err) {
@@ -352,7 +353,7 @@ var fileSystem = {
 		try {
 			if(typeof params == 'string') {
 				params = JSON.parse(params);
-			}			
+			}
 			var dirName = params.dirName;
 		} catch (err) {
 			var dirName = GetQueryString(params, 'dirName');
