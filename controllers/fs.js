@@ -389,7 +389,7 @@ var fileSystem = {
 				seacrh = this.query.search;
 			result = [];
 		dirName = this.query.id || dirName;
-		console.log(seacrh);
+
 		var result = yield fileSystem.getFiles(dirName,seacrh);
 
 		console.log(result);
@@ -418,13 +418,7 @@ var fileSystem = {
 				var file = files[i];
 				console.log(file);
 				if (isDir(config.baseDir + file)) {
-					node.children.push({
-						text: file,
-						children: true,
-						id: file,
-						icon: 'folder',
-						folder: dirName
-					});
+
 					if(seacrh != undefined || seacrh !=null){
 
 						console.log("递归");
@@ -434,6 +428,14 @@ var fileSystem = {
     						return coll;
 						}, result );
 						;
+					}else{
+						node.children.push({
+							text: file,
+							children: true,
+							id: file,
+							icon: 'folder',
+							folder: dirName
+						});
 					}
 				} else {
 
