@@ -436,13 +436,27 @@ var fileSystem = {
 						;
 					}
 				} else {
-					node.children.push({
-						text: file,
-						children: false,
-						id: file,
-						icon: 'file file-11',
-						folder: dirName
-					});
+
+					if(seacrh != undefined || seacrh !=null){
+						if(file == seacrh){
+							node.children.push({
+								text: file,
+								children: false,
+								id: file,
+								icon: 'file file-11',
+								folder: dirName
+							});
+						}
+					}else{
+						node.children.push({
+							text: file,
+							children: false,
+							id: file,
+							icon: 'file file-11',
+							folder: dirName
+						});
+					}
+
 				}
 
 			};
