@@ -378,7 +378,7 @@ var fileSystem = {
 
 		dirName = this.query.id || dirName;
 
-		result = yield fileSystem.getFiles(dirName,false);
+		result = yield fileSystem.getFiles(dirName);
 
 		this.body = result;
 
@@ -386,15 +386,16 @@ var fileSystem = {
 	all: function*() {
 
 		var dirName = this.params.dirName || '',
+				seacrh = this.query.search;
 			result = [];
 		dirName = this.query.id || dirName;
-
-		var result = yield fileSystem.getFiles(dirName,true);
+		console.log(seacrh);
+		var result = yield fileSystem.getFiles(dirName,seacrh);
 
 		console.log(result);
 		this.body = result;
 	},
-	getFiles: function*(dirName,all) {
+	getFiles: function*(dirName,seacrh) {
 
 		var result = [];
 
@@ -415,7 +416,7 @@ var fileSystem = {
 
 			for (var i = 0; i < files.length; i++) {
 				var file = files[i];
-
+				console.log(file);
 				if (isDir(config.baseDir + file)) {
 					node.children.push({
 						text: file,
@@ -424,6 +425,16 @@ var fileSystem = {
 						icon: 'folder',
 						folder: dirName
 					});
+					if(seacrh != undefined || seacrh !=null){
+
+						console.log("递归");
+						var childrens = yield fileSystem.getFiles(dirName + '/' + file,seacrh);
+						result = childrens.reduce( function(coll,item){
+    						coll.push( item );
+    						return coll;
+						}, result );
+						;
+					}
 				} else {
 					node.children.push({
 						text: file,
@@ -435,14 +446,18 @@ var fileSystem = {
 				}
 
 			};
-
-			result.push(node);
-
+			if(seacrh != undefined || seacrh !=null){
+					if(file == seacrh){
+						result.push(node);
+					}
+			}else{
+				result.push(node);
+			}
 		} else {
 
 			for (var i = 0; i < files.length; i++) {
 				var file = files[i];
-
+				console.log(file);
 				var node = {};
 
 				if (file == 'models') {
@@ -457,10 +472,10 @@ var fileSystem = {
 						children: true,
 						folder: dirName + '/'
 					};
-					if(all){
+					if(seacrh != undefined || seacrh !=null){
 
-						console.log('提桂');
-						var childrens = yield fileSystem.getFiles(dirName + '/' + file,true);
+						console.log("递归");
+						var childrens = yield fileSystem.getFiles(dirName + '/' + file,seacrh);
 						result = childrens.reduce( function(coll,item){
     						coll.push( item );
     						return coll;
@@ -477,7 +492,14 @@ var fileSystem = {
 						folder: dirName + '/'
 					};
 				}
-				result.push(node);
+				if(seacrh != undefined || seacrh !=null){
+
+						if(file == seacrh){
+							result.push(node);
+						}
+				}else{
+					result.push(node);
+				}
 			};
 		}
 		return result;
