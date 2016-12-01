@@ -378,6 +378,26 @@ var fileSystem = {
 
 		dirName = this.query.id || dirName;
 
+		result = yield fileSystem.getFiles(dirName,false);
+
+		this.body = result;
+
+	},
+	all: function*() {
+
+		var dirName = this.params.dirName || '',
+			result = [];
+		dirName = this.query.id || dirName;
+
+		var result = yield fileSystem.getFiles(dirName,true);
+
+		console.log(result);
+		this.body = result;
+	},
+	getFiles: function*(dirName,all) {
+
+		var result = [];
+
 		var files = yield readDir(config.baseDir + dirName);
 
 		if (dirName == '') {
@@ -437,6 +457,16 @@ var fileSystem = {
 						children: true,
 						folder: dirName + '/'
 					};
+					if(all){
+
+						console.log('提桂');
+						var childrens = yield fileSystem.getFiles(dirName + '/' + file,true);
+						result = childrens.reduce( function(coll,item){
+    						coll.push( item );
+    						return coll;
+						}, result );
+						;
+					}
 				} else {
 					node = {
 						text: file,
@@ -447,16 +477,11 @@ var fileSystem = {
 						folder: dirName + '/'
 					};
 				}
-
 				result.push(node);
 			};
-
 		}
-
-		this.body = result;
-
+		return result;
 	},
-
 	shell: function*() {
 
 		var params = yield parse(this);
