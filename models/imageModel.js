@@ -16,12 +16,12 @@ module.exports = function(sequelize, DataTypes) {
     parent: DataTypes.STRING,
     devType: {
       type: DataTypes.STRING,
-      fields: 'dev-type',
+      field: 'dev_type',
       defaultValue: 'common' //common | visual
     },
     debugType: {
       type: DataTypes.STRING,
-      fields: 'debug-type',
+      field: 'debug_type',
       defaultValue: 'common' //common | shell
     },
     isDeleted: {
