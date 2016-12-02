@@ -33,6 +33,7 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.INTEGER,
       field: "order_no"
     },
+    config: DataTypes.STRING,
     status: {
       type: DataTypes.INTEGER,
       field: "status",

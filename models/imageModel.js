@@ -14,6 +14,16 @@ module.exports = function(sequelize, DataTypes) {
     dockerfile: DataTypes.STRING,
     type: DataTypes.INTEGER,
     parent: DataTypes.STRING,
+    devType: {
+      type: DataTypes.STRING,
+      fields: 'dev-type',
+      defaultValue: 'common' //common | visual
+    },
+    debugType: {
+      type: DataTypes.STRING,
+      fields: 'debug-type',
+      defaultValue: 'common' //common | shell
+    },
     isDeleted: {
       type: DataTypes.INTEGER,
       field: "isdeleted",

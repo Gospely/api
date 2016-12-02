@@ -472,7 +472,6 @@ var fileSystem = {
 
 			for (var i = 0; i < files.length; i++) {
 				var file = files[i];
-				console.log(file);
 				var node = {};
 
 				if (file == 'models') {
@@ -489,7 +488,6 @@ var fileSystem = {
 					};
 					if(search != undefined || search !=null || all == true){
 
-						console.log("递归");
 						var childrens = yield fileSystem.getFiles(dirName + '/' + file,search);
 						result = childrens.reduce( function(coll,item){
     						coll.push( item );
