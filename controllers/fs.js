@@ -374,11 +374,12 @@ var fileSystem = {
 	list: function*() {
 
 		var dirName = this.params.dirName || '',
+		search = this.query.search;
 			result = [];
 
 		dirName = this.query.id || dirName;
 
-		result = yield fileSystem.getFiles(dirName);
+		result = yield fileSystem.getFiles(dirName,search);
 
 		this.body = result;
 
@@ -386,16 +387,15 @@ var fileSystem = {
 	all: function*() {
 
 		var dirName = this.params.dirName || '',
-				search = this.query.search;
 			result = [];
 		dirName = this.query.id || dirName;
 
-		var result = yield fileSystem.getFiles(dirName,search);
+		var result = yield fileSystem.getFiles(dirName,null,true);
 
 		console.log(result);
 		this.body = result;
 	},
-	getFiles: function*(dirName,search) {
+	getFiles: function*(dirName,search,all) {
 
 		var result = [];
 
@@ -419,7 +419,7 @@ var fileSystem = {
 				console.log(file);
 				if (isDir(config.baseDir + file)) {
 
-					if(search != undefined || search != null){
+					if(search != undefined || search != null || all == true){
 
 						console.log("递归");
 						var childrens = yield fileSystem.getFiles(dirName + '/' + file,search);
@@ -487,7 +487,7 @@ var fileSystem = {
 						children: true,
 						folder: dirName + '/'
 					};
-					if(search != undefined || search !=null){
+					if(search != undefined || search !=null || all == true){
 
 						console.log("递归");
 						var childrens = yield fileSystem.getFiles(dirName + '/' + file,search);
