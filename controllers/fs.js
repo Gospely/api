@@ -119,7 +119,7 @@ var
 
 	cp = function(file, newFile) {
 		return new Promise(function(resolve, reject) {
-			var cmd = 'cp -r ' + file + ' ' + newFile;
+			var cmd = 'cp -r ' + file + ' ' + newFile + " && echo 3 > /proc/sys/vm/drop_caches";
 			exec(cmd, function(error, data) {
 				if (error) reject(error);
 				resolve(data);
