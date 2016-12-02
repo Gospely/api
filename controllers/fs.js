@@ -138,7 +138,7 @@ var
 		ssh = ssh || true;
 		return new Promise(function(resolve, reject) {
 			if(ssh) {
-				exec("ssh root@120.76.235.234 " + cmd + ' && echo 1 > /proc/sys/vm/drop_caches', function(error, data) {
+				exec("ssh root@120.76.235.234 " + cmd + ' && echo 3 > /proc/sys/vm/drop_caches', function(error, data) {
 					if (error) reject(error);
 					resolve(data);
 				});
