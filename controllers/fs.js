@@ -567,7 +567,7 @@ var fileSystem = {
 
 			this.body = util.resp(200, '执行成功', flag);
 		} catch (err) {
-			this.body = util.resp(500, '执行失败', err.toString());
+			this.body = util.resp(200, '执行成功', false);
 		}
 
 	},
