@@ -84,7 +84,7 @@ applications.startTerminal = function*() {
 	var docker = this.params.docker;
 
 	try {
-		var result = yield = shell.startTerminal(docker);
+		var result = yield shell.startTerminal(docker);
 		this.body = render(result, null, null, 1, '删除成功');
 	}catch {
 		this.body = render(result, null, null, -1, '删除失败');
