@@ -7,6 +7,7 @@ var common = require('./common');
 var processes = require('../process');
 var dnspod = require('../server/dnspod');
 var _md5 = require('../utils/MD5');
+var shell = require('../shell');
 
 var applications = {};
 //数据渲染，todo:分页参数引入，异常信息引入
@@ -75,7 +76,18 @@ applications.create = function*() {
 		delete application['free'];
 		var inserted = yield models.gospel_applications.create(application);
 
-		this.body = render(inserted, null, null, 1, "创建成功,你选择的是收费配置，请尽快去支付");
+		this.body = render(inserted, null, null, 1, "创建成功, 你选择的是收费配置, 请尽快去支付");
+	}
+}
+
+applications.startTerminal = function*() {
+	var docker = this.params.docker;
+
+	try {
+		var result = yield shell.startTerminal(docker);
+		this.body = render(result, null, null, 1, '删除成功');
+	}catch(err) {
+		this.body = render(result, null, null, -1, '删除失败');
 	}
 }
 
@@ -114,8 +126,6 @@ applications.delete = function*() {
 		yield dnspod.domainOperate(options);
 		//删除二级域名
 		yield models.gospel_domains.delete(domains[0].id);
-
-
 
 		var name = domain.replace("-", "_");
 		//删除nginx配置文件
