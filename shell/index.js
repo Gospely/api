@@ -276,7 +276,7 @@ shells.volumeInfo = function*(options) {
 shells.startTerminal = function*(options) {
   return new Promise(function(resolve, reject) {
     exec("ssh root@gospely.com " + " docker exec " + options.docker +
-      " bash -c '. /root/.nvm/nvm.sh && cd /root/.gospely/.socket/demo && node app.js'",
+      " bash -c 'cd /root/.gospely/.socket/demo && node app.js'",
       function(err, data) {
         if (err)
           reject(err);
