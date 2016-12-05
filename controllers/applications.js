@@ -81,15 +81,15 @@ applications.create = function*() {
 }
 
 applications.startTerminal = function*() {
-	var docker = this.params.docker;
+	var docker = this.query.docker;
 
 	try {
 		var result = yield shell.startTerminal({
 			docker: docker
 		});
-		this.body = render(result, null, null, 1, '删除成功');
+		this.body = render(result, null, null, 1, '启动成功');
 	}catch(err) {
-		this.body = render(result, null, null, -1, '删除失败');
+		this.body = render(result, null, null, -1, '启动失败');
 	}
 }
 
