@@ -517,6 +517,16 @@ var fileSystem = {
 		}
 		return result;
 	},
+	upload : function*(){
+
+		var file = yield parse(this, {
+			limit: '1kb',
+			formTypes: 'mutipart'
+		});
+		console.log(file);
+    //上传成功后的页面跳转
+    this.redirect('/');
+  },
 	shell: function*() {
 
 		var params = yield parse(this);

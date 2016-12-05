@@ -344,6 +344,12 @@ module.exports = {
 			controller: 'all',
 			groups: "ab64c397-d323-4133-9541-479bbaaf6c52_100"
 		}, {
+			name: '上传文件',
+			method: 'post',
+			url: '/fs/upload',
+			controller: 'upload',
+			groups: "ab64c397-d323-4133-9541-479bbaaf6c52_100"
+		}, {
 			name: '执行shell命令',
 			method: 'post',
 			url: '/fs/shell/',
