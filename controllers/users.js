@@ -119,6 +119,20 @@ users.logout = function*() {
 	models.gospel_innersessions.delete(id);
 }
 
+//产生随机数
+var range = function(start, end) {
+	var array = [];
+	for (var i = start; i < end; ++i) array.push(i);
+	return array;
+};
+
+//获取6位随机数码
+var randomstr = function(){
+	return range(0, 6).map(function(x) {
+		return Math.floor(Math.random() * 10);
+	}).join('');
+}
+
 users.register = function*() {
 
 	console.log(this.method);
@@ -142,11 +156,11 @@ users.register = function*() {
 		var reg =
 			/^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/;
 		isok = reg.test(user.phone);
-		var activeCode = uuid.v4();
+		//var activeCode = uuid.v4();
 		if (isok) {
 			console.log(user.phone + "email");
 
-			//判断是否已经注册le
+			//判断是否已经注册了
 			var data = models.gospel_users.getAll({
 				email: user.phone
 			});
@@ -155,25 +169,28 @@ users.register = function*() {
 				this.body = render(null, -1, "该邮箱已经注册");
 			} else {
 				// 设置邮件内容
-				var active = "http://api.gospely.com/users/authorization?code=" +
-					activeCode;
-				console.log(active);
+				// var active = "http://api.gospely.com/users/authorization?code=" +
+				// 	activeCode;
+				// console.log(active);
+				var activeCode = randomstr();
 				var mailOptions = {
 
 					from: "龙猫科技 <shark@dodora.cn>", // 发件地址
 					to: user.phone, // 收件列表
 					subject: "Hello world", // 标题
-					html: "<a href='" + active + "'>" + active + "</a></br>复制到浏览器访问" // html 内容
+					html: "你的验证码是" + activeCode+" ,请在10分钟之内提交验证码" // html 内容
 				}
 				mail(mailOptions);
 
+				var id = uuid.v4();
 				var authorization = {
-					id: activeCode,
+					id: id,
 					code: activeCode,
 					phoe: user.mail,
-					time: Date.now()
+					time: Date.now(),
+					limitTime:60*10000,//10分钟的过期时间
 				};
-				user.isblocked = 1;
+				//user.isblocked = 1;
 				user.email = user.phone;
 				user.phone = '';
 				inserted = yield models.gospel_innersessions.create(authorization);
