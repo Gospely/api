@@ -168,7 +168,9 @@ users.register = function*() {
 				mail(mailOptions);
 
 				var authorization = {
+					id: activeCode,
 					code: activeCode,
+					phoe: user.mail,
 					time: Date.now()
 				};
 				user.isblocked = 1;
@@ -287,18 +289,15 @@ users.authorization = function*() {
 
 	if ('GET' != this.method) this.throw(405, "method is not allowed");
 
-	var data = yield models.gospel_innersessions.getAll(this.query);
-	if (data.length != 1) {
-		this.body = render(user, -1, "激活失效");
-	} else {
-		console.log(data[0].dataValues.time - Date.now());
-		if ((Date.now() - data[0].dataValues.time) <= data[0].dataValues.limitTime) {
+	var data = yield models.gospel_innersessions.findById(this.query.code);
+	console.log(data);
+	console.log(data.time - Date.now());
+	if ((Date.now() - data.time) <= data.limitTime) {
 
-			//更新用户状态
-			this.body = render(user, -1, "激活成功");
-		} else {
-			this.body = render(user, -1, "激活链接超时");
-		}
+		//更新用户状态
+		this.body = render(user, -1, "激活成功");
+	} else {
+		this.body = render(user, -1, "激活链接超时");
 	}
 }
 users.weixinLogin = function*() {
@@ -620,7 +619,7 @@ users.dashboardApi = function* (){
 	data.push(companyUserCount[0][0]);
 	payUserCount[0][0].type='payUser';
 	data.push(payUserCount[0][0]);
-	
+
 	todayProfit[0][0].sum=todayProfit.sum==null?0:todayProfit.sum;
 	todayProfit[0][0].type='todayProfit';
 	data.push(todayProfit[0][0]);
