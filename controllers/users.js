@@ -178,7 +178,7 @@ users.register = function*() {
 					from: "龙猫科技 <shark@dodora.cn>", // 发件地址
 					to: user.phone, // 收件列表
 					subject: "Hello world", // 标题
-					html: "你的验证码是" + activeCode+" ,请在10分钟之内提交验证码" // html 内容
+					html: "你的验证码是<b>" + activeCode+"</b> ,请在10分钟之内提交验证码" // html 内容
 				}
 				mail(mailOptions);
 
