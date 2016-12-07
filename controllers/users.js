@@ -146,17 +146,14 @@ users.register = function*() {
 	user.ide = uuid.v4();
 	user.ideName = '个人版';
 	user.group = 'ab64c397-d323-4133-9541-479bbaaf6c52';
-
-
-	console.log(user.password);
 	var inserted;
 
 	if (user.phone != "") {
+
 		console.log(user);
 		var	reg = /^1[34578]\d{9}$/;
 			isok = reg.test(user.phone);
 		console.log(isok);
-
 		var token = user.token;
 		var authCode = user.authCode;
 
@@ -188,10 +185,7 @@ users.register = function*() {
 		} else {
 			this.body = render(null, -1, "注册失败，手机号或验证码错误");
 		}
-
 		console.log(user.phone + "phone");
-
-
 	}
 
 	if (!inserted) {

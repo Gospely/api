@@ -21,6 +21,7 @@ module.exports = function(router) {
 	//添加路由
 	controllers.route(router);
 
+
 	//添加微信支付和支付支付异步回调路由
 
 	pay.wechat.route(router);

@@ -12,7 +12,7 @@ var i18n = require('koa-i18n');
 var db = require('./models');
 var container = require('./container/index.js');
 var mount = require('koa-mount');
-
+var multer = require('koa-multer');
 
 
 app.use(function*(next) {
@@ -47,6 +47,8 @@ locale(app);
 // }))
 
 
+app.use(multer({ dest: './uploads/'}));
+
 
 if (configs.isDBAvailable) {
   app.use(koaPg(configs.db.materDB));
@@ -69,6 +71,8 @@ app
   .use(router.routes())
   .use(router.allowedMethods());
 console.log(container);
+
+//上传文件模块
 
 app.on('error', function(err, ctx) {
   log.error('server error', err, ctx);
