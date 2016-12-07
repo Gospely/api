@@ -156,7 +156,6 @@ users.register = function*() {
 		var reg =
 			/^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/;
 		isok = reg.test(user.phone);
-		//var activeCode = uuid.v4();
 		if (isok) {
 			console.log(user.phone + "email");
 
@@ -169,9 +168,6 @@ users.register = function*() {
 				this.body = render(null, -1, "该邮箱已经注册");
 			} else {
 				// 设置邮件内容
-				// var active = "http://api.gospely.com/users/authorization?code=" +
-				// 	activeCode;
-				// console.log(active);
 				var activeCode = randomstr();
 				var mailOptions = {
 

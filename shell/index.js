@@ -284,4 +284,24 @@ shells.startTerminal = function*(options) {
   });
 }
 
+shells.decomFile = function*(options){
+  var baseDir = '/var/www/sotrage/code/'
+  var type = {
+    zip:function(){
+      return new Promise(function(resolve,reject){
+        //exec('ssh root@gospely.com unzip '+' ')
+      })
+    },
+    tar:function(){
+
+    },
+    gz:function(){
+
+    },
+    rar:function(){
+
+    }
+  }
+}
+
 module.exports = shells;

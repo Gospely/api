@@ -8,6 +8,9 @@ var util = require('../utils.js'),
 var os = require('os');
 var exec = require('child_process').exec;
 var dir = require('node-dir');
+var multer = require('koa-multer');
+var path = require('path');
+multer({ dest: 'uploads/' });
 
 var
 	config = {
@@ -518,15 +521,28 @@ var fileSystem = {
 		return result;
 	},
 	upload : function*(){
-
-		var file = yield parse(this, {
-			limit: '1kb',
-			formTypes: 'mutipart'
+		//this.body = this.req.body;
+		var fileName = this.req.files.fileUp.name;
+		var originalname = this.req.files.fileUp.originalname;
+		var userName = this.req.body.userName;
+		var projectName = this.req.body.projectName;
+		console.log("file:",this.req.files);
+		console.log("text:",this.req.body);
+		var supDir = path.resolve(__dirname, '..');
+		fs.rename(supDir+'/uploads/'+fileName,supDir+'/uploads/'+userName+'_'+projectName+'_'+originalname,function(err){
+			if(err){
+				throw err;
+			}
+			console.log('done!');
 		});
-		console.log(file);
-    //上传成功后的页面跳转
-    this.redirect('/');
-  },
+		var file = yield parse(this, {
+			limit: '50kb',
+			formTypes: 'multipart/form-data'
+		});
+		
+		return 'hello,world';
+		//this.redirect('/');
+	  },
 	shell: function*() {
 
 		var params = yield parse(this);
