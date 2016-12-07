@@ -63,9 +63,10 @@ common.detail = function* detail(id) {
 common.update = function* update() {
 
 	console.log("update");
+	console.log(this.method);
 	if ('PUT' != this.method) this.throw(405, "method is not allowed");
 	var item = yield parse(this, {
-		limit: '1kb'
+		limit: '4048kb'
 	});
 	if (item.password != null && item.password != undefined && item.password !=
 		'') {
