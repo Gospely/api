@@ -10,6 +10,7 @@ var exec = require('child_process').exec;
 var dir = require('node-dir');
 var multer = require('koa-multer');
 var path = require('path');
+var shell = require('../shell');
 multer({ dest: 'uploads/' });
 
 var
@@ -398,6 +399,7 @@ var fileSystem = {
 		console.log(result);
 		this.body = result;
 	},
+
 	getFiles: function*(dirName,search,all) {
 
 		var result = [];
@@ -520,29 +522,47 @@ var fileSystem = {
 		}
 		return result;
 	},
+
 	upload : function*(){
 		//this.body = this.req.body;
+		console.log("file:",this.req.files);
+		console.log("text:",this.req.body);
+
 		var fileName = this.req.files.fileUp.name;
 		var originalname = this.req.files.fileUp.originalname;
 		var userName = this.req.body.userName;
 		var projectName = this.req.body.projectName;
-		console.log("file:",this.req.files);
-		console.log("text:",this.req.body);
+
 		var supDir = path.resolve(__dirname, '..');
-		fs.rename(supDir+'/uploads/'+fileName,supDir+'/uploads/'+userName+'_'+projectName+'_'+originalname,function(err){
+
+		var beforeName = supDir+'/uploads/'+fileName;
+		var afterName = supDir+'/uploads/'+userName+'_'+projectName+'_'+originalname;
+		fs.rename(beforeName,afterName,function(err){
 			if(err){
 				throw err;
 			}
 			console.log('done!');
+			//获取文件后缀名
+			var suffix = path.extname(fileName);
+			//解压文件
+			var options = {
+				comDir:afterName,
+				username:username,
+				projectName:projectName,
+			}
+			shell.decomFile(options)[suffix];
 		});
+
 		var file = yield parse(this, {
 			limit: '50kb',
 			formTypes: 'multipart/form-data'
 		});
+
 		
 		return 'hello,world';
 		//this.redirect('/');
-	  },
+	},
+
 	shell: function*() {
 
 		var params = yield parse(this);

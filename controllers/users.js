@@ -455,6 +455,7 @@ users.getEmailCode = function*() {
 	})
 	this.body=render(id,1,"发送邮箱验证码成功");
 }
+
 //验证邮箱验证码
 users.verifyEmailCode = function* (){
 	var user = yield parse(this, {

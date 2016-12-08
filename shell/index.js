@@ -1,5 +1,6 @@
 var fs = require('fs');
 var exec = require('child_process').exec;
+var path = require('path');
 var shells = {};
 
 shells.domain = function*(options) {
@@ -284,24 +285,50 @@ shells.stopTerminal = function(options) {
       });
 }
 
+//解压文件
 shells.decomFile = function*(options){
-  var baseDir = '/var/www/sotrage/code/'
-  var type = {
-    zip:function(){
-      return new Promise(function(resolve,reject){
-        //exec('ssh root@gospely.com unzip '+' ')
-      })
-    },
-    tar:function(){
+	var baseDir = '/var/www/sotrage/code/';
+	var comDir = options.comDir;
+	var decomDir = path.join(baseDir , options.username , options.projectName);
+	return {
+		zip:function(){
+		  	return new Promise(function(resolve,reject){
+		  		exec('ssh root@gospely.com unzip '+comDir+' '+decomDir,function(err,data){
+					if (err)
+			      			reject(err);
+			    		resolve(data);
+		  		});
+		  	});
+		},
+		tar:function(){
+			return new Promise(function(resolve,reject){
+		  		exec('ssh root@gospely.com tar -zxvf '+comDir+' '+decomDir,function(err,data){
+					if (err)
+			      			reject(err);
+			    		resolve(data);
+		  		});
+		  	});
+		},
+		gz:function(){
+			return new Promise(function(resolve,reject){
+		  		exec('ssh root@gospely.com gzip -d '+comDir+' '+decomDir,function(err,data){
+					if (err)
+			      			reject(err);
+			    		resolve(data);
+		  		});
+		  	});
+		},
+		rar:function(){
+			return new Promise(function(resolve,reject){
+		  		exec('ssh root@gospely.com rar x '+comDir+' '+decomDir,function(err,data){
+					if (err)
+			      			reject(err);
+			    		resolve(data);
+		  		});
+		  	});
+		},
+	};
 
-    },
-    gz:function(){
-
-    },
-    rar:function(){
-
-    }
-  }
 }
 
 module.exports = shells;
