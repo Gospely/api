@@ -594,10 +594,6 @@ var fileSystem = {
 			formTypes: 'multipart/form-data'
 		});
 
-<<<<<<< HEAD
-		
-=======
->>>>>>> 894ad7ca7713f6b26832176a9277134d5f58223c
 		return 'hello,world';
 		//this.redirect('/');
 	},
