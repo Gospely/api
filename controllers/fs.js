@@ -14,9 +14,25 @@ multer({ dest: 'uploads/' });
 
 var
 	config = {
-		baseDir: ''
+		baseDir: '',
+		escape: ['node_modules']
 	},
 
+	escape = function(file) {
+
+
+		var isEscape = false;
+
+		for (var i = config.escape.length - 1; i >= 0; i--) {
+			var escape = config.escape[i];
+			if (escape == file) {
+				isEscape = true;
+				break;
+			}
+		};
+
+		return isEscape;
+	}
 	readFile = function(fileName) {
 		return new Promise(function(resolve, reject) {
 			fs.readFile(fileName, {
@@ -422,14 +438,17 @@ var fileSystem = {
 				console.log(file);
 				if (isDir(config.baseDir + file)) {
 
+
 					if(search != undefined || search != null || all == true){
 
-						console.log("递归");
-						var childrens = yield fileSystem.getFiles(dirName + '/' + file,search);
-						result = childrens.reduce( function(coll,item){
-    						coll.push( item );
-    						return coll;
-						}, result );
+						if(!escape(file)) {
+							console.log("递归");
+							var childrens = yield fileSystem.getFiles(dirName + '/' + file,search);
+							result = childrens.reduce( function(coll,item){
+									coll.push( item );
+									return coll;
+							}, result );
+						}
 					}else{
 						node.children.push({
 							text: file,
@@ -491,12 +510,14 @@ var fileSystem = {
 					};
 					if(search != undefined || search !=null || all == true){
 
-						var childrens = yield fileSystem.getFiles(dirName + '/' + file,search);
-						result = childrens.reduce( function(coll,item){
-    						coll.push( item );
-    						return coll;
-						}, result );
-						;
+						if(!escape(file)) {
+							console.log("递归");
+							var childrens = yield fileSystem.getFiles(dirName + '/' + file,search);
+							result = childrens.reduce( function(coll,item){
+									coll.push( item );
+									return coll;
+							}, result );
+						}
 					}
 				} else {
 					node = {
@@ -539,7 +560,7 @@ var fileSystem = {
 			limit: '50kb',
 			formTypes: 'multipart/form-data'
 		});
-		
+
 		return 'hello,world';
 		//this.redirect('/');
 	  },
