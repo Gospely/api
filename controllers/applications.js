@@ -29,6 +29,7 @@ applications.create = function*() {
 	var application = yield parse(this, {
 		limit: '1kb'
 	});
+	var image = yield models.gospel_images.findById(application.image);
 	console.log(application);
 	if (application.free) {
 
@@ -43,7 +44,8 @@ applications.create = function*() {
 		var inserted = yield models.gospel_applications.create(application);
 		yield models.gospel_uistates.create({
 			application: inserted.id,
-			creator: application.creator
+			creator: application.creator,
+			configs: image.defaultConfig
 		});
 		inserted.products = products;
 		var result = yield processes.app_start(inserted);
@@ -81,7 +83,8 @@ applications.create = function*() {
 		var inserted = yield models.gospel_applications.create(application);
 		yield models.gospel_uistates.create({
 			application: inserted.id,
-			creator: application.creator
+			creator: application.creator,
+			configs: image.defaultConfig
 		});
 		this.body = render(inserted, null, null, 1, "创建成功, 你选择的是收费配置, 请尽快去支付");
 	}
