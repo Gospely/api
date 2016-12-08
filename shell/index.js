@@ -273,15 +273,14 @@ shells.volumeInfo = function*(options) {
 }
 
 //启动terminal
-shells.startTerminal = function*(options) {
+shells.startTerminal = function(options) {
+
+  console.log("startTerminal");
   exec("ssh root@gospely.com " + " sh /root/startTerminal.sh " + options.docker,
     function(err, data) {
+      console.log(err);
+      console.log(data);
     });
-}
-shells.stopTerminal = function(options) {
-    exec("ssh root@gospely.com " + " sh /root/startTerminal.sh " + options.docker,
-      function(err, data) {
-      });
 }
 
 shells.decomFile = function*(options){
