@@ -438,12 +438,11 @@ var fileSystem = {
 				console.log(file);
 				if (isDir(config.baseDir + file)) {
 
-
 					if(search != undefined || search != null || all == true){
 
 						if(!escape(file)) {
 							console.log("递归");
-							var childrens = yield fileSystem.getFiles(dirName + '/' + file,search);
+							var childrens = yield fileSystem.getFiles(dirName + '/' + file,search,all);
 							result = childrens.reduce( function(coll,item){
 									coll.push( item );
 									return coll;
@@ -460,9 +459,18 @@ var fileSystem = {
 					}
 				} else {
 
-					if(search != undefined || search !=null){
+					if(search != undefined || search !=null || all == true){
 						if(file.indexOf(search) != -1){
-							node.children.push({
+							result.push({
+								text: file,
+								children: false,
+								id: file,
+								icon: 'file file-11',
+								folder: dirName
+							});
+						}
+						if(all == true) {
+							result.push({
 								text: file,
 								children: false,
 								id: file,
@@ -483,7 +491,7 @@ var fileSystem = {
 				}
 
 			};
-			if(search != undefined || search !=null){
+			if(search != undefined || search != null){
 					if(file.indexOf(search) != -1){
 						result.push(node);
 					}
@@ -512,7 +520,7 @@ var fileSystem = {
 
 						if(!escape(file)) {
 							console.log("递归");
-							var childrens = yield fileSystem.getFiles(dirName + '/' + file,search);
+							var childrens = yield fileSystem.getFiles(dirName + '/' + file,search,all);
 							result = childrens.reduce( function(coll,item){
 									coll.push( item );
 									return coll;
@@ -535,7 +543,14 @@ var fileSystem = {
 							result.push(node);
 						}
 				}else{
-					result.push(node);
+
+					if(all) {
+						if(!node.children){
+							result.push(node);
+						}
+					}else{
+						result.push(node);
+					}
 				}
 			};
 		}
