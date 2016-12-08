@@ -15,9 +15,9 @@ module.exports = function(sequelize, DataTypes) {
     type: DataTypes.INTEGER,
     parent: DataTypes.STRING,
     defaultConfig: {
-      DataTypes.STRING,
+      type: DataTypes.STRING,
       field: 'default_config'
-    }
+    },
     devType: {
       type: DataTypes.STRING,
       field: 'dev_type',
