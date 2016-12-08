@@ -41,6 +41,10 @@ applications.create = function*() {
 		delete application['free'];
 
 		var inserted = yield models.gospel_applications.create(application);
+		yield models.gospel_uistates.create({
+			application: inserted.id,
+			creator: application.creator
+		});
 		inserted.products = products;
 		var result = yield processes.app_start(inserted);
 		if (result) {
@@ -75,7 +79,10 @@ applications.create = function*() {
 		delete application['unitPrice'];
 		delete application['free'];
 		var inserted = yield models.gospel_applications.create(application);
-
+		yield models.gospel_uistates.create({
+			application: inserted.id,
+			creator: application.creator
+		});
 		this.body = render(inserted, null, null, 1, "创建成功, 你选择的是收费配置, 请尽快去支付");
 	}
 }

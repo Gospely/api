@@ -15,9 +15,25 @@ multer({ dest: 'uploads/' });
 
 var
 	config = {
-		baseDir: ''
+		baseDir: '',
+		escape: ['node_modules']
 	},
 
+	escape = function(file) {
+
+
+		var isEscape = false;
+
+		for (var i = config.escape.length - 1; i >= 0; i--) {
+			var escape = config.escape[i];
+			if (escape == file) {
+				isEscape = true;
+				break;
+			}
+		};
+
+		return isEscape;
+	}
 	readFile = function(fileName) {
 		return new Promise(function(resolve, reject) {
 			fs.readFile(fileName, {
@@ -426,12 +442,14 @@ var fileSystem = {
 
 					if(search != undefined || search != null || all == true){
 
-						console.log("递归");
-						var childrens = yield fileSystem.getFiles(dirName + '/' + file,search);
-						result = childrens.reduce( function(coll,item){
-    						coll.push( item );
-    						return coll;
-						}, result );
+						if(!escape(file)) {
+							console.log("递归");
+							var childrens = yield fileSystem.getFiles(dirName + '/' + file,search,all);
+							result = childrens.reduce( function(coll,item){
+									coll.push( item );
+									return coll;
+							}, result );
+						}
 					}else{
 						node.children.push({
 							text: file,
@@ -443,9 +461,18 @@ var fileSystem = {
 					}
 				} else {
 
-					if(search != undefined || search !=null){
+					if(search != undefined || search !=null || all == true){
 						if(file.indexOf(search) != -1){
-							node.children.push({
+							result.push({
+								text: file,
+								children: false,
+								id: file,
+								icon: 'file file-11',
+								folder: dirName
+							});
+						}
+						if(all == true) {
+							result.push({
 								text: file,
 								children: false,
 								id: file,
@@ -466,7 +493,7 @@ var fileSystem = {
 				}
 
 			};
-			if(search != undefined || search !=null){
+			if(search != undefined || search != null){
 					if(file.indexOf(search) != -1){
 						result.push(node);
 					}
@@ -493,12 +520,14 @@ var fileSystem = {
 					};
 					if(search != undefined || search !=null || all == true){
 
-						var childrens = yield fileSystem.getFiles(dirName + '/' + file,search);
-						result = childrens.reduce( function(coll,item){
-    						coll.push( item );
-    						return coll;
-						}, result );
-						;
+						if(!escape(file)) {
+							console.log("递归");
+							var childrens = yield fileSystem.getFiles(dirName + '/' + file,search,all);
+							result = childrens.reduce( function(coll,item){
+									coll.push( item );
+									return coll;
+							}, result );
+						}
 					}
 				} else {
 					node = {
@@ -516,7 +545,14 @@ var fileSystem = {
 							result.push(node);
 						}
 				}else{
-					result.push(node);
+
+					if(all) {
+						if(!node.children){
+							result.push(node);
+						}
+					}else{
+						result.push(node);
+					}
 				}
 			};
 		}
@@ -558,7 +594,10 @@ var fileSystem = {
 			formTypes: 'multipart/form-data'
 		});
 
+<<<<<<< HEAD
 		
+=======
+>>>>>>> 894ad7ca7713f6b26832176a9277134d5f58223c
 		return 'hello,world';
 		//this.redirect('/');
 	},

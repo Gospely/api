@@ -146,103 +146,46 @@ users.register = function*() {
 	user.ide = uuid.v4();
 	user.ideName = '个人版';
 	user.group = 'ab64c397-d323-4133-9541-479bbaaf6c52';
-
-
-	console.log(user.password);
 	var inserted;
 
 	if (user.phone != "") {
+
 		console.log(user);
-		var reg =
-			/^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/;
-		isok = reg.test(user.phone);
-		if (isok) {
-			console.log(user.phone + "email");
-
-			//判断是否已经注册了
-			var data = models.gospel_users.getAll({
-				email: user.phone
-			});
-
-			if (data.length >= 1) {
-				this.body = render(null, -1, "该邮箱已经注册");
-			} else {
-				// 设置邮件内容
-				var activeCode = randomstr();
-				var mailOptions = {
-
-					from: "龙猫科技 <shark@dodora.cn>", // 发件地址
-					to: user.phone, // 收件列表
-					subject: "Hello world", // 标题
-					html: "你的验证码是<b>" + activeCode+"</b> ,请在10分钟之内提交验证码" // html 内容
-				}
-				mail(mailOptions);
-
-				var id = uuid.v4();
-				var authorization = {
-					id: id,
-					code: activeCode,
-					phoe: user.mail,
-					time: Date.now(),
-					limitTime:60*10000,//10分钟的过期时间
-				};
-				//user.isblocked = 1;
-				user.email = user.phone;
-				user.phone = '';
-				inserted = yield models.gospel_innersessions.create(authorization);
-
-				//创建数据卷
-				user.id = uuid.v4();
-				user.volumeSize = 10;
-				user.volume = "docker-volume-" + user.id;
-
-				inserted = yield models.gospel_users.create(user);
-				var result = yield shells.createVolume({
-					user: user.id
-				});
-				this.body = render(user, 1, "注册成功");
-			}
-
-		}
-
-		reg = /^1[34578]\d{9}$/;
-		isok = reg.test(user.phone);
+		var	reg = /^1[34578]\d{9}$/;
+			isok = reg.test(user.phone);
 		console.log(isok);
-		if (isok) {
+		var token = user.token;
+		var authCode = user.authCode;
 
-			var token = user.token;
-			var authCode = user.authCode;
+		var innersession = yield models.gospel_innersessions.findById(token);
+		if (innersession.phone == user.phone) {
+			if ((Date.now() - innersession.time) <= innersession.limitTime) {
 
-			var innersession = yield models.gospel_innersessions.findById(token);
-			if (innersession.phone == user.phone) {
-				if ((Date.now() - innersession.time) <= innersession.limitTime) {
+				//更新用户状态
+				if (innersession.code == authCode) {
 
-					//更新用户状态
-					if (innersession.code == authCode) {
-
-						user.volumeSize = 10;
-						user.id = uuid.v4();
-						user.volume = "docker-volume-" + user.id;
-
-						inserted = yield models.gospel_users.create(user);
-						var result = yield shells.createVolume({
-							user: inserted.id
-						});
-						this.body = render(user, 1, "注册成功");
-					} else {
-						this.body = render(null, -1, "验证码错误，请重新获取");
+					user.volumeSize = 10;
+					user.id = uuid.v4();
+					user.volume = "docker-volume-" + user.id;
+					if (!isok) {
+						user.email = user.phone;
+						user.phone = '';
 					}
+					inserted = yield models.gospel_users.create(user);
+					var result = yield shells.createVolume({
+						user: inserted.id
+					});
+					this.body = render(user, 1, "注册成功");
 				} else {
-					this.body = render(null, -1, "验证码超时，请重新获取");
+					this.body = render(null, -1, "验证码错误，请重新获取");
 				}
 			} else {
-				this.body = render(null, -1, "注册失败，手机号或验证码错误");
+				this.body = render(null, -1, "验证码超时，请重新获取");
 			}
-
-			console.log(user.phone + "phone");
-
-			//校验验证吗
+		} else {
+			this.body = render(null, -1, "注册失败，手机号或验证码错误");
 		}
+		console.log(user.phone + "phone");
 	}
 
 	if (!inserted) {
