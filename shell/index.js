@@ -285,12 +285,14 @@ shells.startTerminal = function(options) {
 }
 
 //解压文件
-shells.decomFile = function*(options){
+shells.decomFile = function(options){
+      	console.log("=======decomDir=======");
 	var baseDir = '/var/www/sotrage/code/';
 	var comDir = options.comDir;
 	var decomDir = path.join(baseDir , options.username , options.projectName);
 	return {
 		zip:function(){
+			console.log("zip");
 		  	return new Promise(function(resolve,reject){
 		  		exec('ssh root@gospely.com unzip '+comDir+' '+decomDir,function(err,data){
 					if (err)
@@ -300,7 +302,9 @@ shells.decomFile = function*(options){
 		  	});
 		},
 		tar:function(){
+			console.log("tar")
 			return new Promise(function(resolve,reject){
+				console.log("promise ,tar");
 		  		exec('ssh root@gospely.com tar -zxvf '+comDir+' '+decomDir,function(err,data){
 					if (err)
 			      			reject(err);
@@ -309,6 +313,7 @@ shells.decomFile = function*(options){
 		  	});
 		},
 		gz:function(){
+			console.log("gz")
 			return new Promise(function(resolve,reject){
 		  		exec('ssh root@gospely.com gzip -d '+comDir+' '+decomDir,function(err,data){
 					if (err)
@@ -318,6 +323,7 @@ shells.decomFile = function*(options){
 		  	});
 		},
 		rar:function(){
+			console.log("rar")
 			return new Promise(function(resolve,reject){
 		  		exec('ssh root@gospely.com rar x '+comDir+' '+decomDir,function(err,data){
 					if (err)
@@ -327,7 +333,6 @@ shells.decomFile = function*(options){
 		  	});
 		},
 	};
-
 }
 
 module.exports = shells;

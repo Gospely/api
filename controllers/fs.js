@@ -10,7 +10,7 @@ var exec = require('child_process').exec;
 var dir = require('node-dir');
 var multer = require('koa-multer');
 var path = require('path');
-var shell = require('../shell');
+var shells = require('../shell/index');
 multer({ dest: 'uploads/' });
 
 var
@@ -561,34 +561,40 @@ var fileSystem = {
 
 	upload : function*(){
 		//this.body = this.req.body;
-		console.log("file:",this.req.files);
-		console.log("text:",this.req.body);
+		console.log("======req=====",this.req);
+		console.log("======this.req.files=====:",this.req.files);
+		console.log("======this.req.body=====:",this.req.body);
 
 		var fileName = this.req.files.fileUp.name;
 		var originalname = this.req.files.fileUp.originalname;
-		var userName = this.req.body.userName;
+		var username = this.req.body.username;
 		var projectName = this.req.body.projectName;
+		var extension = this.req.files.fileUp.extension;
 
 		var supDir = path.resolve(__dirname, '..');
 
 		var beforeName = supDir+'/uploads/'+fileName;
-		var afterName = supDir+'/uploads/'+userName+'_'+projectName+'_'+originalname;
-		fs.rename(beforeName,afterName,function(err){
-			if(err){
-				throw err;
-			}
-			console.log('done!');
-			//获取文件后缀名
-			var suffix = path.extname(fileName);
-			//解压文件
-			var options = {
-				comDir:afterName,
-				username:username,
-				projectName:projectName,
-			}
-			shell.decomFile(options)[suffix];
-		});
+		var afterName = supDir+'/uploads/'+username+'_'+projectName+'_'+originalname;
+		yield renameFile(beforeName,afterName);
 
+		var compressionSuffix = ['rar','zip','cab','arj','lzh','ace','7-zip','tar','gzip','uue','bz2','jar','iso','z'];
+		var options = {
+			comDir:afterName,
+			username:username,
+			projectName:projectName,
+		}
+		//获取文件后缀名
+		//var suffix = path.extname(fileName);
+		var needCompress = false;
+		compressionSuffix.forEach(function (e) {
+			if(extension==e){
+				//解压文件
+				needCompress=true;
+			}
+		})
+		if(needCompress){
+			yield shells.decomFile(options)[extension]();	
+		}
 		var file = yield parse(this, {
 			limit: '50kb',
 			formTypes: 'multipart/form-data'
