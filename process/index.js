@@ -149,6 +149,25 @@ module.exports = {
 			},
 		});
 
+		if(application.git){
+			//从git clone
+			node = processes.buildNext(node ,{
+				do:function*(){
+					var self = this;
+					var result = yield shells.gitClone(self.data);
+					if(result!="success")
+						throw("clone failed!");
+				},
+				data:{
+					docker:domain + "_" + application.userName,
+					gitURL:application.git
+				},
+				undo:function*(){
+					console.log("从git clone [undo]")
+				}
+			})
+		}
+
 		//将应用记录存储到数据库
 		application.docker = 'gospel_project_' + domain + "_" + application.userName;
 		application.status = 1;

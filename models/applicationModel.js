@@ -42,7 +42,8 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.INTEGER,
       field: "isdeleted",
       defaultValue: 0
-    }
+    },
+    git:DataTypes.STRING
   }, {
     timestamps: true,
     createdAt: 'createat',

@@ -39,6 +39,28 @@ shells.docker = function*(options) {
     });
   });
 }
+
+shells.gitClone = function*(options){
+  console.log(options);
+  return new Promise (function(resolve,reject){
+    var bash_rm = "ssh root@gospely.com exec docker "+options.docker+"rm -rf /root/workspace";
+    var bash_clone = "ssh root@gospely.com exec docker "+options.docker+" git clone "+options.gitURL;
+    //执行删除命令
+    exec(bash_rm,function(err,data){
+      console.log(err);
+      console.log(data);
+      if(err)reject(err);
+      //执行clone命令
+        exec(bash_clone,function(err,data){
+          console.log(err);
+          console.log(data);
+          if(err)reject(err);
+            resolve("success");
+        })
+    });
+  })
+}
+
 shells.nginx = function*() {
 
   return new Promise(function(resolve, reject) {
