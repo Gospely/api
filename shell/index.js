@@ -43,8 +43,8 @@ shells.docker = function*(options) {
 shells.gitClone = function*(options){
   console.log(options);
   return new Promise (function(resolve,reject){
-    var bash_rm = "ssh root@gospely.com docker exec "+options.docker+" rm -rf /root/workspace";
-    var bash_clone = "ssh root@gospely.com docker exec "+options.docker+" git clone "+options.gitURL +" /root/workspace";
+    var bash_rm = "ssh root@gospely.com docker exec gospel_project_"+options.docker+" rm -rf /root/workspace";
+    var bash_clone = "ssh root@gospely.com docker exec gospel_project_"+options.docker+" git clone "+options.gitURL +" /root/workspace";
     //执行删除命令
     exec(bash_rm,function(err,data){
       console.log(err);
