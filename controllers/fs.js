@@ -16,7 +16,7 @@ multer({ dest: 'uploads/' });
 var
 	config = {
 		baseDir: '',
-		escape: ['node_modules']
+		escape: ['node_modules','.git']
 	},
 
 	escape = function(file) {
@@ -593,7 +593,7 @@ var fileSystem = {
 			}
 		})
 		if(needCompress){
-			yield shells.decomFile(options)[extension]();	
+			yield shells.decomFile(options)[extension]();
 		}
 		var file = yield parse(this, {
 			limit: '50kb',
