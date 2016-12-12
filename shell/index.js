@@ -40,40 +40,26 @@ shells.docker = function*(options) {
   });
 }
 
-shells.gitClone = function*(options){
+shells.gitClone = function(options){
   console.log(options);
-  return new Promise (function(resolve,reject){
-    var bash_rm = "ssh root@gospely.com docker exec gospel_project_"+options.docker+" rm -rf /root/workspace";
-    var bash_clone = "ssh root@gospely.com docker exec gospel_project_"+options.docker+" git clone "+options.gitURL +" /root/workspace";
+    var bash_clone = "ssh root@gospely.com  git clone "+options.gitURL +" /var/www/storage/codes/" + options.user + "/" + options.projectname;
     //执行删除命令
-    exec(bash_rm,function(err,data){
+    console.log(bash_clone);
+    exec(bash_clone,function(err,data){
       console.log(err);
       console.log(data);
-      if(err)reject(err);
-      //执行clone命令
-        exec(bash_clone,function(err,data){
-          console.log(err);
-          console.log(data);
-          if(err)reject(err);
-            resolve("success");
-        })
-    });
   })
 }
 
 shells.nginx = function*() {
 
-  return new Promise(function(resolve, reject) {
     exec("ssh root@gospely.com " +
       " service nginx restart && echo 'success'",
       function(err, data) {
         console.log(data);
         console.log(err);
-        if (err) reject(err);
-        resolve(data);
-      });
+    });
 
-  })
 }
 shells.delNginxConf = function*(projectname) {
   return new Promise(function(resolve, reject) {

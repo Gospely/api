@@ -1,3 +1,4 @@
+//应用创建流程回滚机制
 module.exports = {
 	buildNext: function(node, options) {
 
