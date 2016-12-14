@@ -90,20 +90,6 @@ applications.create = function*() {
 	}
 }
 
-applications.startTerminal = function*() {
-
-	var docker = this.query.docker;
-	console.log(docker);
-	try {
-		var result = shell.startTerminal({
-			docker: docker
-		});
-		this.body = render(result, null, null, 1, '启动成功');
-	}catch(err) {
-		this.body = render(result, null, null, -1, '启动失败');
-	}
-}
-
 applications.delete = function*() {
 
 

@@ -99,15 +99,7 @@ module.exports = {
 	},
 
 	router_config: {
-
-		applications: [{
-			name: '启动终端',
-			method: 'get',
-			url: '/applications/startTerminal',
-			controller: 'startTerminal',
-			groups: "ab64c397-d323-4133-9541-479bbaaf6c52_100"
-		}],
-
+		
 		users: [{
 			name: '登录',
 			method: 'post',

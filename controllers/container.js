@@ -3,6 +3,7 @@ var exec = require('child_process').exec,
 	baseCMD = 'ssh root@' + remoteIp + ' ',
 	parse = require('co-body'),
 	util = require('../utils.js'),
+	shells = require('../shell');
 	request = require('request');
 
 var execCMD = function(cmd) {
@@ -52,6 +53,9 @@ var container = {
 	restart: function* () {
 		try {
 			yield execCMD('docker restart ' + this.containerName);
+			shell.startTerminal({
+				docker: this.containerName
+			});
 			this.body = util.resp(200, '重启成功', this.containerName);
 		}catch(err) {
 			this.body = util.resp(500, '重启失败', err.toString());
