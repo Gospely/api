@@ -256,7 +256,7 @@ shells.extendsVolume = function*(options) {
 shells.createVolume = function*(options) {
     return new Promise(function(resolve, reject) {
       exec("ssh root@gospely.com " +
-        " docker run -itd -v /var/www/storage/" + options.user +
+        " docker run -itd -v /var/www/storage/codes" + options.user +
         " --name=docker-volume-" + options.user +
         " ubuntu /bin/bash && echo success",
         function(err,
