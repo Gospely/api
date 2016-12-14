@@ -20,6 +20,8 @@ var execCMD = function(cmd) {
 					'http://' + remoteIp + ':2375/containers/' + containerName + '/stats?stream=0'
 				},
 			    function(error, response, body){
+						console.log(error);
+						console.log(response);
 			        if(error) reject(error);
 			        resolve(response, body);
 			    }
