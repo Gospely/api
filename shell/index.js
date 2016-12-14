@@ -333,14 +333,22 @@ shells.decomFile = function(options){
 		rar:function(){
 			console.log("rar")
 			return new Promise(function(resolve,reject){
-		  		exec('ssh root@gospely.com rar x '+comDir+' '+decomDir,function(err,data){
-					if (err)
-			      			reject(err);
-			    		resolve(data);
-		  		});
-		  	});
+	  		exec('ssh root@gospely.com rar x '+comDir+' '+decomDir,function(err,data){
+				if (err)
+		      			reject(err);
+		    		resolve(data);
+	  		});
+	  	});
 		},
 	};
 }
-
+shells.killPID=function*(options){
+  return new Promise(function(resolve,reject){
+    exec('ssh root@gospely.com docker exec '+ options.docker + ' kill -s 9 ' + options.pid, function(err,data){
+    if (err)
+      reject(err);
+    resolve(data);
+  });
+});
+}
 module.exports = shells;

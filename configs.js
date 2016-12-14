@@ -99,7 +99,15 @@ module.exports = {
 	},
 
 	router_config: {
-		
+
+		applications: [{
+			name: '杀终端进程',
+			method: 'get',
+			url: '/applications/killpid',
+			controller: 'killPID',
+			groups: "ab64c397-d323-4133-9541-479bbaaf6c52_100"
+		}],
+
 		users: [{
 			name: '登录',
 			method: 'post',

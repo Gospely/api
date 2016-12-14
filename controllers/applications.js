@@ -150,6 +150,17 @@ applications.delete = function*() {
 		this.body = render(inserted, null, null, 1, '删除成功');
 	}
 
+applications.killPID = function*(){
+
+	var docker = this.query.docker,
+		pid = this.query.pid
+
+	yield shell.killPID({
+		docker: docker,
+		pid: pid
+	});
+	this.body = render(null, null, null, 1, 'success');
+}
 
 }
 module.exports = applications;
