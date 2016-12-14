@@ -3,7 +3,7 @@ var exec = require('child_process').exec,
 	baseCMD = 'ssh root@' + remoteIp + ' ',
 	parse = require('co-body'),
 	util = require('../utils.js'),
-	shells = require('../shell');
+	shell = require('../shell');
 	request = require('request');
 
 var execCMD = function(cmd) {
