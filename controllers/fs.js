@@ -498,7 +498,10 @@ var fileSystem = {
 						result.push(node);
 					}
 			}else{
-				result.push(node);
+
+				if(!escape(node.text)){
+					result.push(node);
+				}
 			}
 		} else {
 
@@ -551,7 +554,8 @@ var fileSystem = {
 							result.push(node);
 						}
 					}else{
-						result.push(node);
+						if(!escape(node.text))
+							result.push(node);
 					}
 				}
 			};
