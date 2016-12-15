@@ -25,6 +25,10 @@ var
 		var isEscape = false;
 
 		for (var i = config.escape.length - 1; i >= 0; i--) {
+
+			if(file.contain('json.gz')){
+				return true;
+			}
 			var escape = config.escape[i];
 			if (escape == file) {
 				isEscape = true;
