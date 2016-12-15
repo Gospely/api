@@ -35,6 +35,10 @@ var container = {
 	start: function* () {
 		try {
 			yield execCMD('docker start ' + this.containerName);
+			console.log(shell);
+			shell.startTerminal({
+				docker: this.containerName
+			});
 			this.body = util.resp(200, '启动成功', this.containerName);
 		}catch(err) {
 			this.body = util.resp(500, '启动失败', err.toString());
@@ -53,10 +57,6 @@ var container = {
 	restart: function* () {
 		try {
 			yield execCMD('docker restart ' + this.containerName);
-			console.log(shell);
-			shell.startTerminal({
-				docker: this.containerName
-			});
 			this.body = util.resp(200, '重启成功', this.containerName);
 		}catch(err) {
 			this.body = util.resp(500, '重启失败', err.toString());
