@@ -662,9 +662,9 @@ var fileSystem = {
 			var flag = false;
 
 			if(result.indexOf('Not a git repository') != -1) {
-				flag = true;
-			}else {
 				flag = false;
+			}else {
+				flag = true;
 			}
 
 			this.body = util.resp(200, '执行成功' + result, flag);
