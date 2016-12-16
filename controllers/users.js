@@ -326,7 +326,7 @@ users.phoneCode = function*() {
 //验证手机验证码
 users.verifyPhoneCode=function*(){
 	var user = yield parse(this, {
-		limit: '2MB'
+		limit: '10kb'
 	});
 	var token = user.token;
 	var authCode = user.authCode;
@@ -337,7 +337,7 @@ users.verifyPhoneCode=function*(){
 			//更新用户状态
 			if (innersession.code == authCode) {
 				yield models.gospel_users.modify({phone:user.phone,id:user.id});
-				this.body = render(user, 1, "手机 验证成功");
+				this.body = render(user, 1, "修改成功验证成功");
 			} else {
 				this.body = render(null, -1, "验证码错误，请重新获取");
 			}
@@ -345,7 +345,7 @@ users.verifyPhoneCode=function*(){
 			this.body = render(null, -1, "验证码超时，请重新获取");
 		}
 	} else {
-		this.body = render(null, -1, "注册失败，手机或验证码错误");
+		this.body = render(null, -1, "修改失败，验证码错误，请重新获取");
 	}
 }
 
@@ -402,13 +402,13 @@ users.getEmailCode = function*() {
 //验证邮箱验证码
 users.verifyEmailCode = function* (){
 	var user = yield parse(this, {
-		limit: '2MB'
+		limit: '10kb'
 	});
 	var token = user.token;
 	var authCode = user.authCode;
 
 	var innersession = yield models.gospel_innersessions.findById(token);
-	if (innersession.phone == user.phone) {
+	if (innersession.phone == user.email) {
 		if ((Date.now() - innersession.time) <= innersession.limitTime) {
 			//更新用户状态
 			if (innersession.code == authCode) {
