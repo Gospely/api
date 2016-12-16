@@ -757,7 +757,7 @@ var fileSystem = {
 			var result = yield pureSSHShell("docker exec gospel_project_" + dir + " sh /root/.gospely/.git_shell/.commit.sh");
 			this.body = util.resp(200, 'commit成功', result);
 		} catch (err) {
-			this.body = util.resp(500, 'commit失败', err.toString());
+			this.body = util.resp(500, 'commit失败' +  result, err.toString());
 		}
 	},
 
