@@ -667,9 +667,9 @@ var fileSystem = {
 				flag = false;
 			}
 
-			this.body = util.resp(200, '执行成功', flag);
+			this.body = util.resp(200, '执行成功' + result, flag);
 		} catch (err) {
-			this.body = util.resp(200, '执行无效' + "git --git-dir=" + config.baseDir + dir + ".git status" + result, false);
+			this.body = util.resp(200, '执行无效', false);
 		}
 
 	},
