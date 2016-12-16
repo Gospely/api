@@ -648,7 +648,7 @@ var fileSystem = {
 		}
 
 		try {
-			var result = yield shell("git --git-dir=" + config.baseDir + dir + "/.git status");
+			var result = yield shell("git --git-dir=" + config.baseDir + dir + ".git status");
 
 			var flag = false;
 
@@ -660,7 +660,7 @@ var fileSystem = {
 
 			this.body = util.resp(200, '执行成功', flag);
 		} catch (err) {
-			this.body = util.resp(200, '执行无效' + "git --git-dir=" + config.baseDir + dir + "/.git status" + result, false);
+			this.body = util.resp(200, '执行无效' + "git --git-dir=" + config.baseDir + dir + ".git status" + result, false);
 		}
 
 	},
