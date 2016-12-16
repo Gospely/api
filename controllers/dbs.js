@@ -25,7 +25,7 @@ dbs.create = function*() {
 	var user = yield models.gospel_users.findById(db.creator);
 	var dbName = '';
 	if (res) {
-		var tr = transliteration.transliterate
+		var tr = transliteration.transliterate;
 		dbName = tr(db.name).replace(new RegExp(" ", 'gm'), "").toLocaleLowerCase();
 	} else {
 		dbName = db.name;
@@ -71,7 +71,7 @@ dbs.delete = function*() {
 	var reg = /[\u4e00-\u9FA5]+/;
 	var res = reg.test(db.name);
 	if (res) {
-		var tr = transliteration.transliterate
+		var tr = transliteration.transliterate;
 		dbName = tr(db.name).replace(new RegExp(" ", 'gm'), "").toLocaleLowerCase();
 	} else {
 		dbName = db.name;

@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 echo "please enter commit info："
 
 read msg

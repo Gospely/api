@@ -50,9 +50,9 @@ applications.create = function*() {
 		inserted.products = products;
 		var result = yield processes.app_start(inserted);
 		if (result) {
-			this.body = render(inserted, null, null, 1, "创建成功");
+			this.body = render(inserted, null, null, 1, "应用创建成功");
 		} else {
-			this.body = render(inserted, null, null, -1, "创建失败");
+			this.body = render(inserted, null, null, -1, "应用创建失败");
 		}
 	} else {
 

@@ -68,8 +68,8 @@ module.exports = {
 				if (token == null || token == undefined || token == '') {
 
 					console.log("no login");
-					this.status = 200
-					this.body = render(null, -100, '未登录!');
+					this.status = 200;
+					this.body = render(null, -100, '您未登录,请登录后再进行相应操作');
 
 				} else {
 
@@ -86,7 +86,7 @@ module.exports = {
 						if (privileges.length != 1) {
 							//非法url或者权限列表错误
 							this.status = 200;
-							this.body = render(null, -101, '非法请求');
+							this.body = render(null, -101, '您没有该权限去操作');
 						} else {
 
 							var pass = false;
@@ -116,12 +116,12 @@ module.exports = {
 
 									yield models.gospel_innersessions.delete(code);
 									this.status = 200;
-									this.body = render(null, -100, '登录超时!');
+									this.body = render(null, -100, '登录超时，请重试!');
 								}
 							} else {
 								//
 								this.status = 200;
-								this.body = render(null, -100, '无权限操作');
+								this.body = render(null, -100, '您没有该权限去操作');
 							}
 						}
 
@@ -129,7 +129,7 @@ module.exports = {
 					} else {
 
 						this.status = 200;
-						this.body = render(null, -100, '登录超时!');
+						this.body = render(null, -100, '登录超时，请重试!');
 					}
 				}
 			}
