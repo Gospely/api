@@ -243,7 +243,7 @@ users.updatePhoto = function*() {
 
 users.authorization = function*() {
 
-	this.body = render(user, 1, "合法请求");
+	this.body = render(null, 1, "合法请求");
 
 }
 users.weixinLogin = function*() {
