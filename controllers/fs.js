@@ -751,6 +751,10 @@ var fileSystem = {
 			var dir = GetQueryString(params, 'dir');
 		}
 
+		dir = dir.split('/');
+		dir.pop();
+		dir = dir[0];
+
 		try {
 			var result = yield pureSSHShell("docker exec gospel_project_" + dir + " sh /root/.gospely/.git_shell/.commit.sh");
 			this.body = util.resp(200, 'commit成功', result);
