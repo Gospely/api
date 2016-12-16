@@ -648,7 +648,7 @@ var fileSystem = {
 		}
 
 		try {
-			var result = yield shell("git --git-dir=" + config.baseDir + dir + ".git status");
+			var result = yield shell("git --git-dir=" + config.baseDir + dir + ".git status", false);
 
 			var flag = false;
 
