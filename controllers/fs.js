@@ -709,6 +709,8 @@ var fileSystem = {
 			var dir = GetQueryString(params, 'dir');
 		}
 
+		dir = dir.split('/')[1];
+
 		try {
 			var result = yield pureSSHShell("docker exec gospel_project_" + dir + " sh /root/.gospely/.git_shell/.push.sh");
 			this.body = util.resp(200, 'push成功', result);
@@ -729,6 +731,8 @@ var fileSystem = {
 		} catch (err) {
 			var dir = GetQueryString(params, 'dir');
 		}
+
+		dir = dir.split('/')[1];
 
 		try {
 			var result = yield pureSSHShell("docker exec gospel_project_" + dir + " sh /root/.gospely/.git_shell/.pull.sh");
