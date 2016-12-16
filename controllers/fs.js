@@ -689,7 +689,7 @@ var fileSystem = {
 		}
 
 		try {
-			var result = yield shell("git --git-dir=" + config.baseDir + dir + "/.git remote -v", false);
+			var result = yield pureSSHShell("git --git-dir=" + config.baseDir + dir + "/.git remote -v");
 			this.body = util.resp(200, '执行成功', result);
 		} catch (err) {
 			this.body = util.resp(500, '执行失败', err.toString());
@@ -710,7 +710,7 @@ var fileSystem = {
 		}
 
 		try {
-			var result = yield shell("docker exec gospel_project_" + dir + " sh /root/.gospely/.git_shell/.push.sh");
+			var result = yield pureSSHShell("docker exec gospel_project_" + dir + " sh /root/.gospely/.git_shell/.push.sh");
 			this.body = util.resp(200, '执行成功', result);
 		} catch (err) {
 			this.body = util.resp(500, '执行失败', err.toString());
@@ -731,7 +731,7 @@ var fileSystem = {
 		}
 
 		try {
-			var result = yield shell("docker exec gospel_project_" + dir + " sh /root/.gospely/.git_shell/.pull.sh");
+			var result = yield pureSSHShell("docker exec gospel_project_" + dir + " sh /root/.gospely/.git_shell/.pull.sh");
 			this.body = util.resp(200, '执行成功', result);
 		} catch (err) {
 			this.body = util.resp(500, '执行失败', err.toString());
@@ -752,7 +752,7 @@ var fileSystem = {
 		}
 
 		try {
-			var result = yield shell("docker exec gospel_project_" + dir + " sh /root/.gospely/.git_shell/.commit.sh");
+			var result = yield pureSSHShell("docker exec gospel_project_" + dir + " sh /root/.gospely/.git_shell/.commit.sh");
 			this.body = util.resp(200, '执行成功', result);
 		} catch (err) {
 			this.body = util.resp(500, '执行失败', err.toString());
@@ -775,7 +775,7 @@ var fileSystem = {
 		}
 
 		try {
-			var result = yield shell("cd " + config.baseDir + dir + ' && git clone ' + origin);
+			var result = yield pureSSHShell("cd " + config.baseDir + dir + ' && git clone ' + origin);
 			this.body = util.resp(200, '执行成功', result);
 		} catch (err) {
 			this.body = util.resp(500, '执行失败', err.toString());
@@ -798,11 +798,11 @@ var fileSystem = {
 		}
 
 		try {
-			var result = yield shell("git --git-dir=" + config.baseDir + dir + "/.git remote remove origin && git --git-dir=" + config.baseDir + dir + "/.git remote add origin " + origin);
+			var result = yield pureSSHShell("git --git-dir=" + config.baseDir + dir + "/.git remote remove origin && git --git-dir=" + config.baseDir + dir + "/.git remote add origin " + origin);
 			this.body = util.resp(200, '执行成功', result);
 		} catch (err) {
 			try {
-				var result = yield shell("git --git-dir=" + config.baseDir + dir + "/.git remote add origin " + origin);
+				var result = yield pureSSHShell("git --git-dir=" + config.baseDir + dir + "/.git remote add origin " + origin);
 			} catch (err) {
 				this.body = util.resp(500, '执行失败', err.toString());
 			}
