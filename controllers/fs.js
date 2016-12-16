@@ -667,9 +667,9 @@ var fileSystem = {
 				flag = true;
 			}
 
-			this.body = util.resp(200, '执行成功', flag);
+			this.body = util.resp(200, '为Git项目', flag);
 		} catch (err) {
-			this.body = util.resp(200, '执行无效', false);
+			this.body = util.resp(200, '无法判断是否为Git项目', false);
 		}
 
 	},
@@ -690,9 +690,9 @@ var fileSystem = {
 
 		try {
 			var result = yield pureSSHShell("git --git-dir=" + config.baseDir + dir + "/.git remote -v");
-			this.body = util.resp(200, '执行成功', result);
+			this.body = util.resp(200, '获取Git源成功', result);
 		} catch (err) {
-			this.body = util.resp(500, '执行失败', err.toString());
+			this.body = util.resp(500, '获取Git源失败', err.toString());
 		}
 	},
 
@@ -711,9 +711,9 @@ var fileSystem = {
 
 		try {
 			var result = yield pureSSHShell("docker exec gospel_project_" + dir + " sh /root/.gospely/.git_shell/.push.sh");
-			this.body = util.resp(200, '执行成功', result);
+			this.body = util.resp(200, 'push成功', result);
 		} catch (err) {
-			this.body = util.resp(500, '执行失败', err.toString());
+			this.body = util.resp(500, 'push失败', err.toString());
 		}
 	},
 
@@ -732,9 +732,9 @@ var fileSystem = {
 
 		try {
 			var result = yield pureSSHShell("docker exec gospel_project_" + dir + " sh /root/.gospely/.git_shell/.pull.sh");
-			this.body = util.resp(200, '执行成功', result);
+			this.body = util.resp(200, 'pull成功', result);
 		} catch (err) {
-			this.body = util.resp(500, '执行失败', err.toString());
+			this.body = util.resp(500, 'pull失败', err.toString());
 		}
 	},
 
@@ -753,9 +753,9 @@ var fileSystem = {
 
 		try {
 			var result = yield pureSSHShell("docker exec gospel_project_" + dir + " sh /root/.gospely/.git_shell/.commit.sh");
-			this.body = util.resp(200, '执行成功', result);
+			this.body = util.resp(200, 'commit成功', result);
 		} catch (err) {
-			this.body = util.resp(500, '执行失败', err.toString());
+			this.body = util.resp(500, 'commit失败', err.toString());
 		}
 	},
 
@@ -776,9 +776,9 @@ var fileSystem = {
 
 		try {
 			var result = yield pureSSHShell("cd " + config.baseDir + dir + ' && git clone ' + origin);
-			this.body = util.resp(200, '执行成功', result);
+			this.body = util.resp(200, 'clone成功', result);
 		} catch (err) {
-			this.body = util.resp(500, '执行失败', err.toString());
+			this.body = util.resp(500, 'clone失败', err.toString());
 		}
 	},
 
@@ -799,12 +799,12 @@ var fileSystem = {
 
 		try {
 			var result = yield pureSSHShell("git --git-dir=" + config.baseDir + dir + "/.git remote remove origin && git --git-dir=" + config.baseDir + dir + "/.git remote add origin " + origin);
-			this.body = util.resp(200, '执行成功', result);
+			this.body = util.resp(200, '更改Git源成功', result);
 		} catch (err) {
 			try {
 				var result = yield pureSSHShell("git --git-dir=" + config.baseDir + dir + "/.git remote add origin " + origin);
 			} catch (err) {
-				this.body = util.resp(500, '执行失败', err.toString());
+				this.body = util.resp(500, '更改Git源失败', err.toString());
 			}
 		}
 	},
