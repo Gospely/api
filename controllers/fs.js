@@ -171,6 +171,15 @@ var
 				});
 			}
 		});
+	},
+
+	pureSSHShell = function(cmd) {
+		return new Promise(function(resolve, reject) {
+			exec("ssh root@120.76.235.234 " + cmd, function(error, data) {
+				if (error) reject(error);
+				resolve(data);
+			});
+		});
 	}
 
 
@@ -648,7 +657,7 @@ var fileSystem = {
 		}
 
 		try {
-			var result = yield shell("git --git-dir=" + config.baseDir + dir + ".git status", false);
+			var result = yield pureSSHShell("git --git-dir=" + config.baseDir + dir + ".git status");
 
 			var flag = false;
 
