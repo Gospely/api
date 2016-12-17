@@ -65,7 +65,8 @@ var weapp = {
 		var loopPack = function *(dir, app) {
 
 			try {
-				mkdir(dir);
+
+				yield mkdir(dir);
 
 				for(var key in app) {
 					var file = app[key],
@@ -79,24 +80,13 @@ var weapp = {
 								filePath = dir + key;
 								yield writeFile(filePath, file);
 							}catch (err) {
-								rmdir(dir);
 								this.body = util.resp(500, '云打包失败', '创建文件: ' + key + '失败：' + err.toString());
 							}
 						}else {
-
-							if(file.pages.length > 0) {
-								for (var i = 0; i < val.length; i++) {
-									var page = val[i];
-									yield loopPack(dir, page);
-								};
-							}else {
-								yield loopPack(dir, file.pages);
-							}
-
+							yield loopPack(dir + key + '/', file);
 						}
 
 					} catch (err) {
-						rmdir(dir);
 						this.body = util.resp(500, '云打包失败', '创建文件夹失败：' + err.toString());
 					}
 
@@ -120,7 +110,7 @@ var weapp = {
 			rmdir(randomDir);
 			this.body = util.resp(200, '云打包成功', dir + '.zip');
 		} catch (err) {
-			rmdir(randomDir);
+			yield rmdir(randomDir);
 			this.body = util.resp(500, '云打包失败', '压缩文件包失败：' + err.toString());
 		}
 
