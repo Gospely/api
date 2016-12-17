@@ -53,14 +53,15 @@ var weapp = {
 
 		var randomDir = __dirname + randomString(8, 10);
 
-		var loopPack = function(dir, app) {
+		var loopPack = function *(dir, app) {
 
 			try {
 				mkdir(dir);
 
 				for(var key in app) {
 					var file = app[key],
-						filePath = '',
+						filePath = '';
+
 					try {
 
 						if(typeof file == 'string') {
@@ -77,10 +78,10 @@ var weapp = {
 							if(file.pages.length > 0) {
 								for (var i = 0; i < val.length; i++) {
 									var page = val[i];
-									loopPack(dir, page);
+									yield loopPack(dir, page);
 								};
 							}else {
-								loopPack(dir, file.pages);
+								yield loopPack(dir, file.pages);
 							}
 
 						}
@@ -98,7 +99,7 @@ var weapp = {
 
 		}
 
-		loopPack(randomDir, app);
+		yield loopPack(randomDir, app);
 
 		var options = {
 			comDir: randomDir + '.zip',
