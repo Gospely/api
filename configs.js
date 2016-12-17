@@ -4,7 +4,7 @@ module.exports = {
 
 	isInit: 0,
 
-	port: 8089,
+	port: 8086,
 
 	isDBAvailable: false,
 
