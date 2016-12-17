@@ -53,35 +53,26 @@ var weapp = {
 
 		var randomDir = __dirname + randomString(8, 10);
 
-		var loopPack = function(dir, app) {
+		var loopPack = function(dir) {
 
 			try {
 				mkdir(dir);
 
 				for(var key in app) {
-					var file = app[key],
+					var val = app[key],
 						filePath = '',
 					try {
 
-						if(typeof file == 'string') {
+						if(typeof val == 'string') {
 
 							try {
 								filePath = dir + key;
-								yield writeFile(filePath, file);
+								yield writeFile(filePath, val);
 							}catch (err) {
 								rmdir(dir);
 								this.body = util.resp(500, '云打包失败', '创建文件: ' + key + '失败：' + err.toString());
 							}
 						}else {
-
-							if(file.pages.length > 0) {
-								for (var i = 0; i < val.length; i++) {
-									var page = val[i];
-									loopPack(dir, page);
-								};
-							}else {
-								loopPack(dir, file.pages);
-							}
 
 						}
 
@@ -98,19 +89,7 @@ var weapp = {
 
 		}
 
-		loopPack(randomDir, app);
-
-		var options = {
-			comDir: randomDir + '.zip',
-			username: 'xieyang',
-			projectName: randomDir
-		}
-
-		try {
-			yield shells.decomFile(options)['zip']();
-		} catch (err) {
-			this.body = util.resp(500, '云打包失败', '压缩文件包失败' + err.toString());
-		}
+		loopPack(randomDir);
 
 	}
 }
