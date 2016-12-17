@@ -100,6 +100,14 @@ var weapp = {
 
 		loopPack(randomDir, app);
 
+		var options = {
+			comDir:afterName,
+			username:username,
+			projectName:projectName,
+		}
+
+		yield shells.decomFile(options)['zip']();
+
 	}
 }
 
