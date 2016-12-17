@@ -114,6 +114,19 @@ var weapp = {
 			this.body = util.resp(500, '云打包失败', '压缩文件包失败：' + err.toString());
 		}
 
+	},
+
+	download: function *() {
+
+		var params = yield parse(this);
+
+		if(typeof params == 'string') {
+			params = JSON.parse(app);
+		}
+
+		var path = params.path;
+
+	  	yield send(this, path);
 	}
 }
 
