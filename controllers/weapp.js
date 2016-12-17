@@ -40,7 +40,7 @@ var	writeFile = function(fileName, content) {
 				resolve(data);
 			});
 		});
-	},
+	};
 
 var weapp = {
 	pack: function*() {
@@ -53,26 +53,36 @@ var weapp = {
 
 		var randomDir = __dirname + randomString(8, 10);
 
-		var loopPack = function(dir) {
+		var loopPack = function *(dir, app) {
 
 			try {
 				mkdir(dir);
 
 				for(var key in app) {
-					var val = app[key],
-						filePath = '',
+					var file = app[key],
+						filePath = '';
+
 					try {
 
-						if(typeof val == 'string') {
+						if(typeof file == 'string') {
 
 							try {
 								filePath = dir + key;
-								yield writeFile(filePath, val);
+								yield writeFile(filePath, file);
 							}catch (err) {
 								rmdir(dir);
 								this.body = util.resp(500, '云打包失败', '创建文件: ' + key + '失败：' + err.toString());
 							}
 						}else {
+
+							if(file.pages.length > 0) {
+								for (var i = 0; i < val.length; i++) {
+									var page = val[i];
+									yield loopPack(dir, page);
+								};
+							}else {
+								yield loopPack(dir, file.pages);
+							}
 
 						}
 
@@ -89,7 +99,20 @@ var weapp = {
 
 		}
 
-		loopPack(randomDir);
+		yield loopPack(randomDir, app);
+
+		var options = {
+			comDir: randomDir + '.zip',
+			username: 'xieyang',
+			projectName: randomDir
+		}
+
+		try {
+			yield shells.decomFile(options)['zip']();
+			this.body = util.resp(500, '云打包成功', randomDir);
+		} catch (err) {
+			this.body = util.resp(500, '云打包失败', '压缩文件包失败' + err.toString());
+		}
 
 	}
 }
