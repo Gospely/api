@@ -114,9 +114,7 @@ var weapp = {
 
 			var dir = randomDir.split('/');
 			dir.pop();
-			dir.join('/');
-
-			dir.replace(',', '/');
+			dir = dir.join('/');
 
 			yield zip(dir);
 			rmdir(randomDir);
