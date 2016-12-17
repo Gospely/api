@@ -101,6 +101,8 @@ var weapp = {
 
 		yield loopPack(randomDir, app);
 
+		//
+
 		var options = {
 			comDir: randomDir + '.zip',
 			username: 'xieyang',
