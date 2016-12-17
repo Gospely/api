@@ -62,8 +62,6 @@ var weapp = {
 
 		var randomDir = __dirname + '/../tmp/'+  util.randomString(8, 10) + '/';
 
-		console.log(randomDir);
-
 		var loopPack = function *(dir, app) {
 
 			try {
@@ -114,6 +112,7 @@ var weapp = {
 
 		try {
 			yield zip(randomDir);
+			rmdir(randomDir);
 			this.body = util.resp(500, '云打包成功', randomDir);
 		} catch (err) {
 			this.body = util.resp(500, '云打包失败', '压缩文件包失败：' + err.toString());
