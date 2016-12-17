@@ -117,7 +117,10 @@ var weapp = {
 	},
 
 	download: function *() {
-	  	yield send(this, this.path);
+		this.body = 'Try GET /' + this.params.id + '<script>window.close()</script>';
+	  	yield send(this, this.params.id, {
+	  		root: __dirname + '/../tmp/'
+	  	});
 	}
 }
 
