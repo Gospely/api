@@ -26,5 +26,5 @@ module.exports = function(sequelize, DataTypes) {
       }
     }
   });
-  return ide;
+  return host;
 }

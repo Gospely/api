@@ -115,4 +115,4 @@ var weapp = {
 	}
 }
 
-export default weapp;
+module.exports = weapp;
