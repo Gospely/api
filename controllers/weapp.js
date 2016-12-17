@@ -51,7 +51,7 @@ var weapp = {
 			app = JSON.parse(app);
 		}
 
-		var randomDir = __dirname + randomString(8, 10);
+		var randomDir = __dirname + util.randomString(8, 10);
 
 		var loopPack = function *(dir, app) {
 
