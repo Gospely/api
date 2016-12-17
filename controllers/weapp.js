@@ -117,16 +117,7 @@ var weapp = {
 	},
 
 	download: function *() {
-
-		var params = yield parse(this);
-
-		if(typeof params == 'string') {
-			params = JSON.parse(app);
-		}
-
-		var path = params.path;
-
-	  	yield send(this, path);
+	  	yield send(this, this.path);
 	}
 }
 
