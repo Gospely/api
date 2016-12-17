@@ -13,10 +13,10 @@ var path = require('path');
 var shells = require('../shell/index');
 
 var weapp = {
-	pack: function() {
+	pack: function*() {
 
 		this.body = util.resp(200, '访问成功', '云打包');
 	}
 }
 
-export default weapp;
+module.exports = weapp;
