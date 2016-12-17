@@ -40,6 +40,15 @@ var	writeFile = function(fileName, content) {
 				resolve(data);
 			});
 		});
+	},
+
+	zip = function(dir) {
+		return new Promise(function(resolve, reject) {
+			exec('zip -r ' + dir + '.zip ' + dir, function(error, data) {
+				if (error) reject(error);
+				resolve(data);
+			});
+		});
 	};
 
 var weapp = {
@@ -51,7 +60,7 @@ var weapp = {
 			app = JSON.parse(app);
 		}
 
-		var randomDir = __dirname + randomString(8, 10);
+		var randomDir = __dirname + '/../tmp/'+  util.randomString(8, 10) + '/';
 
 		var loopPack = function *(dir, app) {
 
@@ -101,19 +110,32 @@ var weapp = {
 
 		yield loopPack(randomDir, app);
 
-		var options = {
-			comDir: randomDir + '.zip',
-			username: 'xieyang',
-			projectName: randomDir
-		}
-
 		try {
-			yield shells.decomFile(options)['zip']();
+
+			var dir = randomDir.split('/');
+			dir.pop();
+			dir.join('/');
+
+			yield zip(dir);
+			rmdir(randomDir);
 			this.body = util.resp(500, '云打包成功', randomDir);
 		} catch (err) {
-			this.body = util.resp(500, '云打包失败', '压缩文件包失败' + err.toString());
+			this.body = util.resp(500, '云打包失败', '压缩文件包失败：' + err.toString());
 		}
 
+	},
+
+	download: function *() {
+
+		var params = yield parse(this);
+
+		if(typeof params == 'string') {
+			params = JSON.parse(app);
+		}
+
+		var path = params.path;
+
+	  	yield send(this, path);
 	}
 }
 

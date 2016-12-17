@@ -4,7 +4,7 @@ module.exports = {
 
 	isInit: 0,
 
-	port: 8089,
+	port: 8086,
 
 	isDBAvailable: false,
 
@@ -113,6 +113,12 @@ module.exports = {
 			method: 'post',
 			url: '/weapp/pack',
 			controller: 'pack',
+			groups: "ab64c397-d323-4133-9541-479bbaaf6c52_100"
+		}, {
+			name: '下载包',
+			method: 'post',
+			url: '/weapp/download',
+			controller: 'download',
 			groups: "ab64c397-d323-4133-9541-479bbaaf6c52_100"
 		}],
 
