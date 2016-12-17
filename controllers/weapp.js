@@ -116,6 +116,8 @@ var weapp = {
 			dir.pop();
 			dir.join('/');
 
+			dir.replace(',', '/');
+
 			yield zip(dir);
 			rmdir(randomDir);
 			this.body = util.resp(500, '云打包成功', randomDir);
