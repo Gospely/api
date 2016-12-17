@@ -110,7 +110,7 @@ module.exports = {
 
 		weapp: [{
 			name: '云打包',
-			method: 'get',
+			method: 'post',
 			url: '/weapp/pack',
 			controller: 'pack',
 			groups: "ab64c397-d323-4133-9541-479bbaaf6c52_100"
