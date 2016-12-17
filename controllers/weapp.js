@@ -40,7 +40,7 @@ var	writeFile = function(fileName, content) {
 				resolve(data);
 			});
 		});
-	},
+	};
 
 var weapp = {
 	pack: function*() {
@@ -108,6 +108,7 @@ var weapp = {
 
 		try {
 			yield shells.decomFile(options)['zip']();
+			this.body = util.resp(500, '云打包成功', randomDir);
 		} catch (err) {
 			this.body = util.resp(500, '云打包失败', '压缩文件包失败' + err.toString());
 		}
