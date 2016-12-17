@@ -195,8 +195,28 @@ module.exports = {
 	},
 	initDebug: function*() {
 
-		
-	}
+
+	},
+	//根据用户的ide版本获取对应配置的主机
+	hostFilter: function() {
+		return {
+			//普通用户
+			common: function(){
+
+			},
+			//ide基本版
+			base: function(){
+
+			},
+			//ide企业版
+			company: function(){
+
+			},
+			education: function(){
+
+			}
+		}
+	},
 	imagesFilter: function (){
 
 		return {

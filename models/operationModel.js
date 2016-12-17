@@ -7,10 +7,9 @@ module.exports = function(sequelize, DataTypes) {
       defaultValue: DataTypes.UUIDV4,
       primaryKey: true
     },
-    ip: DataTypes.STRING,
-    domain: DataTypes.STRING,
-    priority: DataTypes.STRING,
-    share: DataTypes.BOOLEAN,
+    type: DataTypes.STRING,
+    creator: DataTypes.STRING,
+    result: DataTypes.STRING,
     isDeleted: {
       type: DataTypes.INTEGER,
       field: "isdeleted",

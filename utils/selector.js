@@ -15,7 +15,7 @@ exports = module.exports = {
         total = 0;
         for(var i = 0; i<set.length; i++){
             total = total + parseInt(set[i].priority);
-            if(result< total){
+            if(result <= total){
                 return set[i];
             }
         }
