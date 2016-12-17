@@ -40,6 +40,15 @@ var	writeFile = function(fileName, content) {
 				resolve(data);
 			});
 		});
+	},
+
+	zip = function(dir) {
+		return new Promise(function(resolve, reject) {
+			exec('zip -r ' + dir + '.zip ' + dir, function(error, data) {
+				if (error) reject(error);
+				resolve(data);
+			});
+		});
 	};
 
 var weapp = {
@@ -51,7 +60,9 @@ var weapp = {
 			app = JSON.parse(app);
 		}
 
-		var randomDir = __dirname + util.randomString(8, 10);
+		var randomDir = __dirname + '/../tmp/'+  util.randomString(8, 10) + '/';
+
+		console.log(randomDir);
 
 		var loopPack = function *(dir, app) {
 
@@ -101,16 +112,8 @@ var weapp = {
 
 		yield loopPack(randomDir, app);
 
-		//
-
-		var options = {
-			comDir: randomDir + '.zip',
-			username: 'xieyang',
-			projectName: randomDir
-		}
-
 		try {
-			yield shells.decomFile(options)['zip']();
+			yield zip(randomDir);
 			this.body = util.resp(500, '云打包成功', randomDir);
 		} catch (err) {
 			this.body = util.resp(500, '云打包失败', '压缩文件包失败：' + err.toString());
