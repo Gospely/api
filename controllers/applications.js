@@ -27,7 +27,7 @@ applications.create = function*() {
 
 	if ('POST' != this.method) this.throw(405, "method is not allowed");
 	var application = yield parse(this, {
-		limit: '1kb'
+		limit: '10kb'
 	});
 	var image = yield models.gospel_images.findById(application.image);
 	console.log(application);
@@ -160,5 +160,15 @@ applications.killPID = function*(){
 		pid: pid
 	});
 	this.body = render(null, null, null, 1, 'success');
+}
+//新建应用
+applications.new = function*() {
+
+	if ('POST' != this.method) this.throw(405, "method is not allowed");
+	var application = yield parse(this, {
+		limit: '10kb'
+	});
+
+	//判断是否从git 创建 git clone
 }
 module.exports = applications;

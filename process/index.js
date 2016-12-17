@@ -192,5 +192,25 @@ module.exports = {
 		});
 		var result = yield node.excute();
 		return result;
+	},
+	initDebug: function*() {
+
+		
+	}
+	imagesFilter: function (){
+
+		return {
+			nodejs:{
+				latest: function(){
+					return 'nodejs:latest'
+				},
+				'4.4.4': function(){
+					return 'nodejs:4.4.4'
+				}
+			},
+			php: {
+				latest
+			}
+		}
 	}
 }
