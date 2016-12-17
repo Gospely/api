@@ -24,6 +24,8 @@ module.exports = function(sequelize, DataTypes) {
     image: DataTypes.STRING,
     members: DataTypes.JSONB,
     team: DataTypes.STRING,
+    git:DataTypes.STRING,
+    host: DataTypes.STRING,
     creator: DataTypes.STRING,
     payStatus: {
       type: DataTypes.INTEGER,
@@ -43,7 +45,6 @@ module.exports = function(sequelize, DataTypes) {
       field: "isdeleted",
       defaultValue: 0
     },
-    git:DataTypes.STRING
   }, {
     timestamps: true,
     createdAt: 'createat',

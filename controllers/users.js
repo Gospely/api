@@ -243,18 +243,8 @@ users.updatePhoto = function*() {
 
 users.authorization = function*() {
 
-	if ('GET' != this.method) this.throw(405, "method is not allowed");
+	this.body = render(null, 1, "合法请求");
 
-	var data = yield models.gospel_innersessions.findById(this.query.code);
-	console.log(data);
-	console.log(data.time - Date.now());
-	if ((Date.now() - data.time) <= data.limitTime) {
-
-		//更新用户状态
-		this.body = render(user, -1, "激活成功");
-	} else {
-		this.body = render(user, -1, "激活链接超时");
-	}
 }
 users.weixinLogin = function*() {
 
