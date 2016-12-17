@@ -108,6 +108,14 @@ module.exports = {
 			groups: "ab64c397-d323-4133-9541-479bbaaf6c52_100"
 		}],
 
+		weapp: [{
+			name: '云打包',
+			method: 'get',
+			url: '/weapp/pack',
+			controller: 'pack',
+			groups: "ab64c397-d323-4133-9541-479bbaaf6c52_100"
+		}],
+
 		users: [{
 			name: '登录',
 			method: 'post',
