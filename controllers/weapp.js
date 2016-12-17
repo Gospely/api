@@ -120,6 +120,7 @@ var weapp = {
 			rmdir(randomDir);
 			this.body = util.resp(500, '云打包成功', randomDir);
 		} catch (err) {
+			rmdir(randomDir);
 			this.body = util.resp(500, '云打包失败', '压缩文件包失败：' + err.toString());
 		}
 
