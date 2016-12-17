@@ -101,12 +101,16 @@ var weapp = {
 		loopPack(randomDir, app);
 
 		var options = {
-			comDir:afterName,
-			username:username,
-			projectName:projectName,
+			comDir: randomDir + '.zip',
+			username: 'xieyang',
+			projectName: randomDir
 		}
 
-		yield shells.decomFile(options)['zip']();
+		try {
+			yield shells.decomFile(options)['zip']();
+		} catch (err) {
+			this.body = util.resp(500, '云打包失败', '压缩文件包失败' + err.toString());
+		}
 
 	}
 }
