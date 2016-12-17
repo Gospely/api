@@ -111,7 +111,12 @@ var weapp = {
 		yield loopPack(randomDir, app);
 
 		try {
-			yield zip(randomDir);
+
+			var dir = randomDir.split('/');
+			dir.pop();
+			dir.join('/')
+
+			yield zip(dir);
 			rmdir(randomDir);
 			this.body = util.resp(500, '云打包成功', randomDir);
 		} catch (err) {
