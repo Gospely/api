@@ -169,11 +169,11 @@ applications.new = function*() {
 		limit: '10kb'
 	});
 
-	if(application.git !=null && application.git != undefined){
-		shell.gitClone({
-			
-		});
-	}
+	// if(application.git !=null && application.git != undefined){
+	// 	shell.gitClone({
+	//
+	// 	});
+	// }
 	//判断是否从git 创建 git clone
 	//根据用户创建表单选择镜像
 	//生成ssh key
