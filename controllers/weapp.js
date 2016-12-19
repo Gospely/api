@@ -57,7 +57,7 @@ var	writeFile = function(fileName, content) {
 
 	beautifyJS = function(fileName) {
 		return new Promise(function(resolve, reject) {
-			exec('uglifyjs ' + fileName + ' -b -c -o ' + fileName, function(error, data) {
+			exec('js-beautify ' + fileName + ' -r', function(error, data) {
 				if (error) reject(error);
 				resolve(data);
 			});
