@@ -106,6 +106,12 @@ module.exports = {
 			url: '/applications/killpid',
 			controller: 'killPID',
 			groups: "ab64c397-d323-4133-9541-479bbaaf6c52_100"
+		},{
+			name: '重启终端',
+			method: 'get',
+			url: '/applications/startTerminal',
+			controller: 'startTerminal',
+			groups: "ab64c397-d323-4133-9541-479bbaaf6c52_100"
 		}],
 
 		weapp: [{

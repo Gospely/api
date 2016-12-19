@@ -179,4 +179,12 @@ applications.new = function*() {
 	//生成ssh key
 	//
 }
+applications.startTerminal = function*(){
+	console.log("test");
+	var containerName = this.query.docker;
+	shell.startTerminal({
+		docker: containerName
+	});
+	this.body = render(null, null, null, 1, '启动成功');
+}
 module.exports = applications;
