@@ -95,11 +95,7 @@ var weapp = {
 
 								var splitKey = key.split('.');
 
-								console.log(splitKey);
-									this.body = util.resp(500, splitKey[0] + splitKey[1], '创建文件: ' + key + '失败：' + err.toString());
-
 								if(splitKey.pop() == 'js') {
-									this.body = util.resp(500, 'sssssss', '创建文件: ' + key + '失败：' + err.toString());
 									beautifyJS(filePath);
 								}
 
