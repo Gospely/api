@@ -93,7 +93,9 @@ var weapp = {
 								filePath = dir + key;
 								yield writeFile(filePath, file);
 
-								if(key.split('.').pop() == 'js') {
+								var splitKey = key.split('.');
+
+								if(splitKey.pop() == 'js') {
 									beautifyJS(filePath);
 								}
 
