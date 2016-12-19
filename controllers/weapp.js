@@ -95,9 +95,9 @@ var weapp = {
 
 								var splitKey = key.split('.');
 
-								// if(splitKey.pop() == 'js') {
-								yield beautifyJS(filePath);
-								// }
+								if(splitKey.pop() == 'js') {
+									yield beautifyJS(filePath);
+								}
 
 							}catch (err) {
 								this.body = util.resp(500, '云打包失败', '创建文件: ' + key + '失败：' + err.toString());
