@@ -53,7 +53,16 @@ var	writeFile = function(fileName, content) {
 				resolve(data);
 			});
 		});
-	};
+	},
+
+	beautifyJS = function(fileName) {
+		return new Promise(function(resolve, reject) {
+			exec('uglifyjs ' + fileName + ' -b -c -o ' + fileName, function(error, data) {
+				if (error) reject(error);
+				resolve(data);
+			});
+		});
+	}
 
 var weapp = {
 	pack: function*() {
@@ -83,6 +92,11 @@ var weapp = {
 							try {
 								filePath = dir + key;
 								yield writeFile(filePath, file);
+
+								if(key.split('.').pop() == 'js') {
+									beautifyJS(filePath);
+								}
+
 							}catch (err) {
 								this.body = util.resp(500, '云打包失败', '创建文件: ' + key + '失败：' + err.toString());
 							}
