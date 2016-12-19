@@ -44,7 +44,11 @@ var	writeFile = function(fileName, content) {
 
 	zip = function(dir) {
 		return new Promise(function(resolve, reject) {
-			exec('zip -r ' + dir + '.zip ' + dir, function(error, data) {
+			dir = dir.split('/');
+			var zipFolder = dir.pop();
+			dir = dir.join('/');
+			console.log(dir, zipFolder);
+			exec('cd ' + dir + ' && zip -r ' + zipFolder + '.zip ' + zipFolder, function(error, data) {
 				if (error) reject(error);
 				resolve(data);
 			});
