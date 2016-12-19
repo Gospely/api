@@ -199,6 +199,11 @@ module.exports = {
 	initDebug: function*(application) {
 
 		var host = this.hostFilter(application.creator, true);
+		shells.gitClone({
+			user: application.creator,
+			projectname: domain + "_" + application.userName,
+			gitURL: application.git,
+		});
 		console.log(hosts);
 	},
 	//根据用户的ide版本获取对应配置的主机
