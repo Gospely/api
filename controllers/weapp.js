@@ -96,7 +96,7 @@ var weapp = {
 								var splitKey = key.split('.');
 
 								// if(splitKey.pop() == 'js') {
-									beautifyJS(filePath);
+								yield beautifyJS(filePath);
 								// }
 
 							}catch (err) {
