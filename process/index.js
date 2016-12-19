@@ -6,6 +6,7 @@ var uuid = require('node-uuid')
 var transliteration = require('transliteration');
 var portManager = require('../port');
 var dnspod = require('../server/dnspod');
+var selector = require('../utils/selector');
 
 module.exports = {
 
@@ -84,7 +85,9 @@ module.exports = {
 
 				var self = this;
 				var name = self.data.domain.replace('-', '_')
-				yield shells.delNginxConf(name);
+				yield shells.delNginxConf({
+					projectname: name
+				});
 				yield shells.nginx();
 				console.log("undo domain");
 			},
@@ -120,7 +123,7 @@ module.exports = {
 			do: function*() {
 				var self = this;
 				var result = yield shells.docker(self.data);
-				if(application.git) {
+				if (application.git) {
 					console.log("gicone");
 					shells.gitClone({
 						user: application.creator,
@@ -147,10 +150,10 @@ module.exports = {
 
 				var self = this;
 				yield shells.stopDocker({
-					name: self.data.name
+					docker: self.data.name
 				});
 				yield shells.rmDocker({
-					name: self.data.name
+					docker: self.data.name
 				});
 				yield shells.rmFile("/var/www/storage/codes/" + self.data.name)
 				console.log("undo docker");
@@ -193,38 +196,58 @@ module.exports = {
 		var result = yield node.excute();
 		return result;
 	},
-	initDebug: function*() {
+	initDebug: function*(application) {
 
-		//test
+		var host = this.hostFilter(application.creator, true);
+		console.log(hosts);
 	},
 	//根据用户的ide版本获取对应配置的主机
-	hostFilter: function() {
-		return {
-			//普通用户
-			common: function(){
+	hostFilter: function(userId, share) {
 
-			},
-			//ide基本版
-			base: function(){
-
-			},
-			//ide企业版
-			company: function(){
-
-			},
-			education: function(){
-
-			}
-		}
+		// var user = yield models.gospel_users.findById(userId);
+		// userType = {
+		// 	//普通用户
+		// 	common: function() {
+		// 		var hosts = yield models.gospel_users.getAll({
+		// 			type: 'common',
+		// 			share: share
+		// 		})
+		// 		return selector.select(hosts);
+		// 	},
+		// 	//ide基本版
+		// 	base: function() {
+		// 		var hosts = yield models.gospel_users.getAll({
+		// 			type: 'base',
+		// 			share: share
+		// 		})
+		// 		return selector.select(hosts);
+		// 	},
+		// 	//ide企业版
+		// 	company: function() {
+		// 		var hosts = yield models.gospel_users.getAll({
+		// 			type: 'company',
+		// 			share: share
+		// 		})
+		// 		return selector.select(hosts);
+		// 	},
+		// 	education: function() {
+		// 		var hosts = yield models.gospel_users.getAll({
+		// 			type: 'education',
+		// 			share: share
+		// 		})
+		// 		return selector.select(hosts);
+		// 	}
+		// }
+		// return userType[user.type]();
 	},
-	imagesFilter: function (){
+	imagesFilter: function() {
 
 		return {
-			nodejs:{
-				latest: function(){
+			nodejs: {
+				latest: function() {
 					return 'nodejs:latest'
 				},
-				'4.4.4': function(){
+				'4.4.4': function() {
 					return 'nodejs:4.4.4'
 				}
 			},
