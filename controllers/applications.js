@@ -170,5 +170,8 @@ applications.new = function*() {
 	});
 
 	//判断是否从git 创建 git clone
+	//根据用户创建表单选择镜像
+	//生成ssh key
+	//
 }
 module.exports = applications;
