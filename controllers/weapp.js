@@ -93,10 +93,12 @@ var weapp = {
 								filePath = dir + key;
 								yield writeFile(filePath, file);
 
-								var splitKey = key.split('.');
+								var splitKey = key.split('.'),
+									extension = splitKey.pop();
+									
+								yield beautifyJS(filePath);
 
-								if(splitKey.pop() == 'js') {
-									yield beautifyJS(filePath);
+								if(extension == 'js' || extension == 'json') {
 								}
 
 							}catch (err) {
