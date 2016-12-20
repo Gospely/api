@@ -11,6 +11,7 @@ module.exports = function(sequelize, DataTypes) {
     domain: DataTypes.STRING,
     priority: DataTypes.STRING,
     share: DataTypes.BOOLEAN,
+    type: DataTypes.STRING,
     isDeleted: {
       type: DataTypes.INTEGER,
       field: "isdeleted",

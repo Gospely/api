@@ -198,52 +198,25 @@ module.exports = {
 	},
 	initDebug: function*(application) {
 
-		var host = this.hostFilter(application.creator, true);
-		shells.gitClone({
-			user: application.creator,
-			projectname: domain + "_" + application.userName,
-			gitURL: application.git,
-		});
-		console.log(hosts);
+		var host = yield this.hostFilter(application.creator, true);
+
+
+		// shells.gitClone({
+		// 	user: application.creator,
+		// 	projectname: domain + "_" + application.userName,
+		// 	gitURL: application.git,
+		// });
+		console.log(host);
 	},
 	//根据用户的ide版本获取对应配置的主机
-	hostFilter: function(userId, share) {
-
-		// var user = yield models.gospel_users.findById(userId);
-		// userType = {
-		// 	//普通用户
-		// 	common: function() {
-		// 		var hosts = yield models.gospel_users.getAll({
-		// 			type: 'common',
-		// 			share: share
-		// 		})
-		// 		return selector.select(hosts);
-		// 	},
-		// 	//ide基本版
-		// 	base: function() {
-		// 		var hosts = yield models.gospel_users.getAll({
-		// 			type: 'base',
-		// 			share: share
-		// 		})
-		// 		return selector.select(hosts);
-		// 	},
-		// 	//ide企业版
-		// 	company: function() {
-		// 		var hosts = yield models.gospel_users.getAll({
-		// 			type: 'company',
-		// 			share: share
-		// 		})
-		// 		return selector.select(hosts);
-		// 	},
-		// 	education: function() {
-		// 		var hosts = yield models.gospel_users.getAll({
-		// 			type: 'education',
-		// 			share: share
-		// 		})
-		// 		return selector.select(hosts);
-		// 	}
-		// }
-		// return userType[user.type]();
+	hostFilter: function*(userId, share) {
+		var user = yield models.gospel_users.findById(userId);
+		console.log("hostFilter");
+		var hosts = yield models.gospel_hosts.getAll({
+			type: user.type,
+			share: share
+		})
+		return selector.select(hosts);
 	},
 	imagesFilter: function() {
 

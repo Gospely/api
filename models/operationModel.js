@@ -1,7 +1,7 @@
 var Sequelize = require("sequelize");
 
 module.exports = function(sequelize, DataTypes) {
-  const operate = sequelize.define("gospel_hosts", {
+  const operate = sequelize.define("gospel_operations", {
     id: {
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4,

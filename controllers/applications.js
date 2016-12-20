@@ -50,9 +50,9 @@ applications.create = function*() {
 		inserted.products = products;
 		var result = yield processes.app_start(inserted);
 		if (result) {
-			this.body = render(inserted, null, null, 1, "应用创建成功");
+			this.body = render(inserted, null, null, 1, "部署创建成功");
 		} else {
-			this.body = render(inserted, null, null, -1, "应用创建失败");
+			this.body = render(inserted, null, null, -1, "部署创建失败");
 		}
 	} else {
 
@@ -164,10 +164,19 @@ applications.killPID = function*(){
 //新建应用
 applications.new = function*() {
 
+	console.log("create");
 	if ('POST' != this.method) this.throw(405, "method is not allowed");
 	var application = yield parse(this, {
 		limit: '10kb'
 	});
+
+	var result = yield processes.initDebug(application);
+
+	if (result) {
+		this.body = render(null, null, null, 1, "应用创建成功");
+	} else {
+		this.body = render(null, null, null, -1, "应用创建失败");
+	}
 
 	// if(application.git !=null && application.git != undefined){
 	// 	shell.gitClone({
