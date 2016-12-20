@@ -10,7 +10,7 @@ var selector = require('../utils/selector');
 
 module.exports = {
 
-	app_start: function*(application) {
+	app_start: function* (application) {
 
 
 		var domain = application.name;
@@ -27,7 +27,7 @@ module.exports = {
 		domain = domain.replace('_', '');
 		//二级域名解析
 		var node = processes.init({
-			do: function*() {
+			do: function* () {
 				var self = this;
 				var inserted = yield models.gospel_domains.create(self.data);
 				self.data = inserted;
@@ -43,7 +43,7 @@ module.exports = {
 				creator: application.creator,
 				sub: true
 			},
-			undo: function*() {
+			undo: function* () {
 
 				var self = this;
 				console.log(self.data.message);
@@ -67,7 +67,7 @@ module.exports = {
 		//nginx配置文件
 		application.port = yield portManager.generatePort();
 		node = processes.buildNext(node, {
-			do: function*() {
+			do: function* () {
 
 				console.log("success");
 				var self = this;
@@ -81,7 +81,7 @@ module.exports = {
 				domain: domain + "-" + application.userName,
 				port: application.port,
 			},
-			undo: function*() {
+			undo: function* () {
 
 				var self = this;
 				var name = self.data.domain.replace('-', '_')
@@ -120,7 +120,7 @@ module.exports = {
 		application.memory = docker.memory + unit;
 
 		node = processes.buildNext(node, {
-			do: function*() {
+			do: function* () {
 				var self = this;
 				var result = yield shells.docker(self.data);
 				if (application.git) {
@@ -146,7 +146,7 @@ module.exports = {
 				hostName: domain,
 				creator: application.creator
 			},
-			undo: function*() {
+			undo: function* () {
 
 				var self = this;
 				yield shells.stopDocker({
@@ -168,7 +168,7 @@ module.exports = {
 		application.domain = domain + "-" + application.userName;
 		delete application['memory'];
 		node = processes.buildNext(node, {
-			do: function*() {
+			do: function* () {
 				var self = this;
 				var inserted = yield models.gospel_applications.modify({
 					id: application.id,
@@ -187,7 +187,7 @@ module.exports = {
 				}
 			},
 			data: application,
-			undo: function*() {
+			undo: function* () {
 				var self = this;
 				console.log("undo application");
 				yield models.gospel_applications.delete(self.data.id);
@@ -196,7 +196,7 @@ module.exports = {
 		var result = yield node.excute();
 		return result;
 	},
-	initDebug: function*(application) {
+	initDebug: function* (application) {
 
 		var host = yield this.hostFilter(application.creator, true);
 
@@ -218,14 +218,14 @@ module.exports = {
 		})
 		return selector.select(hosts);
 	},
-	imagesFilter: function() {
+	imagesFilter: function () {
 
 		return {
 			nodejs: {
-				latest: function() {
+				latest: function () {
 					return 'nodejs:latest'
 				},
-				'4.4.4': function() {
+				'4.4.4': function () {
 					return 'nodejs:4.4.4'
 				}
 			},
