@@ -47,7 +47,7 @@ var	writeFile = function(fileName, content) {
 			dir = dir.split('/');
 			var zipFolder = dir.pop();
 			dir = dir.join('/');
-			exec('cp -r ' + __dirname + '../tmp/weui/style' + dir + ' && cd ' + dir + ' && zip -r ' + zipFolder + '.zip ' + zipFolder, function(error, data) {
+			exec('cp -r ' + __dirname + '/../tmp/weui/style' + dir + ' && cd ' + dir + ' && zip -r ' + zipFolder + '.zip ' + zipFolder, function(error, data) {
 				if (error) reject(error);
 				resolve(data);
 			});
