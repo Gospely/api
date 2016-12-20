@@ -198,19 +198,59 @@ module.exports = {
 	},
 	initDebug: function* (application) {
 
-		var host = yield this.hostFilter(application.creator, true);
+		//判断应用名是否为中文名，当为中文名时，获取中文拼音
+		var en_name = application.name.toLocaleLowerCase();
+		var user = yield models.gospel_users.findById(application.creator);
+		var reg = /[\u4e00-\u9FA5]+/;
+		var res = reg.test(en_name);
 
-
-		// shells.gitClone({
-		// 	user: application.creator,
-		// 	projectname: domain + "_" + application.userName,
-		// 	gitURL: application.git,
-		// });
+		if (res) {
+			var tr = transliteration.transliterate
+			en_name = tr(en_name).replace(new RegExp(" ", 'gm'), "").toLocaleLowerCase();
+		}
+		//根据用户输入获取镜像名称
+		application.image = application.languageType + ":" + application.languageVersion;
+		if(application.databaseType != null && application.databaseType != undefined && application.databaseType != '') {
+			application.image = application.image + "-" + application.databaseType;
+		}
+		//获取主机
+		var host = yield this.hostFilter(user, true);
 		console.log(host);
+		if(application.git != null && application.git != undefined && application.git != ''){
+			//用户创建应用的方式未从git创建时 git clone项目到平台
+			shells.gitClone({
+				user: application.creator,
+				projectname: en_name + "_" + application.userName,
+				gitURL: application.git,
+			});
+		}
+
+		//端口生成
+		application.port = yield portManager.generatePort();
+		application.socketPort = yield portManager.generatePort();
+		if (application.port == application.socketPort) {
+			application.port = yield portManager.generatePort();
+		}
+		application.sshPort = yield portManager.generatePort();
+		if (application.sshPort == application.socketPort) {
+
+			application.socketPort = yield portManager.generatePort();
+		}
+		var result = yield shells.initDebug({
+			host: host,
+			name: en_name + "_" + user.name,
+			sshPort: application.sshPort,
+			socketPort: application.socketPort,
+			appPort: application.port,
+			password: application.password,
+			image: application.image,
+			hostName: en_name,
+			exposePort: application.exposePort,
+			creator: application.creator
+		});
 	},
 	//根据用户的ide版本获取对应配置的主机
-	hostFilter: function*(userId, share) {
-		var user = yield models.gospel_users.findById(userId);
+	hostFilter: function*(user, share) {
 		console.log("hostFilter");
 		var hosts = yield models.gospel_hosts.getAll({
 			type: user.type,

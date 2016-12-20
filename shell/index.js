@@ -46,8 +46,30 @@ shells.docker = function*(options) {
             resolve("success");
         });
     });
-}
+},
+shells.initDebug = function*(options){
 
+    var host = options.host || 'root@gospely.com';
+    if(options.databaseType != null && options.databaseType != undefined && options.databaseType != '') {
+        options.image = options.image + "-" + options.databaseType;
+    }
+    return new Promise(function(resolve, reject) {
+        var bash = "ssh " + host + 'docker run -itd --volumes-from docker-volume-' + options.creator +
+          ' -v /var/www/storage/codes/' + options.creator + "/" + options.name +
+          ':/root/workspace  -p ' + options.port + ':3000 -p ' + options.appPort +
+          ':'+ exposePort +' -p ' +
+          options.sshPort + ':22 ' + ' -h ' + options.hostName +
+          ' -w /root/workspace --name="gospel_project_' + options.name + '"  gospel-debug' +
+          options.image + " && echo success";
+        console.log(bash);
+        exec(bash, function(err, data) {
+            console.log(err);
+            console.log(data);
+            if (err) reject(err);
+            resolve("success");
+        });
+    });
+},
 shells.gitClone = function(options) {
 
     var host = options.host || 'root@gospely.com';
