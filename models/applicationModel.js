@@ -14,6 +14,19 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.STRING,
       field: 'ssh_port'
     },
+    dbUser: {
+      type: DataTypes.STRING,
+      field: 'db_user'
+    },
+    dbPort: {
+      type: DataTypes.STRING,
+      field: 'db_port'
+    },
+    exposePort: {
+      type: DataTypes.STRING,
+      field: 'expose_port'
+    },
+    password: DataTypes.STRING,
     socketPort: {
       type: DataTypes.STRING,
       field: 'socket_port'

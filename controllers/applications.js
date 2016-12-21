@@ -8,6 +8,7 @@ var processes = require('../process');
 var dnspod = require('../server/dnspod');
 var _md5 = require('../utils/MD5');
 var shell = require('../shell');
+var validator = require('../utils/validator');
 
 var applications = {};
 //数据渲染，todo:分页参数引入，异常信息引入
@@ -165,6 +166,13 @@ applications.killPID = function*(){
 applications.create = function*() {
 
 	console.log("create");
+	//用户输入校验
+	// var reg = [{
+	// 	name: 'name',
+	// },{
+	// 	name: 'languageType',
+	// }];
+	// var messages = validator.validate(application,reg);
 	if ('POST' != this.method) this.throw(405, "method is not allowed");
 	var application = yield parse(this, {
 		limit: '10kb'
@@ -177,16 +185,6 @@ applications.create = function*() {
 	} else {
 		this.body = render(null, null, null, -1, "应用创建失败");
 	}
-
-	// if(application.git !=null && application.git != undefined){
-	// 	shell.gitClone({
-	//
-	// 	});
-	// }
-	//判断是否从git 创建 git clone
-	//根据用户创建表单选择镜像
-	//生成ssh key
-	//
 }
 applications.startTerminal = function*(){
 	console.log("test");

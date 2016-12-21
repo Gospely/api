@@ -256,14 +256,26 @@ module.exports = {
 			version: application.languageVersion,
 			dbPort: application.dbPort
 		});
-		if(application.git != null && application.git != undefined && application.git != ''){
+		if(result == 'success') {
+			if(application.git != null && application.git != undefined && application.git != ''){
 
-			//生成ssh key
-			application.sshKey = shell.sshKey({
-				host: host.ip,
-				docker: en_name + "_" + user.name,
-			});
+				//生成ssh key
+				application.sshKey = shell.sshKey({
+					host: host.ip,
+					docker: en_name + "_" + user.name,
+				});
+			}
+			application.image = application.image + ":" + application.languageVersion;
+			application.host = host.ip;
+			application.docker = 'gospel_project_' + en_name + "_" + user.name;
+			delete application['languageType'];
+			delete application['languageVersion'];
+			delete application['databaseType'];
+			console.log(application);
+			var inserted = yield models.gospel_applications.create(application);
 		}
+
+
 	},
 	//根据用户的ide版本获取对应配置的主机
 	hostFilter: function*(user, share) {
