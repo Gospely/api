@@ -50,8 +50,13 @@ shells.docker = function*(options) {
 shells.initDebug = function*(options){
 
     var host = options.host || 'gospely.com';
+    var port = ' -p ' + options.dbPort + ':3306';
     if(options.db != null && options.db != undefined && options.db != '') {
-        options.image = options.image + "-" + options.db;
+        if(options.db == 'mysql') {
+            options.image = options.image + "-mariadb";
+        }else{
+            options.image = options.image + "-" + options.db;
+        }
     }
     options.image = options.image + ":" + options.version;
     console.log(options);
@@ -60,8 +65,8 @@ shells.initDebug = function*(options){
         var bash = "ssh root@" + host + ' docker run -itd --volumes-from docker-volume-' + options.creator +
           ' -v /var/www/storage/codes/' + options.creator + "/" + options.name +
           ':/root/workspace  -p ' + options.socketPort + ':3000 -p ' + options.appPort +
-          ':'+ options.exposePort +' -p ' +
-          options.sshPort + ':22 ' + ' -h ' + options.hostName +
+          ':'+ options.exposePort +' -p ' + options.sshPort + ':22 ' + port +
+          ' -h ' + options.hostName +
           ' -w /root/workspace --name="gospel_project_' + options.name + '"  gospel-debug-' +
           options.image + " && echo success";
         console.log(bash);
@@ -442,5 +447,17 @@ shells.initFrameWork = function() {
 
         }
     }
+}
+shells.sshKey = function*(options){
+     var host = options.host || 'gospely.com';
+     return new Promise(function(resolve, reject) {
+         exec('ssh root@' + host + '  docker exec ospel_project_' + options.docker +
+             ' cat ~/.ssh/id_rsa.pub' ,
+             function(err, data) {
+                 if (err)
+                     reject(err);
+                 resolve(data);
+             });
+     });
 }
 module.exports = shells;

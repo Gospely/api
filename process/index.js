@@ -237,6 +237,10 @@ module.exports = {
 
 			application.socketPort = yield portManager.generatePort(host.ip);
 		}
+		application.dbPort = yield portManager.generatePort(host.ip);
+		if(application.dbPort == application.socketPort || application.dbPort == application.sshPort || application.dbPort == application.port){
+			application.dbPort = yield portManager.generatePort(host.ip);
+		}
 		var result = yield shells.initDebug({
 			host: host.ip,
 			name: en_name + "_" + user.name,
@@ -249,8 +253,17 @@ module.exports = {
 			exposePort: application.exposePort,
 			creator: application.creator,
 			db: application.databaseType,
-			version: application.languageVersion
+			version: application.languageVersion,
+			dbPort: application.dbPort
 		});
+		if(application.git != null && application.git != undefined && application.git != ''){
+
+			//生成ssh key
+			application.sshKey = shell.sshKey({
+				host: host.ip,
+				docker: en_name + "_" + user.name,
+			});
+		}
 	},
 	//根据用户的ide版本获取对应配置的主机
 	hostFilter: function*(user, share) {

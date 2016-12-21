@@ -2,7 +2,6 @@
 exports = module.exports = {
 
 	select:function(set){
-		console.log(set);
         function genNumber(n, m) {
           var w = m - n;
           return Math.round(Math.random() * w + n)
@@ -12,7 +11,6 @@ exports = module.exports = {
             total = total + parseInt(item.priority);
         });
         var result = genNumber(0,total);
-		console.log(result);
         total = 0;
         for(var i = 0; i<set.length; i++){
             total = total + parseInt(set[i].priority);
