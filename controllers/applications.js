@@ -23,14 +23,11 @@ function render(data, all, cur, code, message) {
 	}
 }
 
-applications.deploy = function*() {
+applications.deploy = function*(application,ctx) {
 
+	console.log("deploy");
+	var app = yield models.gospel_applications.findById(application.id);
 
-	if ('POST' != this.method) this.throw(405, "method is not allowed");
-	var application = yield parse(this, {
-		limit: '10kb'
-	});
-	var image = yield models.gospel_images.findById(application.image);
 	console.log(application);
 	if (application.free) {
 
@@ -42,22 +39,19 @@ applications.deploy = function*() {
 		delete application['unitPrice'];
 		delete application['free'];
 
-		var inserted = yield models.gospel_applications.create(application);
-		yield models.gospel_uistates.create({
-			application: inserted.id,
-			creator: application.creator,
-			configs: image.defaultConfig
+		var inserted = yield models.gospel_applications.modify({
+			id: application.id,
+			status: 1
 		});
 		inserted.products = products;
-		var result = yield processes.app_start(inserted);
+		var result = yield processes.app_start(app);
 		if (result) {
-			this.body = render(inserted, null, null, 1, "部署创建成功");
+			ctx.body = render(inserted, null, null, 1, "部署创建成功");
 		} else {
-			this.body = render(inserted, null, null, -1, "部署创建失败");
+			ctx.body = render(inserted, null, null, -1, "部署创建失败");
 		}
 	} else {
 
-		application.id = uuid.v4();
 		var order = yield models.gospel_orders.create({
 			products: application.products,
 			orderNo: _md5.md5Sign("gospel", uuid.v4()),
@@ -68,26 +62,15 @@ applications.deploy = function*() {
 			timeSize: application.size,
 			timeUnit: application.unit,
 			unitPrice: application.unitPrice,
-			creator: application.creator,
+			creator: app.creator,
 			application: application.id
 		});
-		application.orderNo = order.id;
-		application.payStatus = -1;
-
-
-		delete application['products'];
-		delete application['price'];
-		delete application['size'];
-		delete application['unit'];
-		delete application['unitPrice'];
-		delete application['free'];
-		var inserted = yield models.gospel_applications.create(application);
-		yield models.gospel_uistates.create({
-			application: inserted.id,
-			creator: application.creator,
-			configs: image.defaultConfig
+		var inserted = yield models.gospel_applications.modify({
+			id: application.id,
+			orderNo: order.id,
+			payStatus: -1,
 		});
-		this.body = render(inserted, null, null, 1, "创建成功, 你选择的是收费配置, 请尽快去支付");
+		ctx.body = render(inserted, null, null, 1, "创建成功, 你选择的是收费配置, 请尽快去支付");
 	}
 }
 
@@ -177,13 +160,17 @@ applications.create = function*() {
 	var application = yield parse(this, {
 		limit: '10kb'
 	});
+	if(application.id !=null && application.id != undefined && application.id != ''){
+		console.log("to deploy");
+		yield applications.deploy(application,this);
+	}else {
+		var result = yield processes.initDebug(application);
 
-	var result = yield processes.initDebug(application);
-
-	if (result) {
-		this.body = render(null, null, null, 1, "应用创建成功");
-	} else {
-		this.body = render(null, null, null, -1, "应用创建失败");
+		if (result) {
+			this.body = render(null, null, null, 1, "应用创建成功");
+		} else {
+			this.body = render(null, null, null, -1, "应用创建失败");
+		}
 	}
 }
 applications.startTerminal = function*(){
