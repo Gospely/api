@@ -196,6 +196,7 @@ module.exports = {
 		var result = yield node.excute();
 		return result;
 	},
+	//构建
 	initDebug: function* (application) {
 
 		//判断应用名是否为中文名，当为中文名时，获取中文拼音
@@ -209,35 +210,35 @@ module.exports = {
 			en_name = tr(en_name).replace(new RegExp(" ", 'gm'), "").toLocaleLowerCase();
 		}
 		//根据用户输入获取镜像名称
-		application.image = application.languageType + ":" + application.languageVersion;
-		if(application.databaseType != null && application.databaseType != undefined && application.databaseType != '') {
-			application.image = application.image + "-" + application.databaseType;
-		}
+		application.image = application.languageType;
 		//获取主机
 		var host = yield this.hostFilter(user, true);
+		host = host.dataValues;
 		console.log(host);
 		if(application.git != null && application.git != undefined && application.git != ''){
 			//用户创建应用的方式未从git创建时 git clone项目到平台
 			shells.gitClone({
 				user: application.creator,
-				projectname: en_name + "_" + application.userName,
+				projectname: en_name + "_" + user.name,
 				gitURL: application.git,
 			});
 		}
-
-		//端口生成
-		application.port = yield portManager.generatePort();
-		application.socketPort = yield portManager.generatePort();
-		if (application.port == application.socketPort) {
-			application.port = yield portManager.generatePort();
+		if(application.framework != null && application.framework != undefined && application.framework != ''){
+			//初始化应用框架
 		}
-		application.sshPort = yield portManager.generatePort();
+		//端口生成
+		application.port = yield portManager.generatePort(host.ip);
+		application.socketPort = yield portManager.generatePort(host.ip);
+		if (application.port == application.socketPort) {
+			application.port = yield portManager.generatePort(host.ip);
+		}
+		application.sshPort = yield portManager.generatePort(host.ip);
 		if (application.sshPort == application.socketPort) {
 
-			application.socketPort = yield portManager.generatePort();
+			application.socketPort = yield portManager.generatePort(host.ip);
 		}
 		var result = yield shells.initDebug({
-			host: host,
+			host: host.ip,
 			name: en_name + "_" + user.name,
 			sshPort: application.sshPort,
 			socketPort: application.socketPort,
@@ -246,7 +247,9 @@ module.exports = {
 			image: application.image,
 			hostName: en_name,
 			exposePort: application.exposePort,
-			creator: application.creator
+			creator: application.creator,
+			db: application.databaseType,
+			version: application.languageVersion
 		});
 	},
 	//根据用户的ide版本获取对应配置的主机
@@ -258,20 +261,4 @@ module.exports = {
 		})
 		return selector.select(hosts);
 	},
-	imagesFilter: function () {
-
-		return {
-			nodejs: {
-				latest: function () {
-					return 'nodejs:latest'
-				},
-				'4.4.4': function () {
-					return 'nodejs:4.4.4'
-				}
-			},
-			php: {
-				latest
-			}
-		}
-	}
 }

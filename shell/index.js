@@ -5,7 +5,7 @@ var shells = {};
 
 shells.domain = function*(options) {
 
-    var host = options.host || 'root@gospely.com';
+    var host = options.host || 'gospely.com';
     var file = __dirname + "/domain.txt";
     var cmd = fs.readFileSync(file, "utf8");
     cmd = cmd.replace('user', options.user).replace('port', options.port);
@@ -17,7 +17,7 @@ shells.domain = function*(options) {
     return new Promise(function(resolve, reject) {
         options.user = '';
         cmd = cmd.trim();
-        exec("ssh " + host + " " + cmd, function(err, data) {
+        exec("ssh root@" + host + " " + cmd, function(err, data) {
             if (err) reject(err);
             resolve("success");
         });
@@ -25,10 +25,10 @@ shells.domain = function*(options) {
 }
 shells.docker = function*(options) {
 
-    var host = options.host || 'root@gospely.com';
+    var host = options.host || 'gospely.com';
     console.log(options);
     return new Promise(function(resolve, reject) {
-        var bash = "ssh " + host +
+        var bash = "ssh root@" + host +
             " /root/gospely/allocate/start.js -n " + options.name +
             " -m " +
             options.memory + " -c " + options.creator + " -f " +
@@ -49,17 +49,20 @@ shells.docker = function*(options) {
 },
 shells.initDebug = function*(options){
 
-    var host = options.host || 'root@gospely.com';
-    if(options.databaseType != null && options.databaseType != undefined && options.databaseType != '') {
-        options.image = options.image + "-" + options.databaseType;
+    var host = options.host || 'gospely.com';
+    if(options.db != null && options.db != undefined && options.db != '') {
+        options.image = options.image + "-" + options.db;
     }
+    options.image = options.image + ":" + options.version;
+    console.log(options);
+
     return new Promise(function(resolve, reject) {
-        var bash = "ssh " + host + 'docker run -itd --volumes-from docker-volume-' + options.creator +
+        var bash = "ssh root@" + host + ' docker run -itd --volumes-from docker-volume-' + options.creator +
           ' -v /var/www/storage/codes/' + options.creator + "/" + options.name +
-          ':/root/workspace  -p ' + options.port + ':3000 -p ' + options.appPort +
-          ':'+ exposePort +' -p ' +
+          ':/root/workspace  -p ' + options.socketPort + ':3000 -p ' + options.appPort +
+          ':'+ options.exposePort +' -p ' +
           options.sshPort + ':22 ' + ' -h ' + options.hostName +
-          ' -w /root/workspace --name="gospel_project_' + options.name + '"  gospel-debug' +
+          ' -w /root/workspace --name="gospel_project_' + options.name + '"  gospel-debug-' +
           options.image + " && echo success";
         console.log(bash);
         exec(bash, function(err, data) {
@@ -72,9 +75,9 @@ shells.initDebug = function*(options){
 },
 shells.gitClone = function(options) {
 
-    var host = options.host || 'root@gospely.com';
+    var host = options.host || 'gospely.com';
     console.log(options);
-    var bash_clone = "ssh " + host + " git clone " + options.gitURL +
+    var bash_clone = "ssh root@" + host + " git clone " + options.gitURL +
         " /var/www/storage/codes/" + options.user + "/" + options.projectname;
     //执行删除命令
     console.log(bash_clone);
@@ -86,8 +89,8 @@ shells.gitClone = function(options) {
 
 shells.nginx = function*() {
 
-    var host = options.host || 'root@gospely.com';
-    exec("ssh " + host +
+    var host = options.host || 'gospely.com';
+    exec("ssh root@" + host +
         " service nginx restart && echo 'success'",
         function(err, data) {
             console.log(data);
@@ -97,9 +100,9 @@ shells.nginx = function*() {
 }
 shells.delNginxConf = function*(options) {
 
-    var host = options.host || 'root@gospely.com';
+    var host = options.host || 'gospely.com';
     return new Promise(function(resolve, reject) {
-        exec("ssh " + host + " rm /etc/nginx/conf.d/" +
+        exec("ssh root@" + host + " rm /etc/nginx/conf.d/" +
             options.projectname +
             ".gospely.com.conf",
             function(err, data) {
@@ -114,9 +117,9 @@ shells.delNginxConf = function*(options) {
 
 shells.rmDocker = function*(options) {
 
-    var host = options.host || 'root@gospely.com';
+    var host = options.host || 'gospely.com';
     return new Promise(function(resolve, reject) {
-        exec("ssh " + host +
+        exec("ssh root@" + host +
             " docker rm -f  gospel_project_" +
             options.docker,
             function(err, data) {
@@ -129,9 +132,9 @@ shells.rmDocker = function*(options) {
 }
 shells.stopDocker = function*(options) {
 
-    var host = options.host || 'root@gospely.com';
+    var host = options.host || 'gospely.com';
     return new Promise(function(resolve, reject) {
-        exec("ssh " + host +
+        exec("ssh root@" + host +
             " docker stop  gospel_project_" +
             options.docker,
             function(err, data) {
@@ -144,9 +147,9 @@ shells.stopDocker = function*(options) {
 }
 shells.rmFile = function*(options) {
 
-    var host = options.host || 'root@gospely.com';
+    var host = options.host || 'gospely.com';
     return new Promise(function(resolve, reject) {
-        exec("ssh " + host + " rm -rf " + options.fileName,
+        exec("ssh root@" + host + " rm -rf " + options.fileName,
             function(err,
                 data) {
 
@@ -159,7 +162,7 @@ shells.rmFile = function*(options) {
 }
 shells.buidDB = function*(options) {
 
-    var host = options.host || 'root@gospely.com';
+    var host = options.host || 'gospely.com';
     return new Promise(function(resolve, reject) {
         var bash = '';
         console.log(options);
@@ -187,7 +190,7 @@ shells.buidDB = function*(options) {
                 ' -d postgres'
         }
         console.log(bash);
-        exec("ssh " + host + " " + bash + " && echo success",
+        exec("ssh root@" + host + " " + bash + " && echo success",
             function(err, data) {
                 console.log(data);
                 console.log(err);
@@ -198,10 +201,10 @@ shells.buidDB = function*(options) {
 }
 shells.exposePort = function*(options) {
 
-    var host = options.host || 'root@gospely.com';
+    var host = options.host || 'gospely.com';
     return new Promise(function(resolve, reject) {
         exec(
-            "ssh " + host +
+            "ssh root@" + host +
             " sh /root/gospely/delploy/shell/docker_expose.sh " +
             options.docker + " add " + options.dockerPort + ":" +
             options.port,
@@ -220,9 +223,9 @@ shells.exposePort = function*(options) {
 //stop db
 shells.stopDB = function*(options) {
 
-    var host = options.host || 'root@gospely.com';
+    var host = options.host || 'gospely.com';
     return new Promise(function(resolve, reject) {
-        exec("ssh " + host + " docker stop " + options.docker +
+        exec("ssh root@" + host + " docker stop " + options.docker +
             " && echo success",
             function(err,
                 data) {
@@ -238,9 +241,9 @@ shells.stopDB = function*(options) {
 //restart
 shells.restartDB = function*(options) {
 
-    var host = options.host || 'root@gospely.com';
+    var host = options.host || 'gospely.com';
     return new Promise(function(resolve, reject) {
-        exec("ssh " + host + " docker restart " + options
+        exec("ssh root@" + host + " docker restart " + options
             .docker +
             " && echo success",
             function(err,
@@ -257,9 +260,9 @@ shells.restartDB = function*(options) {
 //start
 shells.startDB = function*(options) {
 
-    var host = options.host || 'root@gospely.com';
+    var host = options.host || 'gospely.com';
     return new Promise(function(resolve, reject) {
-        exec("ssh " + host + " docker stop " + options.docker +
+        exec("ssh root@" + host + " docker stop " + options.docker +
             " && echo success",
             function(err,
                 data) {
@@ -275,10 +278,10 @@ shells.startDB = function*(options) {
 //unstall db
 shells.rmDB = function*(options) {
 
-    var host = options.host || 'root@gospely.com';
+    var host = options.host || 'gospely.com';
     yield this.stopDB(options);
     return new Promise(function(resolve, reject) {
-        exec("ssh " + host + " docker rm -f " + options.docker +
+        exec("ssh root@" + host + " docker rm -f " + options.docker +
             " && echo success",
             function(err,
                 data) {
@@ -293,9 +296,9 @@ shells.rmDB = function*(options) {
 //数据卷扩容
 shells.extendsVolume = function*(options) {
 
-    var host = options.host || 'root@gospely.com';
+    var host = options.host || 'gospely.com';
     return new Promise(function(resolve, reject) {
-        exec("ssh " + host +
+        exec("ssh root@" + host +
             "  /root/gospely/deploy/extend/extend.js -c " +
             options.docker +
             " -s " + options.size + " && echo success",
@@ -313,9 +316,9 @@ shells.extendsVolume = function*(options) {
 //创建数据卷容器
 shells.createVolume = function*(options) {
 
-        var host = options.host || 'root@gospely.com';
+        var host = options.host || 'gospely.com';
         return new Promise(function(resolve, reject) {
-            exec("ssh " + host +
+            exec("ssh root@" + host +
                 " docker run -itd -v /var/www/storage/codes" +
                 options.user +
                 " --name=docker-volume-" + options.user +
@@ -332,9 +335,9 @@ shells.createVolume = function*(options) {
     //读取数据卷大小
 shells.volumeInfo = function*(options) {
 
-    var host = options.host || 'root@gospely.com';
+    var host = options.host || 'gospely.com';
     return new Promise(function(resolve, reject) {
-        exec("ssh " + host + " docker exec " + options.docker +
+        exec("ssh root@" + host + " docker exec " + options.docker +
             " df -H",
             function(err, data) {
                 if (err)
@@ -347,9 +350,9 @@ shells.volumeInfo = function*(options) {
 //启动terminal
 shells.startTerminal = function(options) {
 
-    var host = options.host || 'root@gospely.com';
+    var host = options.host || 'gospely.com';
     console.log("startTerminal");
-    exec("ssh " + host + " sh /root/startTerminal.sh " + options.docker,
+    exec("ssh root@" + host + " sh /root/startTerminal.sh " + options.docker,
         function(err, data) {
             console.log(err);
             console.log(data);
@@ -359,7 +362,7 @@ shells.startTerminal = function(options) {
 //解压文件
 shells.decomFile = function(options) {
 
-    var host = options.host || 'root@gospely.com';
+    var host = options.host || 'gospely.com';
     console.log("=======decomDir=======");
     var baseDir = '/var/www/sotrage/code/';
     var comDir = options.comDir;
@@ -368,7 +371,7 @@ shells.decomFile = function(options) {
         zip: function() {
             console.log("zip");
             return new Promise(function(resolve, reject) {
-                exec('ssh" + host  + " unzip ' + comDir +
+                exec('ssh root@" + host  + " unzip ' + comDir +
                     ' ' + decomDir,
                     function(err, data) {
                         if (err)
@@ -381,7 +384,7 @@ shells.decomFile = function(options) {
             console.log("tar")
             return new Promise(function(resolve, reject) {
                 console.log("promise ,tar");
-                exec('ssh ' + host + ' tar -zxvf ' + comDir +
+                exec('ssh root@' + host + ' tar -zxvf ' + comDir +
                     ' ' + decomDir,
                     function(err, data) {
                         if (err)
@@ -393,7 +396,7 @@ shells.decomFile = function(options) {
         gz: function() {
             console.log("gz")
             return new Promise(function(resolve, reject) {
-                exec('ssh ' + host + ' gzip -d ' + comDir +
+                exec('ssh root@' + host + ' gzip -d ' + comDir +
                     ' ' + decomDir,
                     function(err, data) {
                         if (err)
@@ -405,7 +408,7 @@ shells.decomFile = function(options) {
         rar: function() {
             console.log("rar")
             return new Promise(function(resolve, reject) {
-                exec('ssh ' + host + ' rar x ' + comDir +
+                exec('ssh root@' + host + ' rar x ' + comDir +
                     ' ' + decomDir,
                     function(err, data) {
                         if (err)
@@ -418,9 +421,9 @@ shells.decomFile = function(options) {
 }
 shells.killPID = function*(options) {
 
-    var host = options.host || 'root@gospely.com';
+    var host = options.host || 'gospely.com';
     return new Promise(function(resolve, reject) {
-        exec('ssh ' + host + '  docker exec ' + options.docker +
+        exec('ssh root@' + host + '  docker exec ' + options.docker +
             ' kill -s 9 ' + options.pid,
             function(err, data) {
                 if (err)
@@ -428,5 +431,16 @@ shells.killPID = function*(options) {
                 resolve(data);
             });
     });
+}
+shells.initFrameWork = function() {
+
+    return {
+        vuef7: function(){
+
+        },
+        yo: function() {
+
+        }
+    }
 }
 module.exports = shells;

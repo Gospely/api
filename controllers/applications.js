@@ -22,7 +22,7 @@ function render(data, all, cur, code, message) {
 	}
 }
 
-applications.create = function*() {
+applications.deploy = function*() {
 
 
 	if ('POST' != this.method) this.throw(405, "method is not allowed");
@@ -162,7 +162,7 @@ applications.killPID = function*(){
 	this.body = render(null, null, null, 1, 'success');
 }
 //新建应用
-applications.new = function*() {
+applications.create = function*() {
 
 	console.log("create");
 	if ('POST' != this.method) this.throw(405, "method is not allowed");

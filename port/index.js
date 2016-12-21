@@ -7,14 +7,17 @@ function genNumber(n, m) {
 }
 
 
-port.generatePort = function*() {
+port.generatePort = function*(host) {
 
   var port = 0;
   var loop = true;
   while (loop) {
 
     port = genNumber(1024, 49151);
-    var data = yield checkBind(port);
+    var data = yield checkBind({
+        port: port,
+        host: host,
+    });
     console.log(data);
     loop = data.isBind;
 
@@ -22,18 +25,21 @@ port.generatePort = function*() {
   return port;
 }
 
-function* checkBind(port) {
-  return new Promise(function(resolve, reject) {
-    exec("ssh root@gospely.com lsof -i:" + port, function(err, data) {
+function* checkBind(options) {
 
-      if (err) {
-        console.log(err);
-        resolve("{isBind: false}")
-      } else {
-        resolve("{isBind: true}")
-      }
+    var host = options.host || 'gospely.com'
+    return new Promise(function(resolve, reject) {
 
-    });
+        exec("ssh root@"+ host + "  lsof -i:" + port, function(err, data) {
+
+          if (err) {
+            console.log(err);
+            resolve("{isBind: false}")
+          } else {
+            resolve("{isBind: true}")
+          }
+
+        });
 
   });
 }
