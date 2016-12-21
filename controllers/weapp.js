@@ -54,9 +54,9 @@ var	writeFile = function(fileName, content) {
 		});
 	},
 
-	beautifyJS = function(fileName) {
+	beautifyJS = function(fileName, type) {
 		return new Promise(function(resolve, reject) {
-			exec('js-beautify ' + fileName + ' -r', function(error, data) {
+			exec('js-beautify --type ' + type +' ' + fileName + ' -r', function(error, data) {
 				if (error) reject(error);
 				resolve(data);
 			});
@@ -94,12 +94,22 @@ var weapp = {
 
 								var splitKey = key.split('.'),
 									extension = splitKey.pop();
-									
-								yield beautifyJS(filePath);
+
+								var type = '';
 
 								if(extension == 'js' || extension == 'json') {
+									type = 'js';
 								}
 
+								if(extension == 'wxss') {
+									type = 'css';	
+								}
+
+								if(extension == 'wxml') {
+									type = 'html';
+								}
+
+								yield beautifyJS(filePath, type);
 							}catch (err) {
 								this.body = util.resp(500, '云打包失败', '创建文件: ' + key + '失败：' + err.toString());
 							}
