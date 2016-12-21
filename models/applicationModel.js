@@ -42,7 +42,8 @@ module.exports = function(sequelize, DataTypes) {
     creator: DataTypes.STRING,
     payStatus: {
       type: DataTypes.INTEGER,
-      field: "pay_status"
+      field: "pay_status",
+      defaultValue: 0,
     },
     orderNo: {
       type: DataTypes.INTEGER,
