@@ -65,7 +65,7 @@ shells.initDebug = function*(options){
         var bash = "ssh root@" + host + ' docker run -itd --volumes-from docker-volume-' + options.creator +
           ' -v /var/www/storage/codes/' + options.creator + "/" + options.name +
           ':/root/workspace  -p ' + options.socketPort + ':3000 -p ' + options.appPort +
-          ':'+ options.exposePort +' -p ' + options.sshPort + ':22 ' + port +
+          ':'+ options.exposePort +' -p ' + options.sshPort + ':22 ' + port
           ' -h ' + options.hostName +
           ' -w /root/workspace --name="gospel_project_' + options.name + '"  gospel-debug-' +
           options.image + " && echo success";
