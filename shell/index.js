@@ -28,16 +28,12 @@ shells.docker = function*(options) {
     var host = options.host || 'gospely.com';
     console.log(options);
     return new Promise(function(resolve, reject) {
-        var bash = "ssh root@" + host +
-            " /root/gospely/allocate/start.js -n " + options.name +
-            " -m " +
-            options.memory + " -c " + options.creator + " -f " +
-            options.file +
-            " -p " + options.socketPort +
-            " -s " + options.sshPort + " -a " + options.appPort +
-            " -w " +
-            options.password + " -o " + options.hostName +
-            " && echo 'sucess'";
+        var bash = "ssh root@" + host + ' docker run -itd --volumes-from docker-volume-' + options.creator +
+        ' -p ' + config + options.socketPort + ':3000 -p ' + options.appPort +
+        ':'+ options.exposePort +' -p ' + options.sshPort + ':22 ' + port +
+        ' -h ' + options.hostName +
+        ' -w /root/workspace --name="gospel_deploy_' + options.name + '"  gospel-' +
+        options.image + " && echo success";
         console.log(bash);
         exec(bash, function(err, data) {
             console.log(err);
@@ -51,6 +47,7 @@ shells.initDebug = function*(options){
 
     var host = options.host || 'gospely.com';
     var port = ' -p ' + options.dbPort + ':3306';
+    var config = ' -e "DBUSER=' + options.dbUser + '" -e "DBPASS=' + options.password + '" -e "USERID=' + options.creator + '" ';
     if(options.db != null && options.db != undefined && options.db != '') {
         if(options.db == 'mysql') {
             options.image = options.image + "-mariadb";
@@ -64,8 +61,8 @@ shells.initDebug = function*(options){
     return new Promise(function(resolve, reject) {
         var bash = "ssh root@" + host + ' docker run -itd --volumes-from docker-volume-' + options.creator +
           ' -v /var/www/storage/codes/' + options.creator + "/" + options.name +
-          ':/root/workspace  -p ' + options.socketPort + ':3000 -p ' + options.appPort +
-          ':'+ options.exposePort +' -p ' + options.sshPort + ':22 ' + port
+          ':/root/workspace  -p ' + config + options.socketPort + ':3000 -p ' + options.appPort +
+          ':'+ options.exposePort +' -p ' + options.sshPort + ':22 ' + port +
           ' -h ' + options.hostName +
           ' -w /root/workspace --name="gospel_project_' + options.name + '"  gospel-debug-' +
           options.image + " && echo success";
@@ -451,7 +448,7 @@ shells.initFrameWork = function() {
 shells.sshKey = function*(options){
      var host = options.host || 'gospely.com';
      return new Promise(function(resolve, reject) {
-         exec('ssh root@' + host + '  docker exec ospel_project_' + options.docker +
+         exec('ssh root@' + host + '  docker exec ' + options.docker +
              ' cat ~/.ssh/id_rsa.pub' ,
              function(err, data) {
                  if (err)
@@ -459,5 +456,33 @@ shells.sshKey = function*(options){
                  resolve(data);
              });
      });
+}
+//提交镜像
+shells.commit = function*(options){
+    var host = options.host || 'gospely.com';
+    return new Promise(function(resolve, reject) {
+        exec('ssh root@' + host + '  docker commit -a "'+ options.user +'@gospely" -m "deploy" ' + options.docker + ' ' + options.name,
+            function(err, data) {
+                if (err)
+                    reject(err);
+                resolve(data);
+            });
+    });
+}
+//将镜像推动到阿里云仓库
+shells.dockerPush = function*(options){
+
+    return new Promise(function(resolve, reject) {
+        exec('ssh root@' + host + ' docker login --username=937257166@qq.com registry.cn-hangzhou.aliyuncs.com -paixrslwh1993'+
+            ' && tag '+ options.imageId + ' registry.cn-hangzhou.aliyuncs.com/gospel/' + options.name + ':latest' +
+            ' &&  docker push registry.cn-hangzhou.aliyuncs.com/gospel/'+options.name+':latest'+
+            ' && docker rm ' + options.imageId +
+            ' && echo success',
+            function(err, data) {
+                if (err)
+                    reject(err);
+                resolve(data);
+            });
+    });
 }
 module.exports = shells;

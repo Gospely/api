@@ -25,8 +25,48 @@ module.exports = {
 		}
 		application.userName = application.userName.toLocaleLowerCase();
 		domain = domain.replace('_', '');
-		//二级域名解析
+		//commit 镜像
 		var node = processes.init({
+			do: function* () {
+				var self = this;
+				var result = yield shell.commit(self.data);
+
+				console.log(result);
+				var imageId = result.split(":")[1];
+				var result = yield shell.dockerPush({
+					host: '120.76.235.234',
+					imageId: imageId,
+					name: domain + "-" + application.userName,
+				});
+			},
+			data: {
+				name: domain + "-" + application.userName,
+				user: application.userName,
+				host: '120.76.235.234',
+				docker: application.docker,
+			},
+			undo: function* () {
+
+				var self = this;
+				console.log(self.data.message);
+				var options = {
+					method: 'recordRemove',
+					opp: 'recordRemove',
+					param: {
+						domain: "gospely.com",
+						record_id: self.data.message.record
+					}
+				}
+
+				var result = yield dnspod.domainOperate(options);
+				if (result.status.code == '1') {
+					yield models.gospel_domains.delete(self.data.message.id);
+				}
+				console.log("undo first");
+			},
+		});
+
+		node.buildNext({
 			do: function* () {
 				var self = this;
 				var inserted = yield models.gospel_domains.create(self.data);
@@ -38,7 +78,7 @@ module.exports = {
 			data: {
 				subDomain: domain + "-" + application.userName,
 				domain: config.dnspod.baseDomain,
-				ip: '120.76.235.234',
+				host: '120.76.235.234',
 				application: application.id,
 				creator: application.creator,
 				sub: true
@@ -267,6 +307,7 @@ module.exports = {
 			}
 			application.image = application.image + ":" + application.languageVersion;
 			application.host = host.ip;
+			application.status = -1;
 			application.docker = 'gospel_project_' + en_name + "_" + user.name;
 			delete application['languageType'];
 			delete application['languageVersion'];
