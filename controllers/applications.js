@@ -39,13 +39,14 @@ applications.deploy = function*(application,ctx) {
 		delete application['unitPrice'];
 		delete application['free'];
 
-		var inserted = yield models.gospel_applications.modify({
-			id: application.id,
-			status: 1
-		});
+
 		inserted.products = products;
 		var result = yield processes.app_start(app);
 		if (result) {
+			var inserted = yield models.gospel_applications.modify({
+				id: application.id,
+				status: 1
+			});
 			ctx.body = render(inserted, null, null, 1, "部署创建成功");
 		} else {
 			ctx.body = render(inserted, null, null, -1, "部署创建失败");

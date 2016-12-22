@@ -61,7 +61,7 @@ shells.initDebug = function*(options){
     return new Promise(function(resolve, reject) {
         var bash = "ssh root@" + host + ' docker run -itd --volumes-from docker-volume-' + options.creator +
           ' -v /var/www/storage/codes/' + options.creator + "/" + options.name +
-          ':/root/workspace  -p ' + config + options.socketPort + ':3000 -p ' + options.appPort +
+          ':/root/workspace  -p ' + options.socketPort + ':3000 -p ' + options.appPort  + config +
           ':'+ options.exposePort +' -p ' + options.sshPort + ':22 ' + port +
           ' -h ' + options.hostName +
           ' -w /root/workspace --name="gospel_project_' + options.name + '"  gospel-debug-' +
@@ -474,7 +474,7 @@ shells.dockerPush = function*(options){
 
     return new Promise(function(resolve, reject) {
         exec('ssh root@' + host + ' docker login --username=937257166@qq.com registry.cn-hangzhou.aliyuncs.com -paixrslwh1993'+
-            ' && tag '+ options.imageId + ' registry.cn-hangzhou.aliyuncs.com/gospel/' + options.name + ':latest' +
+            ' && docker tag '+ options.imageId + ' registry.cn-hangzhou.aliyuncs.com/gospel/' + options.name + ':latest' +
             ' &&  docker push registry.cn-hangzhou.aliyuncs.com/gospel/'+options.name+':latest'+
             ' && docker rm ' + options.imageId +
             ' && echo success',
