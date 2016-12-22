@@ -26,7 +26,7 @@ var
 
 		for (var i = config.escape.length - 1; i >= 0; i--) {
 
-			
+
 			var escape = config.escape[i];
 			if (escape == file) {
 				isEscape = true;
@@ -576,14 +576,14 @@ var fileSystem = {
 
 	upload : function*(){
 		//this.body = this.req.body;
-		console.log("======req=====",this.req);
-		console.log("======this.req.files=====:",this.req.files);
-		console.log("======this.req.body=====:",this.req.body);
-
-        this.res.header('Access-Control-Allow-Origin', '*');
-        this.res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-        this.res.header('Access-Control-Allow-Headers', 'Content-Type');
-        this.res.header('Access-Control-Allow-Credentials','true');
+		// console.log("======req=====",this.req);
+		// console.log("======this.req.files=====:",this.req.files);
+		// console.log("======this.req.body=====:",this.req.body);
+		//
+        // this.res.header('Access-Control-Allow-Origin', '*');
+        // this.res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+        // this.res.header('Access-Control-Allow-Headers', 'Content-Type');
+        // this.res.header('Access-Control-Allow-Credentials','true');
 
 
 		var fileName = this.req.files.fileUp.name;
