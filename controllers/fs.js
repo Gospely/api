@@ -580,10 +580,10 @@ var fileSystem = {
 		console.log("======this.req.files=====:",this.req.files);
 		console.log("======this.req.body=====:",this.req.body);
 
-        this.res.header('Access-Control-Allow-Origin', '*');
-        this.res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-        this.res.header('Access-Control-Allow-Headers', 'Content-Type');
-        this.res.header('Access-Control-Allow-Credentials','true');
+        // this.res.header('Access-Control-Allow-Origin', '*');
+        // this.res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+        // this.res.header('Access-Control-Allow-Headers', 'Content-Type');
+        // this.res.header('Access-Control-Allow-Credentials','true');
 
 		var fileName = this.req.files.fileUp.name;
 		var originalname = this.req.files.fileUp.originalname;
@@ -611,7 +611,7 @@ var fileSystem = {
 				//解压文件
 				needCompress=true;
 			}
-		})
+		});
 		if(needCompress){
 			yield shells.decomFile(options)[extension]();
 		}
