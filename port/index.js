@@ -30,7 +30,7 @@ function* checkBind(options) {
     var host = options.host || 'gospely.com'
     return new Promise(function(resolve, reject) {
 
-        exec("ssh root@"+ host + "  lsof -i:" + port, function(err, data) {
+        exec("ssh root@"+ host + "  lsof -i:" + options.port, function(err, data) {
 
           if (err) {
             console.log(err);

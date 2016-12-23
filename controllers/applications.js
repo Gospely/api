@@ -22,12 +22,9 @@ function render(data, all, cur, code, message) {
 		fields: data
 	}
 }
+applications.fast_deploy = function*(application,ctx){
 
-applications.deploy = function*(application,ctx) {
-
-	console.log("deploy");
-	var app = yield models.gospel_applications.findById(application.id);
-
+	var image = yield models.gospel_images.findById(application.image);
 	console.log(application);
 	if (application.free) {
 
@@ -39,13 +36,68 @@ applications.deploy = function*(application,ctx) {
 		delete application['unitPrice'];
 		delete application['free'];
 
-
+		var inserted = yield models.gospel_applications.create(application);
+		yield models.gospel_uistates.create({
+			application: inserted.id,
+			creator: application.creator,
+			configs: image.defaultConfig
+		});
 		inserted.products = products;
+		var result = yield processes.fast_deploy(inserted);
+		if (result) {
+			ctx.body = render(inserted, null, null, 1, "应用创建成功");
+		} else {
+			ctx.body = render(inserted, null, null, -1, "应用创建失败");
+		}
+	} else {
+
+		application.id = uuid.v4();
+		var order = yield models.gospel_orders.create({
+			products: application.products,
+			orderNo: _md5.md5Sign("gospel", uuid.v4()),
+			name: "付费Docker",
+			price: application.price,
+			status: 1,
+			type: 'docker',
+			timeSize: application.size,
+			timeUnit: application.unit,
+			unitPrice: application.unitPrice,
+			creator: application.creator,
+			application: application.id
+		});
+		application.orderNo = order.id;
+		application.payStatus = -1;
+
+
+		delete application['products'];
+		delete application['price'];
+		delete application['size'];
+		delete application['unit'];
+		delete application['unitPrice'];
+		delete application['free'];
+		var inserted = yield models.gospel_applications.create(application);
+		yield models.gospel_uistates.create({
+			application: inserted.id,
+			creator: application.creator,
+			configs: image.defaultConfig
+		});
+		ctx.body = render(inserted, null, null, 1, "创建成功, 你选择的是收费配置, 请尽快去支付");
+	}
+}
+applications.deploy = function*(application,ctx) {
+
+	console.log("deploy");
+	var app = yield models.gospel_applications.findById(application.id);
+	console.log(application);
+	if (application.free) {
+
+		app.products = application.products;
 		var result = yield processes.app_start(app);
 		if (result) {
 			var inserted = yield models.gospel_applications.modify({
 				id: application.id,
-				status: 1
+				status: 1,
+				products: application.products
 			});
 			ctx.body = render(inserted, null, null, 1, "部署创建成功");
 		} else {
@@ -165,12 +217,17 @@ applications.create = function*() {
 		console.log("to deploy");
 		yield applications.deploy(application,this);
 	}else {
-		var result = yield processes.initDebug(application);
 
-		if (result) {
-			this.body = render(null, null, null, 1, "应用创建成功");
-		} else {
-			this.body = render(null, null, null, -1, "应用创建失败");
+		if(application.deploy){
+			yield applications.fast_deploy(application,this);
+		}else{
+			var result = yield processes.initDebug(application);
+
+			if (result) {
+				this.body = render(null, null, null, 1, "应用创建成功");
+			} else {
+				this.body = render(null, null, null, -1, "应用创建失败");
+			}
 		}
 	}
 }
