@@ -113,7 +113,15 @@ module.exports = {
 			controller: 'startTerminal',
 			groups: "ab64c397-d323-4133-9541-479bbaaf6c52_100"
 		}],
-
+        gulpfile:[
+			{
+				name: '监听文件改动socket启动',
+				method:'get',
+				url: '/gulp/socket',
+				controller:'startSocket',
+				groups: "ab64c397-d323-4133-9541-479bbaaf6c52_100"
+			}
+		],
 		weapp: [{
 			name: '云打包',
 			method: 'post',

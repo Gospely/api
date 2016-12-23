@@ -15,11 +15,17 @@ var mount = require('koa-mount');
 var multer = require('koa-multer');
 
 
+var file_socket = require('./filesocket/filesocket');
+
+var server = require('http').Server(app.callback());
+
+file_socket.init();
+
 app.use(function*(next) {
   try {
     global.appDomain = 'http://localhost:8089'
     global.dashDomain = 'http://localhost:8088'
-
+     // /var/www/yonghuid/xiangmuming
     // global.appDomain = 'http://api.gospely.com'
     // global.dashDomain = 'http://dash.gospely.com'
     yield next;
@@ -92,3 +98,4 @@ Promise.resolve(setupDb)
         ': gospel api is running, listening on port ' + configs.port);
     });
   });
+
