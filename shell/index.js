@@ -76,21 +76,17 @@ shells.fast_deploy = function*(options) {
           resolve("success");
       });
   });
-  // return new Promise(function(resolve, reject) {
-  //   var bash = "ssh root@gospely.com " +
-  //     "/root/gospely/allocate/start.js -n " + options.name + " -m " +
-  //     options.memory + " -c " + options.creator + " -f " + options.file +
-  //     " -p " + options.socketPort +
-  //     " -s " + options.sshPort + " -a " + options.appPort + " -w " +
-  //     options.password + " -o " + options.hostName + " && echo 'sucess'";
-  //   console.log(bash);
-  //   exec(bash, function(err, data) {
-  //     console.log(err);
-  //     console.log(data);
-  //     if (err) reject(err);
-  //     resolve("success");
-  //   });
-  // });
+}
+shells.mvFiles = function*(options){
+    var host = options.host || 'gospely.com';
+    return new Promise(function(resolve, reject) {
+        exec('ssh root@' + host + ' sh /root/gospely/deploy/shell/mv.sh gospel_project_' + options.name,
+            function(err, data) {
+                if (err)
+                    reject(err);
+                resolve(data);
+            });
+    });
 }
 shells.initDebug = function*(options){
 

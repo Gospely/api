@@ -128,6 +128,10 @@ module.exports = {
 			do: function*() {
 				var self = this;
 				var result = yield shells.fast_deploy(self.data);
+				yield shells.mvFiles({
+					host: host.ip,
+					name: domain + "_" + application.userName,
+				});
 				// if(application.git) {
 				// 	console.log("gicone");
 				// 	shells.gitClone({
