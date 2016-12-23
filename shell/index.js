@@ -52,8 +52,9 @@ shells.fast_deploy = function*(options) {
 
         config = ' -e "DBUSER=' + options.dbUser + '" -e "DBPASS=' + options.password + '" -e "USERID=' + options.creator + '" ';
         port =  ' -p ' + options.dbPort + ':3306';
+        var splits = options.image.split(":");
         if(options.db == 'mysql') {
-            options.image = options.image + "-mariadb";
+            options.image =  splits[0] + "-mariadb:" + splits[1];
         }else{
             options.image = options.image + "-" + options.db;
         }
@@ -99,8 +100,9 @@ shells.initDebug = function*(options){
     if(options.db != null && options.db != undefined && options.db != '') {
         config = ' -e "DBUSER=' + options.dbUser + '" -e "DBPASS=' + options.password + '" -e "USERID=' + options.creator + '" ';
         port =  ' -p ' + options.dbPort + ':3306';
+        var splits = options.image.split(":");
         if(options.db == 'mysql') {
-            options.image = options.image + "-mariadb";
+            options.image =  splits[0] + "-mariadb:" + splits[1];
         }else{
             options.image = options.image + "-" + options.db;
         }

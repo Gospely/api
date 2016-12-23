@@ -11,6 +11,8 @@ var selector = require('../utils/selector');
 module.exports = {
 
 	fast_deploy: function*(application){
+
+		console.log(application);
 		var domain = application.name;
 		var user = yield models.gospel_users.findById(application.creator);
 		var host = yield this.hostFilter(user, false);
@@ -108,7 +110,10 @@ module.exports = {
 
 			application.socketPort = yield portManager.generatePort(host.ip);
 		}
-
+		application.dbPort = yield portManager.generatePort(host.ip);
+		if(application.dbPort == application.socketPort || application.dbPort == application.sshPort || application.dbPort == application.port){
+			application.dbPort = yield portManager.generatePort(host.ip);
+		}
 		var docker = yield models.gospel_products.findById(application.products);
 		var unit = "";
 		if (docker.memoryUnit == "MB") {
@@ -147,6 +152,7 @@ module.exports = {
 				dbUser: application.dbUser,
 				db: application.databaseType,
 				hostName: domain,
+				dbPort: application.dbPort,
 				creator: application.creator
 			},
 			undo: function*() {
@@ -414,6 +420,7 @@ module.exports = {
 					port: application.port,
 					password: application.password,
 					socketPort: application.socketPort,
+					dbPort: application.dbPort,
 				});
 				self.data = inserted;
 				application = inserted;

@@ -37,6 +37,7 @@ applications.fast_deploy = function*(application,ctx){
 		delete application['free'];
 
 		var inserted = yield models.gospel_applications.create(application);
+		inserted.databaseType = application.databaseType;
 		yield models.gospel_uistates.create({
 			application: inserted.id,
 			creator: application.creator,
