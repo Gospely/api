@@ -13,6 +13,7 @@ module.exports = function(sequelize, DataTypes) {
     password: DataTypes.STRING,
     identify: DataTypes.STRING,
     volume: DataTypes.STRING,
+    socket_id: DataTypes.STRING,
     volumeSize: {
       type: DataTypes.INTEGER,
       field: 'volume_size'

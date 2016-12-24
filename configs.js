@@ -113,12 +113,12 @@ module.exports = {
 			controller: 'startTerminal',
 			groups: "ab64c397-d323-4133-9541-479bbaaf6c52_100"
 		}],
-        listenfile:[
+        listen:[
 			{
 				name: '监听文件改动socket启动',
 				method:'post',
-				url: '/listenfile/listen',
-				controller:'listenFile',
+				url: '/listen/file',
+				controller:'fileListen',
 				groups: "ab64c397-d323-4133-9541-479bbaaf6c52_100"
 			}
 		],

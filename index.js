@@ -13,12 +13,19 @@ var db = require('./models');
 var container = require('./container/index.js');
 var mount = require('koa-mount');
 var multer = require('koa-multer');
+var models = require('./models');
+
 
 
 app.use(function*(next) {
   try {
-    global.appDomain = 'http://localhost:8089'
-    global.dashDomain = 'http://localhost:8088'
+    global.appDomain = 'http://localhost:8089';
+    global.dashDomain = 'http://localhost:8088';
+
+      //socket用户id socketid map
+      //当前已连接的总人数
+    // this.map = {};
+    // this.numUsers = 0;
      // /var/www/yonghuid/xiangmuming
     // global.appDomain = 'http://api.gospely.com'
     // global.dashDomain = 'http://dash.gospely.com'
@@ -92,10 +99,6 @@ Promise.resolve(setupDb)
     });
   });
 
-//socket用户id
-var userIds = {};
-//当前已连接的总人数
-var numUsers = 0;
 
 app.io.use(function*(next) {
     //join
@@ -105,24 +108,27 @@ app.io.use(function*(next) {
     yield* next;
 
     //exit io.connect(http://ip:8089)
-    if (this.addedUser){
-      delete userIds[this.userId];
-      -- numUsers
-    }
+    // if (this.addedUser){
+    //   delete app.map[this.userId];
+    //   -- app.numUsers
+    // }
 });
 
-app.io.route('join listen',function* (next,userId) {
 
-    console.log(userId);
-    this.userId = userId;
-    userIds[userId] = userId;
-    ++numUsers;
-    this.addedUser = true;
+
+app.io.route('join listen',function* (next,userId) {
+    var socket_id = this.socket.id;
+    var user = yield models.gospel_users.findById(userId);
+    user.socket_id = socket_id;
+    yield models.gospel_users.modify({
+        id: user.id,
+        socket_id: socket_id
+    });
     this.emit('join',{
         numUsers : numUsers
     });
 });
 
-module.exports = app.io;
+
 
 
