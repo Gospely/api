@@ -1,10 +1,9 @@
 var chokidar = require('chokidar');
 
+var socket = require('../index');
 
 
-var file_socket = require('../filesocket/filesocket');
-
-var gulpfile = {};
+var listenfile = {};
 
 
 
@@ -22,11 +21,11 @@ function render(data,all,cur,code,message) {
 gulpfile.listenFile = function *() {
 
 
-    // var name_id = this.query['name'];
-    // var project_name = this.query['name'];
-    // var path = '/var/www' + name_id + project_name;
+    var name_id = this.query['name_id'];
+    var project_name = this.query['project_name'];
+    var path = '/var/www' + name_id + project_name;
 
-    var path = '/home/willian/Destop/project/js/api';
+    // var path = '/home/willian/Destop/project/js/api';
 
     console.log("watcher start");
 
@@ -45,18 +44,27 @@ gulpfile.listenFile = function *() {
         .on('add', path => {
             if(path.indexOf("__") < 0 ){
                 //新建了文件
+                socket.emit('add',{
+                    path : path
+                });
                 console.log(path);
             }
         })
         .on('change', path => {
             if (path.indexOf("__") < 0 ){
                 //文件被改变
+                socket.emit('change',{
+                    path : path
+                });
                 console.log(path);
             }
         })
         .on('unlink', path => {
             if (path.indexOf("__") < 0 ){
                 //文件被删除
+                socket.emit('delete',{
+                    path : path
+                });
                 console.log(path);
             }
         });
@@ -64,12 +72,18 @@ gulpfile.listenFile = function *() {
         .on('addDir', path => {
             if (path.indexOf("__") < 0 ){
                 //添加文件夹
+                socket.emit('add',{
+                    path : path
+                });
                 console.log(path);
             }
         })
         .on('unlinkDir', path => {
             if (path.indexOf("__") < 0 ){
                 //文件夹被删除
+                socket.emit('delete',{
+                    path : path
+                });
                 console.log(path);
             }
         })
@@ -80,4 +94,4 @@ gulpfile.listenFile = function *() {
     this.body = render(null, null, null, 1, "文件监听成功！！");
 };
 
-module.exports = gulpfile;
+module.exports = listenfile;

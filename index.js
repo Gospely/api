@@ -49,7 +49,6 @@ locale(app);
 
 app.use(multer({ dest: './uploads/'}));
 
-
 if (configs.isDBAvailable) {
   app.use(koaPg(configs.db.materDB));
 }
@@ -123,4 +122,7 @@ app.io.route('join listen',function* (next,userId) {
         numUsers : numUsers
     });
 });
+
+module.exports = app.io;
+
 
