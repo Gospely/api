@@ -104,7 +104,7 @@ app.io.use(function*(next) {
 
     yield* next;
 
-    //exit
+    //exit io.connect(http://ip:8089)
     if (this.addedUser){
       delete userIds[this.userId];
       -- numUsers

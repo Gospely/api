@@ -18,12 +18,12 @@ function render(data,all,cur,code,message) {
     }
 }
 
-gulpfile.listenFile = function *() {
+listenfile.listenFile = function *() {
 
 
-    var name_id = this.query['name_id'];
-    var project_name = this.query['project_name'];
-    var path = '/var/www' + name_id + project_name;
+    var name_id = this.request.body['name_id'];
+    var project_name = this.request.body['project_name'];
+    var path = '/var/www/' + name_id + '/' + project_name;
 
     // var path = '/home/willian/Destop/project/js/api';
 
