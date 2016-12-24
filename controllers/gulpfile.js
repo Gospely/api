@@ -19,7 +19,7 @@ function render(data,all,cur,code,message) {
     }
 }
 
-gulpfile.startSocket = function *() {
+gulpfile.listenFile = function *() {
 
 
     // var name_id = this.query['name'];
@@ -61,16 +61,23 @@ gulpfile.startSocket = function *() {
             }
         });
     watcher
-        .on('addDir', path => console.log(`Directory ${path} has been added`))
-        .on('unlinkDir', path => console.log(`Directory ${path} has been removed`))
+        .on('addDir', path => {
+            if (path.indexOf("__") < 0 ){
+                //添加文件夹
+                console.log(path);
+            }
+        })
+        .on('unlinkDir', path => {
+            if (path.indexOf("__") < 0 ){
+                //文件夹被删除
+                console.log(path);
+            }
+        })
         .on('error', error => console.log(`Watcher error: ${error}`))
         .on('ready', () => console.log('Initial scan complete. Ready for changes'));
 
-        // .on('raw', (event, path, details) => {
-        //     console.log('Raw event info:', event, path, details);
-        // });
 
-    this.body = render(null, null, null, -1, "应用创建失败");
+    this.body = render(null, null, null, 1, "文件监听成功！！");
 };
 
 module.exports = gulpfile;

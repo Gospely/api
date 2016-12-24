@@ -1,4 +1,4 @@
-var app = require('koa')();
+var app = require('koa.io')();
 var router = require('koa-router')();
 var routers = require('./routers.js')(router);
 var auth = require('./server/auth/auth');
@@ -14,12 +14,6 @@ var container = require('./container/index.js');
 var mount = require('koa-mount');
 var multer = require('koa-multer');
 
-
-var file_socket = require('./filesocket/filesocket');
-
-var server = require('http').Server(app.callback());
-
-file_socket.init();
 
 app.use(function*(next) {
   try {
@@ -98,4 +92,35 @@ Promise.resolve(setupDb)
         ': gospel api is running, listening on port ' + configs.port);
     });
   });
+
+//socket用户id
+var userIds = {};
+//当前已连接的总人数
+var numUsers = 0;
+
+app.io.use(function*(next) {
+    //join
+    console.log('somebody connected');
+    console.log(this.headers);
+
+    yield* next;
+
+    //exit
+    if (this.addedUser){
+      delete userIds[this.userId];
+      -- numUsers
+    }
+});
+
+app.io.route('join listen',function* (next,userId) {
+
+    console.log(userId);
+    this.userId = userId;
+    userIds[userId] = userId;
+    ++numUsers;
+    this.addedUser = true;
+    this.emit('join',{
+        numUsers : numUsers
+    });
+});
 
