@@ -540,7 +540,6 @@ module.exports = {
 			delete application['databaseType'];
 			console.log(application);
 			var inserted = yield models.gospel_applications.create(application);
-			var image = yield models.gospel_images.findById(application.image);
 			yield models.gospel_uistates.create({
 				application: inserted.id,
 				creator: application.creator,
