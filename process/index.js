@@ -506,7 +506,7 @@ module.exports = {
 			socketPort: application.socketPort,
 			appPort: application.port,
 			password: application.password,
-			image: image.id.split(":")[0],
+			image: image.id,
 			framework: application.framework,
 			hostName: en_name,
 			exposePort: image.port,
