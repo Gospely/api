@@ -468,6 +468,7 @@ module.exports = {
 		if(application.git != null && application.git != undefined && application.git != ''){
 			//用户创建应用的方式未从git创建时 git clone项目到平台
 			shells.gitClone({
+				host: host.ip,
 				user: application.creator,
 				projectname: en_name + "_" + user.name,
 				gitURL: application.git,
