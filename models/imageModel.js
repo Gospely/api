@@ -14,6 +14,8 @@ module.exports = function(sequelize, DataTypes) {
     dockerfile: DataTypes.STRING,
     type: DataTypes.INTEGER,
     parent: DataTypes.STRING,
+    port: DataTypes.STRING,
+    cmds: DataTypes.STRING,
     defaultConfig: {
       type: DataTypes.STRING,
       field: 'default_config'

@@ -102,8 +102,11 @@ shells.initDebug = function*(options){
         }else{
             options.image = options.image + "-" + options.db;
         }
+        options.image = options.image + ":" + options.version;
     }
-    options.image = options.image + ":" + options.version;
+    if(options.framework ==null || options.framework == undefined || options.framework == ''){
+        options.image = 'debug-'+options.image;
+    }
     console.log(options);
 
     return new Promise(function(resolve, reject) {
@@ -112,7 +115,7 @@ shells.initDebug = function*(options){
           ':/root/workspace ' + config + ' -p ' + options.socketPort + ':3000 -p ' + options.appPort  +
           ':'+ options.exposePort +' -p ' + options.sshPort + ':22 ' + port +
           ' -h ' + options.hostName +
-          ' -w /root/workspace --name="gospel_project_' + options.name + '"  gospel-debug-' +
+          ' -w /root/workspace --name="gospel_project_' + options.name + '" gospel-' +
           options.image + " && echo success";
         console.log(bash);
         exec(bash, function(err, data) {

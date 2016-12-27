@@ -46,6 +46,7 @@ module.exports = function(sequelize, DataTypes) {
     image: DataTypes.STRING,
     members: DataTypes.JSONB,
     team: DataTypes.STRING,
+    cmds: DataTypes.STRING,
     git:DataTypes.STRING,
     host: DataTypes.STRING,
     creator: DataTypes.STRING,

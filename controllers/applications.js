@@ -220,8 +220,11 @@ applications.create = function*() {
 	}else {
 
 		if(application.deploy){
+			console.log("to fast_deploy");
 			yield applications.fast_deploy(application,this);
 		}else{
+			console.log("to initDebug");
+			console.log(application);
 			var result = yield processes.initDebug(application);
 
 			if (result) {

@@ -446,7 +446,10 @@ module.exports = {
 	initDebug: function* (application) {
 
 		//判断应用名是否为中文名，当为中文名时，获取中文拼音
+		application = JSON.parse(application)
+		console.log(application);
 		var en_name = application.name.toLocaleLowerCase();
+		console.log(en_name);
 		var user = yield models.gospel_users.findById(application.creator);
 		var reg = /[\u4e00-\u9FA5]+/;
 		var res = reg.test(en_name);
@@ -456,6 +459,7 @@ module.exports = {
 			en_name = tr(en_name).replace(new RegExp(" ", 'gm'), "").toLocaleLowerCase();
 		}
 		//根据用户输入获取镜像名称
+
 		application.image = application.languageType;
 		//获取主机
 		var host = yield this.hostFilter(user, true);
@@ -469,9 +473,16 @@ module.exports = {
 				gitURL: application.git,
 			});
 		}
+		var image = '';
 		if(application.framework != null && application.framework != undefined && application.framework != ''){
 			//初始化应用框架
+			image = yield models.gospel_images.findById(application.framework);
+		}else{
+			image = yield models.gospel_images.findById(application.image);
 		}
+		console.log(image);
+		application.cmds = image.cmds;
+		application.exposePort = image.port;
 		//端口生成
 		application.port = yield portManager.generatePort(host.ip);
 		application.socketPort = yield portManager.generatePort(host.ip);
@@ -494,9 +505,10 @@ module.exports = {
 			socketPort: application.socketPort,
 			appPort: application.port,
 			password: application.password,
-			image: application.image,
+			image: image.id,
+			framework: application.framework,
 			hostName: en_name,
-			exposePort: application.exposePort,
+			exposePort: image.port,
 			creator: application.creator,
 			db: application.databaseType,
 			dbUser: application.dbUser,
