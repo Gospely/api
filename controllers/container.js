@@ -41,7 +41,7 @@ var container = {
 
 	start: function* () {
 		try {
-			console.log(host+"==============================");
+			console.log(this.host+"==============================");
 			yield execCMD('docker start ' + this.containerName, this.host);
 			console.log(shell);
 			shell.startTerminal({
