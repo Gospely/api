@@ -32,7 +32,7 @@ containers.filter = function*(next){
     var application = yield models.gospel_applications.findById(id);
     console.log(application.docker);
     this.containerName = application.docker;
-    this.ip = application.host;
+    this.remoteIp = application.host;
     console.log(application.host+"==============================");
     yield next;
 
