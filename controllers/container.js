@@ -41,11 +41,11 @@ var container = {
 
 	start: function* () {
 		try {
-			console.log(this.host+"==============================");
-			yield execCMD('docker start ' + this.containerName, this.host);
+			console.log(this.ip+"==============================");
+			yield execCMD('docker start ' + this.containerName, this.ip);
 			console.log(shell);
 			shell.startTerminal({
-				host: this.host,
+				host: this.ip,
 				docker: this.containerName
 			});
 			this.body = util.resp(200, '启动成功', this.containerName);
@@ -56,7 +56,7 @@ var container = {
 
 	stop: function* () {
 		try {
-			yield execCMD('docker stop ' + this.containerName, this.host);
+			yield execCMD('docker stop ' + this.containerName, this.ip);
 			this.body = util.resp(200, '停止成功', this.containerName);
 		}catch(err) {
 			this.body = util.resp(500, '停止失败', err.toString());
@@ -65,7 +65,7 @@ var container = {
 
 	restart: function* () {
 		try {
-			yield execCMD('docker restart ' + this.containerName, this.host);
+			yield execCMD('docker restart ' + this.containerName, this.ip);
 			this.body = util.resp(200, '重启成功', this.containerName);
 		}catch(err) {
 			this.body = util.resp(500, '重启失败', err.toString());
@@ -78,7 +78,7 @@ var container = {
 		var containerName = this.containerName;
 
 		try {
-			var info = yield execCMD('docker inspect ' + containerName, this.host);
+			var info = yield execCMD('docker inspect ' + containerName, this.ip);
 			this.body = util.resp(200, '查看容器基本信息成功', info);
 		}catch(err) {
 			this.body = util.resp(500, '查看容器基本信息失败', err.toString());
@@ -90,7 +90,7 @@ var container = {
 		var containerName = this.containerName;
 
 		try {
-			var info = yield dockerStats(containerName, this.host);
+			var info = yield dockerStats(containerName, this.ip);
 			this.body = util.resp(200, '监控容器运行状态成功', info.body);
 		}catch(err) {
 			this.body = util.resp(500, '监控容器运行状态失败', err.toString());
