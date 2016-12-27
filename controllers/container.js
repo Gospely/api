@@ -9,6 +9,7 @@ var exec = require('child_process').exec,
 var execCMD = function(cmd, host) {
 
 		remoteIp = host || '120.76.235.234';
+		console.log(host);
 		baseCMD = 'ssh root@' + remoteIp + ' ';
 		return new Promise(function(resolve, reject) {
 			exec(baseCMD + cmd, function(error, data) {
@@ -18,7 +19,7 @@ var execCMD = function(cmd, host) {
 		});
 	},
 
-	dockerStats = function(containerName,host) {
+	dockerStats = function(containerName, host) {
 
 		remoteIp = host || '120.76.235.234';
 		return new Promise(function(resolve, reject) {

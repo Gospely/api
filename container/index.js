@@ -33,6 +33,7 @@ containers.filter = function*(next){
     console.log(application.docker);
     this.containerName = application.docker;
     this.host = application.host;
+    console.log(host+"==============================");
     yield next;
 
 }
