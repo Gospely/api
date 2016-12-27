@@ -524,6 +524,12 @@ module.exports = {
 					docker: en_name + "_" + user.name,
 				});
 			}
+			if(application.framework != null && application.framework != undefined && application.framework != ''){
+				yield shells.mvFiles({
+					host: host.ip,
+					name: en_name + "_" + user.name,
+				});
+			}
 			console.log(application);
 			application.image = application.image + ":" + application.languageVersion;
 			application.host = host.ip;
