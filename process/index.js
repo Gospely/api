@@ -194,6 +194,7 @@ module.exports = {
 					port: application.port,
 					password: application.password,
 					socketPort: application.socketPort,
+					host: host.ip
 				});
 				self.data = inserted;
 				application = inserted;
