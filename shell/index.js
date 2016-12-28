@@ -98,7 +98,7 @@ shells.initDebug = function*(options){
         port =  ' -p ' + options.dbPort + ':3306';
         var splits = options.image.split(":");
         if(options.db == 'mysql') {
-            options.image =  splits[0] + "-mariadb:";
+            options.image =  splits[0] + "-mariadb";
         }else{
             options.image = options.image + "-" + options.db;
         }
