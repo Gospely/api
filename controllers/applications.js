@@ -191,11 +191,13 @@ applications.delete = function*() {
 applications.killPID = function*(){
 
 	var docker = this.query.docker,
-		pid = this.query.pid
+		pid = this.query.pid,
+		host = this.query.host;
 
 	yield shell.killPID({
 		docker: docker,
-		pid: pid
+		pid: pid,
+		host: host
 	});
 	this.body = render(null, null, null, 1, 'success');
 }
