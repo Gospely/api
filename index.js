@@ -117,6 +117,7 @@ app.io.use(function*(next) {
 
 
 app.io.route('join listen',function* (next,userId) {
+    console.log(userId);
     var socket_id = this.socket.id;
     var user = yield models.gospel_users.findById(userId);
     user.socket_id = socket_id;

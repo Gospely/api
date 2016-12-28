@@ -90,7 +90,6 @@ listen.fileListen = function *() {
             //客户端接受到监听完毕后才开始socket.on
             // var socket = io.connect("http://localhost:8089");
             // socket.on('ready',function () {
-            //     socket.on('file',function (data) {
             //         console.log(data);
             //     });
             //     socket.on('content',function (data) {
