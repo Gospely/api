@@ -520,15 +520,15 @@ module.exports = {
 		if(application.git != null && application.git != undefined && application.git != ''){
 
 			console.log("gen key");
-			//生成ssh key
-			 yield shells.sshKey({
-				host: host.ip,
-				docker: en_name + "_" + user.name,
-			});
-			application.sshKey = yield shells.sshKey({
-				host: host.ip,
-				docker: en_name + "_" + user.name,
-			});
+			// //生成ssh key
+			//  yield shells.sshKey({
+			// 	host: host.ip,
+			// 	docker: en_name + "_" + user.name,
+			// });
+			// application.sshKey = yield shells.sshKey({
+			// 	host: host.ip,
+			// 	docker: en_name + "_" + user.name,
+			// });
 		}
 		if(application.framework != null && application.framework != undefined && application.framework != ''){
 			yield shells.mvFiles({
