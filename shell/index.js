@@ -499,12 +499,12 @@ shells.initFrameWork = function() {
 shells.sshKey = function*(options){
      var host = options.host || '120.76.235.234';
      return new Promise(function(resolve, reject) {
-         exec('ssh root@' + host + '  docker exec ' + options.docker +
+         exec('ssh root@' + host + '  docker exec gospel_project_' + options.docker +
              ' ssh-keygen -t rsa -P "" -f ~/.ssh/id_rsa' ,
              function(err, data) {
                  if (err)
                      reject(err);
-                     exec('ssh root@' + host + '  docker exec ' + options.docker +
+                     exec('ssh root@' + host + '  docker exec gospel_project_' + options.docker +
                          ' cat ~/.ssh/id_rsa.pub' ,
                          function(err, data) {
                              if (err)
