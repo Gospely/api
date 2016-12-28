@@ -516,9 +516,15 @@ module.exports = {
 			version: application.languageVersion,
 			dbPort: application.dbPort
 		});
+		console.log(result);
 		if(application.git != null && application.git != undefined && application.git != ''){
 
+			console.log("gen key");
 			//生成ssh key
+			 yield shells.sshKey({
+				host: host.ip,
+				docker: en_name + "_" + user.name,
+			});
 			application.sshKey = yield shells.sshKey({
 				host: host.ip,
 				docker: en_name + "_" + user.name,

@@ -501,17 +501,27 @@ shells.sshKey = function*(options){
      return new Promise(function(resolve, reject) {
          exec('ssh root@' + host + ' sh /root/gospely/deploy/shell/docker_bash.sh gospel_project_' + options.docker + ' \"ssh-keygen -t rsa -P "" -f ~/.ssh/id_rsa\"' ,
              function(err, data) {
-                 if (err)
-                     reject(err);
-                     exec('ssh root@' + host + '  docker exec gospel_project_' + options.docker +
-                         ' cat ~/.ssh/id_rsa.pub' ,
-                         function(err, data) {
-                             if (err)
-                                 reject(err);
-                             resolve(data);
-                         });
+                console.log(err);
+                console.log(daa);
+                if (err)
+                    reject(err);
+                resolve(data);
+
              });
      });
+}
+shells.getKey = function*(options) {
+
+    var host = options.host || '120.76.235234';
+    return new Promise(function(resolve, reject) {
+        exec('ssh root@' + host + '  docker exec gospel_project_' + options.docker +
+            ' cat ~/.ssh/id_rsa.pub' ,
+            function(err, data) {
+                if (err)
+                    reject(err);
+                resolve(data);
+            });
+    } );
 }
 //提交镜像
 shells.commit = function*(options){
