@@ -156,11 +156,11 @@ var
 		return null;
 	},
 
-	shell = function(cmd, ssh) {
+	shell = function(cmd, host, ssh) {
 		ssh = ssh || true;
 		return new Promise(function(resolve, reject) {
 			if(ssh) {
-				exec("ssh root@120.76.235.234 " + cmd + ' && echo 3 > /proc/sys/vm/drop_caches', function(error, data) {
+				exec("ssh root@" + host + " " + cmd + ' && echo 3 > /proc/sys/vm/drop_caches', function(error, data) {
 					if (error) reject(error);
 					resolve(data);
 				});
@@ -173,9 +173,9 @@ var
 		});
 	},
 
-	pureSSHShell = function(cmd) {
+	pureSSHShell = function(cmd, host) {
 		return new Promise(function(resolve, reject) {
-			exec("ssh root@120.76.235.234 " + cmd, function(error, data) {
+			exec("ssh root@" + host + " " + cmd, function(error, data) {
 				if (error) reject(error);
 				resolve(data);
 			});
@@ -591,6 +591,7 @@ var fileSystem = {
 		var username = this.req.body.username;
 		var projectName = this.req.body.projectName;
 		var extension = this.req.files.fileUp.extension;
+		var host = this.req.body.remoteIp || '120.76.235.234';
 
 		var supDir = path.resolve(__dirname, '..');
 
@@ -603,6 +604,7 @@ var fileSystem = {
 			comDir:afterName,
 			username:username,
 			projectName:projectName,
+			host: host
 		};
 		//获取文件后缀名
 		//var suffix = path.extname(fileName);
@@ -633,14 +635,15 @@ var fileSystem = {
 			if(typeof params == 'string') {
 				params = JSON.parse(params);
 			}
-			var cmd = params.cmd;
+			var cmd = params.cmd,
+			host = params.remoteIp || '120.76.235.234';
 
 		} catch (err) {
 			var cmd = GetQueryString(params, 'cmd');
 		}
 
 		try {
-			var result = yield shell(cmd);
+			var result = yield shell(cmd, host);
 			this.body = util.resp(200, '执行成功', result);
 		} catch (err) {
 			this.body = util.resp(500, '执行失败', err.toString());
@@ -656,14 +659,15 @@ var fileSystem = {
 			if(typeof params == 'string') {
 				params = JSON.parse(params);
 			}
-			var dir = params.dir;
+			var dir = params.dir,
+			host = params.remoteIp || '120.76.235.234';
 
 		} catch (err) {
 			var dir = GetQueryString(params, 'dir');
 		}
 
 		try {
-			var result = yield pureSSHShell("git --git-dir=" + config.baseDir + dir + ".git status");
+			var result = yield pureSSHShell("git --git-dir=" + config.baseDir + dir + ".git status", host);
 
 			var flag = false;
 
@@ -688,14 +692,16 @@ var fileSystem = {
 			if(typeof params == 'string') {
 				params = JSON.parse(params);
 			}
-			var dir = params.dir;
+			var dir = params.dir,
+			host = params.remoteIp || '120.76.235.234';
+
 
 		} catch (err) {
 			var dir = GetQueryString(params, 'dir');
 		}
 
 		try {
-			var result = yield pureSSHShell("git --git-dir=" + config.baseDir + dir + "/.git remote -v");
+			var result = yield pureSSHShell("git --git-dir=" + config.baseDir + dir + "/.git remote -v", host);
 			this.body = util.resp(200, '获取Git源成功', result);
 		} catch (err) {
 			this.body = util.resp(500, '获取Git源失败', err.toString());
@@ -718,7 +724,7 @@ var fileSystem = {
 		dir = dir.split('/')[1];
 
 		try {
-			var result = yield pureSSHShell("docker exec gospel_project_" + dir + " sh /root/.gospely/.git_shell/.push.sh");
+			var result = yield pureSSHShell("docker exec gospel_project_" + dir + " sh /root/.gospely/.git_shell/.push.sh", host);
 			this.body = util.resp(200, 'push成功', result);
 		} catch (err) {
 			this.body = util.resp(500, 'push失败', err.toString());
@@ -732,7 +738,8 @@ var fileSystem = {
 			if(typeof params == 'string') {
 				params = JSON.parse(params);
 			}
-			var dir = params.dir;
+			var dir = params.dir,
+			host = params.remoteIp || '120.76.235.234';
 
 		} catch (err) {
 			var dir = GetQueryString(params, 'dir');
@@ -741,7 +748,7 @@ var fileSystem = {
 		dir = dir.split('/')[1];
 
 		try {
-			var result = yield pureSSHShell("docker exec gospel_project_" + dir + " sh /root/.gospely/.git_shell/.pull.sh");
+			var result = yield pureSSHShell("docker exec gospel_project_" + dir + " sh /root/.gospely/.git_shell/.pull.sh", host);
 			this.body = util.resp(200, 'pull成功', result);
 		} catch (err) {
 			this.body = util.resp(500, 'pull失败', err.toString());
@@ -755,7 +762,8 @@ var fileSystem = {
 			if(typeof params == 'string') {
 				params = JSON.parse(params);
 			}
-			var dir = params.dir;
+			var dir = params.dir,
+			host = params.remoteIp || '120.76.235.234';
 
 		} catch (err) {
 			var dir = GetQueryString(params, 'dir');
@@ -764,7 +772,7 @@ var fileSystem = {
 		dir = dir.split('/')[1];
 
 		try {
-			var result = yield pureSSHShell("docker exec gospel_project_" + dir + " sh /root/.gospely/.git_shell/.commit.sh");
+			var result = yield pureSSHShell("docker exec gospel_project_" + dir + " sh /root/.gospely/.git_shell/.commit.sh", host);
 			this.body = util.resp(200, 'commit成功', result);
 		} catch (err) {
 			this.body = util.resp(500, 'commit失败', err.toString());
@@ -779,7 +787,8 @@ var fileSystem = {
 				params = JSON.parse(params);
 			}
 			var origin = params.origin,
-				dir = params.dir;
+				dir = params.dir,
+				host = params.remoteIp || '120.76.235.234';
 
 		} catch (err) {
 			var origin = GetQueryString(params, 'origin');
@@ -787,7 +796,7 @@ var fileSystem = {
 		}
 
 		try {
-			var result = yield pureSSHShell("cd " + config.baseDir + dir + ' && git clone ' + origin);
+			var result = yield pureSSHShell("cd " + config.baseDir + dir + ' && git clone ' + origin, host);
 			this.body = util.resp(200, 'clone成功', result);
 		} catch (err) {
 			this.body = util.resp(500, 'clone失败', err.toString());
@@ -802,7 +811,8 @@ var fileSystem = {
 				params = JSON.parse(params);
 			}
 			var origin = params.origin,
-				dir = params.dir;
+				dir = params.dir,
+				host = params.remoteIp || '120.76.235.234';
 
 		} catch (err) {
 			var origin = GetQueryString(params, 'origin');
@@ -810,11 +820,11 @@ var fileSystem = {
 		}
 
 		try {
-			var result = yield pureSSHShell("git --git-dir=" + config.baseDir + dir + "/.git remote remove origin && git --git-dir=" + config.baseDir + dir + "/.git remote add origin " + origin);
+			var result = yield pureSSHShell("git --git-dir=" + config.baseDir + dir + "/.git remote remove origin && git --git-dir=" + config.baseDir + dir + "/.git remote add origin " + origin, host);
 			this.body = util.resp(200, '更改Git源成功', result);
 		} catch (err) {
 			try {
-				var result = yield pureSSHShell("git --git-dir=" + config.baseDir + dir + "/.git remote add origin " + origin);
+				var result = yield pureSSHShell("git --git-dir=" + config.baseDir + dir + "/.git remote add origin " + origin, host);
 			} catch (err) {
 				this.body = util.resp(500, '更改Git源失败', err.toString());
 			}
