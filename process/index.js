@@ -516,39 +516,37 @@ module.exports = {
 			version: application.languageVersion,
 			dbPort: application.dbPort
 		});
-		if(result == 'success') {
-			if(application.git != null && application.git != undefined && application.git != ''){
+		if(application.git != null && application.git != undefined && application.git != ''){
 
-				//生成ssh key
-				application.sshKey = yield shells.sshKey({
-					host: host.ip,
-					docker: en_name + "_" + user.name,
-				});
-			}
-			if(application.framework != null && application.framework != undefined && application.framework != ''){
-				yield shells.mvFiles({
-					host: host.ip,
-					name: en_name + "_" + user.name,
-				});
-			}
-			console.log(application);
-			application.image = application.image + ":" + application.languageVersion;
-			application.host = host.ip;
-			application.status = -1;
-			application.docker = 'gospel_project_' + en_name + "_" + user.name;
-			delete application['languageType'];
-			delete application['languageVersion'];
-			delete application['databaseType'];
-			console.log(application);
-			var inserted = yield models.gospel_applications.create(application);
-			yield models.gospel_uistates.create({
-				application: inserted.id,
-				creator: application.creator,
-				configs: image.defaultConfig
+			//生成ssh key
+			application.sshKey = yield shells.sshKey({
+				host: host.ip,
+				docker: en_name + "_" + user.name,
 			});
 		}
+		if(application.framework != null && application.framework != undefined && application.framework != ''){
+			yield shells.mvFiles({
+				host: host.ip,
+				name: en_name + "_" + user.name,
+			});
+		}
+		console.log(application);
+		application.image = application.image + ":" + application.languageVersion;
+		application.host = host.ip;
+		application.status = -1;
+		application.docker = 'gospel_project_' + en_name + "_" + user.name;
+		delete application['languageType'];
+		delete application['languageVersion'];
+		delete application['databaseType'];
+		console.log(application);
+		var inserted = yield models.gospel_applications.create(application);
+		yield models.gospel_uistates.create({
+			application: inserted.id,
+			creator: application.creator,
+			configs: image.defaultConfig
+		});
 
-
+		return true;
 	},
 	//根据用户的ide版本获取对应配置的主机
 	hostFilter: function*(user, share) {
