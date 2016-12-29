@@ -13,6 +13,7 @@ module.exports = function(sequelize, DataTypes) {
     password: DataTypes.STRING,
     identify: DataTypes.STRING,
     volume: DataTypes.STRING,
+    host: DataTypes.STRING,
     socket_id: DataTypes.STRING,
     sshKey: {
         type: DataTypes.STRING,
