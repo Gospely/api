@@ -371,7 +371,7 @@ shells.createVolume = function*(options) {
         var host = options.host || '120.76.235.234';
         return new Promise(function(resolve, reject) {
             exec("ssh root@" + host +
-                " docker run -itd -v /var/www/storage/codes" +
+                " docker run -itd -v /var/www/storage/codes/" +
                 options.user +
                 " --name=docker-volume-" + options.user +
                 " ubuntu /bin/bash && echo success",
@@ -389,7 +389,7 @@ shells.sshKey = function*(options) {
     var host = options.host || '120.76.235.234';
     return new Promise(function(resolve, reject) {
         exec("ssh root@" + host +
-            " 'ssh-keygen -t rsa -P '' -f /var/www/storage/codes/" + options.user + "/.ssh/id_rsa'",
+            ' \'ssh-keygen -t rsa -P "" -f /var/www/storage/codes/' + options.user + '/.ssh/id_rsa\'',
             function(err,
                 data) {
                 console.log(data);
@@ -397,6 +397,27 @@ shells.sshKey = function*(options) {
                 if (err) reject(err);
                 resolve(data);
             });
+    })
+}
+shells.mkdir = function*(options) {
+
+    var host = options.host || '120.76.235.234';
+    return new Promise(function(resolve, reject) {
+        exec("ssh root@" + host +  ' mkdir /var/www/storage/codes/' + options.user,
+            function(err,
+                data) {
+                console.log(data);
+                console.log(err);
+                if (err) reject(err);
+                exec("ssh root@" + host +  ' mkdir /var/www/storage/codes/' + options.user + '/.ssh ',
+                    function(err,
+                        data) {
+                        console.log(data);
+                        console.log(err);
+                        if (err) reject(err);
+                        resolve(data);
+                });
+        });
     })
 }
     //读取数据卷大小
@@ -514,7 +535,7 @@ shells.getKey = function*(options) {
 
     var host = options.host || '120.76.235.234';
     return new Promise(function(resolve, reject) {
-        exec('ssh root@' + host + ' cat var/www/storage/codes' + options.user + '.ssh/id_rsa.pub' ,
+        exec('ssh root@' + host + ' cat /var/www/storage/codes/' + options.user + '/.ssh/id_rsa.pub' ,
             function(err, data) {
                 if (err)
                     reject(err);

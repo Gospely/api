@@ -11,6 +11,8 @@ var users = {};
 var message = require('../server/message/message')
 var shells = require('../shell')
 var date = require('../utils/dateOpr');
+var selector = require('../utils/selector');
+
 
 
 //数据渲染，todo:分页参数引入，异常信息引入
@@ -173,22 +175,31 @@ users.register = function*() {
 					}
 					var hosts = yield models.gospel_hosts.getAll({
 						type: user.type,
-						share: share
+						share: true
 					})
-					user.host = selector.select(hosts);
+					var host = selector.select(hosts);
+					user.host = host.ip;
 					inserted = yield models.gospel_users.create(user);
 					var result = yield shells.createVolume({
 						user: inserted.id,
 						host: user.host
 					});
-					var sshKey = yield shells.sshKey({
+					yield shells.mkdir({
 						user: inserted.id,
 						host: user.host
 					});
-					console.log(result);
+					yield shells.sshKey({
+						user: inserted.id,
+						host: user.host
+					});
+					var sshKey = yield shells.getKey({
+						user: inserted.id,
+						host: user.host
+					});
+					console.log(sshKey);
 					yield models.gospel_users.modify({
 						id: inserted.id,
-						sshKey: result
+						sshKey: sshKey
 					});
 					this.body = render(user, 1, "注册成功");
 				} else {
