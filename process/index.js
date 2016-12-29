@@ -16,6 +16,7 @@ module.exports = {
 		var domain = application.name;
 		var user = yield models.gospel_users.findById(application.creator);
 		var host = yield this.hostFilter(user, false);
+			host = host.ip;
 
 		application.userName = user.name;
 		var reg = /[\u4e00-\u9FA5]+/;
