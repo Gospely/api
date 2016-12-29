@@ -171,9 +171,24 @@ users.register = function*() {
 						user.email = user.phone;
 						user.phone = '';
 					}
+					var hosts = yield models.gospel_hosts.getAll({
+						type: user.type,
+						share: share
+					})
+					user.host = selector.select(hosts);
 					inserted = yield models.gospel_users.create(user);
 					var result = yield shells.createVolume({
-						user: inserted.id
+						user: inserted.id,
+						host: user.host
+					});
+					var sshKey = yield shells.sshKey({
+						user: inserted.id,
+						host: user.host
+					});
+					console.log(result);
+					yield models.gospel_users.modify({
+						id: inserted.id,
+						sshKey: result
 					});
 					this.body = render(user, 1, "注册成功");
 				} else {

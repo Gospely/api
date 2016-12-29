@@ -217,7 +217,7 @@ module.exports = {
 
 		var domain = application.name;
 		var user = yield models.gospel_users.findById(application.creator);
-		var host = yield this.hostFilter(user, true);
+		var host = user.host;
 		host = host.dataValues;
 
 		console.log(host);
@@ -463,7 +463,7 @@ module.exports = {
 
 		application.image = application.languageType;
 		//获取主机
-		var host = yield this.hostFilter(user, true);
+		var host = user.host;
 		host = host.dataValues;
 		console.log(host);
 		if(application.git != null && application.git != undefined && application.git != ''){

@@ -63,7 +63,7 @@ shells.fast_deploy = function*(options) {
   return new Promise(function(resolve, reject) {
       var bash = "ssh root@" + host + ' docker run -itd --volumes-from docker-volume-' + options.creator + ' -m ' + options.memory +
         ' -v /var/www/storage/codes/' + options.creator + "/" + options.name +
-        ':/root/workspace ' + config + ' -p ' + options.socketPort + ':3000 -p ' + options.appPort  +
+        ':/root/workspace -v /var/www/storage/codes/' + options.creator + '/.ssh:/root/.ssh'  + config + ' -p ' + options.socketPort + ':3000 -p ' + options.appPort  +
         ':80 -p ' + options.sshPort + ':22 ' + port +
         ' -h ' + options.hostName +
         ' -w /root/workspace --name="gospel_project_' + options.name + '"  gospel-' +
@@ -112,7 +112,7 @@ shells.initDebug = function*(options){
     return new Promise(function(resolve, reject) {
         var bash = "ssh root@" + host + ' docker run -itd --volumes-from docker-volume-' + options.creator +
           ' -v /var/www/storage/codes/' + options.creator + "/" + options.name +
-          ':/root/workspace ' + config + ' -p ' + options.socketPort + ':3000 -p ' + options.appPort  +
+          ':/root/workspace -v /var/www/storage/codes/' + options.creator + '/.ssh:/root/.ssh' + config + ' -p ' + options.socketPort + ':3000 -p ' + options.appPort  +
           ':'+ options.exposePort +' -p ' + options.sshPort + ':22 ' + port +
           ' -h ' + options.hostName +
           ' -w /root/workspace --name="gospel_project_' + options.name + '" gospel-' +
@@ -365,7 +365,6 @@ shells.extendsVolume = function*(options) {
             });
     })
 }
-
 //创建数据卷容器
 shells.createVolume = function*(options) {
 
@@ -385,6 +384,21 @@ shells.createVolume = function*(options) {
                 });
         })
     }
+shells.sshKey = function*(options) {
+
+    var host = options.host || '120.76.235.234';
+    return new Promise(function(resolve, reject) {
+        exec("ssh root@" + host +
+            " 'ssh-keygen -t rsa -P '' -f /var/www/storage/codes/" + options.user + "/.ssh/id_rsa'",
+            function(err,
+                data) {
+                console.log(data);
+                console.log(err);
+                if (err) reject(err);
+                resolve(data);
+            });
+    })
+}
     //读取数据卷大小
 shells.volumeInfo = function*(options) {
 
@@ -496,26 +510,11 @@ shells.initFrameWork = function() {
         }
     }
 }
-shells.sshKey = function*(options){
-     var host = options.host || '120.76.235.234';
-     return new Promise(function(resolve, reject) {
-         exec('ssh root@' + host + ' sh /root/gospely/deploy/shell/docker_bash.sh gospel_project_' + options.docker + ' \"ssh-keygen -t rsa -P "" -f ~/.ssh/id_rsa\"' ,
-             function(err, data) {
-                console.log(err);
-                console.log(daa);
-                if (err)
-                    reject(err);
-                resolve(data);
-
-             });
-     });
-}
 shells.getKey = function*(options) {
 
-    var host = options.host || '120.76.235234';
+    var host = options.host || '120.76.235.234';
     return new Promise(function(resolve, reject) {
-        exec('ssh root@' + host + '  docker exec gospel_project_' + options.docker +
-            ' cat ~/.ssh/id_rsa.pub' ,
+        exec('ssh root@' + host + ' cat var/www/storage/codes' + options.user + '.ssh/id_rsa.pub' ,
             function(err, data) {
                 if (err)
                     reject(err);
