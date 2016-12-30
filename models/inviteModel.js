@@ -6,6 +6,7 @@ module.exports = function(sequelize, DataTypes) {
       defaultValue: DataTypes.UUIDV4,
       primaryKey: true
     },
+    code: DataTypes.STRING,
     isDeleted: {
       type: DataTypes.INTEGER,
       field: "isdeleted",

@@ -13,6 +13,12 @@ inherits(Controllers, EventEmitter);
 
 Controllers.prototype.route = function(router) {
 
+    // for(var i =0; i < 20; i++){
+    //     models.gospel_invites.build({
+    //         code: 'test2'
+    //     }).save();
+    // }
+
   console.log("dsd" + common);
   reader.readDir(__dirname).map(function(file) {
 

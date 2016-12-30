@@ -3,7 +3,6 @@ module.exports = {
 	isAuth: false,
 
 	isInit: 0,
-
 	port: 8089,
 
 	isDBAvailable: false,

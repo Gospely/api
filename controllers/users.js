@@ -142,104 +142,120 @@ users.register = function*() {
 	var user = yield parse(this, {
 		limit: '1kb'
 	});
-	delete user['id'];
-	user.password = md5_f.md5Sign(user.password, 'gospel_users');
-	user.type = 'common';
-	user.ide = uuid.v4();
-	user.ideName = '个人版';
-	user.group = 'ab64c397-d323-4133-9541-479bbaaf6c52';
-	var inserted;
+	console.log(user);
+	if(user.inviteCode){
+		var data = yield models.gospel_invites.findById(user.inviteCode);
+		if(data == null){
+			console.log(data);
+			console.log("sssss");
+			this.body = render(null, -1, "封测阶段，请使用邀请码注册");
+		}else{
+			 yield models.gospel_invites.delete(user.inviteCode);
 
-	if (user.phone != "") {
+			 delete user['id'];
+		 	user.password = md5_f.md5Sign(user.password, 'gospel_users');
+		 	user.type = 'common';
+		 	user.ide = uuid.v4();
+		 	user.ideName = '个人版';
+		 	user.group = 'ab64c397-d323-4133-9541-479bbaaf6c52';
+		 	var inserted;
 
-		console.log(user);
-		var	reg = /^1[34578]\d{9}$/;
-			isok = reg.test(user.phone);
-		console.log(isok);
-		var token = user.token;
-		var authCode = user.authCode;
+		 	if (user.phone != "") {
 
-		var innersession = yield models.gospel_innersessions.findById(token);
-		if (innersession.phone == user.phone) {
-			if ((Date.now() - innersession.time) <= innersession.limitTime) {
+		 		console.log(user);
+		 		var	reg = /^1[34578]\d{9}$/;
+		 			isok = reg.test(user.phone);
+		 		console.log(isok);
+		 		var token = user.token;
+		 		var authCode = user.authCode;
 
-				//更新用户状态
-				if (innersession.code == authCode) {
+		 		var innersession = yield models.gospel_innersessions.findById(token);
+		 		if (innersession.phone == user.phone) {
+		 			if ((Date.now() - innersession.time) <= innersession.limitTime) {
 
-					user.volumeSize = 10;
-					user.id = uuid.v4();
-					user.volume = "docker-volume-" + user.id;
-					if (!isok) {
-						user.email = user.phone;
-						user.phone = '';
-					}
-					var hosts = yield models.gospel_hosts.getAll({
-						type: user.type,
-						share: true
-					})
-					var host = selector.select(hosts);
-					user.host = host.ip;
-					inserted = yield models.gospel_users.create(user);
-					var result = yield shells.createVolume({
-						user: inserted.id,
-						host: user.host
-					});
-					yield shells.mkdir({
-						user: inserted.id,
-						host: user.host
-					});
-					yield shells.sshKey({
-						user: inserted.id,
-						host: user.host
-					});
-					var sshKey = yield shells.getKey({
-						user: inserted.id,
-						host: user.host
-					});
-					console.log(sshKey);
-					yield models.gospel_users.modify({
-						id: inserted.id,
-						sshKey: sshKey
-					});
-					this.body = render(user, 1, "注册成功");
-				} else {
-					this.body = render(null, -1, "验证码错误，请重新获取");
-				}
-			} else {
-				this.body = render(null, -1, "验证码超时，请重新获取");
-			}
-		} else {
-			this.body = render(null, -1, "注册失败，手机号或验证码错误");
+		 				//更新用户状态
+		 				if (innersession.code == authCode) {
+
+		 					user.volumeSize = 10;
+		 					user.id = uuid.v4();
+		 					user.volume = "docker-volume-" + user.id;
+		 					if (!isok) {
+		 						user.email = user.phone;
+		 						user.phone = '';
+		 					}
+		 					var hosts = yield models.gospel_hosts.getAll({
+		 						type: user.type,
+		 						share: true
+		 					})
+		 					var host = selector.select(hosts);
+		 					user.host = host.ip;
+		 					inserted = yield models.gospel_users.create(user);
+		 					var result = yield shells.createVolume({
+		 						user: inserted.id,
+		 						host: user.host
+		 					});
+		 					yield shells.mkdir({
+		 						user: inserted.id,
+		 						host: user.host
+		 					});
+		 					yield shells.sshKey({
+		 						user: inserted.id,
+		 						host: user.host
+		 					});
+		 					var sshKey = yield shells.getKey({
+		 						user: inserted.id,
+		 						host: user.host
+		 					});
+		 					console.log(sshKey);
+		 					yield models.gospel_users.modify({
+		 						id: inserted.id,
+		 						sshKey: sshKey
+		 					});
+		 					this.body = render(user, 1, "注册成功");
+		 				} else {
+		 					this.body = render(null, -1, "验证码错误，请重新获取");
+		 				}
+		 			} else {
+		 				this.body = render(null, -1, "验证码超时，请重新获取");
+		 			}
+		 		} else {
+		 			this.body = render(null, -1, "注册失败，手机号或验证码错误");
+		 		}
+		 		console.log(user.phone + "phone");
+		 	}
+
+		 	if (!inserted) {
+		 		this.body = render(null, -1, "注册失败,验证码超时");
+		 	} else {
+
+		 		yield models.gospel_ides.create({
+		 			id: user.ide,
+		 			name: '个人版',
+		 			creator: inserted.id,
+		 			product: '1'
+		 		})
+
+		 		var token = uuid.v4();
+		 		console.log("user" + token);
+
+		 		inserted.dataValues.token = token;
+		 		yield models.gospel_innersessions.create({
+		 			id: token,
+		 			code: token,
+		 			creater: inserted.id,
+		 			time: Date.now(),
+		 			group: inserted.group,
+		 			limitTime: 30 * 60 * 1000
+		 		});
+		 		this.body = render(inserted, 1, "注册成功");
+		 		//注册成功
+		 	}
 		}
-		console.log(user.phone + "phone");
+	}else{
+		this.body = render(null, -1, "封测阶段，请使用邀请码注册");
+		return false;
 	}
 
-	if (!inserted) {
-		this.throw(405, "register failed");
-	} else {
-
-		yield models.gospel_ides.create({
-			id: user.ide,
-			name: '个人版',
-			creator: inserted.id,
-			product: '1'
-		})
-
-		var token = uuid.v4();
-		console.log("user" + token);
-
-		inserted.dataValues.token = token;
-		yield models.gospel_innersessions.create({
-			id: token,
-			code: token,
-			creater: inserted.id,
-			time: Date.now(),
-			group: inserted.group,
-			limitTime: 30 * 60 * 1000
-		});
-		this.body = render(inserted, 1, "注册成功");
-		//注册成功
-	}
 }
 users.updatePhoto = function*() {
 
