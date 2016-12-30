@@ -238,13 +238,6 @@ module.exports = {
 			controller: 'dashboardApi',
 			groups: "ab64c397-d323-4133-9541-479bbaaf6c52_100"
 		},],
-		orders: [{
-			name: '下单',
-			method: 'post',
-			url: '/orders/order',
-			controller: 'order',
-			groups: "ab64c397-d323-4133-9541-479bbaaf6c52"
-		}],
 		domains: [{
 			name: '添加域名',
 			method: 'post',

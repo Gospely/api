@@ -547,9 +547,12 @@ module.exports = {
 				host: host,
 				name: en_name + "_" + user.name,
 			});
+			application.image = application.framework;
+		}else{
+			application.image = application.image.split(":")[0] + ":" + application.languageVersion;
 		}
 		console.log(application);
-		application.image = application.image + ":" + application.languageVersion;
+
 		application.host = host;
 		application.status = -1;
 		application.docker = 'gospel_project_' + en_name + "_" + user.name;
