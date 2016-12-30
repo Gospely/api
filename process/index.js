@@ -90,8 +90,13 @@ module.exports = {
 
 				var self = this;
 				var name = self.data.domain.replace('-', '_')
-				yield shells.delNginxConf(name);
-				yield shells.nginx();
+				yield shells.delNginxConf({
+					name: name,
+					host: host,
+				});
+				yield shells.nginx({
+					host: host
+				});
 				console.log("undo domain");
 			},
 		});

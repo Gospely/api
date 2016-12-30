@@ -93,6 +93,7 @@ shells.changePWD = function*(options){
     return new Promise(function(resolve, reject) {
         exec('ssh root@' + host + ' sh /root/gospely/deploy/shell/changePWD.sh gospel_project_' + options.name + " " + options.password,
             function(err, data) {
+                console.log(data);
                 if (err)
                     reject(err);
                 resolve(data);
@@ -167,8 +168,8 @@ shells.delNginxConf = function*(options) {
     var host = options.host || '120.76.235.234';
     return new Promise(function(resolve, reject) {
         exec("ssh root@" + host + " rm /etc/nginx/conf.d/" +
-            options.projectname +
-            ".120.76.235.234.conf",
+            options.name +
+            ".gospely.com.conf",
             function(err, data) {
                 console.log(data);
                 console.log(err);
@@ -185,7 +186,7 @@ shells.rmDocker = function*(options) {
     return new Promise(function(resolve, reject) {
         exec("ssh root@" + host +
             " docker rm -f  gospel_project_" +
-            options.docker,
+            options.name,
             function(err, data) {
                 console.log(data);
                 console.log(err);
@@ -200,7 +201,7 @@ shells.stopDocker = function*(options) {
     return new Promise(function(resolve, reject) {
         exec("ssh root@" + host +
             " docker stop  gospel_project_" +
-            options.docker,
+            options.name,
             function(err, data) {
                 console.log(data);
                 console.log(err);
