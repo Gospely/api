@@ -15,7 +15,8 @@ module.exports = {
 		var domain = application.name;
 		var user = yield models.gospel_users.findById(application.creator);
 		var host = yield this.hostFilter(user, false);
-		host = host.dataValues;
+			host = host.ip;
+
 		application.userName = user.name;
 		var reg = /[\u4e00-\u9FA5]+/;
 		var res = reg.test(domain);
@@ -39,7 +40,7 @@ module.exports = {
 			data: {
 				subDomain: domain + "-" + application.userName,
 				domain: config.dnspod.baseDomain,
-				host: host.ip,
+				host: host,
 				ip: '120.76.235.234',
 				application: application.id,
 				creator: application.creator,
@@ -79,14 +80,25 @@ module.exports = {
 				user: application.creator,
 				domain: domain + "-" + application.userName,
 				port: application.port,
-				host: host.ip,
+				host: host,
 			},
 			undo: function*() {
 
 				var self = this;
 				var name = self.data.domain.replace('-', '_')
+<<<<<<< HEAD
 				yield shells.delNginxConf(name);
 				yield shells.nginx();
+=======
+				yield shells.delNginxConf({
+					name: name,
+					host: host,
+				});
+				yield shells.nginx({
+					host: host
+				});
+				console.log("undo domain");
+>>>>>>> 1018480862f5f7151cbcbd3848a7755f187a0ea7
 			},
 		});
 
@@ -96,18 +108,18 @@ module.exports = {
 		// console.log(data);
 		//创建并启动docker
 
-		application.socketPort = yield portManager.generatePort(host.ip);
+		application.socketPort = yield portManager.generatePort(host);
 		if (application.port == application.socketPort) {
-			application.port = yield portManager.generatePort(host.ip);
+			application.port = yield portManager.generatePort(host);
 		}
-		application.sshPort = yield portManager.generatePort(host.ip);
+		application.sshPort = yield portManager.generatePort(host);
 		if (application.sshPort == application.socketPort) {
 
-			application.socketPort = yield portManager.generatePort(host.ip);
+			application.socketPort = yield portManager.generatePort(host);
 		}
-		application.dbPort = yield portManager.generatePort(host.ip);
+		application.dbPort = yield portManager.generatePort(host);
 		if(application.dbPort == application.socketPort || application.dbPort == application.sshPort || application.dbPort == application.port){
-			application.dbPort = yield portManager.generatePort(host.ip);
+			application.dbPort = yield portManager.generatePort(host);
 		}
 		var docker = yield models.gospel_products.findById(application.products);
 		var unit = "";
@@ -124,8 +136,13 @@ module.exports = {
 				var self = this;
 				var result = yield shells.fast_deploy(self.data);
 				yield shells.mvFiles({
-					host: host.ip,
+					host: host,
 					name: domain + "_" + application.userName,
+				});
+				yield shells.changePWD({
+					host: host,
+					name: domain + "_" + application.userName,
+					password: application.sshPassword
 				});
 				// if(application.git) {
 				// 	console.log("gicone");
@@ -140,7 +157,7 @@ module.exports = {
 				}
 			},
 			data: {
-				host: host.ip,
+				host: host,
 				name: domain + "_" + application.userName,
 				sshPort: application.sshPort,
 				socketPort: application.socketPort,
@@ -158,11 +175,11 @@ module.exports = {
 
 				var self = this;
 				yield shells.stopDocker({
-					host: host.ip,
+					host: host,
 					name: self.data.name
 				});
 				yield shells.rmDocker({
-					host: host.ip,
+					host: host,
 					name: self.data.name
 				});
 				yield shells.rmFile("/var/www/storage/codes/" + self.data.name)
@@ -189,6 +206,7 @@ module.exports = {
 					port: application.port,
 					password: application.password,
 					socketPort: application.socketPort,
+					host: host
 				});
 				self.data = inserted;
 				application = inserted;
@@ -211,8 +229,8 @@ module.exports = {
 
 		var domain = application.name;
 		var user = yield models.gospel_users.findById(application.creator);
-		var host = yield this.hostFilter(user, true);
-		host = host.dataValues;
+		var host = user.host;
+
 
 
 		application.userName = user.name;
@@ -234,7 +252,7 @@ module.exports = {
 
 				var imageId = result.split(":")[1];
 				var result = yield shells.dockerPush({
-					host: host.ip,
+					host: host,
 					imageId: imageId,
 					name: domain + "-" + application.userName,
 				});
@@ -242,7 +260,7 @@ module.exports = {
 			data: {
 				name: domain + "-" + application.userName,
 				user: application.userName,
-				host: host.ip,
+				host: host,
 				docker: application.docker,
 			},
 			undo: function* () {
@@ -276,7 +294,7 @@ module.exports = {
 			data: {
 				subDomain: domain + "-" + application.userName,
 				domain: config.dnspod.baseDomain,
-				host: host.ip,
+				host: host,
 				application: application.id,
 				creator: application.creator,
 				sub: true
@@ -312,7 +330,7 @@ module.exports = {
 				}
 			},
 			data: {
-				host: host.ip,
+				host: host,
 				user: application.creator,
 				domain: domain + "-" + application.userName,
 				port: application.port,
@@ -323,10 +341,10 @@ module.exports = {
 				var name = self.data.domain.replace('-', '_')
 				yield shells.delNginxConf({
 					projectname: name,
-					host: host.ip,
+					host: host,
 				});
 				yield shells.nginx({
-					host: host.ip,
+					host: host,
 				});
 			},
 		});
@@ -352,7 +370,7 @@ module.exports = {
 				var result = yield shells.docker(self.data);
 				if (application.git) {
 					shells.gitClone({
-						host: host.ip,
+						host: host,
 						user: application.creator,
 						projectname: domain + "_" + application.userName,
 						gitURL: application.git,
@@ -363,7 +381,7 @@ module.exports = {
 				}
 			},
 			data: {
-				host: host.ip,
+				host: host,
 				name: domain + "_" + application.userName,
 				sshPort: application.sshPort,
 				socketPort: application.socketPort,
@@ -378,11 +396,11 @@ module.exports = {
 
 				var self = this;
 				yield shells.stopDocker({
-					host: host.ip,
+					host: host,
 					docker: self.data.name
 				});
 				yield shells.rmDocker({
-					host: host.ip,
+					host: host,
 					docker: self.data.name
 				});
 				yield shells.rmFile("/var/www/storage/codes/" + self.data.name)
@@ -443,12 +461,18 @@ module.exports = {
 
 		application.image = application.languageType;
 		//获取主机
+<<<<<<< HEAD
 		var host = yield this.hostFilter(user, true);
 		host = host.dataValues;
+=======
+		var host = user.host;
+
+		console.log(host);
+>>>>>>> 1018480862f5f7151cbcbd3848a7755f187a0ea7
 		if(application.git != null && application.git != undefined && application.git != ''){
 			//用户创建应用的方式未从git创建时 git clone项目到平台
 			shells.gitClone({
-				host: host.ip,
+				host: host,
 				user: application.creator,
 				projectname: en_name + "_" + user.name,
 				gitURL: application.git,
@@ -464,22 +488,22 @@ module.exports = {
 		application.cmds = image.cmds;
 		application.exposePort = image.port;
 		//端口生成
-		application.port = yield portManager.generatePort(host.ip);
-		application.socketPort = yield portManager.generatePort(host.ip);
+		application.port = yield portManager.generatePort(host);
+		application.socketPort = yield portManager.generatePort(host);
 		if (application.port == application.socketPort) {
-			application.port = yield portManager.generatePort(host.ip);
+			application.port = yield portManager.generatePort(host);
 		}
-		application.sshPort = yield portManager.generatePort(host.ip);
+		application.sshPort = yield portManager.generatePort(host);
 		if (application.sshPort == application.socketPort) {
 
-			application.socketPort = yield portManager.generatePort(host.ip);
+			application.socketPort = yield portManager.generatePort(host);
 		}
-		application.dbPort = yield portManager.generatePort(host.ip);
+		application.dbPort = yield portManager.generatePort(host);
 		if(application.dbPort == application.socketPort || application.dbPort == application.sshPort || application.dbPort == application.port){
-			application.dbPort = yield portManager.generatePort(host.ip);
+			application.dbPort = yield portManager.generatePort(host);
 		}
 		var result = yield shells.initDebug({
-			host: host.ip,
+			host: host,
 			name: en_name + "_" + user.name,
 			sshPort: application.sshPort,
 			socketPort: application.socketPort,
@@ -499,22 +523,31 @@ module.exports = {
 
 			// //生成ssh key
 			//  yield shells.sshKey({
-			// 	host: host.ip,
+			// 	host: host,
 			// 	docker: en_name + "_" + user.name,
 			// });
 			// application.sshKey = yield shells.sshKey({
-			// 	host: host.ip,
+			// 	host: host,
 			// 	docker: en_name + "_" + user.name,
 			// });
 		}
 		if(application.framework != null && application.framework != undefined && application.framework != ''){
 			yield shells.mvFiles({
-				host: host.ip,
+				host: host,
 				name: en_name + "_" + user.name,
 			});
+			application.image = application.framework;
+		}else{
+			application.image = application.image.split(":")[0] + ":" + application.languageVersion;
 		}
+<<<<<<< HEAD
 		application.image = application.image + ":" + application.languageVersion;
 		application.host = host.ip;
+=======
+		console.log(application);
+
+		application.host = host;
+>>>>>>> 1018480862f5f7151cbcbd3848a7755f187a0ea7
 		application.status = -1;
 		application.docker = 'gospel_project_' + en_name + "_" + user.name;
 		delete application['languageType'];
@@ -527,7 +560,7 @@ module.exports = {
 			configs: image.defaultConfig
 		});
 
-		return true;
+		return inserted;
 	},
 	//根据用户的ide版本获取对应配置的主机
 	hostFilter: function*(user, share) {

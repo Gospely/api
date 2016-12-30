@@ -31,10 +31,6 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.STRING,
       field: 'socket_port'
     },
-    sshKey: {
-        type: DataTypes.STRING,
-        field: 'ssh_key'
-    },
     sshPassword: {
         type: DataTypes.STRING,
         field: 'ssh_password',

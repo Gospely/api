@@ -13,7 +13,13 @@ module.exports = function(sequelize, DataTypes) {
     password: DataTypes.STRING,
     identify: DataTypes.STRING,
     volume: DataTypes.STRING,
+    host: DataTypes.STRING,
     socket_id: DataTypes.STRING,
+    sshKey: {
+        type: DataTypes.STRING,
+        field: 'sshkey'
+    },
+
     volumeSize: {
       type: DataTypes.INTEGER,
       field: 'volume_size'
@@ -109,7 +115,7 @@ module.exports = function(sequelize, DataTypes) {
 
       //活跃用户数
       active_count:function*(item){
-        
+
       },
       //付费用户数
       pay_count:function*(item){

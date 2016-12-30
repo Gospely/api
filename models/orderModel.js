@@ -18,6 +18,8 @@ module.exports = function(sequelize, DataTypes) {
     size: DataTypes.INTEGER,
     unit: DataTypes.STRING,
     type: DataTypes.STRING,
+    wechat: DataTypes.STRING,
+    alipay: DataTypes.STRING,
     balance: DataTypes.DOUBLE,
     balanceTime: {
       type: DataTypes.STRING,

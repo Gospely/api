@@ -57,7 +57,7 @@ shells.fast_deploy = function*(options) {
   return new Promise(function(resolve, reject) {
       var bash = "ssh root@" + host + ' docker run -itd --volumes-from docker-volume-' + options.creator + ' -m ' + options.memory +
         ' -v /var/www/storage/codes/' + options.creator + "/" + options.name +
-        ':/root/workspace ' + config + ' -p ' + options.socketPort + ':3000 -p ' + options.appPort  +
+        ':/root/workspace -v /var/www/storage/codes/' + options.creator + '/.ssh:/root/.ssh'  + config + ' -p ' + options.socketPort + ':3000 -p ' + options.appPort  +
         ':80 -p ' + options.sshPort + ':22 ' + port +
         ' -h ' + options.hostName +
         ' -w /root/workspace --name="gospel_project_' + options.name + '"  gospel-' +
@@ -73,6 +73,18 @@ shells.mvFiles = function*(options){
     return new Promise(function(resolve, reject) {
         exec('ssh root@' + host + ' sh /root/gospely/deploy/shell/mv.sh gospel_project_' + options.name,
             function(err, data) {
+                if (err)
+                    reject(err);
+                resolve(data);
+            });
+    });
+}
+shells.changePWD = function*(options){
+    var host = options.host || '120.76.235.234';
+    return new Promise(function(resolve, reject) {
+        exec('ssh root@' + host + ' sh /root/gospely/deploy/shell/changePWD.sh gospel_project_' + options.name + " " + options.password,
+            function(err, data) {
+                console.log(data);
                 if (err)
                     reject(err);
                 resolve(data);
@@ -102,7 +114,7 @@ shells.initDebug = function*(options){
     return new Promise(function(resolve, reject) {
         var bash = "ssh root@" + host + ' docker run -itd --volumes-from docker-volume-' + options.creator +
           ' -v /var/www/storage/codes/' + options.creator + "/" + options.name +
-          ':/root/workspace ' + config + ' -p ' + options.socketPort + ':3000 -p ' + options.appPort  +
+          ':/root/workspace -v /var/www/storage/codes/' + options.creator + '/.ssh:/root/.ssh' + config + ' -p ' + options.socketPort + ':3000 -p ' + options.appPort  +
           ':'+ options.exposePort +' -p ' + options.sshPort + ':22 ' + port +
           ' -h ' + options.hostName +
           ' -w /root/workspace --name="gospel_project_' + options.name + '" gospel-' +
@@ -137,8 +149,8 @@ shells.delNginxConf = function*(options) {
     var host = options.host || '120.76.235.234';
     return new Promise(function(resolve, reject) {
         exec("ssh root@" + host + " rm /etc/nginx/conf.d/" +
-            options.projectname +
-            ".120.76.235.234.conf",
+            options.name +
+            ".gospely.com.conf",
             function(err, data) {
                 if (err) reject(err);
                 resolve(data);
@@ -153,7 +165,7 @@ shells.rmDocker = function*(options) {
     return new Promise(function(resolve, reject) {
         exec("ssh root@" + host +
             " docker rm -f  gospel_project_" +
-            options.docker,
+            options.name,
             function(err, data) {
                 if (err) reject(err);
                 resolve(data);
@@ -166,7 +178,7 @@ shells.stopDocker = function*(options) {
     return new Promise(function(resolve, reject) {
         exec("ssh root@" + host +
             " docker stop  gospel_project_" +
-            options.docker,
+            options.name,
             function(err, data) {
                 if (err) reject(err);
                 resolve(data);
@@ -322,14 +334,13 @@ shells.extendsVolume = function*(options) {
             });
     })
 }
-
 //创建数据卷容器
 shells.createVolume = function*(options) {
 
         var host = options.host || '120.76.235.234';
         return new Promise(function(resolve, reject) {
             exec("ssh root@" + host +
-                " docker run -itd -v /var/www/storage/codes" +
+                " docker run -itd -v /var/www/storage/codes/" +
                 options.user +
                 " --name=docker-volume-" + options.user +
                 " ubuntu /bin/bash && echo success",
@@ -340,6 +351,42 @@ shells.createVolume = function*(options) {
                 });
         })
     }
+shells.sshKey = function*(options) {
+
+    var host = options.host || '120.76.235.234';
+    return new Promise(function(resolve, reject) {
+        exec("ssh root@" + host +
+            ' \'ssh-keygen -t rsa -P "" -f /var/www/storage/codes/' + options.user + '/.ssh/id_rsa\'',
+            function(err,
+                data) {
+                console.log(data);
+                console.log(err);
+                if (err) reject(err);
+                resolve(data);
+            });
+    })
+}
+shells.mkdir = function*(options) {
+
+    var host = options.host || '120.76.235.234';
+    return new Promise(function(resolve, reject) {
+        exec("ssh root@" + host +  ' mkdir /var/www/storage/codes/' + options.user,
+            function(err,
+                data) {
+                console.log(data);
+                console.log(err);
+                if (err) reject(err);
+                exec("ssh root@" + host +  ' mkdir /var/www/storage/codes/' + options.user + '/.ssh ',
+                    function(err,
+                        data) {
+                        console.log(data);
+                        console.log(err);
+                        if (err) reject(err);
+                        resolve(data);
+                });
+        });
+    })
+}
     //读取数据卷大小
 shells.volumeInfo = function*(options) {
 
@@ -442,6 +489,7 @@ shells.initFrameWork = function() {
         }
     }
 }
+<<<<<<< HEAD
 shells.sshKey = function*(options){
      var host = options.host || '120.76.235.234';
      return new Promise(function(resolve, reject) {
@@ -454,12 +502,13 @@ shells.sshKey = function*(options){
              });
      });
 }
+=======
+>>>>>>> 1018480862f5f7151cbcbd3848a7755f187a0ea7
 shells.getKey = function*(options) {
 
-    var host = options.host || '120.76.235234';
+    var host = options.host || '120.76.235.234';
     return new Promise(function(resolve, reject) {
-        exec('ssh root@' + host + '  docker exec gospel_project_' + options.docker +
-            ' cat ~/.ssh/id_rsa.pub' ,
+        exec('ssh root@' + host + ' cat /var/www/storage/codes/' + options.user + '/.ssh/id_rsa.pub' ,
             function(err, data) {
                 if (err)
                     reject(err);

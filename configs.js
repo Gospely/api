@@ -3,7 +3,6 @@ module.exports = {
 	isAuth: false,
 
 	isInit: 0,
-
 	port: 8089,
 
 	isDBAvailable: false,
@@ -93,8 +92,8 @@ module.exports = {
 		secureConnection: true, // 使用 SSL
 		port: 465, // SMTP 端口
 		auth: {
-			user: "shark@dodora.cn", // 账号
-			pass: "AIxrslwh1993" // 密码
+			user: "account@dodora.cn", // 账号
+			pass: "doraCN2016" // 密码
 		}
 	},
 
@@ -239,13 +238,6 @@ module.exports = {
 			controller: 'dashboardApi',
 			groups: "ab64c397-d323-4133-9541-479bbaaf6c52_100"
 		},],
-		orders: [{
-			name: '下单',
-			method: 'post',
-			url: '/orders/order',
-			controller: 'order',
-			groups: "ab64c397-d323-4133-9541-479bbaaf6c52"
-		}],
 		domains: [{
 			name: '添加域名',
 			method: 'post',

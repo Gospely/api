@@ -48,6 +48,7 @@ applications.fast_deploy = function*(application,ctx){
 			ctx.body = render(inserted, null, null, 1, "应用创建成功");
 		} else {
 			ctx.body = render(inserted, null, null, -1, "应用创建失败");
+			 yield models.gospel_applications.delete(inserted.id);
 		}
 	} else {
 
@@ -220,9 +221,9 @@ applications.create = function*() {
 			var result = yield processes.initDebug(application);
 
 			if (result) {
-				this.body = render(null, null, null, 1, "应用创建成功");
+				this.body = render(result, null, null, 1, "应用创建成功");
 			} else {
-				this.body = render(null, null, null, -1, "应用创建失败");
+				this.body = render(result, null, null, -1, "应用创建失败");
 			}
 		}
 	}
