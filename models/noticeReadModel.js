@@ -24,7 +24,6 @@ module.exports = function(sequelize, DataTypes) {
     createdAt: 'createat',
     classMethods: {
       associate: (models) => {
-        console.log("associate");
       },
       isBind: function*(user) {
 

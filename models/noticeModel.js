@@ -28,7 +28,6 @@ module.exports = function(sequelize, DataTypes) {
     updatedAt: 'updateat',
     classMethods: {
       associate: (models) => {
-        console.log("associate");
       },
       getAllInit: function(item) {
 

@@ -21,7 +21,6 @@ module.exports = function(sequelize, DataTypes) {
     timestamps: false,
     classMethods: {
       associate: (models) => {
-        console.log("associate");
       },
       delete: function*(item) {
         item.destroy({
