@@ -489,7 +489,6 @@ shells.initFrameWork = function() {
         }
     }
 }
-<<<<<<< HEAD
 shells.sshKey = function*(options){
      var host = options.host || '120.76.235.234';
      return new Promise(function(resolve, reject) {
@@ -498,14 +497,10 @@ shells.sshKey = function*(options){
                 if (err)
                     reject(err);
                 resolve(data);
-
              });
      });
 }
-=======
->>>>>>> 1018480862f5f7151cbcbd3848a7755f187a0ea7
 shells.getKey = function*(options) {
-
     var host = options.host || '120.76.235.234';
     return new Promise(function(resolve, reject) {
         exec('ssh root@' + host + ' cat /var/www/storage/codes/' + options.user + '/.ssh/id_rsa.pub' ,
