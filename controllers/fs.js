@@ -570,14 +570,6 @@ var fileSystem = {
 
 	upload : function*(){
 
-
-		//
-        // this.res.header('Access-Control-Allow-Origin', '*');
-        // this.res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-        // this.res.header('Access-Control-Allow-Headers', 'Content-Type');
-        // this.res.header('Access-Control-Allow-Credentials','true');
-
-
 		var fileName = this.req.files.fileUp.name;
 		var originalname = this.req.files.fileUp.originalname;
 		var username = this.req.body.username;
