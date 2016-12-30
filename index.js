@@ -31,8 +31,6 @@ app.use(function*(next) {
     // global.dashDomain = 'http://dash.gospely.com'
     yield next;
   } catch (err) {
-    console.log('catch');
-    console.log(err);
     this.status = err.status || 500;
     this.body = err.message;
     console.log(err.message);
@@ -102,8 +100,7 @@ Promise.resolve(setupDb)
 
 app.io.use(function*(next) {
     //join
-    console.log('somebody connected');
-    console.log(this.headers);
+    //console.log('somebody connected');
 
     yield* next;
 
@@ -117,7 +114,6 @@ app.io.use(function*(next) {
 
 
 app.io.route('join listen',function* (next,userId) {
-    console.log(userId);
     var socket_id = this.socket.id;
     var user = yield models.gospel_users.findById(userId);
     user.socket_id = socket_id;
