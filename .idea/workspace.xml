@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="798d5ef1-4ab1-48d3-b117-531547676ad2" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/controllers/fs.js" afterPath="$PROJECT_DIR$/controllers/fs.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shell/index.js" afterPath="$PROJECT_DIR$/shell/index.js" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -33,11 +33,21 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="fs.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="fs.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/controllers/fs.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="107">
-              <caret line="572" column="30" lean-forward="false" selection-start-line="572" selection-start-column="30" selection-end-line="572" selection-end-column="30" />
+            <state relative-caret-position="485">
+              <caret line="605" column="34" lean-forward="false" selection-start-line="605" selection-start-column="25" selection-end-line="605" selection-end-column="34" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="configs.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/configs.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="125">
+              <caret line="378" column="31" lean-forward="false" selection-start-line="378" selection-start-column="25" selection-end-line="378" selection-end-column="31" />
               <folding />
             </state>
           </provider>
@@ -53,11 +63,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="index.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="index.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/shell/index.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="197">
-              <caret line="406" column="0" lean-forward="false" selection-start-line="406" selection-start-column="0" selection-end-line="406" selection-end-column="0" />
+            <state relative-caret-position="395">
+              <caret line="420" column="39" lean-forward="false" selection-start-line="420" selection-start-column="39" selection-end-line="420" selection-end-column="39" />
               <folding />
             </state>
           </provider>
@@ -68,16 +78,6 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="90">
               <caret line="5" column="22" lean-forward="false" selection-start-line="5" selection-start-column="22" selection-end-line="5" selection-end-column="22" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="typeModel.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/models/typeModel.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="234">
-              <caret line="13" column="30" lean-forward="false" selection-start-line="13" selection-start-column="30" selection-end-line="13" selection-end-column="30" />
               <folding />
             </state>
           </provider>
@@ -219,8 +219,8 @@
         <option value="$PROJECT_DIR$/models/noticeModel.js" />
         <option value="$PROJECT_DIR$/models/noticeReadModel.js" />
         <option value="$PROJECT_DIR$/index.js" />
-        <option value="$PROJECT_DIR$/shell/index.js" />
         <option value="$PROJECT_DIR$/controllers/fs.js" />
+        <option value="$PROJECT_DIR$/shell/index.js" />
       </list>
     </option>
   </component>
@@ -325,7 +325,7 @@
       <recent name="$PROJECT_DIR$" />
     </key>
   </component>
-  <component name="RunManager" selected="Bash.deploy.sh">
+  <component name="RunManager" selected="Node.js.api">
     <configuration default="false" name="deploy.sh" type="BashConfigurationType" factoryName="Bash" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="bash" />
       <option name="INTERPRETER_PATH" value="/usr/bin/env" />
@@ -472,12 +472,12 @@
       <workItem from="1482927279466" duration="527000" />
       <workItem from="1482927849614" duration="1319000" />
       <workItem from="1483088007654" duration="4469000" />
-      <workItem from="1483092810270" duration="858000" />
+      <workItem from="1483092810270" duration="1275000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="41485000" />
+    <option name="totallyTimeSpent" value="41902000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -627,14 +627,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-4547">
           <caret line="321" column="5" lean-forward="false" selection-start-line="321" selection-start-column="5" selection-end-line="321" selection-end-column="5" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/configs.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -868,14 +860,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/shell/index.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="197">
-          <caret line="406" column="0" lean-forward="false" selection-start-line="406" selection-start-column="0" selection-end-line="406" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$APPLICATION_CONFIG_DIR$/javascript/nodejs/6.2.0/core-modules/fs.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="197">
@@ -892,10 +876,26 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/configs.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="125">
+          <caret line="378" column="31" lean-forward="false" selection-start-line="378" selection-start-column="25" selection-end-line="378" selection-end-column="31" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/controllers/fs.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="107">
-          <caret line="572" column="30" lean-forward="false" selection-start-line="572" selection-start-column="30" selection-end-line="572" selection-end-column="30" />
+        <state relative-caret-position="485">
+          <caret line="605" column="34" lean-forward="false" selection-start-line="605" selection-start-column="25" selection-end-line="605" selection-end-column="34" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/shell/index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="395">
+          <caret line="420" column="39" lean-forward="false" selection-start-line="420" selection-start-column="39" selection-end-line="420" selection-end-column="39" />
           <folding />
         </state>
       </provider>

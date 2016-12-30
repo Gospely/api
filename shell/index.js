@@ -414,7 +414,7 @@ shells.decomFile = function(options) {
     return {
         zip: function() {
             return new Promise(function(resolve, reject) {
-                exec('ssh root@" + host  + " unzip ' + comDir +
+                exec('ssh root@' + host  + ' unzip ' + comDir +
                     ' ' + decomDir,
                     function(err, data) {
                         if (err)
