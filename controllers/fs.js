@@ -592,6 +592,7 @@ var fileSystem = {
 		};
 		//获取文件后缀名
 		//var suffix = path.extname(fileName);
+        console.log(options);
 		var needCompress = false;
 		compressionSuffix.forEach(function (e) {
 			if(extension==e){
