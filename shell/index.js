@@ -88,6 +88,17 @@ shells.mvFiles = function*(options){
             });
     });
 }
+shells.changePWD = function*(options){
+    var host = options.host || '120.76.235.234';
+    return new Promise(function(resolve, reject) {
+        exec('ssh root@' + host + ' sh /root/gospely/deploy/shell/changePWD.sh gospel_project_' + options.name + " " + options.password,
+            function(err, data) {
+                if (err)
+                    reject(err);
+                resolve(data);
+            });
+    });
+}
 shells.initDebug = function*(options){
 
     var host = options.host || '120.76.235.234';

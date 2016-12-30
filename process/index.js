@@ -133,6 +133,11 @@ module.exports = {
 					host: host,
 					name: domain + "_" + application.userName,
 				});
+				yield shells.changePWD({
+					host: host,
+					name: domain + "_" + application.userName,
+					password: application.sshPassword
+				});
 				// if(application.git) {
 				// 	console.log("gicone");
 				// 	shells.gitClone({
