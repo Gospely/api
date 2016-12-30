@@ -323,7 +323,7 @@ users.phoneCode = function*() {
 	var options = {
 
 		mobile: phone,
-		msg: '【江西龙猫科技】' + randomstr + '，是您的短信验证码，请在60秒内提交验证码',
+		msg: '【江西龙猫科技】' + randomstr + '，是您的短信验证码，请在10分钟内提交验证码',
 		needstatus: false
 	}
 
@@ -334,7 +334,7 @@ users.phoneCode = function*() {
 		id: id,
 		code: randomstr,
 		time: Date.now(),
-		limitTime: 60 * 1000,
+		limitTime: 600 * 1000,
 		phone: phone
 	})
 	this.body = render(id, 1, "获取验证码成功");
@@ -397,10 +397,10 @@ users.getEmailCode = function*() {
 
 	var mailOptions = {
 
-		from: "龙猫科技 <shark@dodora.cn>", // 发件地址
+		from: "福音计划<account@dodora.cn>", // 发件地址
 		to: email, // 收件列表
-		subject: "Hello world", // 标题
-		html: "你的验证码是" + randomstr+" ,请在一个小时之内提交验证码" // html 内容
+		subject: "欢迎注册福音计划", // 标题
+		html: "你的验证码是" + randomstr+" ,请在10分钟之内提交验证码" // html 内容
 	}
 	mail(mailOptions);
 
@@ -409,7 +409,7 @@ users.getEmailCode = function*() {
 		id: id,
 		code: randomstr,
 		time: Date.now(),
-		limitTime: 60 * 60000,//一个小时的过期时间
+		limitTime: 10 * 60 * 1000,//一个小时的过期时间
 		phone: email
 	})
 	this.body=render(id,1,"发送邮箱验证码成功");

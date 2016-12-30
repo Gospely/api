@@ -49,6 +49,7 @@ applications.fast_deploy = function*(application,ctx){
 			ctx.body = render(inserted, null, null, 1, "应用创建成功");
 		} else {
 			ctx.body = render(inserted, null, null, -1, "应用创建失败");
+			 yield models.gospel_applications.delete(inserted.id);
 		}
 	} else {
 
