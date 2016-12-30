@@ -93,7 +93,7 @@ module.exports = {
 		secureConnection: true, // 使用 SSL
 		port: 465, // SMTP 端口
 		auth: {
-			user: "auth@dodora.cn", // 账号
+			user: "account@dodora.cn", // 账号
 			pass: "doraCN2016" // 密码
 		}
 	},
