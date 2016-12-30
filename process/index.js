@@ -85,11 +85,10 @@ module.exports = {
 			undo: function*() {
 
 				var self = this;
-				var name = self.data.domain.replace('-', '_')
-<<<<<<< HEAD
+				var name = self.data.domain.replace('-', '_');
 				yield shells.delNginxConf(name);
 				yield shells.nginx();
-=======
+
 				yield shells.delNginxConf({
 					name: name,
 					host: host,
@@ -97,8 +96,6 @@ module.exports = {
 				yield shells.nginx({
 					host: host
 				});
-				console.log("undo domain");
->>>>>>> 1018480862f5f7151cbcbd3848a7755f187a0ea7
 			},
 		});
 
@@ -461,14 +458,9 @@ module.exports = {
 
 		application.image = application.languageType;
 		//获取主机
-<<<<<<< HEAD
 		var host = yield this.hostFilter(user, true);
 		host = host.dataValues;
-=======
 		var host = user.host;
-
-		console.log(host);
->>>>>>> 1018480862f5f7151cbcbd3848a7755f187a0ea7
 		if(application.git != null && application.git != undefined && application.git != ''){
 			//用户创建应用的方式未从git创建时 git clone项目到平台
 			shells.gitClone({
@@ -540,14 +532,9 @@ module.exports = {
 		}else{
 			application.image = application.image.split(":")[0] + ":" + application.languageVersion;
 		}
-<<<<<<< HEAD
 		application.image = application.image + ":" + application.languageVersion;
 		application.host = host.ip;
-=======
-		console.log(application);
-
 		application.host = host;
->>>>>>> 1018480862f5f7151cbcbd3848a7755f187a0ea7
 		application.status = -1;
 		application.docker = 'gospel_project_' + en_name + "_" + user.name;
 		delete application['languageType'];

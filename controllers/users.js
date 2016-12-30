@@ -137,7 +137,6 @@ users.register = function*() {
 	var user = yield parse(this, {
 		limit: '1kb'
 	});
-<<<<<<< HEAD
 	delete user['id'];
 	user.password = md5_f.md5Sign(user.password, 'gospel_users');
 	user.type = 'common';
@@ -208,8 +207,6 @@ users.register = function*() {
 		this.body = render(inserted, 1, "注册成功");
 		//注册成功
 	}
-=======
-	console.log(user);
 	if(user.inviteCode){
 		var data = yield models.gospel_invites.findById(user.inviteCode);
 		if(data == null){
@@ -301,7 +298,7 @@ users.register = function*() {
 		 			name: '个人版',
 		 			creator: inserted.id,
 		 			product: '1'
-		 		})
+		 		});
 
 		 		var token = uuid.v4();
 		 		console.log("user" + token);
@@ -323,8 +320,6 @@ users.register = function*() {
 		this.body = render(null, -1, "封测阶段，请使用邀请码注册");
 		return false;
 	}
-
->>>>>>> 1018480862f5f7151cbcbd3848a7755f187a0ea7
 }
 users.updatePhoto = function*() {
 
