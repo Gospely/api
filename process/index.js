@@ -12,7 +12,6 @@ module.exports = {
 
 	fast_deploy: function*(application){
 
-		console.log(application);
 		var domain = application.name;
 		var user = yield models.gospel_users.findById(application.creator);
 		var host = yield this.hostFilter(user, false);
@@ -49,7 +48,6 @@ module.exports = {
 			undo: function*() {
 
 				var self = this;
-				console.log(self.data.message);
 				var options = {
 					method: 'recordRemove',
 					opp: 'recordRemove',
@@ -63,7 +61,6 @@ module.exports = {
 				if (result.status.code == '1') {
 					yield models.gospel_domains.delete(self.data.message.id);
 				}
-				console.log("undo first");
 			},
 		});
 
@@ -72,7 +69,6 @@ module.exports = {
 		node = processes.buildNext(node, {
 			do: function*() {
 
-				console.log("success");
 				var self = this;
 				var result = yield shells.domain(self.data);
 				if (result != 'success') {
@@ -91,7 +87,6 @@ module.exports = {
 				var name = self.data.domain.replace('-', '_')
 				yield shells.delNginxConf(name);
 				yield shells.nginx();
-				console.log("undo domain");
 			},
 		});
 
@@ -219,7 +214,6 @@ module.exports = {
 		var host = yield this.hostFilter(user, true);
 		host = host.dataValues;
 
-		console.log(host);
 
 		application.userName = user.name;
 		var reg = /[\u4e00-\u9FA5]+/;
@@ -235,11 +229,9 @@ module.exports = {
 		var node = processes.init({
 			do: function* () {
 				var self = this;
-				console.log(host);
 
 				var result = yield shells.commit(self.data);
 
-				console.log(result);
 				var imageId = result.split(":")[1];
 				var result = yield shells.dockerPush({
 					host: host.ip,
@@ -256,7 +248,6 @@ module.exports = {
 			undo: function* () {
 
 				var self = this;
-				console.log(self.data.message);
 				var options = {
 					method: 'recordRemove',
 					opp: 'recordRemove',
@@ -270,7 +261,6 @@ module.exports = {
 				if (result.status.code == '1') {
 					yield models.gospel_domains.delete(self.data.message.id);
 				}
-				console.log("undo first");
 			},
 		});
 
@@ -294,7 +284,6 @@ module.exports = {
 			undo: function* () {
 
 				var self = this;
-				console.log(self.data.message);
 				var options = {
 					method: 'recordRemove',
 					opp: 'recordRemove',
@@ -308,7 +297,6 @@ module.exports = {
 				if (result.status.code == '1') {
 					yield models.gospel_domains.delete(self.data.message.id);
 				}
-				console.log("undo first");
 			},
 		});
 
@@ -317,7 +305,6 @@ module.exports = {
 		node = processes.buildNext(node, {
 			do: function* () {
 
-				console.log("success");
 				var self = this;
 				var result = yield shells.domain(self.data);
 				if (result != 'success') {
@@ -341,7 +328,6 @@ module.exports = {
 				yield shells.nginx({
 					host: host.ip,
 				});
-				console.log("undo domain");
 			},
 		});
 
@@ -365,7 +351,6 @@ module.exports = {
 				var self = this;
 				var result = yield shells.docker(self.data);
 				if (application.git) {
-					console.log("gicone");
 					shells.gitClone({
 						host: host.ip,
 						user: application.creator,
@@ -401,7 +386,6 @@ module.exports = {
 					docker: self.data.name
 				});
 				yield shells.rmFile("/var/www/storage/codes/" + self.data.name)
-				console.log("undo docker");
 			},
 		});
 
@@ -435,7 +419,6 @@ module.exports = {
 			data: application,
 			undo: function* () {
 				var self = this;
-				console.log("undo application");
 				yield models.gospel_applications.delete(self.data.id);
 			},
 		});
@@ -446,10 +429,8 @@ module.exports = {
 	initDebug: function* (application) {
 
 		//判断应用名是否为中文名，当为中文名时，获取中文拼音
-		application = JSON.parse(application)
-		console.log(application);
+		application = JSON.parse(application);
 		var en_name = application.name.toLocaleLowerCase();
-		console.log(en_name);
 		var user = yield models.gospel_users.findById(application.creator);
 		var reg = /[\u4e00-\u9FA5]+/;
 		var res = reg.test(en_name);
@@ -464,7 +445,6 @@ module.exports = {
 		//获取主机
 		var host = yield this.hostFilter(user, true);
 		host = host.dataValues;
-		console.log(host);
 		if(application.git != null && application.git != undefined && application.git != ''){
 			//用户创建应用的方式未从git创建时 git clone项目到平台
 			shells.gitClone({
@@ -481,7 +461,6 @@ module.exports = {
 		}else{
 			image = yield models.gospel_images.findById(application.image);
 		}
-		console.log(image);
 		application.cmds = image.cmds;
 		application.exposePort = image.port;
 		//端口生成
@@ -516,10 +495,8 @@ module.exports = {
 			version: application.languageVersion,
 			dbPort: application.dbPort
 		});
-		console.log(result);
 		if(application.git != null && application.git != undefined && application.git != ''){
 
-			console.log("gen key");
 			// //生成ssh key
 			//  yield shells.sshKey({
 			// 	host: host.ip,
@@ -536,7 +513,6 @@ module.exports = {
 				name: en_name + "_" + user.name,
 			});
 		}
-		console.log(application);
 		application.image = application.image + ":" + application.languageVersion;
 		application.host = host.ip;
 		application.status = -1;
@@ -544,7 +520,6 @@ module.exports = {
 		delete application['languageType'];
 		delete application['languageVersion'];
 		delete application['databaseType'];
-		console.log(application);
 		var inserted = yield models.gospel_applications.create(application);
 		yield models.gospel_uistates.create({
 			application: inserted.id,
@@ -556,11 +531,10 @@ module.exports = {
 	},
 	//根据用户的ide版本获取对应配置的主机
 	hostFilter: function*(user, share) {
-		console.log("hostFilter");
 		var hosts = yield models.gospel_hosts.getAll({
 			type: user.type,
 			share: share
-		})
+		});
 		return selector.select(hosts);
 	},
 }

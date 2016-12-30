@@ -36,7 +36,6 @@ WxpaySubmit.prototype.buildRequestPara = function(para_temp) {
 
     //对待签名参数数组排序
     var para_sort = core_funcs.argSort(para_filter);
-    console.log(para_sort);
     //生成签名结果
     var sign_data = this.buildRequestMysign(para_sort);
 

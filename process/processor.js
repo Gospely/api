@@ -16,28 +16,22 @@ module.exports = {
 
 				var self = this;
 				if (self.excutable) {
-					console.log(self.data);
 					self.excutable = false;
 					try {
-						console.log('do');
 						yield options.do();
 						if (self.next != null) {
 							return yield self.next.excute();
 						} else {
-							console.log("finish");
 							return true;
 						}
 					} catch (e) {
 
-						console.log(e);
 						return yield self.rollback();
 					}
 
 				} else {
 					if (self.last != null) {
 						yield self.last.excute();
-					} else {
-						console.log("back to begin");
 					}
 				}
 
@@ -69,12 +63,10 @@ module.exports = {
 				if (self.excutable) {
 
 					try {
-						console.log(self.data);
 						self.excutable = false;
 						yield options.do();
 						return yield self.next.excute();
 					} catch (e) {
-						console.log(e);
 						return yield self.rollback();
 					} finally {
 
@@ -85,7 +77,6 @@ module.exports = {
 
 						yield self.last.excute();
 					} else {
-						console.log("stop");
 					}
 				}
 
@@ -94,7 +85,6 @@ module.exports = {
 
 				var self = this;
 				yield options.undo();
-				console.log('rollback finish');
 				return false;
 			}
 		};

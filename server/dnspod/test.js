@@ -20,7 +20,6 @@ var getData = function(err, data) {
 
 var promise = new Promise(function(resolve, reject) {
 
-  console.log("promise");
   var fn = client.recordCreate({
     domain: 'gospely.com',
     sub_domain: "succesee",
@@ -40,7 +39,5 @@ var promise = new Promise(function(resolve, reject) {
   });
 });
 promise.then(function() {
-  console.log(res);
 }, function(err) {
-  console.log(res);
-})
+});

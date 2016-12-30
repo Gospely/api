@@ -228,7 +228,6 @@ var fileSystem = {
 			}
 			var fileName = params.fileName,
 				data = params.data || '';
-			console.log(data + fileName);
 		} catch (err) {
 			var fileName = GetQueryString(params, 'fileName')
 			data = GetQueryString(params, 'data') || '';
@@ -423,7 +422,6 @@ var fileSystem = {
 
 		var result = yield fileSystem.getFiles(dirName,null,true);
 
-		console.log(result);
 		this.body = result;
 	},
 
@@ -448,13 +446,11 @@ var fileSystem = {
 
 			for (var i = 0; i < files.length; i++) {
 				var file = files[i];
-				console.log(file);
 				if (isDir(config.baseDir + file)) {
 
 					if(search != undefined || search != null || all == true){
 
 						if(!escape(file)) {
-							console.log("递归");
 							var childrens = yield fileSystem.getFiles(dirName + '/' + file,search,all);
 							result = childrens.reduce( function(coll,item){
 									coll.push( item );
@@ -521,7 +517,6 @@ var fileSystem = {
 				var node = {};
 
 				if (file == 'models') {
-					console.log(isDir(config.baseDir + file), config.baseDir + file);
 				}
 
 				if (isDir(config.baseDir + dirName + '/' + file)) {
@@ -535,7 +530,6 @@ var fileSystem = {
 					if(search != undefined || search !=null || all == true){
 
 						if(!escape(file)) {
-							console.log("递归");
 							var childrens = yield fileSystem.getFiles(dirName + '/' + file,search,all);
 							result = childrens.reduce( function(coll,item){
 									coll.push( item );
@@ -575,10 +569,8 @@ var fileSystem = {
 	},
 
 	upload : function*(){
-		//this.body = this.req.body;
-		// console.log("======req=====",this.req);
-		// console.log("======this.req.files=====:",this.req.files);
-		// console.log("======this.req.body=====:",this.req.body);
+
+
 		//
         // this.res.header('Access-Control-Allow-Origin', '*');
         // this.res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');

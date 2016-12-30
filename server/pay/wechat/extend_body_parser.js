@@ -15,7 +15,6 @@ exports.extendBodyParser = (req, res, next) => {
 		try {
 			req.body = iconv.decode(Buffer.concat(chunks, size), 'utf8');
 		} catch (e) {
-			console.error(e)
 		} finally {
 			next();
 		}

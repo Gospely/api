@@ -52,13 +52,10 @@ Dnspod.prototype.getHostIp = function() {
     host: 'ns1.dnspod.net',
     port: 6666
   }, function() {
-    console.log('client connected');
   }).on('data', function(data) {
     message = data.toString();
-    console.log(message);
     client.end();
   }).on('end', function() {
-    console.log('client disconnected');
     process.nextTick(function() {
       self.emit('getHostIp', null, message);
     });
@@ -97,7 +94,6 @@ Dnspod.prototype.request = function(url, params, eventListenerName) {
       try {
         jsonData = JSON.parse(resData.join(''));
       } catch (ex) {
-        console.log(ex);
         err = ex;
       } finally {
         process.nextTick(function() {

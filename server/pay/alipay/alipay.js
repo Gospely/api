@@ -55,7 +55,6 @@ inherits(Alipay, EventEmitter);
 Alipay.prototype.route = function(app) {
   var self = this;
   app.get(this.alipay_config.create_direct_pay_by_user_return_url, function*() {
-    console.log("test");
     yield self.create_direct_pay_by_user_return(this);
   });
   app.post(this.alipay_config.create_direct_pay_by_user_notify_url, function*
@@ -514,10 +513,8 @@ Alipay.prototype.create_direct_pay_by_user_return = function*(ctx) {
 
   var _GET = ctx.query;
   //计算得出通知验证结果
-  console.log(ctx.query);
   var alipayNotify = new AlipayNotify(this.alipay_config);
   var verify_result = yield alipayNotify.verifyReturn(_GET);
-  console.log(verify_result);
   if (verify_result) { //验证成功
 
     //商户订单号
@@ -543,7 +540,6 @@ Alipay.prototype.create_direct_pay_by_user_return = function*(ctx) {
     } else if (trade_status == 'TRADE_SUCCESS') {
       // self.emit('create_direct_pay_by_user_trade_success', out_trade_no,
       //   trade_no);
-      console.log("11" + out_trade_no);
       yield order.order_success(out_trade_no, ctx);
     }
     ctx.body = 'success';

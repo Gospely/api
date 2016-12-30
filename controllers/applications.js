@@ -25,7 +25,6 @@ function render(data, all, cur, code, message) {
 applications.fast_deploy = function*(application,ctx){
 
 	var image = yield models.gospel_images.findById(application.image);
-	console.log(application);
 	if (application.free) {
 
 		var products = application.products;
@@ -87,9 +86,7 @@ applications.fast_deploy = function*(application,ctx){
 }
 applications.deploy = function*(application,ctx) {
 
-	console.log("deploy");
 	var app = yield models.gospel_applications.findById(application.id);
-	console.log(application);
 	if (application.free) {
 
 		app.products = application.products;
@@ -148,7 +145,6 @@ applications.delete = function*() {
 		subDomain: application.domain,
 		sub: true,
 	})
-	console.log(domains);
 	var options = {
 		method: 'recordRemove',
 		opp: 'recordRemove',
@@ -178,7 +174,6 @@ applications.delete = function*() {
 		//删除项目文件资源
 		yield shells.rmFile("/var/www/storage/codes/" + domain)
 	} catch (e) {
-		console.log(e);
 	} finally {
 
 		var inserted = yield models.gospel_applications.delete(application.id);
@@ -204,7 +199,6 @@ applications.killPID = function*(){
 //新建应用
 applications.create = function*() {
 
-	console.log("create");
 	//用户输入校验
 	// var reg = [{
 	// 	name: 'name',
@@ -217,16 +211,12 @@ applications.create = function*() {
 		limit: '10kb'
 	});
 	if(application.id !=null && application.id != undefined && application.id != ''){
-		console.log("to deploy");
 		yield applications.deploy(application,this);
 	}else {
 
 		if(application.deploy){
-			console.log("to fast_deploy");
 			yield applications.fast_deploy(application,this);
 		}else{
-			console.log("to initDebug");
-			console.log(application);
 			var result = yield processes.initDebug(application);
 
 			if (result) {
@@ -238,7 +228,6 @@ applications.create = function*() {
 	}
 }
 applications.startTerminal = function*(){
-	console.log("test");
 	var containerName = this.query.docker;
 	shell.startTerminal({
 		docker: containerName

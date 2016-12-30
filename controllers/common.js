@@ -62,8 +62,6 @@ common.detail = function* detail(id) {
 //更新某条记录
 common.update = function* update() {
 
-	console.log("update");
-	console.log(this.method);
 	if ('PUT' != this.method) this.throw(405, "method is not allowed");
 	var item = yield parse(this, {
 		limit: '4048kb'
@@ -85,13 +83,10 @@ common.update = function* update() {
 //新增一条记录
 common.create = function* create() {
 
-	console.log("create");
-	console.log(this);
 	if ('POST' != this.method) this.throw(405, "method is not allowed");
 	var item = yield parse(this, {
 		limit: '1kb'
 	});
-	console.log(item);
 	var data = yield models[getModel(this)].getAll(item);
 
 	if (data.length > 0) {
@@ -109,10 +104,8 @@ common.create = function* create() {
 common.delete = function* remove() {
 
 	var id = this.params.id;
-	console.log(id);
 
 	var deleted = yield models[getModel(this)].delete(id);
-	console.log(deleted);
 	if (!deleted) {
 		this.throw(405, "couldn't be delete.");
 	}
@@ -122,7 +115,6 @@ common.count = function* count() {
 
 	var count = yield models[getModel(this)].count(this.query);
 	var total = count[0].dataValues.all;
-	console.log("count");
 	this.body = render(total, null, null, 1);
 }
 common.render = render;
@@ -131,11 +123,9 @@ common.models = models;
 reader.readDir(__dirname).map(function(file) {
 
 	var modelsName = file.split(".")[0];
-	console.log("model" + modelsName);
 	if (modelsName != "common" && modelsName != "index" && modelsName != "fs") {
 		var controller = require('./' + modelsName);
 		if (modelsName == 'domains') {
-			console.log(controller);
 		}
 		common[modelsName] = controller;
 	}

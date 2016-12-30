@@ -7,7 +7,6 @@ containers.filter = function*(next){
     var id = split[split.length-1]
 
     var operate = split[split.length-2];
-    console.log(operate);
     switch(operate){
       case 'start':
         yield models.gospel_applications.modify({
@@ -30,12 +29,9 @@ containers.filter = function*(next){
       default:
     }
     var application = yield models.gospel_applications.findById(id);
-    console.log(application.docker);
     this.containerName = application.docker;
     this.remoteIp = application.host;
-    console.log(application.host+"==============================");
     yield next;
 
 }
-console.log(containers);
 module.exports = containers;

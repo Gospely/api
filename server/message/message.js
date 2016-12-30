@@ -25,11 +25,9 @@ module.exports = function(options) {
 
   var form = mergeJSON(config, options);
   var url = 'http://222.73.117.169/msg/HttpBatchSendSM?' + qs.stringify(form);
-  console.log(url);
   request.get({
       url: url
     },
     function(err, httpResponse, body) {
-      console.log(body);
     });
 }

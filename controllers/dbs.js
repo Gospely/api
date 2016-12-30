@@ -31,9 +31,7 @@ dbs.create = function*() {
 		dbName = db.name;
 	}
 	db.port = yield portManager.generatePort();
-	console.log(db);
 	if (db.type == 'mysql') {
-		console.log('mysq');
 		db.description = '默认用户:root,访问端口:' + db.port;
 	}
 	if (db.type == 'mongodb') {
@@ -43,7 +41,6 @@ dbs.create = function*() {
 	if (db.type == 'postgres') {
 		db.description = '默认用户:postgres,访问端口是' + db.port;
 	}
-	console.log(dbName);
 	var result = yield shells.buidDB({
 		dbName: user.name + '-db-' + dbName,
 		password: db.password,
@@ -52,9 +49,7 @@ dbs.create = function*() {
 		type: db.type,
 		httpPort: db.httpPort
 	});
-	console.log(result);
 
-	console.log('create');
 	var inserted = yield models.gospel_dbs.create(db);
 	this.body = render(inserted, null, null, 1, '创建数据成功');
 }
@@ -62,7 +57,6 @@ dbs.create = function*() {
 dbs.delete = function*() {
 
 	var id = this.params.id;
-	console.log(id);
 
 	var db = yield models.gospel_dbs.findById(id);
 	var user = yield models.gospel_users.findById(db.creator);

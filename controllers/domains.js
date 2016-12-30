@@ -66,7 +66,6 @@ domains.delete = function*() {
     var id = this.params.id;
 
     var domain = yield models.gospel_domains.findById(id);
-    console.log(domain);
     var options = {
       method: 'recordRemove',
       opp: 'recordRemove',
@@ -97,16 +96,13 @@ domains.delete = function*() {
 }
 domains.update = function*() {
 
-  console.log("update");
   if ('PUT' != this.method) this.throw(405, "method is not allowed");
     var item = yield parse(this, {
       limit: '1kb'
     });
-	console.log(item);
 	var checkDomains = yield models.gospel_domains.getAll({
 		subDomain: item.subDomain
 	});
-	console.log(checkDomains);
 	if(checkDomains.length != 0){
 
 		this.body = render(item,null,null,-1,'该二级域名被占用');
@@ -117,11 +113,9 @@ domains.update = function*() {
 			application: item.application,
 			record: '245836342'
 		});
-		console.log(domains);
 		if(domains.length == 1){
 
 			var domain = domains[0];
-			console.log(domain);
 			var options = {
 		    method: 'recordRemove',
 		    opp: "recordRemove",
@@ -131,7 +125,6 @@ domains.update = function*() {
 		    }
 		  }
 		  var result = yield dnspod.domainOperate(options);
-			console.log(result);
 		  if(result.status.code == '1'){
 
 				var options = {

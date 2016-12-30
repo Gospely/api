@@ -62,66 +62,46 @@ module.exports = function(sequelize, DataTypes) {
       },
         //获取用户和企业最近7天的数据
       users_count: function*(item) {
-        console.log(item);
         var sql =
         "select count( * ) count, type, to_char(createat, 'yyyy-MM-dd') str from gospel_users where createat >= current_timestamp-interval '7 day' and createat <= current_timestamp group by str,type";
         if (sql != null && sql != undefined) {
-          console.log(sql);
-          console.log(item);
           var data = yield sequelize.query(sql);
-          console.log(data);
           return data;
         }
       },
         //获取组织最近7天的数据
       teams_count: function*(item) {
-        console.log(item);
         var sql =
         "select count( * ) count,  to_char(createat, 'yyyy-MM-dd') str from gospel_teams where createat >= current_timestamp-interval '7 day' and createat <= current_timestamp group by str";
         if (sql != null && sql != undefined) {
-          console.log(sql);
-          console.log(item);
           var data = yield sequelize.query(sql);
-          console.log(data);
           return data;
         }
       },
       //今日新增用户数
       today_count:function* (item){
-        console.log(item);
         var sql =
         "select count( * ) count from gospel_users where createat >= current_timestamp-interval '1 day' and createat <= current_timestamp";
         if (sql != null && sql != undefined) {
-          console.log(sql);
-          console.log(item);
           var data = yield sequelize.query(sql);
-          console.log(data);
           return data;
         }
       },
       //昨日新增用户数
       yesterday_count:function* (item){
-        console.log(item);
         var sql =
         "select count( * ) count from gospel_users where createat >= current_timestamp-interval '2 day' and createat <= current_timestamp-interval '1 day' ";
         if (sql != null && sql != undefined) {
-          console.log(sql);
-          console.log(item);
           var data = yield sequelize.query(sql);
-          console.log(data);
           return data;
         }
       },
        //企业用户数
       company_count:function*(item){
-        console.log(item);
         var sql =
         "select count( * ) count from gospel_companys";
         if (sql != null && sql != undefined) {
-          console.log(sql);
-          console.log(item);
           var data = yield sequelize.query(sql);
-          console.log(data);
           return data;
         }
       },
@@ -133,14 +113,10 @@ module.exports = function(sequelize, DataTypes) {
       },
       //付费用户数
       pay_count:function*(item){
-        console.log(item);
         var sql =
         "select count(distinct creator) from  gospel_orders where status=2";
         if (sql != null && sql != undefined) {
-          console.log(sql);
-          console.log(item);
           var data = yield sequelize.query(sql);
-          console.log(data);
           return data;
         }
       },

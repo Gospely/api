@@ -18,7 +18,6 @@ port.generatePort = function*(host) {
         port: port,
         host: host,
     });
-    console.log(data);
     loop = data.isBind;
 
   }
@@ -33,7 +32,6 @@ function* checkBind(options) {
         exec("ssh root@"+ host + "  lsof -i:" + options.port, function(err, data) {
 
           if (err) {
-            console.log(err);
             resolve("{isBind: false}")
           } else {
             resolve("{isBind: true}")

@@ -42,7 +42,6 @@ exports = module.exports = {
 				arr[6]=arr[6]+count;break;
 			}
 			default:{
-				console.log('数据库筛选错误！！');
 			}
 		}
 	}

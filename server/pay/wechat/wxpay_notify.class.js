@@ -52,7 +52,6 @@ WxpayNotify.prototype.getSignVerify = function(para_temp, sign) {
     var para_sort = core_funcs.argSort(para_filter);
     //把数组所有元素，按照“参数=参数值”的模式用“&”字符拼接成字符串
     var prestr = core_funcs.createLinkstring(para_sort);
-    console.error(prestr);
     return md5_f.md5Verify(prestr, sign, this.wxpay_config['key']);
 }
 

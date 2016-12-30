@@ -49,7 +49,7 @@ module.exports = function(sequelize, DataTypes) {
         try {
           var data = yield dnspod.domainOperate(options);
           if (data.status.code == '1') {
-            domain.record = data.record.id
+            domain.record = data.record.id;
             var row = this.build(domain);
             return {
               code: 'success',

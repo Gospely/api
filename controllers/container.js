@@ -9,8 +9,6 @@ var exec = require('child_process').exec,
 var execCMD = function(cmd, host) {
 
 		remoteIp = host || '120.76.235.234';
-		console.log(host);
-		console.log(host+"==============================");
 		baseCMD = 'ssh root@' + remoteIp + ' ';
 		return new Promise(function(resolve, reject) {
 			exec(baseCMD + cmd, function(error, data) {
@@ -28,8 +26,6 @@ var execCMD = function(cmd, host) {
 					'http://' + remoteIp + ':2375/containers/' + containerName + '/stats?stream=0'
 				},
 			    function(error, response, body){
-						console.log(error);
-						console.log(response);
 			        if(error) reject(error);
 			        resolve(response, body);
 			    }
@@ -41,9 +37,7 @@ var container = {
 
 	start: function* () {
 		try {
-			console.log(this.remoteIp+"==============================");
 			yield execCMD('docker start ' + this.containerName, this.remoteIp);
-			console.log(shell);
 			shell.startTerminal({
 				host: this.remoteIp,
 				docker: this.containerName
@@ -74,7 +68,6 @@ var container = {
 
 	inspect: function* () {
 
-		console.log(this.containerName);
 		var containerName = this.containerName;
 
 		try {

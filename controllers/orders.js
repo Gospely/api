@@ -2,18 +2,16 @@ var util = require('../utils.js');
 var pay = require('../server/pay');
 var uuid = require('node-uuid');
 var parse = require('co-body');
-var _md5 = require('../utils/MD5')
+var _md5 = require('../utils/MD5');
 
 var orders = {};
 
 orders.order = function*() {
 
-  console.log("ss");
   var order = yield parse(this, {
     limit: '10kB'
   });
 
-  console.log(order);
   if (order.type == 'wechat') {
     var pay_url = yield pay.wechat.wxpay_pay({
       body: 'test', //商品描述,
@@ -27,7 +25,6 @@ orders.order = function*() {
       time_expire: '', //订单失效时间，格式为yyyyMMddHHmmss  选
       fee_type: '', //货币类型 选
     }, this);
-    console.log(pay_url);
     this.body = pay_url;
   } else {
     var url = pay.alipay.create_direct_pay_by_user({

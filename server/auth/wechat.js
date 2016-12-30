@@ -41,7 +41,6 @@ function getWechatAuths(appid_, secret_) {
     };
     //获取到了用户的详细信息
 
-    console.log(userBase);
     var data = yield models.gospel_users.getAll({
       openId: userBase['unionid']
     });
@@ -92,7 +91,6 @@ function getWechatAuths(appid_, secret_) {
 function* getCode(ctx) {
   var data = ctx.query;
   var code = data.code;
-  //console.log("code: "+code);
   return code;
 }
 
@@ -116,7 +114,6 @@ function* getAccess_token(code) {
     }
     return null;
   } catch (e) {
-    console.log('getAccess_token wrong');
     return null;
   }
 }
@@ -132,7 +129,6 @@ function* getInfo(access_token, openid) {
     });
     var response = result;
     var body = result.body;
-    console.log(body);
     var data = JSON.parse(body);
     if (result.statusCode == 200 && data.errcode === undefined)
       return data;

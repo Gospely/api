@@ -13,12 +13,10 @@ inherits(Controllers, EventEmitter);
 
 Controllers.prototype.route = function(router) {
 
-  console.log("dsd" + common);
   reader.readDir(__dirname).map(function(file) {
 
     var self = this;
     var modelsName = file.split(".")[0];
-    console.log(modelsName);
 
     if (config.isInit === 1) {
       models.gospel_privileges.build({
@@ -92,7 +90,6 @@ Controllers.prototype.route = function(router) {
           undefined) {
           router.delete("/" + modelsName + "/:id", common.delete);
         } else {
-          console.log("delete" + modelsName);
           router.delete("/" + modelsName + "/:id", common[modelsName]
             .delete);
         }
@@ -123,9 +120,7 @@ Controllers.prototype.route = function(router) {
             router: router_conf.url,
             groups: router_conf.groups
           }).save().then(function(res) {
-            console.log(res);
           }, function(err) {
-            console.log(err);
           });
         }
         switch (router_conf.method) {
@@ -142,7 +137,6 @@ Controllers.prototype.route = function(router) {
             router.get(router_conf.url, controller[router_conf.controller]);
             break;
           default:
-            console.log('default');
         }
       });
     }

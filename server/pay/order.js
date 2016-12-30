@@ -9,7 +9,6 @@ var orders = {
 		var orders = yield models.gospel_orders.getAll({
 			orderNo: orderNo
 		});
-		console.log(orders.length);
 		if (orders.length == 1) {
 			var order = orders[0].dataValues;
 			var result = yield operate[order.type](order, ctx);
@@ -31,7 +30,6 @@ var orders = {
 var operate = {
 	//IDE 版本升级和续费
 	ide: function*(order, ctx) {
-		console.log(order);
 		var product = yield models.gospel_products.findById(order.products);
 
 
@@ -48,7 +46,6 @@ var operate = {
 		}
 
 		date = date.setMonth(date.getMonth() + 1 + order.timeSize);
-		console.log(date);
 		yield models.gospel_ides.modify({
 			id: ide.id,
 			product: order.products,
@@ -60,7 +57,6 @@ var operate = {
 			ide: ide.id,
 			ideName: product.name
 		});
-		console.log("ide");
 	},
 	//创建付费应用
 	docker: function*(order, ctx) {
@@ -68,7 +64,6 @@ var operate = {
 		var application = yield models.gospel_applications.findById(order.application);
 		application.products = order.products;
 		var result = yield processor.app_start(application);
-		console.log("docker");
 		yield models.gospel_applications.modify({
 			id: application.id,
 			payStatus: 1
@@ -77,13 +72,9 @@ var operate = {
 	//数据卷扩容
 	volume: function*(order, ctx) {
 
-		console.log("volume");
-		console.log(order);
 		var user = yield models.gospel_users.findById(order.creator);
 		var currentSize = parseInt(order.size) + parseInt(user.volumeSize);
-		console.log(currentSize);
 		if (order.unit = 'GB') {
-			console.log("ss");
 			order.size = (currentSize * 1024 * 1024 * 1024) / 512;
 		} else {
 			order.size = currentSize.size * 1024 * 1024
@@ -92,10 +83,8 @@ var operate = {
 		var extend = {
 			size: order.size,
 			docker: user.volume
-		}
-		console.log(extend);
+		};
 		yield shells.extendsVolume(extend);
-
 
 		yield models.gospel_users.modify({
 			id: user.id,

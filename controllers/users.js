@@ -30,7 +30,6 @@ users.login = function*() {
 	var user = yield parse(this, {
 		limit: '1kb'
 	});
-	console.log(user);
 	if (user.code_token != null && user.code_token != undefined && user.code_token !=
 		'') {
 		var innersession = yield models.gospel_innersessions.findById(user.code_token);
@@ -55,10 +54,8 @@ function* checkPwd(user, ctx) {
 	var data = yield models.gospel_users.findAll({
 		where: user
 	});
-	console.log(data.length);
 	if (data == null || data == undefined || data.length != 1) {
 
-		console.log("用户名或者密码错误");
 		var innersessions = yield models.gospel_innersessions.findAll({
 			where: {
 				phone: user.phone
@@ -96,7 +93,6 @@ function* checkPwd(user, ctx) {
 			models.gospel_innersessions.delete(innersession);
 		}
 		var token = uuid.v4();
-		console.log("user" + token);
 		var user = data[0].dataValues;
 		user.password = '';
 		user.token = token;
@@ -135,7 +131,6 @@ var randomstr = function(){
 
 users.register = function*() {
 
-	console.log(this.method);
 	if ('POST' != this.method) this.throw(405, "method is not allowed");
 	var user = yield parse(this, {
 		limit: '1kb'
@@ -150,10 +145,8 @@ users.register = function*() {
 
 	if (user.phone != "") {
 
-		console.log(user);
 		var	reg = /^1[34578]\d{9}$/;
 			isok = reg.test(user.phone);
-		console.log(isok);
 		var token = user.token;
 		var authCode = user.authCode;
 
@@ -185,7 +178,6 @@ users.register = function*() {
 		} else {
 			this.body = render(null, -1, "注册失败，手机号或验证码错误");
 		}
-		console.log(user.phone + "phone");
 	}
 
 	if (!inserted) {
@@ -200,7 +192,6 @@ users.register = function*() {
 		})
 
 		var token = uuid.v4();
-		console.log("user" + token);
 
 		inserted.dataValues.token = token;
 		yield models.gospel_innersessions.create({
@@ -272,7 +263,6 @@ users.authCode = function*() {
 		limitTime: 2 * 60 * 1000
 	});
 	var s = "data:image/png;base64," + buf.toString('base64');
-	console.log(txt);
 	this.body = render({
 		token: token,
 		buf: s
@@ -342,7 +332,6 @@ users.verifyPhoneCode=function*(){
 users.validator = function*() {
 
 	var user = this.query;
-	console.log(user);
 	var data = yield models.gospel_users.findAll({
 		where: user
 	});
@@ -417,13 +406,10 @@ users.verifyEmailCode = function* (){
 
 users.volume = function*() {
 	var user = yield models.gospel_users.findById(this.params.id);
-	console.log(user);
 	var result = yield shells.volumeInfo({
 		docker: user.volume
 	});
-	console.log(result);
 	result = result.split('\n');
-	console.log(result);
 	result = result[1].split("  ");
 
 	result = {
@@ -451,7 +437,6 @@ users.chartOrdersCount = function* () {
 			payDate[i][j]=0
 		}
 	}
-	console.log(payOrder);
 	for (var i = 0; i < payOrder.length; i++) {
 		if(payOrder[i].type=='app'){
 			date.getDateArr(payOrder[i].str,parseInt(payOrder[i].count),payDate[0]);
@@ -472,7 +457,6 @@ users.chartOrdersCount = function* () {
 			unpayDate[i][j]=0
 		}
 	}
-	console.log(unpayOrder);
 	for (var i = 0; i < unpayOrder.length; i++) {
 		if(unpayOrder[i].type=='app'){
 			date.getDateArr(unpayOrder[i].str,parseInt(unpayOrder[i].count),unpayDate[0]);
@@ -487,7 +471,6 @@ users.chartOrdersCount = function* () {
 	var dataRes = {};
 	dataRes.pay=payDate;
 	dataRes.unpay=unpayDate;
-	console.log(dataRes);
 	this.body = render(dataRes, 1 ,'success');
 }
 
@@ -520,8 +503,6 @@ users.chartUsersCount = function* (){
 			date.getDateArr(data[i].str,parseInt(data[i].count),unpayDate[2]);
 		}
 	}
-	console.log(data);
-	console.log(unpayDate);
 	this.body = render(unpayDate, 1 ,'success');
 }
 
@@ -548,10 +529,8 @@ users.dashboardApi = function* (){
 	var yesterdayOrder = yield models.gospel_orders.yesterday_orders();
 	//应用数
 	var appCount = yield models.gospel_applications.count({});
-	console.log(appCount);
 	//域名数
 	var domainCount = yield models.gospel_domains.count({});
-	console.log(domainCount);
 	//
 	var data = [];
 	userCount[0].dataValues.count=userCount[0].dataValues.all;
@@ -599,14 +578,11 @@ users.files = function*() {
 		if (fileName != null && fileName != undefined && fileName != '') {
 
 			fileName = fileName + ".png";
-			console.log(fileName);
 			var bitmap = yield readFile(config.file.basePath + fileName);
 			var buf = base64_encode(bitmap);
-			console.log(buf);
 			this.body = buf;
 		}
 	} catch (e) {
-		console.log(e);
 	} finally {
 
 	}
@@ -637,7 +613,6 @@ readFile = function(fileName) {
 	},
 	base64_encode = function(bitmap) {
 		// read binary data
-		console.log("ss");
 		// convert binary data to base64 encoded string
 		return new Buffer(bitmap).toString('base64');
 	}

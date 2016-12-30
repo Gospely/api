@@ -27,7 +27,6 @@ module.exports = function(sequelize, DataTypes) {
     updatedAt: 'updateat',
     classMethods: {
       associate: (models) => {
-        console.log("associate");
       },
       getAll: function*(item) {
 
@@ -44,13 +43,11 @@ module.exports = function(sequelize, DataTypes) {
           return false;
         }
 
-        console.log(item);
         var group = item.groups;
         delete item['groups'];
 
         item.isDeleted = 0;
         //判断是否是分页
-        console.log(item);
         var privileges;
         if (item.cur != null && item.cur != undefined) {
 
@@ -81,7 +78,6 @@ module.exports = function(sequelize, DataTypes) {
 
             delete item['limit'];
             delete item['cur'];
-            console.log("wwwwww");
             privileges = yield this.findAll({
               offset: offset,
               limit: limit,
@@ -93,7 +89,6 @@ module.exports = function(sequelize, DataTypes) {
           }
 
         } else {
-          console.log(item.show);
           if (item.show != null && item.show != undefined && item.show !=
             '') {
             attributes = item.show.split('_');
@@ -107,7 +102,6 @@ module.exports = function(sequelize, DataTypes) {
             });
           } else {
 
-            console.log("no page ,no selec");
             privileges = yield this.findAll({
               where: item,
               order: [
@@ -147,7 +141,6 @@ module.exports = function(sequelize, DataTypes) {
       },
       modify: function*(item) {
 
-        console.log(item);
 
         function buildGrups(arr) {
           var str = '';

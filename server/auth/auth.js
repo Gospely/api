@@ -19,8 +19,6 @@ module.exports = {
 
 	basicAuth: function* basicAuth(next) {
 
-		console.log("mount");
-		console.log(this.url);
 		var url = this.url.split("?")[0];
 		var method = this.method;
 
@@ -28,8 +26,6 @@ module.exports = {
 		//基础验证，即验证用户是否已经是登录状态
 		//获取token
 		var token = this.headers['authorization'];
-		console.log(token);
-		console.log(excape(url));
 
 		if (method == "OPTIONS") {
 			yield next;
@@ -45,14 +41,12 @@ module.exports = {
 			}
 			if (excape(url)) {
 
-				console.log("none auth route" + url);
 				yield next;
 			} else {
 
 				if (method == "GET" || method == "DELETE") {
 
 					var replacements = url.split('/');
-					console.log(replacements);
 					if (replacements.length >= 3) {
 						url = url.replace(replacements[replacements.length - 1], "");
 
@@ -61,13 +55,11 @@ module.exports = {
 						} else {
 							url = url + ":id";
 						}
-						console.log(url);
 					}
 
 				}
 				if (token == null || token == undefined || token == '') {
 
-					console.log("no login");
 					this.status = 200;
 					this.body = render(null, -100, '您未登录,请登录后再进行相应操作');
 
@@ -93,15 +85,11 @@ module.exports = {
 							var privilege = privileges[0].dataValues;
 							var groups = privilege.groups.split("_")
 							for (var i = groups.length - 1; i >= 0; i--) {
-								console.log("loop");
-								console.log(innersession.group);
-								console.log(groups[i]);
 								if (innersession.group == groups[i]) {
 									pass = true;
 									break;
 								}
 							};
-							console.log(pass);
 							if (pass) {
 
 								if ((Date.now() - innersession.time) <= innersession.limitTime) {

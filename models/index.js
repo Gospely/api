@@ -17,7 +17,7 @@ var sequelize = new Sequelize('gospel', 'gospel', 'dodoraCN2016@gospely', {
     classMethods: {
       getAll: function*(item) {
 
-        console.log(item);
+
         item.isDeleted = 0;
         var offset = (item.cur - 1) * item.limit;
         var limit = item.limit;
@@ -65,7 +65,6 @@ var sequelize = new Sequelize('gospel', 'gospel', 'dodoraCN2016@gospely', {
 
               delete item['limit'];
               delete item['cur'];
-              console.log("wwwwww");
               //是否自定义查询
 
               return yield this.findAll({
@@ -79,7 +78,6 @@ var sequelize = new Sequelize('gospel', 'gospel', 'dodoraCN2016@gospely', {
             }
 
           }
-          console.log(item.show);
           if (item.show != null && item.show != undefined && item.show !=
             '') {
             attributes = item.show.split('_');
@@ -93,7 +91,6 @@ var sequelize = new Sequelize('gospel', 'gospel', 'dodoraCN2016@gospely', {
             });
           } else {
 
-            console.log("no page ,no selec");
             return yield this.findAll({
               where: item,
               order: [
@@ -106,7 +103,6 @@ var sequelize = new Sequelize('gospel', 'gospel', 'dodoraCN2016@gospely', {
 
       },
       findById: function*(id) {
-        console.log("find " + id);
 
         return yield this.find({
           where: {
@@ -115,7 +111,6 @@ var sequelize = new Sequelize('gospel', 'gospel', 'dodoraCN2016@gospely', {
         });
       },
       delete: function*(id) {
-        console.log("delete" + id)
         return yield this.update({
           isDeleted: 1
         }, {
@@ -126,7 +121,6 @@ var sequelize = new Sequelize('gospel', 'gospel', 'dodoraCN2016@gospely', {
         });
       },
       modify: function*(item) {
-        console.log("update" + item.id);
         return yield this.update(item, {
           where: {
             id: item.id
@@ -134,9 +128,7 @@ var sequelize = new Sequelize('gospel', 'gospel', 'dodoraCN2016@gospely', {
         });
       },
       create: function*(item) {
-        console.log("create");
         var row = this.build(item);
-        console.log(row);
         return yield row.save();
       },
       count: function*(item) {
@@ -144,10 +136,7 @@ var sequelize = new Sequelize('gospel', 'gospel', 'dodoraCN2016@gospely', {
 
         if (this.countInit != null && this.countInit != undefined) {
           var sql = this.countInit(item);
-          console.log("count");
           if (sql != null && sql != undefined) {
-            console.log(sql);
-            console.log(item);
             return yield sequelize.query(sql, {
               replacements: item,
               type: sequelize.QueryTypes.SELECT
