@@ -570,6 +570,8 @@ var fileSystem = {
 
 	upload : function*(){
 
+	    console.log("upload");
+
 		var fileName = this.req.files.fileUp.name;
 		var originalname = this.req.files.fileUp.originalname;
 		var username = this.req.body.username;
