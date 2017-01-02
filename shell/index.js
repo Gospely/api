@@ -84,7 +84,6 @@ shells.changePWD = function*(options){
     return new Promise(function(resolve, reject) {
         exec('ssh root@' + host + ' sh /root/gospely/deploy/shell/changePWD.sh gospel_project_' + options.name + " " + options.password,
             function(err, data) {
-                console.log(data);
                 if (err)
                     reject(err);
                 resolve(data);
@@ -321,7 +320,6 @@ shells.rmDB = function*(options) {
 shells.extendsVolume = function*(options) {
 
     var host = options.host || '120.76.235.234';
-    console.log("================"+host+"+++++++++++++++++");
     return new Promise(function(resolve, reject) {
         exec("ssh root@" + host +
             "  /root/gospely/deploy/extend/extend.js -c " +
@@ -359,8 +357,6 @@ shells.sshKey = function*(options) {
             ' \'ssh-keygen -t rsa -P "" -f /var/www/storage/codes/' + options.user + '/.ssh/id_rsa\'',
             function(err,
                 data) {
-                console.log(data);
-                console.log(err);
                 if (err) reject(err);
                 resolve(data);
             });
@@ -373,14 +369,10 @@ shells.mkdir = function*(options) {
         exec("ssh root@" + host +  ' mkdir /var/www/storage/codes/' + options.user,
             function(err,
                 data) {
-                console.log(data);
-                console.log(err);
                 if (err) reject(err);
                 exec("ssh root@" + host +  ' mkdir /var/www/storage/codes/' + options.user + '/.ssh ',
                     function(err,
                         data) {
-                        console.log(data);
-                        console.log(err);
                         if (err) reject(err);
                         resolve(data);
                 });
@@ -415,13 +407,14 @@ shells.startTerminal = function(options) {
 shells.decomFile = function(options) {
 
     var host = options.host || '120.76.235.234';
+    console.log("================"+host+"+++++++++++++++++");
     var baseDir = '/var/www/sotrage/code/';
     var comDir = options.comDir;
     var decomDir = path.join(baseDir, options.username, options.projectName);
     return {
         zip: function() {
             return new Promise(function(resolve, reject) {
-                exec('ssh root@" + host  + " unzip ' + comDir +
+                exec('ssh root@' + host  + ' unzip ' + comDir +
                     ' ' + decomDir,
                     function(err, data) {
                         if (err)

@@ -32,7 +32,6 @@ module.exports = function(sequelize, DataTypes) {
       associate: (models) => {},
       create: function*(domain) {
 
-        console.log(dnspod);
         var options = {
           method: 'recordCreate',
           opp: 'recordCreate',
