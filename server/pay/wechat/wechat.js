@@ -140,10 +140,12 @@ Wxpay.prototype.wxpay_notify = function*(data, ctx) {
     'out_trade_no', 'openid'
   ];
   console.log(data);
+  console.log("parseXml");
    var _POST = yield parseXml();
    console.log(_POST);
    if(_POST != 'error'){
 
+       console.log("wxpayNotify");
        var verify_result = yield wxpayNotify.verifyNotify(_POST);
        if (verify_result) { //验证成功
          self.emit('wxpay_trade_success', _.pick(_POST, infoList));
@@ -168,7 +170,7 @@ Wxpay.prototype.wxpay_notify = function*(data, ctx) {
    }
 
     function parseXml(){
-        new Promise(function(resolve,reject){
+        return ew Promise(function(resolve,reject){
             new xml2js.Parser({
               explicitArray: false,
               explicitRoot: false
