@@ -9,7 +9,7 @@ let config = {
 		,
 	seller_id: '2088421937560320' //卖家支付宝用户号 必填，可能和合作身份者id相同
 		,
-	host: 'http://localhost:8089',
+	host: 'http://api.gospely.com',
 	seller_email: '597055914@qq.com' //域名
 }
 

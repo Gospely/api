@@ -17,12 +17,14 @@ function WxpayNotify(wxpay_config) {
  */
 WxpayNotify.prototype.verifyNotify = function(_POST, callback) {
 
-    if (Object.keys(_POST).length == 0) { //判断POST来的数组是否为空
-        callback(false);
-    } else {
-        //生成签名结果
-        callback(this.getSignVerify(_POST, _POST.sign));
-    }
+    return new Promise(function(resolve,reject){
+        if (Object.keys(_POST).length == 0) { //判断POST来的数组是否为空
+            reject(false);
+        } else {
+            //生成签名结果
+            resolve(this.getSignVerify(_POST, _POST.sign));
+        }
+    })
 }
 
 /**

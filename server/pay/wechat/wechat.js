@@ -49,7 +49,7 @@ Wxpay.prototype.route = function(app) {
       limit: '1mb',
       encoding: this.charset || 'utf-8'
     });
-    self.wxpay_notify(data, this);
+    yield self.wxpay_notify(data, this);
   });
 }
 
@@ -133,49 +133,51 @@ Wxpay.prototype.wxpay_refund = function(data, res) {
 /**
  *  支付结果异步通知
  */
-Wxpay.prototype.wxpay_notify = function(data, ctx) {
+Wxpay.prototype.wxpay_notify = function*(data, ctx) {
   var self = this;
   var infoList = ['attach', 'time_end', 'rate', 'transaction_id', 'total_fee',
     'out_trade_no', 'openid'
   ];
-  Promise.promisify(new xml2js.Parser({
-    explicitArray: false,
-    explicitRoot: false
-  }).parseString)(data).then(function(_POST) {
-    if (_POST.return_code != 'SUCCESS' || _POST.result_code != 'SUCCESS')
-      ctx.body = xmlbuilder.create('xml', {
-        headless: true
-      }).ele({
-        return_code: 'FAIL'
-      }).end({
-        pretty: true
-      });
-    //计算得出通知验证结果
-    var wxpayNotify = new WxpayNotify(self.wxpay_config);
-    //验证消息是否是微信发出的合法消息
-    wxpayNotify.verifyNotify(_POST, function(verify_result) {
-      if (verify_result) { //验证成功
-        self.emit('wxpay_trade_success', _.pick(_POST, infoList));
-        ctx.body = xmlbuilder.create('xml', {
-          headless: true
-        }).ele({
-          return_code: 'SUCCESS'
-        }).end({
-          pretty: true
-        }); //请不要修改或删除
-      } else {
-        //验证失败
-        self.emit("verify_fail");
-        ctx.body = xmlbuilder.create('xml', {
-          headless: true
-        }).ele({
-          return_code: 'FAIL'
-        }).end({
-          pretty: true
+   var _POST = yield parseXml();
+   if(_POST != 'error'){
+
+       var verify_result = yield wxpayNotify.verifyNotify(_POST);
+       if (verify_result) { //验证成功
+         self.emit('wxpay_trade_success', _.pick(_POST, infoList));
+         ctx.body = xmlbuilder.create('xml', {
+           headless: true
+         }).ele({
+           return_code: 'SUCCESS'
+         }).end({
+           pretty: true
+         }); //请不要修改或删除
+       } else {
+         //验证失败
+         self.emit("verify_fail");
+         ctx.body = xmlbuilder.create('xml', {
+           headless: true
+         }).ele({
+           return_code: 'FAIL'
+         }).end({
+           pretty: true
+         });
+       }
+   }
+
+    function parseXml(){
+        new Promise(function(resolve,reject){
+            new xml2js.Parser({
+              explicitArray: false,
+              explicitRoot: false
+          }).parseString(data,function(_POST){
+              if(_POST.return_code != 'SUCCESS' || _POST.result_code != 'SUCCESS'){
+                  reject("error");
+              }else{
+                  resolve(_POST);
+              }
+          });
         });
-      }
-    });
-  })
+    }
 }
 
 exports.Wxpay = Wxpay;
