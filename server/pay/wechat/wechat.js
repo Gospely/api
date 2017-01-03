@@ -138,7 +138,9 @@ Wxpay.prototype.wxpay_notify = function*(data, ctx) {
   var infoList = ['attach', 'time_end', 'rate', 'transaction_id', 'total_fee',
     'out_trade_no', 'openid'
   ];
+  console.log(data);
    var _POST = yield parseXml();
+   console.log(_POST);
    if(_POST != 'error'){
 
        var verify_result = yield wxpayNotify.verifyNotify(_POST);
@@ -169,7 +171,9 @@ Wxpay.prototype.wxpay_notify = function*(data, ctx) {
             new xml2js.Parser({
               explicitArray: false,
               explicitRoot: false
-          }).parseString(data,function(_POST){
+          }).parseString(data,function(err,_POST){
+              console.log(err);
+              console.log(_POST);
               if(_POST.return_code != 'SUCCESS' || _POST.result_code != 'SUCCESS'){
                   reject("error");
               }else{
