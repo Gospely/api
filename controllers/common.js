@@ -77,7 +77,7 @@ common.update = function* update() {
 	if (!inserted) {
 		this.throw(405, "couldn't be added.");
 	}
-	this.body = render(inserted, null, null, 2);
+	this.body = render(inserted, null, null, 1);
 }
 
 //新增一条记录
