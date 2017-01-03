@@ -26,7 +26,7 @@ orders.create = function*() {
   });
 	console.log(order);
     var pay_url = yield pay.wechat.wxpay_pay({
-      body: 'test', //商品描述,
+      body: 'Gospel services', //商品描述,
       out_trade_no: order.orderNo, //商户订单号,
       total_fee: 1, //金额,
 	//   total_fee: order.price * 100, //金额,
@@ -39,19 +39,6 @@ orders.create = function*() {
       fee_type: '', //货币类型 选
     }, this);
     this.body = pay_url;
-	console.log(pay_url);
-	var url = pay.alipay.create_direct_pay_by_user({
-	  out_trade_no: order.orderNo //商户订单号, 商户网站订单系统中唯一订单号，必填
-	  ,
-	  subject: 'IDE' //订单名称 必填
-	  ,
-	  total_fee: order.price //付款金额,必填
-	  ,
-	  body: "dodora" //订单描述
-	  ,
-	  show_url: '1' //商品展示地址 需以http://开头的完整路径，例如：http://www.xxx.com/myorder.html
-	}, this);
-	this.body = url;
 	order.wechat = pay_url.code_url;
 	var url = pay.alipay.create_direct_pay_by_user({
 	  out_trade_no: order.orderNo //商户订单号, 商户网站订单系统中唯一订单号，必填
@@ -65,7 +52,6 @@ orders.create = function*() {
 	  show_url: '1' //商品展示地址 需以http://开头的完整路径，例如：http://www.xxx.com/myorder.html
 	}, this);
 	order.alipay = url;
-
 	var inserted = yield models.gospel_orders.create(order);
 	if (!inserted) {
 	  this.throw(405, "couldn't be added.");
