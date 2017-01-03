@@ -142,7 +142,7 @@ Wxpay.prototype.wxpay_notify = function*(data, ctx) {
   var wxpayNotify = new WxpayNotify(self.wxpay_config);
   console.log(data);
   console.log("parseXml");
-   var _POST = yield parseXml();
+   var _POST = yield parseXml(data);
    console.log(_POST);
    if(_POST != 'error'){
 
@@ -170,7 +170,7 @@ Wxpay.prototype.wxpay_notify = function*(data, ctx) {
        }
    }
 
-    function parseXml(){
+    function parseXml(data){
         var parser = new xml2js.Parser({
             explicitArray: false,
             explicitRoot: false
