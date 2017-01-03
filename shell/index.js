@@ -28,7 +28,7 @@ shells.docker = function*(options) {
     return new Promise(function(resolve, reject) {
         var bash = "ssh root@" + host + ' docker run -itd --volumes-from docker-volume-' + options.creator +
         ' -p ' + config + options.socketPort + ':3000 -p ' + options.appPort +
-        ':'+ options.exposePort +' -p ' + options.sshPort + ':22 ' + port +
+        ':80' +' -p ' + options.sshPort + ':22 ' + port +
         ' -h ' + options.hostName +
         ' -w /root/workspace --name="gospel_deploy_' + options.name + '"  gospel-' +
         options.image + " && echo success";
