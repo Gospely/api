@@ -17,16 +17,26 @@ function WxpayNotify(wxpay_config) {
  */
 WxpayNotify.prototype.verifyNotify = function(_POST, callback) {
 
+    var self = this;
     return new Promise(function(resolve,reject){
         if (Object.keys(_POST).length == 0) { //判断POST来的数组是否为空
             reject(false);
         } else {
             //生成签名结果
-            resolve(this.getSignVerify(_POST, _POST.sign));
+            resolve(self.getSignVerify(_POST, _POST.sign));
         }
     })
 }
-
+WxpayNotify.prototype.verifyNotifyCallback = function(_POST, callback){
+    console.log("verifyNotifyCallback");
+    console.log(_POST);
+    if (Object.keys(_POST).length == 0) { //判断POST来的数组是否为空
+        callback(false);
+    } else {
+        //生成签名结果
+       callback(this.getSignVerify(_POST, _POST.sign));
+    }
+}
 /**
  * 针对return_url验证消息是否是微信发出的合法消息
  * @return 验证结果
@@ -81,7 +91,7 @@ WxpayNotify.prototype.getHttpResponsePOST = function(parsed_url, postData, infoL
             }).parseString)(body).then(function(body) {
                 if (body.return_code != 'SUCCESS' || body.result_code != 'SUCCESS')
                     reject(_.pick(body, ['return_msg', 'err_code', 'err_code_des']));
-                self.verifyNotify(body, function(verify_result) {
+                self.verifyNotifyCallback(body, function(verify_result) {
                     if (verify_result) { //验证成功
                         resolve(_.pick(body, infoList));
                     } else {
@@ -121,7 +131,9 @@ WxpayNotify.prototype.getHttpsResponsePOST = function(parsed_url, postData, info
             }).parseString)(body).then(function(body) {
                 if (body.return_code != 'SUCCESS' || body.result_code != 'SUCCESS')
                     reject(_.pick(body, ['return_msg', 'err_code', 'err_code_des']));
-                self.verifyNotify(body, function(verify_result) {
+                    console.log(body);
+                self.verifyNotifyCallback(body, function(verify_result) {
+                    console.log(verify_result);
                     if (verify_result) { //验证成功
                         body.out_trade_no = body.out_trade_no.split('_')[0];
                         resolve(_.pick(body, infoList));

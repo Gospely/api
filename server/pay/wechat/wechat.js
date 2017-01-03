@@ -43,13 +43,14 @@ inherits(Wxpay, EventEmitter);
 Wxpay.prototype.route = function(app) {
   var self = this;
   app.post(this.wxpay_config.wxpay_notify_url, function*() {
-
+    console.log(this.url);
     var data = yield parse(this.req, {
       length: this.length,
       limit: '1mb',
       encoding: this.charset || 'utf-8'
     });
-    yield self.wxpay_notify(data, this);
+    var data = yield self.wxpay_notify(data, this);
+    console.log(data);
   });
 }
 
@@ -69,7 +70,7 @@ Wxpay.prototype.route = function(app) {
 Wxpay.prototype.wxpay_pay = function(data, ctx) {
   var wxpaySubmit = new WxpaySubmit(this.wxpay_config);
   var wxpayNotify = new WxpayNotify(this.wxpay_config);
-
+  console.log(data);
   var infoList = ['prepay_id', 'code_url'];
 
   data.out_trade_no = data.out_trade_no;
@@ -87,7 +88,7 @@ Wxpay.prototype.wxpay_pay = function(data, ctx) {
   _.merge(parameter, data);
 
   var postData = wxpaySubmit.buildRequestPara(parameter);
-
+  console.log(postData);
   return wxpayNotify.getHttpResponsePOST(this.wxpay_config.wxpay_pay_url,
     postData, infoList).then(result => {
 
