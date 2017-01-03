@@ -6,6 +6,7 @@ var orders = {
 
 	order_success: function*(orderNo, ctx) {
 
+		console.log(orderNo);
 		var orders = yield models.gospel_orders.getAll({
 			orderNo: orderNo
 		});
@@ -30,8 +31,9 @@ var orders = {
 var operate = {
 	//IDE 版本升级和续费
 	ide: function*(order, ctx) {
+		console.log(order.products);
 		var product = yield models.gospel_products.findById(order.products);
-
+		console.log(product);
 
 		var ides = yield models.gospel_ides.getAll({
 			creator: order.creator

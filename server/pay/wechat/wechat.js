@@ -14,6 +14,7 @@ var xmlbuilder = require('xmlbuilder');
 var qs = require('querystring');
 var extendBodyParser = require('./extend_body_parser').extendBodyParser;
 var parse = require('raw-body');
+var order = require('../order');
 
 var default_wxpay_config = {
   certFile: __dirname + '/apiclient_cert.pem',
@@ -140,15 +141,18 @@ Wxpay.prototype.wxpay_notify = function*(data, ctx) {
     'out_trade_no', 'openid'
   ];
   var wxpayNotify = new WxpayNotify(self.wxpay_config);
-  console.log(data);
-  console.log("parseXml");
+
    var _POST = yield parseXml(data);
+     console.log("parseXml");
    console.log(_POST);
    if(_POST != 'error'){
 
        console.log("wxpayNotify");
        var verify_result = yield wxpayNotify.verifyNotify(_POST);
+       console.log(verify_result);
        if (verify_result) { //验证成功
+
+         yield order.order_success(_POST.out_trade_no, ctx);
          self.emit('wxpay_trade_success', _.pick(_POST, infoList));
          ctx.body = xmlbuilder.create('xml', {
            headless: true
@@ -175,6 +179,7 @@ Wxpay.prototype.wxpay_notify = function*(data, ctx) {
             explicitArray: false,
             explicitRoot: false
         });
+        console.log(data);
         return new Promise(function(resolve,reject){
             parser.parseString(data,function(err,_POST){
                 console.log(data);
