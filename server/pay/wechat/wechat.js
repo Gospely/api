@@ -170,7 +170,7 @@ Wxpay.prototype.wxpay_notify = function*(data, ctx) {
    }
 
     function parseXml(){
-        return ew Promise(function(resolve,reject){
+        return new Promise(function(resolve,reject){
             new xml2js.Parser({
               explicitArray: false,
               explicitRoot: false
