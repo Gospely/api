@@ -28,7 +28,7 @@ shells.docker = function*(options) {
     return new Promise(function(resolve, reject) {
         var bash = "ssh root@" + host + ' docker run -itd --volumes-from docker-volume-' + options.creator +
         ' -p ' + config + options.socketPort + ':3000 -p ' + options.appPort +
-        ':80' +' -p ' + options.sshPort + ':22 ' + port +
+        ':'+ options.exposePort +' -p ' + options.sshPort + ':22 ' + port +
         ' -h ' + options.hostName +
         ' -w /root/workspace --name="gospel_deploy_' + options.name + '"  gospel-' +
         options.image + " && echo success";
@@ -58,7 +58,7 @@ shells.fast_deploy = function*(options) {
       var bash = "ssh root@" + host + ' docker run -itd --volumes-from docker-volume-' + options.creator + ' -m ' + options.memory +
         ' -v /var/www/storage/codes/' + options.creator + "/" + options.name +
         ':/root/workspace -v /var/www/storage/codes/' + options.creator + '/.ssh:/root/.ssh'  + config + ' -p ' + options.socketPort + ':3000 -p ' + options.appPort  +
-        ':80 -p ' + options.sshPort + ':22 ' + port +
+        ':'+ options.exposePort +' -p ' + options.sshPort + ':22 ' + port +
         ' -h ' + options.hostName +
         ' -w /root/workspace --name="gospel_project_' + options.name + '"  gospel-' +
         options.image + " && echo success";
@@ -92,6 +92,7 @@ shells.changePWD = function*(options){
 }
 shells.initDebug = function*(options){
 
+    console.log(options);
     var host = options.host || '120.76.235.234';
     var port = '',
         config = '';
@@ -108,6 +109,10 @@ shells.initDebug = function*(options){
     }
     if(options.framework ==null || options.framework == undefined || options.framework == ''){
         options.image = 'debug-'+options.image;
+    }else {
+        if(options.parent == 'html:latest'){
+             options.exposePort = 80;
+        }
     }
 
     return new Promise(function(resolve, reject) {
@@ -118,6 +123,7 @@ shells.initDebug = function*(options){
           ' -h ' + options.hostName +
           ' -w /root/workspace --name="gospel_project_' + options.name + '" gospel-' +
           options.image + " && echo success";
+          console.log(bash);
         exec(bash, function(err, data) {
             if (err) reject(err);
             resolve("success");
@@ -163,7 +169,7 @@ shells.rmDocker = function*(options) {
     var host = options.host || '120.76.235.234';
     return new Promise(function(resolve, reject) {
         exec("ssh root@" + host +
-            " docker rm -f  gospel_project_" +
+            " docker rm -f " +
             options.name,
             function(err, data) {
                 if (err) reject(err);
@@ -176,7 +182,7 @@ shells.stopDocker = function*(options) {
     var host = options.host || '120.76.235.234';
     return new Promise(function(resolve, reject) {
         exec("ssh root@" + host +
-            " docker stop  gospel_project_" +
+            " docker stop " +
             options.name,
             function(err, data) {
                 if (err) reject(err);
@@ -191,7 +197,8 @@ shells.rmFile = function*(options) {
         exec("ssh root@" + host + " rm -rf " + options.fileName,
             function(err,
                 data) {
-
+                console.log(data);
+                console.log(err);
                 if (err) reject(err);
                 resolve(data);
             });

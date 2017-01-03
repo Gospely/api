@@ -133,48 +133,62 @@ applications.delete = function*() {
 	var application = yield models.gospel_applications.findById(id);
 	//将中文英语名转英文
 	var domain = application.domain;
-	// var reg = /[\u4e00-\u9FA5]+/;
-	// var res = reg.test(domain);
-	//
-	// if(res){
-	// 	var tr = transliteration.transliterate
-	// 	domain = tr(domain).replace(new RegExp(" ",'gm'),"").toLocaleLowerCase();
-	// }
-
-	//获取应用的二级域名
-	var domains = yield models.gospel_domains.getAll({
-		subDomain: application.domain,
-		sub: true,
-	})
-	var options = {
-		method: 'recordRemove',
-		opp: 'recordRemove',
-		param: {
-			domain: "gospely.com",
-			record_id: domains[0].record
-		}
-	}
+	var projectFolder = application.docker.replace('gospel_project_','');
 
 	try {
-		//解绑二级域名
-		yield dnspod.domainOperate(options);
-		//删除二级域名
-		yield models.gospel_domains.delete(domains[0].id);
+		if(domain != null) {
+			// var reg = /[\u4e00-\u9FA5]+/;
+			// var res = reg.test(domain);
+			//
+			// if(res){
+			// 	var tr = transliteration.transliterate
+			// 	domain = tr(domain).replace(new RegExp(" ",'gm'),"").toLocaleLowerCase();
+			// }
 
-		var name = domain.replace("-", "_");
-		//删除nginx配置文件
-		yield shells.delNginxConf(name);
-		yield shells.nginx();
+			//获取应用的二级域名
+			var domains = yield models.gospel_domains.getAll({
+				subDomain: application.domain,
+				sub: true,
+			})
+			var options = {
+				method: 'recordRemove',
+				opp: 'recordRemove',
+				param: {
+					domain: "gospely.com",
+					record_id: domains[0].record
+				}
+			}
+			//解绑二级域名
+			yield dnspod.domainOperate(options);
+			//删除二级域名
+			yield models.gospel_domains.delete(domains[0].id);
+
+			var name = domain.replace("-", "_");
+			//删除nginx配置文件
+			yield shell.delNginxConf({
+				host: application.host,
+				name: name,
+			});
+			yield shell.nginx({
+				host: application.host,
+			});
+		}
 		//删除docker
-		yield shells.stopDocker({
-			name: name,
+		yield shell.stopDocker({
+			host: application.host,
+			name: application.docker,
 		});
-		yield shells.rmDocker({
-			name: name,
+		yield shell.rmDocker({
+			host: application.host,
+			name: application.docker,
 		});
 		//删除项目文件资源
-		yield shells.rmFile("/var/www/storage/codes/" + domain)
+		yield shell.rmFile({
+			fileName: "/var/www/storage/codes/" + application.creator + '/' + projectFolder,
+			host: application.host,
+		})
 	} catch (e) {
+		console.log(e);
 	} finally {
 
 		var inserted = yield models.gospel_applications.delete(application.id);

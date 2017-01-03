@@ -173,13 +173,16 @@ module.exports = {
 				var self = this;
 				yield shells.stopDocker({
 					host: host,
-					name: self.data.name
+					name: 'gospel_project_' + self.data.name
 				});
 				yield shells.rmDocker({
 					host: host,
-					name: self.data.name
+					name: 'gospel_project_' + self.data.name
 				});
-				yield shells.rmFile("/var/www/storage/codes/" + self.data.name)
+				yield shells.rmFile({
+					fileName: "/var/www/storage/codes/" + application.creator + '/' + self.data.name,
+					host: host,
+				})
 				console.log("undo docker");
 			},
 		});
@@ -502,6 +505,7 @@ module.exports = {
 			appPort: application.port,
 			password: application.password,
 			image: image.id,
+			parent: application.image,
 			framework: application.framework,
 			hostName: en_name,
 			exposePort: image.port,
@@ -532,14 +536,13 @@ module.exports = {
 		}else{
 			application.image = application.image.split(":")[0] + ":" + application.languageVersion;
 		}
-		application.image = application.image + ":" + application.languageVersion;
-		application.host = host.ip;
 		application.host = host;
 		application.status = -1;
 		application.docker = 'gospel_project_' + en_name + "_" + user.name;
 		delete application['languageType'];
 		delete application['languageVersion'];
 		delete application['databaseType'];
+		console.log(application);
 		var inserted = yield models.gospel_applications.create(application);
 		yield models.gospel_uistates.create({
 			application: inserted.id,
