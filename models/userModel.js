@@ -42,6 +42,14 @@ module.exports = function(sequelize, DataTypes) {
     photo: DataTypes.STRING,
     wechat: DataTypes.STRING,
     workspace: DataTypes.STRING,
+    createat:{
+        type: DataTypes.DATE,
+        defaultValue: new Date(Date.now() + (8 * 60 * 60 * 1000))
+    },
+    updateat: {
+        type: DataTypes.DATE,
+        defaultValue: new Date(Date.now() + (8 * 60 * 60 * 1000))
+    },
     isDeleted: {
       type: DataTypes.INTEGER,
       field: "isdeleted",
@@ -53,7 +61,7 @@ module.exports = function(sequelize, DataTypes) {
       defaultValue: 0
     }
   }, {
-    timestamps: true,
+    timestamps: false,
     createdAt: 'createat',
     updatedAt: 'updateat',
     classMethods: {

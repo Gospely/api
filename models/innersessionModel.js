@@ -12,6 +12,14 @@ module.exports = function(sequelize, DataTypes) {
     group: DataTypes.STRING,
     time: DataTypes.BIGINT,
     phone: DataTypes.STRING,
+    createat:{
+        type: DataTypes.DATE,
+        defaultValue: new Date(Date.now() + (8 * 60 * 60 * 1000))
+    },
+    updateat: {
+        type: DataTypes.DATE,
+        defaultValue: new Date(Date.now() + (8 * 60 * 60 * 1000))
+    },
     limitTime: {
       type: DataTypes.BIGINT,
       field: "limit_time",

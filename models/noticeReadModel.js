@@ -19,8 +19,16 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.INTEGER,
       defaultValue: 0
     },
+    createat:{
+        type: DataTypes.DATE,
+        defaultValue: new Date(Date.now() + (8 * 60 * 60 * 1000))
+    },
+    updateat: {
+        type: DataTypes.DATE,
+        defaultValue: new Date(Date.now() + (8 * 60 * 60 * 1000))
+    },
   }, {
-    timestamps: true,
+    timestamps: false,
     createdAt: 'createat',
     classMethods: {
       associate: (models) => {

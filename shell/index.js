@@ -53,15 +53,16 @@ shells.fast_deploy = function*(options) {
             options.image = options.image + "-" + options.db;
         }
     }
-
+    console.log(options);
   return new Promise(function(resolve, reject) {
       var bash = "ssh root@" + host + ' docker run -itd --volumes-from docker-volume-' + options.creator + ' -m ' + options.memory +
         ' -v /var/www/storage/codes/' + options.creator + "/" + options.name +
         ':/root/workspace -v /var/www/storage/codes/' + options.creator + '/.ssh:/root/.ssh'  + config + ' -p ' + options.socketPort + ':3000 -p ' + options.appPort  +
-        ':'+ options.exposePort +' -p ' + options.sshPort + ':22 ' + port +
+        ':80 -p ' + options.sshPort + ':22 ' + port +
         ' -h ' + options.hostName +
         ' -w /root/workspace --name="gospel_project_' + options.name + '"  gospel-' +
         options.image + " && echo success";
+        console.log(bash);
       exec(bash, function(err, data) {
           if (err) reject(err);
           resolve("success");

@@ -16,13 +16,21 @@ module.exports = function(sequelize, DataTypes) {
       field: "open",
       defaultValue: false
     },
+    createat:{
+        type: DataTypes.DATE,
+        defaultValue: new Date(Date.now() + (8 * 60 * 60 * 1000))
+    },
+    updateat: {
+        type: DataTypes.DATE,
+        defaultValue: new Date(Date.now() + (8 * 60 * 60 * 1000))
+    },
     isDeleted: {
       type: DataTypes.INTEGER,
       field: "isdeleted",
       defaultValue: 0
     }
   }, {
-    timestamps: true,
+    timestamps: false,
     createdAt: 'createat',
     updatedAt: 'updateat',
     classMethods: {
