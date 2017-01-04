@@ -232,13 +232,31 @@ applications.create = function*() {
 		if(application.deploy){
 			yield applications.fast_deploy(application,this);
 		}else{
-			var result = yield processes.initDebug(application);
 
-			if (result) {
+			application = JSON.parse(application);
+			console.log(application);
+			if(application.languageType == 'wechat:latest'){
+				var inserted = yield models.gospel_applications.create({
+					name: application.name,
+					image: application.languageType,
+					creator: application.creator
+				});
+				yield models.gospel_uistates.create({
+					application: inserted.id,
+					creator: application.creator,
+				});
 				this.body = render(result, null, null, 1, "应用创建成功");
-			} else {
-				this.body = render(result, null, null, -1, "应用创建失败");
+			}else{
+				console.log("initDebug");
+				var result = yield processes.initDebug(application);
+
+				if (result) {
+					this.body = render(result, null, null, 1, "应用创建成功");
+				} else {
+					this.body = render(result, null, null, -1, "应用创建失败");
+				}
 			}
+
 		}
 	}
 }
