@@ -447,7 +447,6 @@ module.exports = {
 	initDebug: function* (application) {
 
 		//判断应用名是否为中文名，当为中文名时，获取中文拼音
-		application = JSON.parse(application);
 		var en_name = application.name.toLocaleLowerCase();
 		var user = yield models.gospel_users.findById(application.creator);
 		var reg = /[\u4e00-\u9FA5]+/;
