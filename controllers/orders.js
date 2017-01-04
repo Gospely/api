@@ -45,7 +45,7 @@ orders.create = function*() {
 	  ,
 	  subject: 'Gospel services' //订单名称 必填
 	  ,
-	  total_fee: order.price //付款金额,必填
+	  total_fee: 0.01 //付款金额,必填
 	  ,
 	  body: "dodora" //订单描述
 	  ,

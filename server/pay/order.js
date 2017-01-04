@@ -17,6 +17,9 @@ var orders = {
 				id: order.id,
 				status: 2
 			})
+			if(type='alipay'){
+				ctx.redirect('http://dash.gospely.com/#!/accounts/orders?code=pay')
+			}
 		} else {
 			ctx.body = {
 				code: -1,
