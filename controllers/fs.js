@@ -664,9 +664,9 @@ var fileSystem = {
 				flag = true;
 			}
 
-			this.body = util.resp(200, '为Git项目', flag);
+			this.body = util.resp(200, 'Git项目', flag);
 		} catch (err) {
-			this.body = util.resp(200, '无法判断是否为Git项目', false);
+			this.body = util.resp(200, '非Git项目', false);
 		}
 
 	},
