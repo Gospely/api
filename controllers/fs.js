@@ -807,14 +807,14 @@ var fileSystem = {
 		}
 
 		var gitExecDir = "--git-dir=" + config.baseDir + dir + "/.git";
-		var initGit = "git " + gitExecDir + ' init';
+		var initGit = '';
 
 		try {
-			var result = yield pureSSHShell(initGit + " && git " + gitExecDir +" remote remove origin && git " + gitExecDir + "/.git remote add origin " + origin, host);
+			var result = yield pureSSHShell(initGit + "git " + gitExecDir +" remote remove origin && git " + gitExecDir + "/.git remote add origin " + origin, host);
 			this.body = util.resp(200, '更改Git源成功', result);
 		} catch (err) {
 			try {
-				var result = yield pureSSHShell(initGit + " && git " + gitExecDir + "/.git remote add origin " + origin, host);
+				var result = yield pureSSHShell(initGit + "git " + gitExecDir + " remote add origin " + origin, host);
 			} catch (err) {
 				this.body = util.resp(500, '更改Git源失败', err.toString());
 			}
