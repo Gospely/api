@@ -62,8 +62,6 @@ module.exports = function(sequelize, DataTypes) {
     }
   }, {
     timestamps: false,
-    createdAt: 'createat',
-    updatedAt: 'updateat',
     classMethods: {
       associate: (models) => {
         models['gospel_users'].hasMany(models['gospel_groups'], {

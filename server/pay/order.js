@@ -4,7 +4,7 @@ var processor = require('../../process');
 
 var orders = {
 
-	order_success: function*(orderNo, ctx) {
+	order_success: function*(orderNo, ctx, type) {
 
 		console.log(orderNo);
 		var orders = yield models.gospel_orders.getAll({

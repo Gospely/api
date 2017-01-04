@@ -540,9 +540,8 @@ Alipay.prototype.create_direct_pay_by_user_return = function*(ctx) {
     } else if (trade_status == 'TRADE_SUCCESS') {
       // self.emit('create_direct_pay_by_user_trade_success', out_trade_no,
       //   trade_no);
-      yield order.order_success(out_trade_no, ctx);
+      yield order.order_success(out_trade_no, ctx, 'alipay');
     }
-    ctx.body = 'success';
   } else {
     //验证失败
     self.emit("verify_fail");
