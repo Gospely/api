@@ -24,6 +24,8 @@ orders.create = function*() {
   var order = yield parse(this, {
     limit: '10kB'
   });
+  console.log(order);
+  order.price = order.price.toFixed(2);
 	console.log(order);
     var pay_url = yield pay.wechat.wxpay_pay({
       body: 'Gospel services', //商品描述,
