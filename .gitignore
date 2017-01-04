@@ -1,4 +1,8 @@
 node_modules/
 .tern-project
 .idea/
+<<<<<<< HEAD
 uploads/
+=======
+uploads/
+>>>>>>> ac759419f0a4c3ebb584d81d1294123625f01ad7
