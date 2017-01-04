@@ -111,7 +111,7 @@ shells.initDebug = function*(options){
     if(options.framework ==null || options.framework == undefined || options.framework == ''){
         options.image = 'debug-'+options.image;
     }else {
-        if(options.parent == 'html:latest'){
+        if(options.parent == 'html:latest' || options.parent == 'nodejs:latest'){
              options.exposePort = 80;
         }
     }
