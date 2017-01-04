@@ -416,16 +416,16 @@ shells.decomFile = function(options) {
 
     var host = options.host || '120.76.235.234';
     console.log("================"+host+"+++++++++++++++++");
-    var baseDir = '/var/www/sotrage/code/';
+    var baseDir = '/var/www/sotrage/codes/';
     var comDir = baseDir + 'temp/' + options.comDir;
     console.log(comDir);
-    var decomDir = path.join(baseDir, options.user, options.projectName+ '_' + options.username);
+    var decomDir = path.join(baseDir, options.folder);
     console.log(decomDir);
     return {
         zip: function() {
             return new Promise(function(resolve, reject) {
                 exec('ssh root@' + host  + ' unzip ' + comDir +
-                    ' ' + decomDir + ' && rm -rf ' + comDir,
+                    ' -d ' + decomDir + ' && rm -rf ' + comDir,
                     function(err, data) {
                         if (err)
                             reject(err);

@@ -575,12 +575,11 @@ var fileSystem = {
 		var fileName = this.req.files.fileUp.name;
 		var originalname = this.req.files.fileUp.originalname;
 		var username = this.req.body.username;
-		var projectName = this.req.body.projectName;
+		var folder = this.req.body.folder;
 		var extension = this.req.files.fileUp.extension;
-		var user = this.req.body.user;
 		var host = this.req.body.remoteIp || '120.76.235.234';
 		console.log(fileName);
-		console.log(user);
+		console.log(folder);
 
 		var supDir = path.resolve(__dirname, '..');
 		var baseDir = '/var/www/storage/codes/';
@@ -590,9 +589,8 @@ var fileSystem = {
 		var options = {
 			comDir: fileName,
 			username: username,
-			projectName: projectName,
+			folder: folder,
 			host: host,
-			user: user
 		};
 		//获取文件后缀名
 		//var suffix = path.extname(fileName);
@@ -608,7 +606,7 @@ var fileSystem = {
 			yield shells.decomFile(options)[extension]();
 		}else{
 			var file = baseDir + 'temp/'+fileName;
-			var distFold = baseDir + user + '/' + projectName + '_' + username + '/' + originalname;
+			var distFold = baseDir + folder + '/' + originalname;
 			console.log(distFold);
 			yield shells.moveFile({
 				host: host,
