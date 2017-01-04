@@ -826,6 +826,7 @@ var fileSystem = {
 		} catch (err) {
 			try {
 				var result = yield pureSSHShell(initGit + "git " + gitExecDir + " remote add origin " + origin, host);
+				this.body = util.resp(200, '更改Git源成功');
 			} catch (err) {
 				this.body = util.resp(500, '更改Git源失败', err.toString());
 			}
