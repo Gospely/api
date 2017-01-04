@@ -417,13 +417,15 @@ shells.decomFile = function(options) {
     var host = options.host || '120.76.235.234';
     console.log("================"+host+"+++++++++++++++++");
     var baseDir = '/var/www/sotrage/code/';
-    var comDir = options.comDir;
-    var decomDir = path.join(baseDir, options.username, options.projectName);
+    var comDir = baseDir + 'temp' + options.comDir;
+    console.log(comDir);
+    var decomDir = path.join(baseDir, options.user, options.projectName+ '_' + options.username);
+    console.log(decomDir);
     return {
         zip: function() {
             return new Promise(function(resolve, reject) {
                 exec('ssh root@' + host  + ' unzip ' + comDir +
-                    ' ' + decomDir,
+                    ' ' + decomDir + ' && rm -rf ' + comDir,
                     function(err, data) {
                         if (err)
                             reject(err);
@@ -434,7 +436,7 @@ shells.decomFile = function(options) {
         tar: function() {
             return new Promise(function(resolve, reject) {
                 exec('ssh root@' + host + ' tar -zxvf ' + comDir +
-                    ' ' + decomDir,
+                    ' ' + decomDir + ' && rm -rf ' + comDir,
                     function(err, data) {
                         if (err)
                             reject(err);
@@ -445,7 +447,7 @@ shells.decomFile = function(options) {
         gz: function() {
             return new Promise(function(resolve, reject) {
                 exec('ssh root@' + host + ' gzip -d ' + comDir +
-                    ' ' + decomDir,
+                    ' ' + decomDir + ' && rm -rf ' + comDir,
                     function(err, data) {
                         if (err)
                             reject(err);
@@ -456,7 +458,7 @@ shells.decomFile = function(options) {
         rar: function() {
             return new Promise(function(resolve, reject) {
                 exec('ssh root@' + host + ' rar x ' + comDir +
-                    ' ' + decomDir,
+                    ' ' + decomDir + ' && rm -rf ' + comDir,
                     function(err, data) {
                         if (err)
                             reject(err);
@@ -528,7 +530,7 @@ shells.commit = function*(options){
 shells.dockerPush = function*(options){
 
     return new Promise(function(resolve, reject) {
-        exec('ssh root@' + host + ' docker login --username=937257166@qq.com registry.cn-hangzhou.aliyuncs.com -paixrslwh1993'+
+        exec('ssh root@' + options.host + ' docker login --username=937257166@qq.com registry.cn-hangzhou.aliyuncs.com -paixrslwh1993'+
             ' && docker tag '+ options.imageId + ' registry.cn-hangzhou.aliyuncs.com/gospel/deploy:' + options.name +
             ' &&  docker push registry.cn-hangzhou.aliyuncs.com/gospel/deploy:'+
             ' && docker rm ' + options.imageId +
@@ -538,6 +540,20 @@ shells.dockerPush = function*(options){
                     reject(err);
                 resolve(data);
             });
+    });
+}
+shells.moveFile = function*(options){
+
+    return new Promise(function(resolve, reject) {
+        var bash = 'ssh root@' + options.host + ' mv ' + options.file  + ' ' + options.distFold;
+        console.log(bash);
+        exec(bash, function(err,data){
+            console.log(err);
+            console.log(data);
+            if (err)
+                reject(err);
+            resolve(data);
+        })
     });
 }
 module.exports = shells;

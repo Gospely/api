@@ -577,19 +577,20 @@ var fileSystem = {
 		var username = this.req.body.username;
 		var projectName = this.req.body.projectName;
 		var extension = this.req.files.fileUp.extension;
+		var user = this.req.body.user;
 		var host = this.req.body.remoteIp || '120.76.235.234';
+		console.log(fileName);
+		console.log(user);
 
 		var supDir = path.resolve(__dirname, '..');
-
-		var beforeName = supDir+'/uploads/'+fileName;
-		var afterName = supDir+'/uploads/'+username+'_'+projectName+'_'+originalname;
-		yield renameFile(beforeName,afterName);
+		var baseDir = '/var/www/storage/codes/';
+		//var file = supDir+'/uploads/'+fileName;
 
 		var compressionSuffix = ['rar','zip','cab','arj','lzh','ace','7-zip','tar','gzip','uue','bz2','jar','iso','z'];
 		var options = {
-			comDir:afterName,
-			username:username,
-			projectName:projectName,
+			comDir: fileName,
+			username: username,
+			projectName: projectName,
 			host: host
 		};
 		//获取文件后缀名
@@ -604,13 +605,24 @@ var fileSystem = {
 		});
 		if(needCompress){
 			yield shells.decomFile(options)[extension]();
-		}
-		var file = yield parse(this, {
-			limit: '50kb',
-			formTypes: 'multipart/form-data'
-		});
+		}else{
+			var file = baseDir + 'temp/'+fileName;
+			var distFold = baseDir + user + '/' + projectName + '_' + username + '/' + originalname;
+			console.log(distFold);
+			yield shells.moveFile({
+				host: host,
+				file: file,
+				distFold: distFold
+			});
 
-		return 'hello,world';
+		}
+		this.body = util.resp(200, '执行失败', err.toString());
+		// var file = yield parse(this, {
+		// 	limit: '50kb',
+		// 	formTypes: 'multipart/form-data'
+		// });
+		//
+		// return 'hello,world';
 		//this.redirect('/');
 	},
 
