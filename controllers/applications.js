@@ -247,7 +247,6 @@ applications.create = function*() {
 				});
 				this.body = render(result, null, null, 1, "应用创建成功");
 			}else{
-				console.log("initDebug");
 				var result = yield processes.initDebug(application);
 
 				if (result) {

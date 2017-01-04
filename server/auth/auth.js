@@ -109,7 +109,7 @@ module.exports = {
 							} else {
 								//
 								this.status = 200;
-								this.body = render(null, -100, '您没有该权限去操作');
+								this.body = render(null, -101, '您没有该权限去操作');
 							}
 						}
 
