@@ -612,11 +612,12 @@ var fileSystem = {
 			yield shells.moveFile({
 				host: host,
 				file: file,
-				distFold: distFold
+				distFold: distFold,
+				user: user
 			});
 
 		}
-		this.body = util.resp(200, '执行失败', err.toString());
+		this.body = util.resp(200, '上传成功','');
 		// var file = yield parse(this, {
 		// 	limit: '50kb',
 		// 	formTypes: 'multipart/form-data'
