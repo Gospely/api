@@ -591,7 +591,8 @@ var fileSystem = {
 			comDir: fileName,
 			username: username,
 			projectName: projectName,
-			host: host
+			host: host,
+			user: user
 		};
 		//获取文件后缀名
 		//var suffix = path.extname(fileName);
@@ -613,7 +614,6 @@ var fileSystem = {
 				host: host,
 				file: file,
 				distFold: distFold,
-				user: user
 			});
 
 		}
