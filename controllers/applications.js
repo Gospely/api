@@ -40,7 +40,7 @@ applications.fast_deploy = function*(application,ctx){
 		yield models.gospel_uistates.create({
 			application: inserted.id,
 			creator: application.creator,
-			status: 1;
+			status: 1,
 			configs: image.defaultConfig
 		});
 		inserted.products = products;
