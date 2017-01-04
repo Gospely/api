@@ -416,7 +416,7 @@ shells.decomFile = function(options) {
 
     var host = options.host || '120.76.235.234';
     console.log("================"+host+"+++++++++++++++++");
-    var baseDir = '/var/www/sotrage/codes/';
+    var baseDir = '/var/www/storage/codes/';
     var comDir = baseDir + 'temp/' + options.comDir;
     console.log(comDir);
     var decomDir = path.join(baseDir, options.folder);
