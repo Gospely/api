@@ -10,6 +10,7 @@ module.exports = function(sequelize, DataTypes) {
     },
     name: DataTypes.STRING,
     port: DataTypes.STRING,
+    version: DataTypes.STRING,
     sshPort: {
       type: DataTypes.STRING,
       field: 'ssh_port'

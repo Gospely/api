@@ -459,6 +459,9 @@ module.exports = {
 		//根据用户输入获取镜像名称
 
 		application.image = application.languageType;
+		if(application.image == 'nodejs:latest'){
+			application.version = application.languageVersion;
+		}
 		//获取主机
 		var host = yield this.hostFilter(user, true);
 		host = host.dataValues;

@@ -98,9 +98,13 @@ shells.initDebug = function*(options){
     var port = '',
         config = '';
     if(options.db != null && options.db != undefined && options.db != '') {
-        config = ' -e "DBUSER=' + options.dbUser + '" -e "DBPASS=' + options.password + '" -e "USERID=' + options.creator  + '" -e "PORT=' + options.appPort + '" ';
+        config = ' -e "DBUSER=' + options.dbUser + '" -e "DBPASS=' + options.password + '" -e "USERID=' + options.creator  + '" -e "NGPORT=' + options.appPort + '" ';
         port =  ' -p ' + options.dbPort + ':3306';
         var splits = options.image.split(":");
+        if(options.framework != null){
+            splits = options.framework.split(":");
+            options.version = splits[1];
+        }
         if(options.db == 'mysql') {
             options.image =  splits[0] + "-mariadb";
         }else{
