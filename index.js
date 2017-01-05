@@ -31,8 +31,8 @@ app.use(function*(next) {
     // global.dashDomain = 'http://dash.gospely.com'
     yield next;
   } catch (err) {
-    this.status = err.status || 500;
-    this.body = err.message;
+    this.status = 200;
+    this.body = {code: -1, message: '服务器忙请重试：' + err.message };
     console.log(err.message);
   }
 });
