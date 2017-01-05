@@ -298,7 +298,7 @@ applications.create = function*() {
 					application: inserted.id,
 					creator: application.creator,
 				});
-				this.body = render(result, null, null, 1, "应用创建成功");
+				this.body = render(inserted, null, null, 1, "应用创建成功");
 			}else{
 				var result = yield processes.initDebug(application);
 
