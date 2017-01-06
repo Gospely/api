@@ -518,10 +518,12 @@ module.exports = {
 			version: application.languageVersion,
 			dbPort: application.dbPort
 		});
-		yield shells.mvFiles({
-			host: host,
-			name: en_name + "_" + user.name,
-		});
+		if(application.git == null || application.git == ''){
+			yield shells.mvFiles({
+				host: host,
+				name: en_name + "_" + user.name,
+			});
+		}
 
 		if(application.framework != null && application.framework != undefined && application.framework != ''){
 			application.image = application.framework;
