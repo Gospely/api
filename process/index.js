@@ -517,23 +517,12 @@ module.exports = {
 			version: application.languageVersion,
 			dbPort: application.dbPort
 		});
-		if(application.git != null && application.git != undefined && application.git != ''){
+		yield shells.mvFiles({
+			host: host,
+			name: en_name + "_" + user.name,
+		});
 
-			// //生成ssh key
-			//  yield shells.sshKey({
-			// 	host: host,
-			// 	docker: en_name + "_" + user.name,
-			// });
-			// application.sshKey = yield shells.sshKey({
-			// 	host: host,
-			// 	docker: en_name + "_" + user.name,
-			// });
-		}
 		if(application.framework != null && application.framework != undefined && application.framework != ''){
-			yield shells.mvFiles({
-				host: host,
-				name: en_name + "_" + user.name,
-			});
 			application.image = application.framework;
 		}else{
 			application.image = application.image.split(":")[0] + ":" + application.languageVersion;
