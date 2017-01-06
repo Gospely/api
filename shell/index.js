@@ -101,19 +101,22 @@ shells.initDebug = function*(options){
         config = ' -e "DBUSER=' + options.dbUser + '" -e "DBPASS=' + options.password + '" -e "USERID=' + options.creator  + '" -e "NGPORT=' + options.appPort + '" ';
         port =  ' -p ' + options.dbPort + ':3306';
         var splits = options.image.split(":");
-        if(options.framework != null){
+        if(options.framework != null && options.framework != ''){
             splits = options.framework.split(":");
             options.version = splits[1];
         }
         if(options.db == 'mysql') {
             options.image =  splits[0] + "-mariadb";
         }else{
-            options.image = options.image + "-" + options.db;
+            options.image = splits[0] + "-" + options.db;
         }
         options.image = options.image + ":" + options.version;
     }
     if(options.framework ==null || options.framework == undefined || options.framework == ''){
         options.image = 'debug-'+options.image;
+        if(options.parent == 'html:latest' || options.parent == 'nodejs:latest'){
+             options.exposePort = 80;
+        }
     }else {
         if(options.parent == 'html:latest' || options.parent == 'nodejs:latest'){
              options.exposePort = 80;

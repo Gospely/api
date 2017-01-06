@@ -461,6 +461,7 @@ module.exports = {
 		application.image = application.languageType;
 		if(application.image == 'nodejs:latest'){
 			application.version = application.languageVersion;
+			application.languageVersion = "latest";
 		}
 		//获取主机
 		var host = yield this.hostFilter(user, true);
