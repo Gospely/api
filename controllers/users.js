@@ -137,12 +137,6 @@ users.register = function*() {
 	var user = yield parse(this, {
 		limit: '1kb'
 	});
-	delete user['id'];
-	user.password = md5_f.md5Sign(user.password, 'gospel_users');
-	user.type = 'common';
-	user.ide = uuid.v4();
-	user.ideName = '个人版';
-	user.group = 'ab64c397-d323-4133-9541-479bbaaf6c52';
 	var inserted;
 
 	if(user.inviteCode){
