@@ -136,6 +136,7 @@ module.exports = {
 					host: host,
 					name: domain + "_" + application.userName,
 				});
+				console.log(application.sshPassword);
 				yield shells.changePWD({
 					host: host,
 					name: domain + "_" + application.userName,
@@ -459,9 +460,11 @@ module.exports = {
 		//根据用户输入获取镜像名称
 
 		application.image = application.languageType;
-		if(application.image == 'nodejs:latest' || application.image == "html:latest"){
+		if(application.image == 'nodejs:latest'){
 			application.version = application.languageVersion;
-			application.languageVersion = "latest";
+		}
+		if(application.image == 'php:latest'){
+			application.version = application.languageVersion;
 		}
 		//获取主机
 		var host = yield this.hostFilter(user, true);

@@ -12,7 +12,6 @@ shells.domain = function*(options) {
     cmd = cmd.replace(new RegExp('domain', 'gm'), options.domain);
     var name = options.domain.replace('-', '_');
     cmd = cmd.replace(new RegExp('projectname', 'gm'), name);
-    cmd = cmd.replace(new RegExp('domain', 'gm'), options.domain);
     return new Promise(function(resolve, reject) {
         options.user = '';
         cmd = cmd.trim();
@@ -81,10 +80,13 @@ shells.mvFiles = function*(options){
     });
 }
 shells.changePWD = function*(options){
+    console.log(options);
     var host = options.host || '120.76.235.234';
     return new Promise(function(resolve, reject) {
         exec('ssh root@' + host + ' sh /root/gospely/deploy/shell/changePWD.sh gospel_project_' + options.name + " " + options.password,
             function(err, data) {
+                console.log(err);
+                console.log(data);
                 if (err)
                     reject(err);
                 resolve(data);
@@ -116,6 +118,9 @@ shells.initDebug = function*(options){
         options.image = 'debug-'+options.image;
         if(options.parent == 'html:latest' || options.parent == 'nodejs:latest'){
              options.exposePort = 80;
+        }
+        if(options.parent == 'php:latest'){
+            options.image = options.image.split(":")[0] + ":" + options.version;
         }
     }else {
         if(options.parent == 'html:latest' || options.parent == 'nodejs:latest'){
