@@ -556,7 +556,6 @@ module.exports = {
         });
 
         //nginx配置文件
-        application.port = yield portManager.generatePort();
         node = processes.buildNext(node, {
             do: function*() {
 
