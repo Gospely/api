@@ -65,44 +65,12 @@ module.exports = {
             },
         });
 
-        //nginx配置文件
-        application.port = yield portManager.generatePort();
-        node = processes.buildNext(node, {
-            do: function*() {
-
-                var self = this;
-                var result = yield shells.domain(self.data);
-                if (result != 'success') {
-                    throw ('创建应用失败');
-                }
-            },
-            data: {
-                user: application.creator,
-                domain: domain + "-" + application.userName,
-                port: application.port,
-                host: host,
-            },
-            undo: function*() {
-
-                var self = this;
-                var name = self.data.domain.replace('-', '_');
-
-                yield shells.delNginxConf({
-                    name: name,
-                    host: host,
-                });
-                yield shells.nginx({
-                    host: host
-                });
-            },
-        });
-
         //docker 创建
 
         //var data = yield shells.nginx();
         // console.log(data);
         //创建并启动docker
-
+		application.port = yield portManager.generatePort();
         application.socketPort = yield portManager.generatePort(host);
         if (application.port == application.socketPort) {
             application.port = yield portManager.generatePort(host);
@@ -139,9 +107,6 @@ module.exports = {
                     host: host,
                     name: domain + "_" + application.userName,
                     password: application.sshPassword
-                });
-                yield shells.nginx({
-                    host: host
                 });
 
                 // if(application.git) {
@@ -190,7 +155,36 @@ module.exports = {
             },
         });
 
+		//nginx配置文件
+        node = processes.buildNext(node, {
+            do: function*() {
 
+                var self = this;
+                var result = yield shells.domain(self.data);
+                if (result != 'success') {
+                    throw ('创建应用失败');
+                }
+				yield shells.nginx({
+					host: host
+				});
+            },
+            data: {
+                user: application.creator,
+                domain: domain + "-" + application.userName,
+                port: application.port,
+                host: host,
+            },
+            undo: function*() {
+
+                var self = this;
+                var name = self.data.domain.replace('-', '_');
+
+                yield shells.delNginxConf({
+                    name: name,
+                    host: host,
+                });
+            },
+        });
 
         //将应用记录存储到数据库
         application.docker = 'gospel_project_' + domain + "_" + application.userName;
@@ -318,37 +312,6 @@ module.exports = {
                 if (result.status.code == '1') {
                     yield models.gospel_domains.delete(self.data.message.id);
                 }
-            },
-        });
-
-        //nginx配置文件
-        application.port = yield portManager.generatePort();
-        node = processes.buildNext(node, {
-            do: function*() {
-
-                var self = this;
-                var result = yield shells.domain(self.data);
-                if (result != 'success') {
-                    throw ('创建应用失败');
-                }
-            },
-            data: {
-                host: host,
-                user: application.creator,
-                domain: domain + "-" + application.userName,
-                port: application.port,
-            },
-            undo: function*() {
-
-                var self = this;
-                var name = self.data.domain.replace('-', '_')
-                yield shells.delNginxConf({
-                    projectname: name,
-                    host: host,
-                });
-                yield shells.nginx({
-                    host: host,
-                });
             },
         });
 
