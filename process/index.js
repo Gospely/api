@@ -459,7 +459,7 @@ module.exports = {
 		//根据用户输入获取镜像名称
 
 		application.image = application.languageType;
-		if(application.image == 'nodejs:latest'){
+		if(application.image == 'nodejs:latest' || application.image == "html:latest"){
 			application.version = application.languageVersion;
 			application.languageVersion = "latest";
 		}
