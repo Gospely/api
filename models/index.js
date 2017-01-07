@@ -106,7 +106,8 @@ var sequelize = new Sequelize('gospel', 'gospel', 'dodoraCN2016@gospely', {
 
         return yield this.find({
           where: {
-            id: id
+            id: id,
+            isDeleted: 0
           }
         });
       },
