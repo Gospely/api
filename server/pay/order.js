@@ -50,7 +50,7 @@ var operate = {
 			date = new Date(ide.expireAt);
 		}
 
-		date = date.setMonth(date.getMonth() + 1 + order.timeSize);
+		date = date.setMonth(date.getMonth()  + order.timeSize);
 		yield models.gospel_ides.modify({
 			id: ide.id,
 			product: order.products,
