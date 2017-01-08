@@ -10,6 +10,7 @@ var _md5 = require('../utils/MD5');
 var shell = require('../shell');
 var pay = require('../server/pay');
 var validator = require('../utils/validator');
+var transliteration = require('transliteration');
 
 var applications = {};
 //数据渲染，todo:分页参数引入，异常信息引入
@@ -328,5 +329,30 @@ applications.startTerminal = function*(){
 		docker: containerName
 	});
 	this.body = render(null, null, null, 1, '启动成功');
+}
+applications.validate = function*(){
+
+	var name = this.query.name,
+		creator = this.query.creator,
+    	userName =this.query.userName,
+		reg = /[\u4e00-\u9FA5]+/;
+	var res = reg.test(name);
+
+	if (res) {
+		var tr = transliteration.transliterate
+		name = tr(name).replace(new RegExp(" ", 'gm'), "").toLocaleLowerCase();
+	}
+	name = name.replace('-', '');
+	userName = userName.toLocaleLowerCase();
+	var result = yield models.gospel_applications.getAll({
+		domain: name + "-" + userName,
+		creator: creator
+	});
+	if(result != null && result.length > 0){
+		this.body = render(null, null, null, -1, '该应用名已占用');
+	}else{
+		this.body = render(null, null, null, -1, '该应用名合法');
+	}
+
 }
 module.exports = applications;
