@@ -351,7 +351,7 @@ applications.validate = function*(){
 	if(result != null && result.length > 0){
 		this.body = render(null, null, null, -1, '该应用名已占用');
 	}else{
-		this.body = render(null, null, null, 1, '该应用名合法');
+		this.body = render(null, null, null, 1, null);
 	}
 
 }
