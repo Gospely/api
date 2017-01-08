@@ -305,6 +305,13 @@ applications.create = function*() {
 		}else{
 
 			application = JSON.parse(application);
+			var count = yield models.gospel_applications.count({
+				creator: application.creator
+			});
+			if(count[0].dataValues.all >= 3){
+				this.body = render(null, null, null, -1, "应用创建失败,封测期间每个用户只能创建3个应用");
+				return ;
+			}
 			console.log(application);
 			if(application.languageType == 'wechat:latest'){
 				var inserted = yield models.gospel_applications.create({
