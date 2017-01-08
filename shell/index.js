@@ -99,6 +99,9 @@ shells.initDebug = function*(options){
     var host = options.host || '120.76.235.234';
     var port = '',
         config = '';
+    if(options.parent == 'nodejs:latest'){
+         options.version = 'latest';
+    }
     if(options.db != null && options.db != undefined && options.db != '') {
         config = ' -e "DBUSER=' + options.dbUser + '" -e "DBPASS=' + options.password + '" -e "USERID=' + options.creator  + '" -e "NGPORT=' + options.appPort + '" ';
         port =  ' -p ' + options.dbPort + ':3306';
