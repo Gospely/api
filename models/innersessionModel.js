@@ -27,7 +27,15 @@ module.exports = function(sequelize, DataTypes) {
           force: false,
           logging: true
         });
-      }
+    },
+    findById: function*(id) {
+
+      return yield this.find({
+        where: {
+          id: id,
+        }
+      });
+    }
     }
   });
   return innersession;

@@ -441,7 +441,7 @@ users.verifyEmailCode = function* (){
 			//更新用户状态
 			if (innersession.code == authCode) {
 				yield models.gospel_users.modify({email:user.phone,id:user.id});
-				this.body = render(user, 1, "邮箱验证成功");
+				this.body = render(user, 1, "修改邮箱成功");
 			} else {
 				this.body = render(null, -1, "验证码错误，请重新获取");
 			}
@@ -449,7 +449,7 @@ users.verifyEmailCode = function* (){
 			this.body = render(null, -1, "验证码超时，请重新获取");
 		}
 	} else {
-		this.body = render(null, -1, "注册失败，邮箱或验证码错误");
+		this.body = render(null, -1, "修改失败，邮箱或验证码错误");
 	}
 }
 
