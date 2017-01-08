@@ -412,7 +412,7 @@ module.exports = {
     //构建
     initDebug: function*(application) {
 
-
+        console.log(application);
         //判断应用名是否为中文名，当为中文名时，获取中文拼音
         var en_name = application.name.toLocaleLowerCase();
         var user = yield models.gospel_users.findById(application.creator);
@@ -500,7 +500,11 @@ module.exports = {
         if (application.framework != null && application.framework != undefined && application.framework != '') {
             application.image = application.framework;
         } else {
-            application.image = application.image.split(":")[0] + ":" + application.languageVersion;
+            if(application.image == 'html:latest') {
+
+            }else{
+                application.image = application.image.split(":")[0] + ":" + application.languageVersion;
+            }
         }
         application.host = host;
         application.status = -1;
