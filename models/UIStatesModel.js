@@ -38,7 +38,13 @@ module.exports = function(sequelize, DataTypes) {
     updatedAt: 'updateat',
     classMethods: {
       associate: (models) => {
-      }
+      },
+      delete: function*(item) {
+        item.destroy({
+          force: false,
+          logging: true
+        });
+    },
     }
   });
   return state;

@@ -185,7 +185,12 @@ applications.delete = function*() {
 
 	var id = this.params.id;
 	var application = yield models.gospel_applications.findById(id);
-
+	var UIState = yield models.gospel_uistates.getAll({
+		application: application.id
+	});
+	console.log(UIState);
+	UIState = yield models.gospel_uistates.findById(UIState[0].dataValues.id)
+	yield models.gospel_uistates.delete(UIState);
 	if(application.image == 'wechat:latest'){
 		var inserted = yield models.gospel_applications.delete(application.id);
 		if (!inserted) {
