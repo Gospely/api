@@ -8,7 +8,8 @@ var orders = {
 
 		console.log(orderNo);
 		var orders = yield models.gospel_orders.getAll({
-			orderNo: orderNo
+			orderNo: orderNo,
+			status: 1
 		});
 		if (orders.length == 1) {
 			var order = orders[0].dataValues;
