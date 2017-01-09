@@ -314,14 +314,16 @@ applications.create = function*() {
 			// }
 			console.log(application);
 			if(application.languageType == 'wechat:latest'){
+				var image = yield models.gospel_images.findById(application.languageType);
 				var inserted = yield models.gospel_applications.create({
 					name: application.name,
 					image: application.languageType,
-					creator: application.creator
+					creator: application.creator,
 				});
 				yield models.gospel_uistates.create({
 					application: inserted.id,
 					creator: application.creator,
+					configs: image.defaultConfig
 				});
 				this.body = render(inserted, null, null, 1, "应用创建成功");
 			}else{
