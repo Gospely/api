@@ -323,7 +323,8 @@ applications.create = function*() {
 				yield models.gospel_uistates.create({
 					application: inserted.id,
 					creator: application.creator,
-					configs: image.defaultConfig
+					configs: image.defaultConfig,
+					gap: 60 * 1000
 				});
 				this.body = render(inserted, null, null, 1, "应用创建成功");
 			}else{
