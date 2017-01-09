@@ -369,4 +369,36 @@ applications.validate = function*(){
 	}
 
 }
+applications.update = function* update() {
+
+	if ('PUT' != this.method) this.throw(405, "method is not allowed");
+	var item = yield parse(this, {
+		limit: '4048kb'
+	});
+	if (item.id == null || item.id == undefined) this.throw(405,
+		"method is not allowed");
+	var inserted;
+	if (item.exposePort != null && item.exposePort != undefined && item.exposePort !=
+		'') {
+		var application = yield models.gospel_applications.findById(item.id);
+		if(item.exposePort != application.exposePort){
+			var result = yield shell.changePort({
+				host: application.host,
+				docker: application.docker,
+				port: item.exposePort,
+				oldPort: application.exposePort
+			});
+			console.log(result);
+			if(result){
+				inserted = yield models.gospel_applications.modify(item);
+			}
+		}
+	}else{
+		inserted = yield models.gospel_applications.modify(item);
+	}
+	if (!inserted) {
+		this.throw(405, "couldn't be added.");
+	}
+	this.body = render(inserted, null, null, 1);
+}
 module.exports = applications;

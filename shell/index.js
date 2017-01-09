@@ -176,6 +176,15 @@ shells.nginx = function*(options) {
                             console.log(data);
                             console.log('==========================kill===================' + data);
                             if (err) {
+                                exec("ssh root@" + host +
+                                    " service nginx restart",
+                                    function(err, data) {
+                                        console.log(err);
+                                        console.log(data);
+                                        console.log('==========================restart===================' + data);
+                                        if (err) reject(err);
+                                        resolve(data);
+                                    });
                                 reject(err);
                             }else{
                                 exec("ssh root@" + host +
@@ -183,7 +192,7 @@ shells.nginx = function*(options) {
                                     function(err, data) {
                                         console.log(err);
                                         console.log(data);
-                                        console.log('==========================kill===================' + data);
+                                        console.log('==========================restart===================' + data);
                                         if (err) reject(err);
                                         resolve(data);
                                     });
@@ -587,6 +596,25 @@ shells.moveFile = function*(options){
             if (err)
                 reject(err);
             resolve(data);
+        })
+    });
+}
+shells.changePort = function*(options){
+
+    return new Promise(function(resolve, reject) {
+        var bash = 'ssh root@' + options.host + ' docker exec  ' + options.docker  + ' sed -i -e "s/127.0.0.1:' + options.oldPort +
+        '/127.0.0.1:' + options.port + '/" /etc/nginx/host.d/default.conf && echo success' ;
+        console.log(bash);
+        exec(bash, function(err,data){
+            console.log(err);
+            console.log(data);
+            if (err)
+                reject(err);
+            exec('ssh root@' + options.host + ' docker stop ' + options.docker + ' && echo success', function(err,data){
+                console.log(err);
+                console.log(data);
+                resolve(data);
+            })
         })
     });
 }
