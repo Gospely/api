@@ -1,4 +1,6 @@
-var app = require('koa.io')();
+const Koa = require('koa');
+const IO = require('koa-socket');
+const co = require('co');
 var router = require('koa-router')();
 var routers = require('./routers.js')(router);
 var auth = require('./server/auth/auth');
@@ -14,6 +16,65 @@ var container = require('./container/index.js');
 var mount = require('koa-mount');
 var multer = require('koa-multer');
 var models = require('./models');
+const app =  new Koa();
+const io = new IO();
+
+io.attach(app);
+
+/**
+ * Socket middlewares
+ * @type {string}
+ */
+io.use(co.wrap(function *(ctx,next) {
+    console.log( 'Socket middleware' );
+    const start = new Date;
+    yield next();
+    const ms = new Date - start;
+    console.log( `WS ${ ms }ms` );
+}));
+
+io.on('connection',ctx=>{
+    console.log('join event',ctx.socket.id);
+    io.broadcast('connections',{
+        num:io.connections.size
+    })
+});
+
+io.on( 'disconnect', ctx => {
+    console.log( 'leave event', ctx.socket.id );
+    io.broadcast( 'connections', {
+        num: io.connections.size
+    })
+});
+
+io.on( 'data', ( ctx, data ) => {
+    console.log( 'data event', data );
+    console.log( 'ctx:', ctx.event, ctx.data, ctx.socket.id );
+    console.log( 'ctx.teststring:', ctx.teststring );
+    ctx.socket.emit( 'response', {
+        message: 'response from server'
+    })
+});
+io.on( 'ack', ( ctx, data ) => {
+    console.log( 'data event with acknowledgement', data )
+    ctx.acknowledge( 'received' )
+});
+io.on( 'numConnections', packet => {
+    console.log( `Number of connections: ${ io.connections.size }` )
+});
+
+// io.on('join',(ctx,data)=>{
+//     var socket_id = ctx.socketIO.socket_id;
+//     var user = yield models.gospel_users.findById(userId);
+//     user.socket_id = socket_id;
+//     yield models.gospel_users.modify({
+//         id: user.id,
+//         socket_id: socket_id
+//     });
+//     this.emit('join',{
+//         numUsers : numUsers
+//     });
+// });
 
 
 process.env.TZ = 'Asia/Shanghai';
@@ -22,10 +83,6 @@ app.use(function*(next) {
     global.appDomain = 'http://localhost:8089';
     global.dashDomain = 'http://localhost:8088';
 
-      //socket用户id socketid map
-      //当前已连接的总人数
-    // this.map = {};
-    // this.numUsers = 0;
      // /var/www/yonghuid/xiangmuming
     // global.appDomain = 'http://api.gospely.com'
     // global.dashDomain = 'http://dash.gospely.com'
@@ -58,7 +115,7 @@ if (configs.isDBAvailable) {
   app.use(koaPg(configs.db.materDB));
 }
 
-var options = {
+const options = {
   headers: ['WWW-Authenticate', 'Server-Authorization', 'Content-Type',
     'Authorization'
   ],
@@ -74,9 +131,9 @@ app.use(mount('/container', container.filter));
 app
   .use(router.routes())
   .use(router.allowedMethods());
-console.log(container);
 
 //上传文件模块
+
 
 app.on('error', function(err, ctx) {
   log.error('server error', err, ctx);
@@ -98,30 +155,6 @@ Promise.resolve(setupDb)
   });
 
 
-app.io.use(function*(next) {
-    //join
-    //console.log('somebody connected');
-
-    yield* next;
-
-    //exit io.connect(http://ip:8089)
-    // if (this.addedUser){
-    //   delete app.map[this.userId];
-    //   -- app.numUsers
-    // }
-});
 
 
 
-app.io.route('join listen',function* (next,userId) {
-    var socket_id = this.socket.id;
-    var user = yield models.gospel_users.findById(userId);
-    user.socket_id = socket_id;
-    yield models.gospel_users.modify({
-        id: user.id,
-        socket_id: socket_id
-    });
-    this.emit('join',{
-        numUsers : numUsers
-    });
-});
