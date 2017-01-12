@@ -16,7 +16,6 @@ var multer = require('koa-multer');
 var models = require('./models');
 
 
-process.env.TZ = 'Asia/Shanghai';
 app.use(function*(next) {
   try {
     global.appDomain = 'http://localhost:8089';

@@ -309,12 +309,13 @@ applications.create = function*() {
 			yield applications.fast_deploy(application,this);
 		}else{
 
-			application = JSON.parse(application);
+			// application = JSON.parse(application);
 			// var count = yield models.gospel_applications.count({
-			// 	creator: application.creator
+			// 	creator: application.creator,
+			// 	host: '120.76.235.234'
 			// });
-			// if(count[0].dataValues.all >= 3){
-			// 	this.body = render(null, null, null, -1, "应用创建失败,封测期间每个用户只能创建3个应用");
+			// if(count[0].dataValues.all >= 1){
+			// 	this.body = render(null, null, null, -1, "应用创建失败,封测期间每个用户只能创建1个应用,小程序无限");
 			// 	return ;
 			// }
 			console.log(application);
