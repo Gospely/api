@@ -28,7 +28,7 @@ feedbacks.create = function*(){
 
         var user = yield models.gospel_users.findById(feedback.creator);
         if(user !=null ){
-            feedback.mail = user.mail;
+            feedback.email = user.email;
         }
     }
     var inserted =  yield models.gospel_feedbacks.create(feedback);
