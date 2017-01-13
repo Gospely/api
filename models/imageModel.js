@@ -30,21 +30,13 @@ module.exports = function(sequelize, DataTypes) {
       field: 'debug_type',
       defaultValue: 'common' //common | shell
     },
-    createat:{
-        type: DataTypes.DATE,
-        defaultValue: new Date()
-    },
-    updateat: {
-        type: DataTypes.DATE,
-        defaultValue: new Date()
-    },
     isDeleted: {
       type: DataTypes.INTEGER,
       field: "isdeleted",
       defaultValue: 0
     }
   }, {
-    timestamps: false,
+    timestamps: true,
     createdAt: 'createat',
     updatedAt: 'updateat',
     classMethods: {
