@@ -64,7 +64,7 @@ common.update = function* update() {
 
 	if ('PUT' != this.method) this.throw(405, "method is not allowed");
 	var item = yield parse(this, {
-		limit: '4048kb'
+		limit: '10240kb'
 	});
 	if (item.password != null && item.password != undefined && item.password !=
 		'') {

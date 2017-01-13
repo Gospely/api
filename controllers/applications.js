@@ -309,7 +309,7 @@ applications.create = function*() {
 			yield applications.fast_deploy(application,this);
 		}else{
 
-			// application = JSON.parse(application);
+			application = JSON.parse(application);
 			// var count = yield models.gospel_applications.count({
 			// 	creator: application.creator,
 			// 	host: '120.76.235.234'
