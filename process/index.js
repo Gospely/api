@@ -430,10 +430,10 @@ module.exports = {
 		user.name = user.name.toLocaleLowerCase();
 
         if (application.image == 'nodejs:latest' && application.framework == null) {
-            application.version = 'latest'
+            application.version = 'latest';
         }
-        if (application.image == 'php:latest') {
-            application.version = application.languageVersion;
+        if (application.image == 'php:latest' && application.framework == null) {
+            application.version = 'latest';
         }
         //获取主机
         var host = yield this.hostFilter(user, true);
