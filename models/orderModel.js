@@ -46,13 +46,21 @@ module.exports = function(sequelize, DataTypes) {
       field: "unit_price"
     },
     creator: DataTypes.INTEGER,
+    createat:{
+        type: DataTypes.DATE,
+        defaultValue: new Date();
+    },
+    updateat: {
+        type: DataTypes.DATE,
+        defaultValue: new Date();
+    },
     isDeleted: {
       type: DataTypes.INTEGER,
       field: "isdeleted",
       defaultValue: 0
     }
   }, {
-    timestamps: true,
+    timestamps: false,
     createdAt: 'createat',
     updatedAt: 'updateat',
     classMethods: {
