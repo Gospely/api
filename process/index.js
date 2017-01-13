@@ -429,8 +429,8 @@ module.exports = {
 		en_name = en_name.replace('-','');
 		user.name = user.name.toLocaleLowerCase();
 
-        if (application.image == 'nodejs:latest') {
-            application.version = application.languageVersion;
+        if (application.image == 'nodejs:latest' && application.framework == null) {
+            application.version = 'latest'
         }
         if (application.image == 'php:latest') {
             application.version = application.languageVersion;
