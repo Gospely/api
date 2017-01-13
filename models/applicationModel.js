@@ -63,11 +63,11 @@ module.exports = function(sequelize, DataTypes) {
     },
     createat:{
         type: DataTypes.DATE,
-        defaultValue: new Date(Date.now() + (8 * 60 * 60 * 1000))
+        defaultValue: new Date()
     },
     updateat: {
         type: DataTypes.DATE,
-        defaultValue: new Date(Date.now() + (8 * 60 * 60 * 1000))
+        defaultValue: new Date()
     },
     isDeleted: {
       type: DataTypes.INTEGER,
