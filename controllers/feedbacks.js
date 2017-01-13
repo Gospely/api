@@ -19,9 +19,11 @@ feedbacks.create = function*(){
 	var item = yield parse(this, {
 		limit: '10kb'
 	});
+    var feedback = item
+    if(item.email !=null && item.email != undefined){
+        item = JSON.parse(item);
 
-    var feedback = JSON.parse(item);
-
+    }
     if(feedback.creator != null && feedback.creator != undefined && feedback.creator != ''){
 
         var user = yield models.gospel_users.findById(feedback.creator);
