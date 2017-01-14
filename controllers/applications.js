@@ -387,6 +387,7 @@ applications.update = function* update() {
 	if (item.id == null || item.id == undefined) this.throw(405,
 		"method is not allowed");
 	var inserted;
+	console.log(item);
 	if (item.exposePort != null && item.exposePort != undefined && item.exposePort !=
 		'') {
 		var application = yield models.gospel_applications.findById(item.id);
@@ -402,6 +403,7 @@ applications.update = function* update() {
 				inserted = yield models.gospel_applications.modify(item);
 			}
 		}
+		inserted = yield models.gospel_applications.modify(item);
 	}else{
 		inserted = yield models.gospel_applications.modify(item);
 	}
