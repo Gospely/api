@@ -28,11 +28,9 @@ module.exports = function(sequelize, DataTypes) {
     },
     createat:{
         type: DataTypes.DATE,
-        defaultValue: new Date()
     },
     updateat: {
         type: DataTypes.DATE,
-        defaultValue: new Date()
     },
     isDeleted: {
       type: DataTypes.INTEGER,

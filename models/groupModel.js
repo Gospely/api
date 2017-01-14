@@ -12,11 +12,9 @@ module.exports = function(sequelize, DataTypes) {
     privileges: DataTypes.JSONB,
     createat:{
         type: DataTypes.DATE,
-        defaultValue: new Date()
     },
     updateat: {
         type: DataTypes.DATE,
-        defaultValue: new Date()
     },
     isDeleted: {
       type: DataTypes.INTEGER,

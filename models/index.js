@@ -129,6 +129,11 @@ var sequelize = new Sequelize('gospel', 'gospel', 'dodoraCN2016@gospely', {
         });
       },
       create: function*(item) {
+
+        var date = new Date();
+        date.setHours(date.getHours() + 8);
+        item.createat = date;
+        item.update = date;
         var row = this.build(item);
         return yield row.save();
       },
@@ -154,7 +159,6 @@ var sequelize = new Sequelize('gospel', 'gospel', 'dodoraCN2016@gospely', {
         });
       }
     },
-
     instanceMethods: {
 
     }
