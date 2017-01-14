@@ -240,8 +240,17 @@ shells.stopDocker = function*(options) {
             " docker stop " +
             options.name,
             function(err, data) {
-                if (err) reject(err);
-                resolve(data);
+                if (err) {
+                    reject(err);
+                }else{
+                    exec("ssh root@" + host +
+                        " docker rm -f " +
+                        options.name,
+                        function(err, data) {
+                            if (err) reject(err);
+                            resolve(data);
+                        });
+                }
             });
     })
 }
