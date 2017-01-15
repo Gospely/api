@@ -16,33 +16,45 @@ schedules.list = function*(){
         var dockers = result.split('\n');
         console.log(dockers);
         for (var i = 0; i < dockers.length; i++) {
-            if(dockers[i] != ''){
-                var application = yield models.gospel_applications.findAll({
-                    where: {
-                        docker: dockers[i],
-                        isDeleted: 1
-                    }
-                });
-                var fileName = application[0].dataValues.replace('gospel_project_','');
-                console.log(application);
-                if(application.length < 1){
-                }else {
-                    //清理docker
-                    console.log(dockers[i]);
-                    yield shell.stopDocker({
-                        host: application[0].dataValues.host,
-                        docker: dockers[i],
+
+            try {
+                if(dockers[i] != ''){
+                    var application = yield models.gospel_applications.findAll({
+                        where: {
+                            docker: dockers[i],
+                            isDeleted: 1
+                        }
                     });
-                    setTimeout(function(){
-                        shell.clearApp({
-                            host: application[0].dataValues.host,
-                            user: application[0].dataValues.creator,
-                            fileName: fileName,
-                            nginx: false
-                        });
-                    }, 200)
+                    var fileName = application[0].dataValues.docker.replace('gospel_project_','');
+                    console.log(application);
+                    if(application.length < 1){
+                    }else {
+                        if(application[0].dataValues != null && application[0].dataValues != undefined){
+                            //清理docker
+                            console.log(dockers[i]);
+                            yield shell.stopDocker({
+                                host: application[0].dataValues.host,
+                                name: dockers[i],
+                            });
+                            setTimeout(function(){
+                                shell.clearApp({
+                                    host: application[0].dataValues.host,
+                                    user: application[0].dataValues.creator,
+                                    fileName: fileName,
+                                    docker: dockers[i],
+                                    nginx: false
+                                });
+                            }, 200)
+
+                        }
+                    }
                 }
+            } catch (e) {
+                //写入日志
+            } finally {
+
             }
+
         }
 
     }

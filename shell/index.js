@@ -634,7 +634,7 @@ shells.dockerList = function*(options){
 shells.clearApp = function(options){
 
     console.log(options);
-    var bash = 'ssh root@' + options.host + ' sh /root/gospely/deploy/shell/clear.sh ' + options.user + ' ' + options.fileName;
+    var bash = 'ssh root@' + options.host + ' sh /root/gospely/deploy/shell/clear.sh ' + options.user + ' ' + options.fileName + ' ' + options.docker;
     console.log(bash);
     exec(bash, function(err,data){
 
