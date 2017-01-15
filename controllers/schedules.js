@@ -33,18 +33,19 @@ schedules.list = function*(){
                             //清理docker
                             console.log(dockers[i]);
                             yield shell.stopDocker({
-                                host: application[0].dataValues.host,
+                                host: application[0].dataValues.host || 'gospely.com',
                                 name: dockers[i],
                             });
-                            setTimeout(function(){
+                            function clearApp(){
                                 shell.clearApp({
-                                    host: application[0].dataValues.host,
+                                    host: application[0].dataValues.host || 'gospely.com',
                                     user: application[0].dataValues.creator,
                                     fileName: fileName,
                                     docker: dockers[i],
                                     nginx: false
                                 });
-                            }, 200)
+                            }
+                            setTimeout(clearApp, 200)
 
                         }
                     }

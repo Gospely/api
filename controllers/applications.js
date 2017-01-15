@@ -244,6 +244,7 @@ applications.delete = function*() {
 						fileName: projectFolder,
 						user: application.creator,
 						host: application.host,
+						docker: application.docker,
 						nginx: true
 					});
 				}, 1000)
