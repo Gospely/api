@@ -23,17 +23,24 @@ schedules.list = function*(){
                         isDeleted: 1
                     }
                 });
+                var fileName = application[0].dataValues.replace('gospel_project_','');
                 console.log(application);
                 if(application.length < 1){
                 }else {
                     //清理docker
                     console.log(dockers[i]);
-                    shell.clearApp({
+                    yield shell.stopDocker({
                         host: application[0].dataValues.host,
                         docker: dockers[i],
-                        creator: application[0].dataValues.creator,
-                        domain: application[0].dataValues.domain,
                     });
+                    setTimeout(function(){
+                        shell.clearApp({
+                            host: application[0].dataValues.host,
+                            user: application[0].dataValues.creator,
+                            fileName: fileName,
+                            nginx: false
+                        });
+                    }, 200)
                 }
             }
         }

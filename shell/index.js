@@ -633,23 +633,21 @@ shells.dockerList = function*(options){
 }
 shells.clearApp = function(options){
 
-    exec( 'ssh root@' + options.host + 'docker stop ' + options.docker, function(err,data){
+    console.log(options);
+    var bash = 'ssh root@' + options.host + ' sh /root/gospely/deploy/shell/clear.sh ' + options.user + ' ' + options.fileName;
+    console.log(bash);
+    exec(bash, function(err,data){
+
         console.log(err);
         console.log(data);
-        setTimeout(function(){
-            exec( 'ssh root@' + options.host + 'docker rm -f ' + options.docker, function(err,data){
-                console.log(err);
-                console.log(data);
-                var ngConf = options.domain.replace(new RegExp('-', 'gm'), '_');
-                var bash = 'ssh root@' + options.host + ' rm -rf /var/www/storage/codes/'+ options.user + '/' + options.domain + ' && rm -f /etc/nginx/conf.d/'+ ngConf +'.gospely.com.conf ';
-                console.log(bash);
-                exec(bash, function(err,data){
+        if(!err){
+            if(options.nginx){
+                exec('ssh root@' + options.host + ' service nginx restart', function(err,data){
                     console.log(err);
                     console.log(data);
                 })
-            })
-
-        }, 500)
+            }
+        }
     })
 
 }

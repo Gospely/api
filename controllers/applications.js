@@ -238,23 +238,15 @@ applications.delete = function*() {
 					name: application.docker,
 				});
 
-				yield shell.clear({
-					
-				});
 				//删除项目文件资源
-				yield shell.rmFile({
-					fileName: "/var/www/storage/codes/" + application.creator + '/' + projectFolder,
-					host: application.host,
-				})
-
-				//删除nginx配置文件
-				yield shell.delNginxConf({
-					host: application.host,
-					name: name,
-				});
-				yield shell.nginx({
-					host: application.host,
-				});
+				setTimeout(function(){
+					shell.clearApp({
+						fileName: projectFolder,
+						user: application.creator,
+						host: application.host,
+						nginx: true
+					});
+				}, 1000)
 			}
 			//删除docker
 
