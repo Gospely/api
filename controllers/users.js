@@ -146,7 +146,6 @@ users.register = function*() {
 			console.log("sssss");
 			this.body = render(null, -1, "封测阶段，请使用邀请码注册");
 		}else{
-			 yield models.gospel_invites.delete(user.inviteCode);
 
 			 delete user['id'];
 		 	user.password = md5_f.md5Sign(user.password, 'gospel_users');
@@ -210,6 +209,7 @@ users.register = function*() {
 		 						id: inserted.id,
 		 						sshKey: sshKey
 		 					});
+							yield models.gospel_invites.delete(user.inviteCode);
 		 					this.body = render(user, 1, "注册成功");
 		 				} else {
 		 					this.body = render(null, -1, "验证码错误，请重新获取");
