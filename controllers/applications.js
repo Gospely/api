@@ -291,13 +291,15 @@ applications.create = function*() {
 	var application = yield parse(this, {
 		limit: '10kb'
 	});
-	var count = yield models.gospel_applications.count({
-		creator: application.creator,
-		host: '120.76.235.234'
-	});
-	if(count[0].dataValues.all >= 3){
-		this.body = render(null, null, null, -1, "应用创建失败,封测期间每个用户只能创建3个应用");
-		return ;
+	if(application.languageType == 'wechat:latest'){
+		var count = yield models.gospel_applications.count({
+			creator: application.creator,
+			host: '120.76.235.234'
+		});
+		if(count[0].dataValues.all >= 3){
+			this.body = render(null, null, null, -1, "应用创建失败,封测期间每个用户只能创建3个应用");
+			return ;
+		}
 	}
 	if(application.id !=null && application.id != undefined && application.id != ''){
 		yield applications.deploy(application,this);
@@ -308,15 +310,6 @@ applications.create = function*() {
 		}else{
 
 			application = JSON.parse(application);
-			var count = yield models.gospel_applications.count({
-				creator: application.creator,
-				host: '120.76.235.234'
-			});
-			if(count[0].dataValues.all >= 1){
-				this.body = render(null, null, null, -1, "应用创建失败,封测期间每个用户只能创建1个应用,小程序无限");
-				return ;
-			}
-			console.log(application);
 			if(application.languageType == 'wechat:latest'){
 				var image = yield models.gospel_images.findById(application.languageType);
 				var inserted = yield models.gospel_applications.create({
@@ -332,6 +325,17 @@ applications.create = function*() {
 				});
 				this.body = render(inserted, null, null, 1, "应用创建成功");
 			}else{
+
+
+				var count = yield models.gospel_applications.count({
+					creator: application.creator,
+					host: '120.76.235.234'
+				});
+				if(count[0].dataValues.all >= 1){
+					this.body = render(null, null, null, -1, "应用创建失败,封测期间每个用户只能创建1个应用,小程序无限");
+					return ;
+				}
+
 				var result = yield processes.initDebug(application);
 
 				if (result) {
