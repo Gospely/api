@@ -10,7 +10,7 @@ shells.domain = function*(options) {
     var cmd = fs.readFileSync(file, "utf8");
     cmd = cmd.replace('user', options.user).replace('port', options.port);
     cmd = cmd.replace(new RegExp('domain', 'gm'), options.domain);
-    var name = options.domain.replace('-', '_');
+    var name = options.domain.replace(new RegExp('-', 'gm'), '_');
     cmd = cmd.replace(new RegExp('projectname', 'gm'), name);
     return new Promise(function(resolve, reject) {
         options.user = '';
@@ -240,17 +240,10 @@ shells.stopDocker = function*(options) {
             " docker stop " +
             options.name,
             function(err, data) {
-                if (err) {
-                    reject(err);
-                }else{
-                    exec("ssh root@" + host +
-                        " docker rm -f " +
-                        options.name,
-                        function(err, data) {
-                            if (err) reject(err);
-                            resolve(data);
-                        });
-                }
+                console.log(err);
+                console.log(data);
+                if (err) reject(err);
+                    resolve(data);
             });
     })
 }
@@ -626,6 +619,39 @@ shells.changePort = function*(options){
             })
         })
     });
+}
+shells.dockerList = function*(options){
+    return new Promise(function(resolve, reject) {
+        var bash = 'ssh root@' + options.host + " docker ps -a | awk '$15 ~ /gospel_project/ {print $15}'";
+        console.log(bash);
+        exec(bash, function(err,data){
+            if (err)
+                reject(err);
+            resolve(data);
+        })
+    });
+}
+shells.clearApp = function(options){
+
+    exec( 'ssh root@' + options.host + 'docker stop ' + options.docker, function(err,data){
+        console.log(err);
+        console.log(data);
+        setTimeout(function(){
+            exec( 'ssh root@' + options.host + 'docker rm -f ' + options.docker, function(err,data){
+                console.log(err);
+                console.log(data);
+                var ngConf = options.domain.replace(new RegExp('-', 'gm'), '_');
+                var bash = 'ssh root@' + options.host + ' rm -rf /var/www/storage/codes/'+ options.user + '/' + options.domain + ' && rm -f /etc/nginx/conf.d/'+ ngConf +'.gospely.com.conf ';
+                console.log(bash);
+                exec(bash, function(err,data){
+                    console.log(err);
+                    console.log(data);
+                })
+            })
+
+        }, 500)
+    })
+
 }
 //shells.isGit = function()
 module.exports = shells;

@@ -426,7 +426,7 @@ module.exports = {
         //根据用户输入获取镜像名称
 
         application.image = application.languageType;
-		en_name = en_name.replace('-','');
+		en_name = en_name.replace('_','');
 		user.name = user.name.toLocaleLowerCase();
 
         if (application.image == 'nodejs:latest' && application.framework == null) {

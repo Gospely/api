@@ -233,6 +233,20 @@ applications.delete = function*() {
 				yield models.gospel_domains.delete(domains[0].id);
 
 				var name = domain.replace("-", "_");
+				yield shell.stopDocker({
+					host: application.host,
+					name: application.docker,
+				});
+
+				yield shell.clear({
+					
+				});
+				//删除项目文件资源
+				yield shell.rmFile({
+					fileName: "/var/www/storage/codes/" + application.creator + '/' + projectFolder,
+					host: application.host,
+				})
+
 				//删除nginx配置文件
 				yield shell.delNginxConf({
 					host: application.host,
@@ -243,19 +257,7 @@ applications.delete = function*() {
 				});
 			}
 			//删除docker
-			yield shell.stopDocker({
-				host: application.host,
-				name: application.docker,
-			});
-			yield shell.rmDocker({
-				host: application.host,
-				name: application.docker,
-			});
-			//删除项目文件资源
-			yield shell.rmFile({
-				fileName: "/var/www/storage/codes/" + application.creator + '/' + projectFolder,
-				host: application.host,
-			})
+
 		} catch (e) {
 			console.log(e);
 		} finally {
