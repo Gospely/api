@@ -356,6 +356,14 @@ applications.validate = function*(){
 		creator = this.query.creator,
     	userName =this.query.userName,
 		reg = /[\u4e00-\u9FA5]+/;
+	var result = yield models.gospel_applications.getAll({
+		name: name,
+		creator: creator
+	});
+	if(result != null && result.length > 0){
+		this.body = render(null, null, null, -1, '该应用名已占用');
+		return false;
+	}
 	var res = reg.test(name);
 
 	if (res) {
