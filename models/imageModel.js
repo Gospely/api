@@ -32,11 +32,9 @@ module.exports = function(sequelize, DataTypes) {
     },
     createat:{
         type: DataTypes.DATE,
-        defaultValue: new Date(Date.now() + (8 * 60 * 60 * 1000))
     },
     updateat: {
         type: DataTypes.DATE,
-        defaultValue: new Date(Date.now() + (8 * 60 * 60 * 1000))
     },
     isDeleted: {
       type: DataTypes.INTEGER,
@@ -44,7 +42,7 @@ module.exports = function(sequelize, DataTypes) {
       defaultValue: 0
     }
   }, {
-    timestamps: false,
+    timestamps: true,
     createdAt: 'createat',
     updatedAt: 'updateat',
     classMethods: {

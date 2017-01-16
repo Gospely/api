@@ -10,6 +10,7 @@ var _md5 = require('../utils/MD5');
 var shell = require('../shell');
 var pay = require('../server/pay');
 var validator = require('../utils/validator');
+var transliteration = require('transliteration');
 
 var applications = {};
 //数据渲染，todo:分页参数引入，异常信息引入
@@ -184,7 +185,14 @@ applications.delete = function*() {
 
 	var id = this.params.id;
 	var application = yield models.gospel_applications.findById(id);
-
+	var UIState = yield models.gospel_uistates.getAll({
+		application: application.id
+	});
+	console.log(UIState);
+	if(UIState != null) {
+		UIState = yield models.gospel_uistates.findById(UIState[0].dataValues.id)
+		yield models.gospel_uistates.delete(UIState);
+	}
 	if(application.image == 'wechat:latest'){
 		var inserted = yield models.gospel_applications.delete(application.id);
 		if (!inserted) {
@@ -225,29 +233,24 @@ applications.delete = function*() {
 				yield models.gospel_domains.delete(domains[0].id);
 
 				var name = domain.replace("-", "_");
-				//删除nginx配置文件
-				yield shell.delNginxConf({
+				yield shell.stopDocker({
 					host: application.host,
-					name: name,
+					name: application.docker,
 				});
-				yield shell.nginx({
-					host: application.host,
-				});
+
+				//删除项目文件资源
+				setTimeout(function(){
+					shell.clearApp({
+						fileName: projectFolder,
+						user: application.creator,
+						host: application.host,
+						docker: application.docker,
+						nginx: true
+					});
+				}, 1000)
 			}
 			//删除docker
-			yield shell.stopDocker({
-				host: application.host,
-				name: application.docker,
-			});
-			yield shell.rmDocker({
-				host: application.host,
-				name: application.docker,
-			});
-			//删除项目文件资源
-			yield shell.rmFile({
-				fileName: "/var/www/storage/codes/" + application.creator + '/' + projectFolder,
-				host: application.host,
-			})
+
 		} catch (e) {
 			console.log(e);
 		} finally {
@@ -288,6 +291,16 @@ applications.create = function*() {
 	var application = yield parse(this, {
 		limit: '10kb'
 	});
+	if(application.languageType == 'wechat:latest'){
+		var count = yield models.gospel_applications.count({
+			creator: application.creator,
+			host: '120.76.235.234'
+		});
+		if(count[0].dataValues.all >= 3){
+			this.body = render(null, null, null, -1, "应用创建失败,封测期间每个用户只能创建3个应用");
+			return ;
+		}
+	}
 	if(application.id !=null && application.id != undefined && application.id != ''){
 		yield applications.deploy(application,this);
 	}else {
@@ -297,19 +310,32 @@ applications.create = function*() {
 		}else{
 
 			application = JSON.parse(application);
-			console.log(application);
 			if(application.languageType == 'wechat:latest'){
+				var image = yield models.gospel_images.findById(application.languageType);
 				var inserted = yield models.gospel_applications.create({
 					name: application.name,
 					image: application.languageType,
-					creator: application.creator
+					creator: application.creator,
 				});
 				yield models.gospel_uistates.create({
 					application: inserted.id,
 					creator: application.creator,
+					configs: image.defaultConfig,
+					gap: 60 * 1000
 				});
 				this.body = render(inserted, null, null, 1, "应用创建成功");
 			}else{
+
+
+				var count = yield models.gospel_applications.count({
+					creator: application.creator,
+					host: '120.76.235.234'
+				});
+				if(count[0].dataValues.all >= 1){
+					this.body = render(null, null, null, -1, "应用创建失败,封测期间每个用户只能创建1个应用,小程序无限");
+					return ;
+				}
+
 				var result = yield processes.initDebug(application);
 
 				if (result) {
@@ -328,5 +354,72 @@ applications.startTerminal = function*(){
 		docker: containerName
 	});
 	this.body = render(null, null, null, 1, '启动成功');
+}
+applications.validate = function*(){
+
+	var name = this.query.name,
+		creator = this.query.creator,
+    	userName =this.query.userName,
+		reg = /[\u4e00-\u9FA5]+/;
+	var result = yield models.gospel_applications.getAll({
+		name: name,
+		creator: creator
+	});
+	if(result != null && result.length > 0){
+		this.body = render(null, null, null, -1, '该应用名已占用');
+		return false;
+	}
+	var res = reg.test(name);
+
+	if (res) {
+		var tr = transliteration.transliterate
+		name = tr(name).replace(new RegExp(" ", 'gm'), "").toLocaleLowerCase();
+	}
+	name = name.replace('-', '');
+	userName = userName.toLocaleLowerCase();
+	var result = yield models.gospel_applications.getAll({
+		domain: name + "-" + userName,
+		creator: creator
+	});
+	if(result != null && result.length > 0){
+		this.body = render(null, null, null, -1, '该应用名已占用');
+	}else{
+		this.body = render(null, null, null, 1, null);
+	}
+
+}
+applications.update = function* update() {
+
+	if ('PUT' != this.method) this.throw(405, "method is not allowed");
+	var item = yield parse(this, {
+		limit: '4048kb'
+	});
+	if (item.id == null || item.id == undefined) this.throw(405,
+		"method is not allowed");
+	var inserted;
+	console.log(item);
+	if (item.exposePort != null && item.exposePort != undefined && item.exposePort !=
+		'') {
+		var application = yield models.gospel_applications.findById(item.id);
+		if(item.exposePort != application.exposePort){
+			var result = yield shell.changePort({
+				host: application.host,
+				docker: application.docker,
+				port: item.exposePort,
+				oldPort: application.exposePort
+			});
+			console.log(result);
+			if(result){
+				inserted = yield models.gospel_applications.modify(item);
+			}
+		}
+		inserted = yield models.gospel_applications.modify(item);
+	}else{
+		inserted = yield models.gospel_applications.modify(item);
+	}
+	if (!inserted) {
+		this.throw(405, "couldn't be added.");
+	}
+	this.body = render(inserted, null, null, 1);
 }
 module.exports = applications;

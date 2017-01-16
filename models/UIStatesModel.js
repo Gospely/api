@@ -21,11 +21,9 @@ module.exports = function(sequelize, DataTypes) {
 	configs: DataTypes.STRING,
     createat:{
         type: DataTypes.DATE,
-        defaultValue: new Date(Date.now() + (8 * 60 * 60 * 1000))
     },
     updateat: {
         type: DataTypes.DATE,
-        defaultValue: new Date(Date.now() + (8 * 60 * 60 * 1000))
     },
     isDeleted: {
       type: DataTypes.INTEGER,
@@ -38,7 +36,13 @@ module.exports = function(sequelize, DataTypes) {
     updatedAt: 'updateat',
     classMethods: {
       associate: (models) => {
-      }
+      },
+      delete: function*(item) {
+        item.destroy({
+          force: false,
+          logging: true
+        });
+    },
     }
   });
   return state;

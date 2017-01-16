@@ -10,7 +10,7 @@ shells.domain = function*(options) {
     var cmd = fs.readFileSync(file, "utf8");
     cmd = cmd.replace('user', options.user).replace('port', options.port);
     cmd = cmd.replace(new RegExp('domain', 'gm'), options.domain);
-    var name = options.domain.replace('-', '_');
+    var name = options.domain.replace(new RegExp('-', 'gm'), '_');
     cmd = cmd.replace(new RegExp('projectname', 'gm'), name);
     return new Promise(function(resolve, reject) {
         options.user = '';
@@ -99,6 +99,9 @@ shells.initDebug = function*(options){
     var host = options.host || '120.76.235.234';
     var port = '',
         config = '';
+    if(options.parent == 'nodejs:latest'){
+         options.version = 'latest';
+    }
     if(options.db != null && options.db != undefined && options.db != '') {
         config = ' -e "DBUSER=' + options.dbUser + '" -e "DBPASS=' + options.password + '" -e "USERID=' + options.creator  + '" -e "NGPORT=' + options.appPort + '" ';
         port =  ' -p ' + options.dbPort + ':3306';
@@ -155,11 +158,50 @@ shells.gitClone = function(options) {
 
 shells.nginx = function*(options) {
 
-    var host = options.host || '120.76.235.234';
-    exec("ssh root@" + host +
-        " service nginx restart && echo 'success'",
-        function(err, data) {
-        });
+    new Promise(function(resolve, reject){
+        var host = options.host || '120.76.235.234';
+        exec("ssh root@" + host +
+            " lsof -i:80 | grep 'nginx' | head -1 | awk '{print $2}'",
+            function(err, data) {
+                console.log(console.err);
+                console.log(data);
+                console.log('==========================getPId===================');
+                if(err){
+                    reject(err)
+                }else {
+                    exec("ssh root@" + host +
+                        " kill -9 " + data,
+                        function(err, data) {
+                            console.log(err);
+                            console.log(data);
+                            console.log('==========================kill===================' + data);
+                            if (err) {
+                                exec("ssh root@" + host +
+                                    " service nginx restart",
+                                    function(err, data) {
+                                        console.log(err);
+                                        console.log(data);
+                                        console.log('==========================restart===================' + data);
+                                        if (err) reject(err);
+                                        resolve(data);
+                                    });
+                                reject(err);
+                            }else{
+                                exec("ssh root@" + host +
+                                    " service nginx restart",
+                                    function(err, data) {
+                                        console.log(err);
+                                        console.log(data);
+                                        console.log('==========================restart===================' + data);
+                                        if (err) reject(err);
+                                        resolve(data);
+                                    });
+                            }
+                        });
+                }
+                console.log(data);
+            });
+    });
 
 }
 shells.delNginxConf = function*(options) {
@@ -198,8 +240,10 @@ shells.stopDocker = function*(options) {
             " docker stop " +
             options.name,
             function(err, data) {
+                console.log(err);
+                console.log(data);
                 if (err) reject(err);
-                resolve(data);
+                    resolve(data);
             });
     })
 }
@@ -557,4 +601,55 @@ shells.moveFile = function*(options){
         })
     });
 }
+shells.changePort = function*(options){
+
+    return new Promise(function(resolve, reject) {
+        var bash = 'ssh root@' + options.host + ' docker exec  ' + options.docker  + ' sed -i -e "s/127.0.0.1:' + options.oldPort +
+        '/127.0.0.1:' + options.port + '/" /etc/nginx/host.d/default.conf && echo success' ;
+        console.log(bash);
+        exec(bash, function(err,data){
+            console.log(err);
+            console.log(data);
+            if (err)
+                reject(err);
+            exec('ssh root@' + options.host + ' docker stop ' + options.docker + ' && echo success', function(err,data){
+                console.log(err);
+                console.log(data);
+                resolve(data);
+            })
+        })
+    });
+}
+shells.dockerList = function*(options){
+    return new Promise(function(resolve, reject) {
+        var bash = 'ssh root@' + options.host + " docker ps -a | awk '$16 ~ /gospel_project/ {print $16}'";
+        console.log(bash);
+        exec(bash, function(err,data){
+            if (err)
+                reject(err);
+            resolve(data);
+        })
+    });
+}
+shells.clearApp = function(options){
+
+    console.log(options);
+    var bash = 'ssh root@' + options.host + ' sh /root/gospely/deploy/shell/clear.sh ' + options.user + ' ' + options.fileName + ' ' + options.docker;
+    console.log(bash);
+    exec(bash, function(err,data){
+
+        console.log(err);
+        console.log(data);
+        if(!err){
+            if(options.nginx){
+                exec('ssh root@' + options.host + ' service nginx restart', function(err,data){
+                    console.log(err);
+                    console.log(data);
+                })
+            }
+        }
+    })
+
+}
+//shells.isGit = function()
 module.exports = shells;

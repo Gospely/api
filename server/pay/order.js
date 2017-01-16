@@ -8,7 +8,8 @@ var orders = {
 
 		console.log(orderNo);
 		var orders = yield models.gospel_orders.getAll({
-			orderNo: orderNo
+			orderNo: orderNo,
+			status: 1
 		});
 		if (orders.length == 1) {
 			var order = orders[0].dataValues;
@@ -50,7 +51,7 @@ var operate = {
 			date = new Date(ide.expireAt);
 		}
 
-		date = date.setMonth(date.getMonth() + 1 + order.timeSize);
+		date = date.setMonth(date.getMonth()  + order.timeSize);
 		yield models.gospel_ides.modify({
 			id: ide.id,
 			product: order.products,

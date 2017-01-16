@@ -6,7 +6,7 @@ var reader = require('../utils/reader');
 var db = {};
 
 var sequelize = new Sequelize('gospel', 'gospel', 'dodoraCN2016@gospely', {
-  host: '120.76.235.234',
+  host: 'gospely.com',
   dialect: 'postgresql',
   pool: {
     max: 5,
@@ -106,7 +106,8 @@ var sequelize = new Sequelize('gospel', 'gospel', 'dodoraCN2016@gospely', {
 
         return yield this.find({
           where: {
-            id: id
+            id: id,
+            isDeleted: 0
           }
         });
       },
@@ -128,6 +129,11 @@ var sequelize = new Sequelize('gospel', 'gospel', 'dodoraCN2016@gospely', {
         });
       },
       create: function*(item) {
+
+        var date = new Date();
+        //date.setHours(date.getHours() + 8);
+        item.createat = date;
+        item.update = date;
         var row = this.build(item);
         return yield row.save();
       },
@@ -153,7 +159,6 @@ var sequelize = new Sequelize('gospel', 'gospel', 'dodoraCN2016@gospely', {
         });
       }
     },
-
     instanceMethods: {
 
     }
