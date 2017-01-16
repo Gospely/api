@@ -144,7 +144,7 @@ users.register = function*() {
 		if(data == null){
 			console.log(data);
 			console.log("sssss");
-			this.body = render(null, -1, "封测阶段，请使用邀请码注册");
+			this.body = render(null, -1, "您的邀请码不正确，请重新输入");
 		}else{
 			 yield models.gospel_invites.delete(user.inviteCode);
 
@@ -251,7 +251,7 @@ users.register = function*() {
 		 	}
 		}
 	}else{
-		this.body = render(null, -1, "封测阶段，请使用邀请码注册");
+		this.body = render(null, -1, "您的邀请码不正确，请重新输入");
 		return false;
 	}
 }
