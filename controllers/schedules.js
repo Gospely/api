@@ -18,7 +18,7 @@ schedules.list = function*(){
         for (var i = 0; i < dockers.length; i++) {
 
             try {
-                if(dockers[i] != ''){
+                if(dockers[i] != '' && dockers[i] != null && dockers[i] != undefined){
                     var application = yield models.gospel_applications.findAll({
                         where: {
                             docker: dockers[i],
@@ -27,21 +27,21 @@ schedules.list = function*(){
                     });
                     var fileName = application[0].dataValues.docker.replace('gospel_project_','');
                     console.log(application);
-                    if(application.length < 1){
+                    if(application.length != 1){
                     }else {
-                        if(application[0].dataValues != null && application[0].dataValues != undefined){
+                        if(application != null && application[0].dataValues != null && application[0].dataValues != undefined){
                             //清理docker
                             console.log(dockers[i]);
                             yield shell.stopDocker({
-                                host: application[0].dataValues.host || 'gospely.com',
+                                host: 'gospely.com',
                                 name: dockers[i],
                             });
                             function clearApp(){
                                 shell.clearApp({
-                                    host: application[0].dataValues.host || 'gospely.com',
+                                    host: 'gospely.com',
                                     user: application[0].dataValues.creator,
                                     fileName: fileName,
-                                    docker: dockers[i],
+                                    docker: application[0].dataValues.docker,
                                     nginx: false
                                 });
                             }

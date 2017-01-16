@@ -20,8 +20,8 @@ feedbacks.create = function*(){
 		limit: '10kb'
 	});
     var feedback = item
-    if(item.email !=null && item.email != undefined){
-        item = JSON.parse(item);
+    if(item.email ==null || item.email != undefined){
+        feedback = JSON.parse(item);
 
     }
     if(feedback.creator != null && feedback.creator != undefined && feedback.creator != ''){

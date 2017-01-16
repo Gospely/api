@@ -622,7 +622,7 @@ shells.changePort = function*(options){
 }
 shells.dockerList = function*(options){
     return new Promise(function(resolve, reject) {
-        var bash = 'ssh root@' + options.host + " docker ps -a | awk '$15 ~ /gospel_project/ {print $15}'";
+        var bash = 'ssh root@' + options.host + " docker ps -a | awk '$16 ~ /gospel_project/ {print $16}'";
         console.log(bash);
         exec(bash, function(err,data){
             if (err)
