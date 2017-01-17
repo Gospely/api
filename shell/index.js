@@ -483,7 +483,7 @@ shells.decomFile = function(options) {
             var bash = 'ssh root@' + host  + ' unzip -n ' + comDir +
                 ' -d ' + decomDir + ' && rm -rf ' + comDir;
             if(options.isOver == 'true'){
-                bash = 'ssh root@' + host  + ' unzip - o' + comDir +
+                bash = 'ssh root@' + host  + ' unzip -o ' + comDir +
                     ' -d ' + decomDir + ' && rm -rf ' + comDir;
             }
             return new Promise(function(resolve, reject) {
