@@ -482,13 +482,12 @@ shells.decomFile = function(options) {
 
             var bash = 'ssh root@' + host  + ' unzip -n ' + comDir +
                 ' -nd ' + decomDir + ' && rm -rf ' + comDir;
-            if(isOver == 'true'){
+            if(options.isOver == 'true'){
                 bash = 'ssh root@' + host  + ' unzip -o' + comDir +
                     ' -d ' + decomDir + ' && rm -rf ' + comDir;
             }
             return new Promise(function(resolve, reject) {
-                exec(,
-                    function(err, data) {
+                exec(bash, function(err, data) {
                         if (err)
                             reject(err);
                         resolve(data);
