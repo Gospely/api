@@ -577,6 +577,7 @@ var fileSystem = {
 		var username = this.req.body.username;
 		var folder = this.req.body.folder;
 		var extension = this.req.files.fileUp.extension;
+		var isOver = this.res.body.isOverSameFile;
 		var host = this.req.body.remoteIp || '120.76.235.234';
 		console.log(fileName);
 		console.log(folder);
@@ -591,6 +592,7 @@ var fileSystem = {
 			username: username,
 			folder: folder,
 			host: host,
+			isOver: isOver
 		};
 		//获取文件后缀名
 		//var suffix = path.extname(fileName);
