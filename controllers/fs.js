@@ -577,7 +577,7 @@ var fileSystem = {
 		var username = this.req.body.username;
 		var folder = this.req.body.folder;
 		var extension = this.req.files.fileUp.extension;
-		var isOver = this.res.body.isOverSameFile;
+		var isOver = this.req.body.isOverSameFile || 'false';
 		var host = this.req.body.remoteIp || '120.76.235.234';
 		console.log(fileName);
 		console.log(folder);
