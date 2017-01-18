@@ -70,20 +70,11 @@ module.exports = {
         //var data = yield shells.nginx();
         // console.log(data);
         //创建并启动docker
-		application.port = yield portManager.generatePort();
-        application.socketPort = yield portManager.generatePort(host);
-        if (application.port == application.socketPort) {
-            application.port = yield portManager.generatePort(host);
-        }
-        application.sshPort = yield portManager.generatePort(host);
-        if (application.sshPort == application.socketPort) {
-
-            application.socketPort = yield portManager.generatePort(host);
-        }
-        application.dbPort = yield portManager.generatePort(host);
-        if (application.dbPort == application.socketPort || application.dbPort == application.sshPort || application.dbPort == application.port) {
-            application.dbPort = yield portManager.generatePort(host);
-        }
+        var ports = yield portManager.generatePorts(host, 4);
+        application.port = ports[0];
+        application.socketPort = ports[1];
+        application.sshPort = ports[2];
+        application.dbPort = ports[3];
         var docker = yield models.gospel_products.findById(application.products);
         var unit = "";
         if (docker.memoryUnit == "MB") {
@@ -445,7 +436,6 @@ module.exports = {
                 user: application.creator,
                 projectname: en_name + "_" + user.name,
                 gitURL: application.git,
-                client: client
             });
         }
         var image = '';
@@ -458,20 +448,12 @@ module.exports = {
         application.cmds = image.cmds;
         application.exposePort = image.port;
         //端口生成
-        application.port = yield portManager.generatePort(host);
-        application.socketPort = yield portManager.generatePort(host);
-        if (application.port == application.socketPort) {
-            application.port = yield portManager.generatePort(host);
-        }
-        application.sshPort = yield portManager.generatePort(host);
-        if (application.sshPort == application.socketPort) {
+        var ports = yield portManager.generatePorts(host, 3);
+        application.port = ports[0];
+        application.socketPort = ports[1];
+        application.sshPort = ports[2];
+        application.dbPort = ports[3];
 
-            application.socketPort = yield portManager.generatePort(host);
-        }
-        application.dbPort = yield portManager.generatePort(host);
-        if (application.dbPort == application.socketPort || application.dbPort == application.sshPort || application.dbPort == application.port) {
-            application.dbPort = yield portManager.generatePort(host);
-        }
         var result = yield shells.initDebug({
             host: host,
             name: en_name + "_" + user.name,

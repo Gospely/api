@@ -3,6 +3,7 @@ var models = require('../models');
 var reader = require('../utils/reader');
 var parse = require('co-body');
 var md5_f = require('../utils/MD5');
+var portManager = require('../port');
 var common = {};
 
 //数据渲染，todo:分页参数引入，异常信息引入

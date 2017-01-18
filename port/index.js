@@ -23,7 +23,28 @@ port.generatePort = function*(host) {
   }
   return port;
 }
+port.generatePorts = function*(host, size) {
 
+    var ports = new Array();
+    var port = yield this.generatePort(host);
+    ports.push(port);
+
+    for (var i = 0; i <= size; i++) {
+        var available = true;
+        port = yield this.generatePort(host);
+        for (var j = 0; j < ports.length; j++) {
+            if(port == ports[j]){
+                available = false
+            }
+        }
+        if(available){
+            ports.push(port)
+        }else{
+            i--;
+        }
+    }
+    return ports;
+}
 function* checkBind(options) {
 
     var host = options.host || '120.76.235.234'
