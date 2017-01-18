@@ -53,7 +53,7 @@ io.on( 'data', ( ctx, data ) => {
     })
 });
 io.on( 'message', ( ctx, data ) => {
-
+    
     app.context.clients[data] = ctx.socket;
     console.log(app.context.clients);
 });

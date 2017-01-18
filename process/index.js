@@ -429,15 +429,6 @@ module.exports = {
         //获取主机
         var host = user.host;
 
-        if (application.git != null && application.git != undefined && application.git != '') {
-            //用户创建应用的方式未从git创建时 git clone项目到平台
-            shells.gitClone({
-                host: host,
-                user: application.creator,
-                projectname: en_name + "_" + user.name,
-                gitURL: application.git,
-            });
-        }
         var image = '';
         if (application.framework != null && application.framework != undefined && application.framework != '') {
             //初始化应用框架
@@ -573,6 +564,15 @@ module.exports = {
             },
         });
 		var result = yield node.excute();
+        if (application.git != null && application.git != undefined && application.git != '') {
+            //用户创建应用的方式未从git创建时 git clone项目到平台
+            shells.gitClone({
+                host: host,
+                user: application.creator,
+                projectname: en_name + "_" + user.name,
+                gitURL: application.git,
+            });
+        }
         return inserted;
     },
     //根据用户的ide版本获取对应配置的主机
