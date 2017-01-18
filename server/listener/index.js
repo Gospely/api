@@ -1,7 +1,7 @@
 var chokidar = require('chokidar');
 function getClient(path, ctx){
 
-    var split = path.split('/'),
+        var split = path.split('/'),
         namespace = split[5] + split[6];
     return ctx.context.clients[namespace];
 }
@@ -14,35 +14,38 @@ var listenServer = {
             .on('ready', () => {
             })
             .on('addDir', path => {
+
                 var client = getClient(path, ctx);
                 if(client != null){
-                    client.emit( 'message', 'addDir' )
+                    client.emit( 'message', 'addDir-:-' + path.replace('/var/www/storage/codes', '') )
                 }
             })
             .on('unlinkDir', path => {
 
                 var client = getClient(path, ctx);
                 if(client != null){
-                    client.emit( 'message', 'unlinkDir' )
+                    client.emit( 'message', 'unlinkDir-:-' + path.replace('/var/www/storage/codes', ''))
                 }
             })
             .on('add', path => {
 
                 var client = getClient(path, ctx);
                 if(client != null){
-                    client.emit( 'message', 'add' )
+                    client.emit( 'message', 'add-:-' + path.replace('/var/www/storage/codes', ''))
                 }
             })
             .on('change', path => {
+
                 var client = getClient(path, ctx);
                 if(client != null){
-                    client.emit( 'message', 'change' )
+                    client.emit( 'message', 'change-:-' + path.replace('/var/www/storage/codes', ''))
                 }
             })
             .on('unlink', path => {
+
                 var client = getClient(path, ctx);
                 if(client != null){
-                    client.emit( 'message', 'remove' )
+                    client.emit( 'message', 'remove-:-' + path.replace('/var/www/storage/codes', '') )
                 }
 
             })
