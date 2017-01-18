@@ -142,8 +142,6 @@ users.register = function*() {
 	if(user.inviteCode){
 		var data = yield models.gospel_invites.findById(user.inviteCode);
 		if(data == null){
-			console.log(data);
-			console.log("sssss");
 			this.body = render(null, -1, "您的邀请码不正确，请重新输入");
 		}else{
 
@@ -157,10 +155,8 @@ users.register = function*() {
 
 		 	if (user.phone != "") {
 
-		 		console.log(user);
 		 		var	reg = /^1[34578]\d{9}$/;
 		 			isok = reg.test(user.phone);
-		 		console.log(isok);
 		 		var token = user.token;
 		 		var authCode = user.authCode;
 
@@ -170,7 +166,6 @@ users.register = function*() {
 
 		 				//更新用户状态
 		 				if (innersession.code == authCode) {
-							console.log("volumeSize");
 		 					user.volumeSize = 10;
 		 					user.id = uuid.v4();
 		 					user.volume = "docker-volume-" + user.id;
@@ -182,9 +177,7 @@ users.register = function*() {
 		 						type: user.type,
 		 						share: true
 		 					})
-							console.log("volumeSize2sssssssssssssssssssssssssssss");
 		 					var host = selector.select(hosts);
-							console.log(host);
 		 					user.host = host.ip;
 							user.photo = 'data:image/png;base64,R0lGODlhwADAAOYAANDQ0Le3t/z8/NTU1Pv7+8LCwv39/f7+/rKyst/f383NzfT09PX19fn5+bq6usDAwLy8vNjY2L+/v7W1tbi4uOXl5e/v77Ozs8HBwezs7PPz8+np6dra2tPT07a2trS0tNLS0r29vfb29tbW1s/Pz8nJydzc3O3t7eDg4MzMzOLi4sXFxfHx8dXV1d7e3u7u7uTk5MvLy/Dw8MPDw8jIyOPj48TExPj4+Pr6+s7OztnZ2fLy8ujo6NHR0eHh4efn5+vr68bGxvf399fX17u7u8fHx+bm5tvb28rKyr6+vrm5ud3d3f///7GxsQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAAAAAAALAAAAADAAMAAAAf/gE2Cg4SFhoeIiYqLjI2Oj5CRkpOUlZaXmJmam5ydnp+goaKjpKWmp6ipqqusra6vsLGys7S1tre4ubq7vL2+v8DBwsPExcbHyMnKy8zNzs/Q0dLT1NXW19jZ2tvc3d7f4OHi4+Tl5ufo6err7O3u7/Dx8vP09fb3+Pn6+/z9/v8AAwocWItCCgAcUJgAoMABrgIAOqBA0QLACgTzAgx5waSjR48sIkCQRUNFg48fcVSIgbHdBB0EUMrsaCBBAFczOM6UuQMJuyInd+4kkGPVBBhChQKhkG7EgaRJXbQ05YAFVKEiHpzzcRXqj6mjJATtOlPAinI6yEJdUsqBELVC/wVoFUcDLlQSoy6csCuUgYdwE97yHco0VI/BQhOES4t4p2JQE240nnkgyTcPMSfLNDDyUwTNM2t8AwF6pglQIkqjFPDB217VH0V8kgAbZYluH57W9hjC0+fdHUVzKwDcowJPG4ozYdBNgXImETwxUH7gArcBz114ylz85rYRz314es7E4TbsyrV3wvHcuzbnyodIV24ALDbiylMgV74DtwDl5nHyG3AqeJMccAt8MoNyx3WTQ3HRfTLdbgJM4M0EY6lmQICddADcY960sBuInlwwoYYccnPBArA14N4n8KnGgTgzGFDaAbeNciBoMlgnzmGgjVBKACxq1kBn4wyIGP8KpyhRJGI3zFVODP/xdUAHqQQABGIspEhOAU+SdUMRqyBwBF81tKbOBSNkKBQBR/zVygM7QvWCDe9MEEMF7MkkwA85vOiKBBFYNRMDHBRADwIY0AAACAAggYGatjiAAQmPAlAAkgR16umnoIYq6qiklmrqqaimquqqrLbq6quwxirrrLTWauutuOaq66689urrr8AGK+ywxBYrykEAJKvsssw26+yz0EYr7bTUNqvfNhWQp+1uFXBD2rbgggYCN7SFay5iEnST2rnskiVbNxy0Ky9UM3aD37z4oqSoNxrk6y8TGoCD3r/zDgAOBboRzO4BhX2DlMLswiDOAxCzKyX/OBlUHG4G5AShMbhBlJPxx89xXM69JAO3bznZpswtOhBw5zJoBHBazsAza2ZwOghYkLNmFthnzgMJ/2zXAReng7PRau3cjhFMw2UEPB70G/VVGsj5jgQyXy0TAenKs0KVXq92Fj0l2Fi2RwbkWI8CRV99QIP3KKD21QbQjY8NbubcAJ78QBDmzAvYrE8AI8+cgaD9DEC2xgI4LVAIr1V8Qm+fDtA1vgRI/mkACdwtb02Mg0pEAo+HK0ACRKgaQAtWb6tBC6WjWoAJJ+7GgAkryxpCByrIwKMKHWC+66UJ8GCBBYN7tMDyPCRAAgbGFsIoBUJXr/323Hfv/ffghy/+JPjkl2/++einr/767Lfv/vvwxy///PTXb//9+Oev//789z9LIAA7'
 		 					inserted = yield models.gospel_users.create(user);
@@ -204,26 +197,29 @@ users.register = function*() {
 		 						user: inserted.id,
 		 						host: user.host
 		 					});
-		 					console.log(sshKey);
 		 					yield models.gospel_users.modify({
 		 						id: inserted.id,
 		 						sshKey: sshKey
 		 					});
 							yield models.gospel_invites.delete(user.inviteCode);
+							yield models.gospel_innersessions.delete(token);
 		 					this.body = render(user, 1, "注册成功");
 		 				} else {
+							yield models.gospel_innersessions.delete(token);
 		 					this.body = render(null, -1, "验证码错误，请重新获取");
 		 				}
 		 			} else {
+						yield models.gospel_innersessions.delete(token);
 		 				this.body = render(null, -1, "验证码超时，请重新获取");
 		 			}
 		 		} else {
+					yield models.gospel_innersessions.delete(token);
 		 			this.body = render(null, -1, "注册失败，手机号或验证码错误");
 		 		}
-		 		console.log(user.phone + "phone");
 		 	}
 
 		 	if (!inserted) {
+				yield models.gospel_innersessions.delete(token);
 		 		this.body = render(null, -1, "注册失败,验证码超时");
 		 	} else {
 
@@ -619,7 +615,54 @@ users.dashboardApi = function* (){
 	this.body = render(data,1,'success');
 }
 
+users.modify = function*() {
 
+	if ('POST' != this.method) this.throw(405, "method is not allowed");
+	var user = yield parse(this, {
+		limit: '1kb'
+	});
+
+	var phone = yield models.gospel_users.getAll({
+		phone: user.phone
+	});
+	var email = yield models.gospel_users.getAll({
+		email: user.phone
+	});
+	if(phone.length != 1 && email.length != 1){
+		this.body = render(null, -1, "该账号未注册,请注册");
+		return false;
+	}
+	var id = '';
+	if(phone.length == 1) {
+		id = phone[0].dataValues.id;
+	}else{
+		id = email[0].dataValues.id;
+	}
+	var innersession = yield models.gospel_innersessions.findById(user.token);
+
+	if (innersession.phone == user.phone) {
+		if ((Date.now() - innersession.time) <= innersession.limitTime) {
+
+			//更新用户状态
+			if (innersession.code == user.authCode) {
+				yield models.gospel_users.modify({
+					id: id,
+					password: md5_f.md5Sign(user.password, 'gospel_users'),
+				});
+				models.gospel_innersessions.delete(user.token);
+				this.body = render(user, 1, "密码修改成功");
+			} else {
+				this.body = render(null, -1, "验证码错误");
+			}
+		} else {
+			models.gospel_innersessions.delete(user.token);
+			this.body = render(null, -1, "邮箱或手机号错误");
+		}
+	} else {
+		models.gospel_innersessions.delete(user.token);
+		this.body = render(null, -1, "密码修改失败，手机号或验证码错误");
+	}
+}
 users.files = function*() {
 
 	var fileName = this.params.file;

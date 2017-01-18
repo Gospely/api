@@ -192,6 +192,12 @@ module.exports = {
 			url: '/users/verifyemailcode',
 			controller: 'verifyEmailCode',
 			groups: "ab64c397-d323-4133-9541-479bbaaf6c52"
+		}, {
+			name: '忘记密码',
+			method: 'post',
+			url: '/users/modify',
+			controller: 'modify',
+			groups: "ab64c397-d323-4133-9541-479bbaaf6c52"
 		},{
 			name: '获取文件流',
 			method: 'get',
