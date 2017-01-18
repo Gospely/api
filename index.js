@@ -16,17 +16,19 @@ var container = require('./container/index.js');
 var mount = require('koa-mount');
 var multer = require('koa-multer');
 var models = require('./models');
+var watcher = require('./server/listener')
+
+var test = 'test';
 const app =  new Koa();
 const io = new IO();
 
 io.attach(app);
-
 /**
  * Socket middlewares
  * @type {string}
  */
+app.context.clients = {} ;
 io.use(co.wrap(function *(ctx,next) {
-    console.log( 'Socket middleware' );
     const start = new Date;
     yield next();
     const ms = new Date - start;
@@ -34,48 +36,37 @@ io.use(co.wrap(function *(ctx,next) {
 }));
 
 io.on('connection',ctx=>{
-    console.log('join event',ctx.socket.id);
     io.broadcast('connections',{
         num:io.connections.size
     })
 });
 
 io.on( 'disconnect', ctx => {
-    console.log( 'leave event', ctx.socket.id );
     io.broadcast( 'connections', {
         num: io.connections.size
     })
 });
 
 io.on( 'data', ( ctx, data ) => {
-    console.log( 'data event', data );
-    console.log( 'ctx:', ctx.event, ctx.data, ctx.socket.id );
-    console.log( 'ctx.teststring:', ctx.teststring );
     ctx.socket.emit( 'response', {
         message: 'response from server'
     })
 });
+io.on( 'message', ( ctx, data ) => {
+
+    app.context.clients[data] = ctx.socket;
+    console.log(app.context.clients);
+});
 io.on( 'ack', ( ctx, data ) => {
-    console.log( 'data event with acknowledgement', data )
     ctx.acknowledge( 'received' )
 });
 io.on( 'numConnections', packet => {
     console.log( `Number of connections: ${ io.connections.size }` )
 });
-
-// io.on('join',(ctx,data)=>{
-//     var socket_id = ctx.socketIO.socket_id;
-//     var user = yield models.gospel_users.findById(userId);
-//     user.socket_id = socket_id;
-//     yield models.gospel_users.modify({
-//         id: user.id,
-//         socket_id: socket_id
-//     });
-//     this.emit('join',{
-//         numUsers : numUsers
-//     });
-// });
-
+io.on('leave', (ctx, data) => {
+    console.log('leave');
+    delete app.context.clients[data];
+});
 
 app.use(function*(next) {
   try {
@@ -132,8 +123,14 @@ app
   .use(router.allowedMethods());
 
 //上传文件模块
-
-
+//文件监听
+console.log(watcher);
+app.watcher = watcher.buildListener('/var/www/storage/codes',[
+    '*/node_modules',
+    '*/.git',
+    '*/tmp',
+    '*/.idea'
+], app);
 app.on('error', function(err, ctx) {
   log.error('server error', err, ctx);
   this.body = fun.resp('500', err, ctx);
@@ -152,8 +149,3 @@ Promise.resolve(setupDb)
         ': gospel api is running, listening on port ' + configs.port);
     });
   });
-
-
-
-
-

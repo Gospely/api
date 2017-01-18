@@ -153,6 +153,12 @@ shells.gitClone = function(options) {
         " /var/www/storage/codes/" + options.user + "/" + options.projectname;
     //执行删除命令
     exec(bash_clone, function(err, data) {
+
+        if(err){
+            options.client.emit( 'message', 'git error' )
+        }else{
+            options.client.emit( 'message', 'git success' )
+        }
     })
 }
 
