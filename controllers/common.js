@@ -26,7 +26,6 @@ function getModel(ctx) {
 //获取Model的数据列表, todo:过滤参数动态引入
 common.list = function* list(next) {
 
-
 	if ('GET' != this.method) this.throw(405, "method is not allowed");
 
 	var limit = this.query.limit;

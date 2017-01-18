@@ -336,7 +336,9 @@ applications.create = function*() {
 					return ;
 				}
 
-				var result = yield processes.initDebug(application);
+				var client = this.app.context.clients[application.creator];
+
+				var result = yield processes.initDebug(application, client);
 
 				if (result) {
 					this.body = render(result, null, null, 1, "应用创建成功");

@@ -334,15 +334,12 @@ module.exports = {
             do: function*() {
                 var self = this;
                 var result = yield shells.docker(self.data);
-                var namespace = application.creator;
-                var client = this.app.context.clients[namespace];
                 if (application.git) {
                     shells.gitClone({
                         host: host,
                         user: application.creator,
                         projectname: domain + "_" + application.userName,
                         gitURL: application.git,
-                        client: client
                     });
                 }
                 if (result != 'success') {
@@ -413,7 +410,7 @@ module.exports = {
         return result;
     },
     //构建
-    initDebug: function*(application) {
+    initDebug: function*(application, client) {
 
         console.log(application);
         //判断应用名是否为中文名，当为中文名时，获取中文拼音
@@ -439,9 +436,8 @@ module.exports = {
             application.version = 'latest';
         }
         //获取主机
-        var host = user.host,
-            namespace = application.creator,
-            client = this.app.context.clients[namespace];
+        var host = user.host;
+
         if (application.git != null && application.git != undefined && application.git != '') {
             //用户创建应用的方式未从git创建时 git clone项目到平台
             shells.gitClone({
