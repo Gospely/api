@@ -1,6 +1,6 @@
 module.exports = {
 
-	isAuth: true,
+	isAuth: false,
 
 	isInit: 0,
 	port: 8089,
@@ -300,13 +300,13 @@ module.exports = {
 		}, {
 			name: '追加文件',
 			method: 'post',
-			url: '/fs/append/',
+			url: '/fs/append',
 			controller: 'append',
 			groups: "ab64c397-d323-4133-9541-479bbaaf6c52_100"
 		}, {
 			name: '删除文件',
 			method: 'post',
-			url: '/fs/remove/',
+			url: '/fs/remove',
 			controller: 'remove',
 			groups: "ab64c397-d323-4133-9541-479bbaaf6c52_100"
 		}, {
@@ -366,19 +366,19 @@ module.exports = {
 		}, {
 			name: '按需读取文件或文件夹',
 			method: 'get',
-			url: '/fs/list/file/',
+			url: '/fs/list/file',
 			controller: 'list',
 			groups: "ab64c397-d323-4133-9541-479bbaaf6c52_100"
 		}, {
 			name: '按需读取文件或文件夹(无参数)',
 			method: 'get',
-			url: '/fs/list/optional/',
+			url: '/fs/list/optional',
 			controller: 'list',
 			groups: "ab64c397-d323-4133-9541-479bbaaf6c52_100"
 		}, {
 			name: '读取所有文件',
 			method: 'get',
-			url: '/fs/list/all/',
+			url: '/fs/list/all',
 			controller: 'all',
 			groups: "ab64c397-d323-4133-9541-479bbaaf6c52_100"
 		}, {
@@ -392,48 +392,6 @@ module.exports = {
 			method: 'post',
 			url: '/fs/shell/',
 			controller: 'shell',
-			groups: "ab64c397-d323-4133-9541-479bbaaf6c52_100"
-		}, {
-			name: '判断是否为git项目',
-			method: 'post',
-			url: '/fs/git/',
-			controller: 'isGitProject',
-			groups: "ab64c397-d323-4133-9541-479bbaaf6c52_100"
-		}, {
-			name: '获取Git Origin源',
-			method: 'post',
-			url: '/fs/origin/git',
-			controller: 'getGitOrigin',
-			groups: "ab64c397-d323-4133-9541-479bbaaf6c52_100"
-		}, {
-			name: 'Git push',
-			method: 'post',
-			url: '/fs/push/',
-			controller: 'gitPush',
-			groups: "ab64c397-d323-4133-9541-479bbaaf6c52_100"
-		}, {
-			name: 'Git pull',
-			method: 'post',
-			url: '/fs/pull/',
-			controller: 'gitPull',
-			groups: "ab64c397-d323-4133-9541-479bbaaf6c52_100"
-		}, {
-			name: 'Modify origin',
-			method: 'post',
-			url: '/fs/origin/modify',
-			controller: 'modifyGitOrigin',
-			groups: "ab64c397-d323-4133-9541-479bbaaf6c52_100"
-		}, {
-			name: 'Git Commit',
-			method: 'post',
-			url: '/fs/commit',
-			controller: 'gitCommit',
-			groups: "ab64c397-d323-4133-9541-479bbaaf6c52_100"
-		}, {
-			name: 'Git Clone',
-			method: 'post',
-			url: '/fs/clone',
-			controller: 'gitClone',
 			groups: "ab64c397-d323-4133-9541-479bbaaf6c52_100"
 		}]
 	},
