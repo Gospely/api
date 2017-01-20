@@ -112,9 +112,12 @@ function* checkPwd(user, ctx) {
 }
 
 users.logout = function*() {
-
-	var id = this.parms.id;
-	models.gospel_innersessions.delete(id);
+	if ('POST' != this.method) this.throw(405, "method is not allowed");
+	var user = yield parse(this, {
+		limit: '1kb'
+	});
+	yield models.gospel_innersessions.delete(id);
+	ctx.body = render(user, 1, "");
 }
 
 //产生随机数

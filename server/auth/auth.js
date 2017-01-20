@@ -31,14 +31,6 @@ module.exports = {
 			yield next;
 		} else {
 
-			//放行
-			var replacements = url.split('/');
-			if (replacements[1] == 'fs') {
-				url = '/fs';
-			}
-			if (replacements[1] == 'applications') {
-				url = '/applications';
-			}
 			if (excape(url)) {
 
 				yield next;
@@ -130,8 +122,8 @@ module.exports = {
 				'/users/wechat', '/weixin/callback',
 				'/alipay/create_direct_pay_by_user/return_url',
 				'/alipay/create_direct_pay_by_user/notify_url',
-				'/pay/return_url/wxpay', '/users/phone/code', '/users/validator',
-				'/applications', '/fs','schedules'
+				'/pay/return_url/wxpay', '/users/phone/code', '/users/validator','/users/modify',
+				'/applications','schedules'
 			];
 			var isHasNoneAuthRoute = false;
 

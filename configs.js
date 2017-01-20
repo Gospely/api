@@ -1,6 +1,6 @@
 module.exports = {
 
-	isAuth: false,
+	isAuth: true,
 
 	isInit: 0,
 	port: 8089,
@@ -161,6 +161,12 @@ module.exports = {
 			method: 'get',
 			url: '/users/wechat',
 			controller: 'weixinLogin',
+			groups: "ab64c397-d323-4133-9541-479bbaaf6c52"
+		}, {
+			name: '退出',
+			method: 'post',
+			url: '/users/logout',
+			controller: 'logout',
 			groups: "ab64c397-d323-4133-9541-479bbaaf6c52"
 		}, {
 			name: '获取验证码',
