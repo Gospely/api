@@ -122,7 +122,7 @@ module.exports = {
 				'/users/wechat', '/weixin/callback',
 				'/alipay/create_direct_pay_by_user/return_url',
 				'/alipay/create_direct_pay_by_user/notify_url',
-				'/pay/return_url/wxpay', '/users/phone/code', '/users/validator','/users/modify',
+				'/pay/return_url/wxpay', '/users/phone/code', '/users/validator','/users/modify', '/users/logout'
 				'/applications','schedules'
 			];
 			var isHasNoneAuthRoute = false;
