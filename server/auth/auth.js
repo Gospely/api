@@ -39,17 +39,23 @@ module.exports = {
 				if (method == "GET" || method == "DELETE") {
 
 					var replacements = url.split('/');
-					if (replacements.length >= 3 && replacements[1] != 'fs') {
-						url = url.replace(replacements[replacements.length - 1], "");
+					console.log(replacements);
+					if(replacements[1] == 'fs'){
+						yield next;
+					}else{
+						if (replacements.length >= 3) {
+							url = url.replace(replacements[replacements.length - 1], "");
 
-						if (replacements[1] == 'container' || replacements[1] == 'file') {
-							url = url + ":" + replacements[1] + "Name";
-						} else {
-							url = url + ":id";
+							if (replacements[1] == 'container' || replacements[1] == 'file') {
+								url = url + ":" + replacements[1] + "Name";
+							} else {
+								url = url + ":id";
+							}
 						}
-					}
 
+					}
 				}
+				console.log(url);
 				if (token == null || token == undefined || token == '') {
 
 					this.status = 200;
