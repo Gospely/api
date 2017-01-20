@@ -39,7 +39,7 @@ module.exports = {
 				if (method == "GET" || method == "DELETE") {
 
 					var replacements = url.split('/');
-					if (replacements.length >= 3) {
+					if (replacements.length >= 3 && replacements[1] != 'fs') {
 						url = url.replace(replacements[replacements.length - 1], "");
 
 						if (replacements[1] == 'container' || replacements[1] == 'file') {
