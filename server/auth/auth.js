@@ -131,7 +131,6 @@ module.exports = {
 				'/users/validator',
 				'/users/modify',
 				'/users/logout',
-				'/applications',
 				'schedules'
 			];
 			var isHasNoneAuthRoute = false;
