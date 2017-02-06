@@ -1,6 +1,6 @@
 module.exports = {
 
-	isAuth: true,
+	isAuth: false,
 
 	isInit: 0,
 	port: 8089,
@@ -392,6 +392,12 @@ module.exports = {
 			method: 'post',
 			url: '/fs/shell/',
 			controller: 'shell',
+			groups: "ab64c397-d323-4133-9541-479bbaaf6c52_100"
+		}, {
+			name: '打包源代码',
+			method: 'get',
+			url: '/fs/packsrc',
+			controller: 'packsrc',
 			groups: "ab64c397-d323-4133-9541-479bbaaf6c52_100"
 		}]
 	},

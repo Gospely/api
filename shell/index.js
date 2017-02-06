@@ -657,5 +657,18 @@ shells.clearApp = function(options){
     })
 
 }
+
+shells.packApp = function(options) {
+    return new Promise(function(resolve, reject) {
+        console.log(options);
+        var bash = 'zip -r /var/www/storage/codes/temp/' + options.appName + '.zip /var/www/storage/codes/' + options.user + '/' + options.projectFolder;
+        console.log(bash);
+        exec(bash, function(err, data) {
+            console.log(err);
+            console.log(data);
+        });
+    });
+    
+}
 //shells.isGit = function()
 module.exports = shells;

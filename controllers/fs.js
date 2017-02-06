@@ -3,9 +3,10 @@ var util = require('../utils.js'),
 	path = require('path'),
 	co = require('co'),
 	parse = require('co-body'),
-	url = require('url');
-
+	url = require('url'),
+    models = require('../models');
 var os = require('os');
+var send = require('koa-send');
 var exec = require('child_process').exec;
 var dir = require('node-dir');
 var multer = require('koa-multer');
@@ -887,7 +888,33 @@ var fileSystem = {
 			this.body = util.resp(500, '读取文件夹失败', err.toString());
 		}
 
-	}
+	},
+
+	packsrc: function*() {
+		var user = this.query.user,
+		application = this.query.application;
+
+		var app = yield models.gospel_applications.findById(application);
+		var projectFolder = app.docker.replace('gospel_project_','');
+
+		var options = {
+			user: user,
+			projectFolder: projectFolder,
+			appName: app.name,
+		};
+
+		try {
+			yield shells.packApp(options);
+			yield send(this, app.name + '.zip', {
+	 			root: __dirname + '/../upload/'
+	 		});
+	 		yield shells.rmFile({
+	 			fileName: '/var/www/storage/codes/temp/' + app.name + '.zip',
+	 		});
+		} catch (err) {
+			this.body = util.resp(200, '打包失败', err.toString());
+		}
+	},
 };
 
 
