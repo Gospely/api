@@ -905,9 +905,7 @@ var fileSystem = {
 
 		try {
 			yield shells.packApp(options);
-			yield send(this, app.name + '.zip', {
-	 			root: __dirname + '/../uploads/'
-	 		});
+			yield send(this, '/var/www/api/uploads/' + app.name + '.zip');
 	 		yield shells.rmFile({
 	 			fileName: '/var/www/storage/codes/temp/' + app.name + '.zip',
 	 		});
