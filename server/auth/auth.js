@@ -125,8 +125,8 @@ module.exports = {
 				'/alipay/create_direct_pay_by_user/return_url',
 				'/alipay/create_direct_pay_by_user/notify_url',
 				'/pay/return_url/wxpay',
-				'/users/phone/code','
-				/users/email/code',
+				'/users/phone/code',
+				'/users/email/code',
 				'/users/code',
 				'/users/validator',
 				'/users/modify',
