@@ -410,7 +410,7 @@ users.getEmailCode = function*() {
 
 		from: "福音计划<account@dodora.cn>", // 发件地址
 		to: email, // 收件列表
-		subject: "欢迎注册福音计划", // 标题
+		subject: "修改密码", // 标题
 		html: "你的验证码是" + randomstr+" ,请在10分钟之内提交验证码" // html 内容
 	}
 	mail(mailOptions);
