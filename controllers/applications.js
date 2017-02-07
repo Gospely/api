@@ -296,7 +296,7 @@ applications.create = function*() {
 			creator: application.creator,
 			host: '120.76.235.234'
 		});
-		if(count[0].dataValues.all >= 3){
+		if(count[0].dataValues.all >= 10){
 			this.body = render(null, null, null, -1, "应用创建失败,封测期间每个用户只能创建3个应用");
 			return ;
 		}
@@ -331,7 +331,7 @@ applications.create = function*() {
 					creator: application.creator,
 					host: '120.76.235.234'
 				});
-				if(count[0].dataValues.all >= 1){
+				if(count[0].dataValues.all >= 10){
 					this.body = render(null, null, null, -1, "应用创建失败,封测期间每个用户只能创建1个应用,小程序无限");
 					return ;
 				}
