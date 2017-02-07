@@ -48,6 +48,23 @@ var
 			});
 		});
 	},
+	readData = function (path){
+	    return new Promise(function(resolve,reject){
+	        fs.readFile(path,function(err,data){
+	            if(err){
+	                reject(err);//文件存在返回true
+	            }else{
+	                resolve(data);//文件不存在，这里会抛出异常
+	            }
+	        });
+	    }).then(function(data){
+	            console.log(data);
+	            return data;
+	        },function(err){
+	            console.log(err);
+	            return err;
+	        });
+	}
 
 	writeFile = function(fileName, content) {
 		return new Promise(function(resolve, reject) {
@@ -905,7 +922,12 @@ var fileSystem = {
 
 		try {
 			yield shells.packApp(options);
-			this.body = yield send(this, '/var/www/api/uploads/' + app.name + '.zip');
+			var filepath = path.join(__dirname+'/../uploads/', app.name + '.zip');
+			console.log(filepath);
+			this.set('Content-disposition','attachment;filename='+ app.name + '.zip');
+			var info = yield readData(filepath);
+			console.log(info);
+			this.body = info;
 	 		yield shells.rmFile({
 	 			fileName: '/var/www/storage/codes/temp/' + app.name + '.zip',
 	 		});
