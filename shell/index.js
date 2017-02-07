@@ -686,11 +686,41 @@ shells.gitChange = function*(){
         });
     });
 }
-shells.gitChange = function*(){
+shells.gitChange = function*(options){
 
     return new Promise(function(resolve, reject) {
         console.log(options);
-        var bash = 'ssh root@' + options.host + " sh /root/gospely/deploy/shell/docker_bash.sh " + options.docker;
+        var bash = 'ssh root@' + options.host + " sh /root/gospely/deploy/shell/status.sh " + options.docker;
+        console.log(bash);
+        exec(bash, function(err, data) {
+            console.log(err);
+            console.log(data);
+            if (err)
+                reject(err);
+            resolve(data);
+        });
+    });
+}
+shells.gitCommit = function*(options){
+
+    return new Promise(function(resolve, reject) {
+        console.log(options);
+        var bash = 'ssh root@' + options.host + " sh /root/gospely/deploy/shell/status.sh " + options.docker;
+        console.log(bash);
+        exec(bash, function(err, data) {
+            console.log(err);
+            console.log(data);
+            if (err)
+                reject(err);
+            resolve(data);
+        });
+    });
+}
+shells.gitOrigin = function*(options){
+
+    return new Promise(function(resolve, reject) {
+        console.log(options);
+        var bash = 'ssh root@' + options.host + " sh /root/gospely/deploy/shell/origin.sh " + options.docker;
         console.log(bash);
         exec(bash, function(err, data) {
             console.log(err);
