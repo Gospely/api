@@ -922,6 +922,9 @@ var fileSystem = {
 
 		try {
 			yield shells.packApp(options);
+			yield shells.rmFile({
+	 			fileName: '/var/www/storage/codes/temp/' + app.name + '.zip',
+	 		});
 			var filepath = path.join(__dirname+'/../uploads/', app.name + '.zip');
 			console.log(filepath);
 			this.set('Content-disposition','attachment;filename='+ app.name + '.zip');
