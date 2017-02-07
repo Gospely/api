@@ -921,16 +921,19 @@ var fileSystem = {
 		};
 
 		try {
-			yield shells.packApp(options);
 			yield shells.rmFile({
 	 			fileName: '/var/www/storage/codes/temp/' + app.name + '.zip',
 	 		});
+
+			yield shells.packApp(options);
+			
 			var filepath = path.join(__dirname+'/../uploads/', app.name + '.zip');
 			console.log(filepath);
 			this.set('Content-disposition','attachment;filename='+ app.name + '.zip');
 			var info = yield readData(filepath);
 			console.log(info);
 			this.body = info;
+			
 	 		yield shells.rmFile({
 	 			fileName: '/var/www/storage/codes/temp/' + app.name + '.zip',
 	 		});
