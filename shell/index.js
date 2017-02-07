@@ -663,7 +663,9 @@ shells.packApp = function(options) {
         console.log(options);
         var bash = 'zip -r /var/www/storage/codes/temp/' + options.appName + '.zip /var/www/storage/codes/' + options.user + '/' + options.projectFolder;
         console.log(bash);
-        exec(bash, function(err, data) {
+        exec(bash, {
+            maxBuffer:  1024 * 1024 * 1024
+        },function(err, data) {
             if (err)
                 reject(err);
             resolve(data);
