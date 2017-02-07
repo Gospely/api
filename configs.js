@@ -98,7 +98,35 @@ module.exports = {
 	},
 
 	router_config: {
-
+		git: [
+			{
+				name: '获取变更文件',
+				method: 'get',
+				url: '/git/change/:id',
+				controller: 'gitChange',
+				groups: "ab64c397-d323-4133-9541-479bbaaf6c52_100"
+			},
+			{
+				name: 'git commit',
+				method: 'get',
+				url: '/git/commit/:id',
+				controller: 'gitCommit',
+				groups: "ab64c397-d323-4133-9541-479bbaaf6c52_100"
+			},
+			{
+				name: 'git push',
+				method: 'get',
+				url: '/git/push/:id',
+				controller: 'gitPush',
+				groups: "ab64c397-d323-4133-9541-479bbaaf6c52_100"
+			},{
+				name: 'git pull',
+				method: 'get',
+				url: '/git/pull/:id',
+				controller: 'gitPull',
+				groups: "ab64c397-d323-4133-9541-479bbaaf6c52_100"
+			}
+		],
 		applications: [{
 			name: '杀终端进程',
 			method: 'get',

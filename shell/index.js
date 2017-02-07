@@ -150,7 +150,7 @@ shells.gitClone = function(options) {
 
     var host = options.host || '120.76.235.234';
     var bash_clone = "ssh root@" + host + " git clone " + options.gitURL +
-        " /var/www/storage/codes/" + options.user + "/" + options.projectname;
+        " --depth=1 /var/www/storage/codes/" + options.user + "/" + options.projectname;
     //执行删除命令
     exec(bash_clone, function(err, data) {
 
@@ -664,11 +664,42 @@ shells.packApp = function(options) {
         var bash = 'zip -r /var/www/storage/codes/temp/' + options.appName + '.zip /var/www/storage/codes/' + options.user + '/' + options.projectFolder;
         console.log(bash);
         exec(bash, function(err, data) {
-            console.log(err);
-            console.log(data);
+            if (err)
+                reject(err);
+            resolve(data);
         });
     });
-    
+
+}
+shells.gitChange = function*(){
+
+    return new Promise(function(resolve, reject) {
+        console.log(options);
+        var bash = 'ssh root@' + options.host + " sh /root/gospely/deploy/shell/docker_bash.sh " + options.docker + " git status | tail -n +6 | head -n -2 | awk '{print $2}'";
+        console.log(bash);
+        exec(bash, function(err, data) {
+            console.log(err);
+            console.log(data);
+            if (err)
+                reject(err);
+            resolve(data);
+        });
+    });
+}
+shells.gitChange = function*(){
+
+    return new Promise(function(resolve, reject) {
+        console.log(options);
+        var bash = 'ssh root@' + options.host + " sh /root/gospely/deploy/shell/docker_bash.sh " + options.docker;
+        console.log(bash);
+        exec(bash, function(err, data) {
+            console.log(err);
+            console.log(data);
+            if (err)
+                reject(err);
+            resolve(data);
+        });
+    });
 }
 //shells.isGit = function()
 module.exports = shells;

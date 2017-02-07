@@ -66,7 +66,7 @@ Controllers.prototype.route = function(router) {
     reader.readDir(__dirname).map(function(file) {
 
       if (modelsName != "common" && modelsName != "index" &&
-        modelsName != "fs") {
+        modelsName != "fs" && modelsName != "git") {
 
         if (common[modelsName].list == null || common[modelsName].list ==
           undefined) {

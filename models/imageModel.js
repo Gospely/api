@@ -16,6 +16,7 @@ module.exports = function(sequelize, DataTypes) {
     parent: DataTypes.STRING,
     port: DataTypes.STRING,
     cmds: DataTypes.STRING,
+    icon: DataTypes.STRING,
     defaultConfig: {
       type: DataTypes.STRING,
       field: 'default_config'
