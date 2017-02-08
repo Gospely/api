@@ -661,6 +661,7 @@ shells.clearApp = function(options){
 shells.packApp = function(options) {
     return new Promise(function(resolve, reject) {
         console.log(options);
+        var bash = 'cd /var/www/storage/codes/' + options.user + "/" + options.projectFolder +' && zip -x "node_modules*" -r /var/www/storage/codes/temp/' + options.appName + '.zip ' + '.';
         console.log(bash);
         exec(bash, {
             maxBuffer:  1024 * 1024
