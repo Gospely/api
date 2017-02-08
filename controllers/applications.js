@@ -424,4 +424,29 @@ applications.update = function* update() {
 	}
 	this.body = render(inserted, null, null, 1);
 }
+applications.startApp = function*(){
+
+	var id = this.params.id;
+    var application = yield models.gospel_applications.findById(id);
+    var result = yield shells.startApp({
+        docker: application.docker,
+        host: application.host,
+		cmd: JSON.parse(application.cmds.default)
+    });
+	if(result == 'success'){
+
+	}
+},
+applications.stopApp = function*(){
+	
+	var id = this.params.id;
+    var application = yield models.gospel_applications.findById(id);
+    var result = yield shells.stopApp({
+        docker: application.docker,
+        host: application.host,
+    });
+	if(result == 'success'){
+
+	}
+},
 module.exports = applications;
