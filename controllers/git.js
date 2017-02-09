@@ -119,12 +119,7 @@ gits.gitPush = function*() {
         host: application.host,
 		branch: branch
     });
-	if(result == 'success'){
-		this.body = render(null, 1, 'push 成功');
-	}else{
-		this.body = render(null, -1, result);
-
-	}
+	this.body = render(result, 1, 'git push 完成');
 }
 gits.gitPull = function*() {
 	var id = this.params.id;
