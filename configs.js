@@ -134,6 +134,19 @@ module.exports = {
 			controller: 'killPID',
 			groups: "ab64c397-d323-4133-9541-479bbaaf6c52_100"
 		},{
+			name: '启动应用',
+			method: 'get',
+			url: '/applications/start/:id',
+			controller: 'startApp',
+			groups: "ab64c397-d323-4133-9541-479bbaaf6c52_100"
+		},
+		,{
+			name: '中断应用运行',
+			method: 'get',
+			url: '/applications/stop/:id',
+			controller: 'stopApp',
+			groups: "ab64c397-d323-4133-9541-479bbaaf6c52_100"
+		},{
 			name: '重启终端',
 			method: 'get',
 			url: '/applications/startTerminal',

@@ -428,22 +428,33 @@ applications.startApp = function*(){
 
 	var id = this.params.id;
     var application = yield models.gospel_applications.findById(id);
-    var result = yield shells.startApp({
+	console.log(application);
+	var cmds = JSON.parse(application.cmds),
+		cmd = cmds.default;
+	if(application.version != null){
+		cmd = '. /root/.nvm/nvm.sh && cd /root/workspace && ' + cmd;
+	}
+    var result = yield shell.startApp({
         docker: application.docker,
         host: application.host,
-		cmd: JSON.parse(application.cmds.default)
+		port: application.port,
+		cmd: cmd
     });
+
+	console.log(result);
 	if(result == 'success'){
 
 	}
 },
 applications.stopApp = function*(){
-	
+
 	var id = this.params.id;
     var application = yield models.gospel_applications.findById(id);
-    var result = yield shells.stopApp({
+	console.log(application);
+    var result = yield shell.stopApp({
         docker: application.docker,
         host: application.host,
+		port: application.exposePort
     });
 	if(result == 'success'){
 

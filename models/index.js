@@ -139,25 +139,44 @@ var sequelize = new Sequelize('gospel', 'gospel', 'dodoraCN2016@gospely', {
       },
       count: function*(item) {
         item.isDeleted = 0;
+        if(this.name == 'gospel_applications'){
+            if(item.type != null){
+                var sql = this.countInit(item);
+                if (sql != null && sql != undefined) {
+                  return yield sequelize.query(sql, {
+                    replacements: item,
+                    type: sequelize.QueryTypes.SELECT
+                  })
 
-        if (this.countInit != null && this.countInit != undefined) {
-          var sql = this.countInit(item);
-          if (sql != null && sql != undefined) {
-            return yield sequelize.query(sql, {
-              replacements: item,
-              type: sequelize.QueryTypes.SELECT
-            })
+                }
+            }else{
+                return yield this.findAll({
+                  where: item,
+                  attributes: [
+                    [sequelize.fn('COUNT', sequelize.col('id')), 'all']
+                  ]
+                });
+            }
+        }else {
+            if ((this.countInit != null && this.countInit != undefined)) {
+              var sql = this.countInit(item);
+              if (sql != null && sql != undefined) {
+                return yield sequelize.query(sql, {
+                  replacements: item,
+                  type: sequelize.QueryTypes.SELECT
+                })
 
+              }
+
+            }
+            return yield this.findAll({
+              where: item,
+              attributes: [
+                [sequelize.fn('COUNT', sequelize.col('id')), 'all']
+              ]
+            });
           }
-
         }
-        return yield this.findAll({
-          where: item,
-          attributes: [
-            [sequelize.fn('COUNT', sequelize.col('id')), 'all']
-          ]
-        });
-      }
     },
     instanceMethods: {
 

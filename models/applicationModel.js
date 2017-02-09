@@ -79,6 +79,10 @@ module.exports = function(sequelize, DataTypes) {
     updatedAt: 'updateat',
     classMethods: {
       associate: (models) => {
+      },
+      countInit(item){
+          
+          console.log("test");
       }
     }
   });

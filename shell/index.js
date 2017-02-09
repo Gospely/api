@@ -2,6 +2,7 @@ var fs = require('fs');
 var exec = require('child_process').exec;
 var path = require('path');
 var shells = {};
+var scriptDir = '/root/gospely/deploy/shell/';
 
 shells.domain = function*(options) {
 
@@ -71,7 +72,7 @@ shells.fast_deploy = function*(options) {
 shells.mvFiles = function*(options){
     var host = options.host || '120.76.235.234';
     return new Promise(function(resolve, reject) {
-        exec('ssh root@' + host + ' sh /root/gospely/deploy/shell/mv.sh gospel_project_' + options.name,
+        exec('ssh root@' + host + ' sh '+ scriptDir + 'mv.sh gospel_project_' + options.name,
             function(err, data) {
                 if (err)
                     reject(err);
@@ -83,7 +84,7 @@ shells.changePWD = function*(options){
     console.log(options);
     var host = options.host || '120.76.235.234';
     return new Promise(function(resolve, reject) {
-        exec('ssh root@' + host + ' sh /root/gospely/deploy/shell/changePWD.sh gospel_project_' + options.name + " " + options.password,
+        exec('ssh root@' + host + ' sh '+ scriptDir + 'changePWD.sh gospel_project_' + options.name + " " + options.password,
             function(err, data) {
                 console.log(err);
                 console.log(data);
@@ -640,7 +641,7 @@ shells.dockerList = function*(options){
 shells.clearApp = function(options){
 
     console.log(options);
-    var bash = 'ssh root@' + options.host + ' sh /root/gospely/deploy/shell/clear.sh ' + options.user + ' ' + options.fileName + ' ' + options.docker;
+    var bash = 'ssh root@' + options.host + ' sh '+ scriptDir + 'clear.sh ' + options.user + ' ' + options.fileName + ' ' + options.docker;
     console.log(bash);
     exec(bash, function(err,data){
 
@@ -673,26 +674,11 @@ shells.packApp = function(options) {
     });
 
 }
-shells.gitChange = function*(){
-
-    return new Promise(function(resolve, reject) {
-        console.log(options);
-        var bash = 'ssh root@' + options.host + " sh /root/gospely/deploy/shell/docker_bash.sh " + options.docker + " git status | tail -n +6 | head -n -2 | awk '{print $2}'";
-        console.log(bash);
-        exec(bash, function(err, data) {
-            console.log(err);
-            console.log(data);
-            if (err)
-                reject(err);
-            resolve(data);
-        });
-    });
-}
 shells.gitChange = function*(options){
 
     return new Promise(function(resolve, reject) {
         console.log(options);
-        var bash = 'ssh root@' + options.host + " sh /root/gospely/deploy/shell/status.sh " + options.docker;
+        var bash = 'ssh root@' + options.host + " sh "+ scriptDir + "git/status.sh " + options.docker;
         console.log(bash);
         exec(bash, function(err, data) {
             console.log(err);
@@ -707,7 +693,7 @@ shells.gitCommit = function*(options){
 
     return new Promise(function(resolve, reject) {
         console.log(options);
-        var bash = 'ssh root@' + options.host + " sh /root/gospely/deploy/shell/status.sh " + options.docker;
+        var bash = 'ssh root@' + options.host + " sh " + scriptDir + "git/status.sh " + options.docker;
         console.log(bash);
         exec(bash, function(err, data) {
             console.log(err);
@@ -722,7 +708,7 @@ shells.gitOrigin = function*(options){
 
     return new Promise(function(resolve, reject) {
         console.log(options);
-        var bash = 'ssh root@' + options.host + " sh /root/gospely/deploy/shell/origin.sh " + options.docker;
+        var bash = 'ssh root@' + options.host + " sh " + scriptDir + "git/origin.sh " + options.docker;
         console.log(bash);
         exec(bash, function(err, data) {
             console.log(err);
@@ -733,5 +719,79 @@ shells.gitOrigin = function*(options){
         });
     });
 }
+shells.gitPush = function*(options){
+
+    return new Promise(function(resolve, reject) {
+        console.log(options);
+        var bash = 'ssh root@' + options.host + " sh " + scriptDir + "git/origin.sh " + options.docker;
+        console.log(bash);
+        exec(bash, function(err, data) {
+            console.log(err);
+            console.log(data);
+            if (err)
+                reject(err);
+            resolve(data);
+        });
+    });
+}
+shells.gitPull = function*(options){
+
+    return new Promise(function(resolve, reject) {
+        console.log(options);
+        var bash = 'ssh root@' + options.host + " sh "+ scriptDir + "git/origin.sh " + options.docker;
+        console.log(bash);
+        exec(bash, function(err, data) {
+            console.log(err);
+            console.log(data);
+            if (err)
+                reject(err);
+            resolve(data);
+        });
+    });
+}
+shells.startApp = function*(options){
+
+    return new Promise(function(resolve, reject) {
+        console.log(options);
+        var bash = 'ssh root@' + options.host + " sh " + scriptDir + "boot/start.sh " + options.docker + " '" + options.cmd + "'";
+        console.log(bash);
+        exec(bash, function(err, data) {
+            console.log(err);
+            console.log(data);
+            if (err)
+                reject(err);
+            resolve(data);
+        });
+    });
+}
+shells.stopApp = function*(options){
+
+    return new Promise(function(resolve, reject) {
+        console.log(options);
+        var bash = 'ssh root@' + options.host + " docker exec -it " + options.docker + " netstat -anp | grep " + options.port + " | awk '{printf $7}'|cut -d/ -f1";
+        console.log(bash);
+        exec(bash, function(err, data) {
+            console.log(err);
+            console.log(data);
+            if (err){
+                reject(err)
+            }else{
+                if(data != ''){
+                    bash = 'ssh root@' + options.host + " docker exec " + options.docker + "kill -9"  + data;
+                    console.log(bash);
+                    exec(bash, function(err, data) {
+                        if (err)
+                            reject(err);
+                        resolve('success');
+                    });
+                }else{
+                    resolve('success');
+                }
+            }
+        });
+    });
+
+}
+
 //shells.isGit = function()
 module.exports = shells;
