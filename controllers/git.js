@@ -72,7 +72,7 @@ gits.gitOrigin = function*() {
 			limit: '10kb'
 		});
 	application = JSON.parse(application);
-	
+
 	var app = yield models.gospel_applications.findById(application.id),
 		options = {
 			docker: app.docker,
@@ -100,15 +100,45 @@ gits.gitOrigin = function*() {
 			gitUser: application.user,
 			gitEmail: application.email
 		});
+		this.body = render(null, 1, '修改源成功');
 	}else{
+		this.body = render(null, -1, result);
 
 	}
 }
 gits.gitPush = function*() {
 
+	var id = this.params.id;
+	var branch = this.query.branch;
+	if(branch == null){
+		branch = 'master'
+	}
+    var application = yield models.gospel_applications.findById(id);
+    var result = yield shells.gitPush({
+        docker: application.docker,
+        host: application.host,
+		branch: branch
+    });
+	if(result == 'success'){
+		this.body = render(null, 1, 'push 成功');
+	}else{
+		this.body = render(null, -1, result);
+
+	}
 }
 gits.gitPull = function*() {
-
+	var id = this.params.id;
+	var branch = this.query.branch;
+	if(branch == null){
+		branch = 'master'
+	}
+	var application = yield models.gospel_applications.findById(id);
+	var result = yield shells.gitPull({
+		docker: application.docker,
+		host: application.host,
+		branch: branch
+	});
+	this.body = render(result, 1, 'git pull 完成');
 }
 
 

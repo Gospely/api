@@ -693,7 +693,7 @@ shells.gitCommit = function*(options){
 
     return new Promise(function(resolve, reject) {
         console.log(options);
-        var bash = 'ssh root@' + options.host + " sh " + scriptDir + "git/status.sh " + options.docker;
+        var bash = 'ssh root@' + options.host + " sh " + scriptDir + "git/commit.sh " + options.docker + ' ' + options.message;
         console.log(bash);
         exec(bash, function(err, data) {
             console.log(err);
@@ -726,7 +726,7 @@ shells.gitPush = function*(options){
 
     return new Promise(function(resolve, reject) {
         console.log(options);
-        var bash = 'ssh root@' + options.host + " sh " + scriptDir + "git/origin.sh " + options.docker;
+        var bash = 'ssh root@' + options.host + " sh " + scriptDir + "git/push.sh " + options.docker + ' ' + options.branch;
         console.log(bash);
         exec(bash, function(err, data) {
             console.log(err);
@@ -741,7 +741,7 @@ shells.gitPull = function*(options){
 
     return new Promise(function(resolve, reject) {
         console.log(options);
-        var bash = 'ssh root@' + options.host + " sh "+ scriptDir + "git/origin.sh " + options.docker;
+        var bash = 'ssh root@' + options.host + " sh "+ scriptDir + "git/pull.sh " + options.docker + ' ' + options.branch;
         console.log(bash);
         exec(bash, function(err, data) {
             console.log(err);
