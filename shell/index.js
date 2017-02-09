@@ -753,7 +753,7 @@ shells.startApp = function*(options){
 
     return new Promise(function(resolve, reject) {
         console.log(options);
-        var bash = 'ssh root@' + options.host + " sh " + scriptDir + "boot/start.sh " + options.docker + " '" + options.cmd + "'";
+        var bash = 'ssh root@' + options.host + " sh /root/gospely/deploy/shell/boot/start.sh " + options.docker + " '"+ options.cmd + "'";
         console.log(bash);
         exec(bash, function(err, data) {
             console.log(err);

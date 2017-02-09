@@ -432,7 +432,7 @@ applications.startApp = function*(){
 	var cmds = JSON.parse(application.cmds),
 		cmd = cmds.default;
 	if(application.version != null){
-		cmd = '. /root/.nvm/nvm.sh && cd /root/workspace && ' + cmd;
+		cmd = cmd;
 	}
     var result = yield shell.startApp({
         docker: application.docker,
