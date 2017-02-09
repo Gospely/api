@@ -708,7 +708,10 @@ shells.gitOrigin = function*(options){
 
     return new Promise(function(resolve, reject) {
         console.log(options);
-        var bash = 'ssh root@' + options.host + " sh " + scriptDir + "git/origin.sh " + options.docker;
+        var bash = 'ssh root@' + options.host + " sh " + scriptDir + "git/addOrigin.sh " + options.docker + " " + options.git + ' ' + options.user + ' ' + options.email;
+        if(!options.addOrigin){
+             bash = 'ssh root@' + options.host + " sh " + scriptDir + "git/resetOrigin.sh " + options.docker + " " + options.git + ' ' + options.user + ' ' + options.email;
+        }
         console.log(bash);
         exec(bash, function(err, data) {
             console.log(err);

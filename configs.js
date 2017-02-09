@@ -125,6 +125,13 @@ module.exports = {
 				url: '/git/pull/:id',
 				controller: 'gitPull',
 				groups: "ab64c397-d323-4133-9541-479bbaaf6c52_100"
+			},
+			,{
+				name: 'git origin',
+				method: 'post',
+				url: '/git/origin',
+				controller: 'gitOrigin',
+				groups: "ab64c397-d323-4133-9541-479bbaaf6c52_100"
 			}
 		],
 		applications: [{

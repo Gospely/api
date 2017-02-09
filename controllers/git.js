@@ -67,7 +67,40 @@ gits.gitCommit = function*() {
     }
 }
 gits.gitOrigin = function*() {
-    
+
+	var application = yield parse(this, {
+			limit: '10kb'
+		});
+	var app = yield models.gospel_applications.findById(application.id),
+		options = {
+			docker: app.docker,
+			host: app.host,
+			git: application.git,
+			user: application.user,
+			email: application.email
+		}
+	if(app.git == null || app.git == undefined || app.git == ''){
+		options.addOrigin = true;
+	}else{
+		options.addOrigin = false;
+	}
+	var result = yield shells.gitOrigin(options);
+	yield models.gospel_applications.modify({
+		id: application.id,
+		git: application.git,
+		gitUser: application.user,
+		gitEmail: application.email
+	});
+	if(result == 'success'){
+		yield models.gospel_applications.modify({
+			id: application.id,
+			git: application.git,
+			gitUser: application.user,
+			gitEmail: application.email
+		});
+	}else{
+
+	}
 }
 gits.gitPush = function*() {
 

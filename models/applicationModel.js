@@ -47,6 +47,14 @@ module.exports = function(sequelize, DataTypes) {
     git:DataTypes.STRING,
     host: DataTypes.STRING,
     creator: DataTypes.STRING,
+    gitUser: {
+      type: DataTypes.STRING,
+      field: "git_user",
+    },
+    gitEmail: {
+      type: DataTypes.STRING,
+      field: "git_email",
+    },
     payStatus: {
       type: DataTypes.INTEGER,
       field: "pay_status",
@@ -81,7 +89,7 @@ module.exports = function(sequelize, DataTypes) {
       associate: (models) => {
       },
       countInit(item){
-          
+
           console.log("test");
       }
     }
