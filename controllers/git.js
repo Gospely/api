@@ -54,17 +54,17 @@ gits.gitChange = function*() {
 }
 gits.gitCommit = function*() {
 
-    var commits = yield parse(this, {
-    		limit: '10240kb'
-    	});
-    var message = commits.message;
-    var files = JSON.parse(commits.files),
-        addFiles = new Array();
-    for (var i = 0; i < files.length; i++) {
-        if(files[i].type == 'A') {
-            addFiles.push(files[i].name)
-        }
-    }
+	var id = this.params.id;
+    var application = yield models.gospel_applications.findById(id);
+    var message = this.query.message;
+
+	var result = yield shells.gitCommit({
+		docker: application.docker,
+		host: application.host,
+		message: message
+	});
+	this.body = render(result, 1, 'git pull 完成');
+
 }
 gits.gitOrigin = function*() {
 
