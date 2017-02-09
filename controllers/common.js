@@ -114,7 +114,11 @@ common.delete = function* remove() {
 common.count = function* count() {
 
 	var count = yield models[getModel(this)].count(this.query);
-	var total = count[0].dataValues.all;
+	if (count[0].dataValues == null || count[0].dataValues == undefined) {
+		var total = count[0].all;
+	} else {
+		var total = count[0].dataValues.all;
+	}
 	this.body = render(total, null, null, 1);
 }
 common.render = render;
