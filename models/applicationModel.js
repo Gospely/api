@@ -93,8 +93,6 @@ module.exports = function(sequelize, DataTypes) {
             return "SELECT count(a.id) AS all FROM gospel_applications a LEFT JOIN gospel_images b ON a.image = b.id WHERE creator= :creator AND type='application'";
           } else if (item.type == 'vd') {
             return "SELECT count(a.id) As all FROM gospel_applications a LEFT JOIN gospel_images b ON a.image = b.id WHERE creator= :creator AND (parent ~ '^vd.?latest$' or parent ~ '^hybridapp.?latest$')";
-          } else if (item.type == 'wechat') {
-            return "SELECT count(id) AS all FROM gospel_applications WHERE creator= :creator AND image ~ '^wechat.?latest$' AND isdeleted=0";
           }
       }
     }
