@@ -63,7 +63,7 @@ gits.gitCommit = function*() {
 		host: application.host,
 		message: message
 	});
-	this.body = render(result, 1, 'git pull 完成');
+	this.body = render(result, 1, 'git commit 完成');
 
 }
 gits.gitOrigin = function*() {
