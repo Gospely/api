@@ -28,7 +28,7 @@ var listenServer = {
                 }
             })
             .on('add', path => {
-
+                console.log("add");
                 var client = getClient(path, ctx);
                 if(client != null){
                     client.emit( 'message', 'add-:-' + path.replace('/var/www/storage/codes', ''))

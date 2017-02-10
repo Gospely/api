@@ -53,7 +53,7 @@ io.on( 'data', ( ctx, data ) => {
     })
 });
 io.on( 'message', ( ctx, data ) => {
-    
+
     app.context.clients[data] = ctx.socket;
     console.log(app.context.clients);
 });
@@ -124,7 +124,7 @@ app
 
 //上传文件模块
 //文件监听
-watcher.buildListener('/var/www/storage/codes',[/(^|[\/\\])\../,'**/node_modules/**'], app);
+watcher.buildListener('/var/www/storage/codes',[/(^|[\/\\])\../,'**/node_modules/**','**/lost+found'], app);
 app.on('error', function(err, ctx) {
   log.error('server error', err, ctx);
   this.body = fun.resp('500', err, ctx);

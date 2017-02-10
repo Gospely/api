@@ -823,7 +823,23 @@ shells.stopApp = function*(options){
             }
         });
     });
+}
 
+//获取用文件系统的使用百分比
+shells.percent = function*(options){
+
+    return new Promise(function(resolve, reject) {
+        console.log(options);
+        var bash = 'ssh root@' + options.host + " df -h | awk '$6 ~ /var\/www\/storage\/codes\/" + options.user + "/ {print $5}'";
+        console.log(bash);
+        exec(bash, function(err, data) {
+            console.log(err);
+            console.log(data);
+            if (err)
+                reject(err);
+            resolve(data);
+        });
+    });
 }
 
 //shells.isGit = function()
