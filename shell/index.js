@@ -767,6 +767,21 @@ shells.gitPull = function*(options){
         });
     });
 }
+shells.defaultVersion = function*(options){
+
+    return new Promise(function(resolve, reject) {
+        console.log(options);
+        var bash = 'ssh root@' + options.host + " sh /root/gospely/deploy/shell/boot/start.sh " + options.docker + " 'nvm alias default v" + options.version + "'";
+        console.log(bash);
+        exec(bash, function(err, data) {
+            console.log(err);
+            console.log(data);
+            if (err)
+                reject(err);
+            resolve(data);
+        });
+    });
+}
 shells.startApp = function*(options){
 
     return new Promise(function(resolve, reject) {

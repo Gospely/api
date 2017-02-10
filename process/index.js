@@ -479,6 +479,7 @@ module.exports = {
                 application.image = application.image.split(":")[0] + ":" + application.languageVersion;
             }
         }
+
         application.host = host;
         application.status = -1;
         application.docker = 'gospel_project_' + en_name + "_" + user.name;
@@ -488,6 +489,16 @@ module.exports = {
         console.log(application);
 
 		application.domain = en_name + "-" + user.name;
+
+        //设置默认版本
+        var options = {
+            docker: application.docker,
+            version: '6'
+        }
+        if(application.image == 'nodejs:latest') {
+            options.version = application.languageVersion;
+        }
+        yield shells.defaultVersion(options);
 		var inserted = yield models.gospel_applications.create(application);
         yield models.gospel_uistates.create({
             application: inserted.id,
