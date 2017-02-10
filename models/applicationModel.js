@@ -55,6 +55,10 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.STRING,
       field: "git_email",
     },
+    gitPassword: {
+      type: DataTypes.STRING,
+      field: "git_password",
+    },
     payStatus: {
       type: DataTypes.INTEGER,
       field: "pay_status",
