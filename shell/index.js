@@ -722,6 +722,21 @@ shells.gitOrigin = function*(options){
         });
     });
 }
+shells.gitRemeberPwd = function*(options) {
+
+    return new Promise(function(resolve, reject) {
+        console.log(options);
+        var bash = 'ssh root@' + options.host + " sh " + scriptDir + "git/rememberPwd.sh " + options.docker + ' ' + options.user + ' ' + options.password;
+        console.log(bash);
+        exec(bash, function(err, data) {
+            console.log(err);
+            console.log(data);
+            if (err)
+                reject(err);
+            resolve(data);
+        });
+    });
+}
 shells.gitPush = function*(options){
 
     return new Promise(function(resolve, reject) {

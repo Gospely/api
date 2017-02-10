@@ -87,6 +87,12 @@ gits.gitOrigin = function*() {
 		options.addOrigin = false;
 	}
 	var result = yield shells.gitOrigin(options);
+	if(application.password != null && password != '' && application.password != undefined){
+		var result = yield shells.gitRemeberPwd({
+			user: application.user,
+			password: application.password
+		});
+	}
 	yield models.gospel_applications.modify({
 		id: application.id,
 		git: application.git,
