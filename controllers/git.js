@@ -99,18 +99,7 @@ gits.gitOrigin = function*() {
 		gitUser: application.user,
 		gitEmail: application.email
 	});
-	if(result == 'success'){
-		yield models.gospel_applications.modify({
-			id: application.id,
-			git: application.git,
-			gitUser: application.user,
-			gitEmail: application.email
-		});
-		this.body = render(null, 1, '修改源成功');
-	}else{
-		this.body = render(null, -1, result);
-
-	}
+	this.body = render(null, -1, result);
 }
 gits.gitPush = function*() {
 
