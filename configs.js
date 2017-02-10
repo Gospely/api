@@ -295,13 +295,6 @@ module.exports = {
 			controller: 'dashboardApi',
 			groups: "ab64c397-d323-4133-9541-479bbaaf6c52_100"
 		},],
-		domains: [{
-			name: '添加域名',
-			method: 'post',
-			url: '/domains/binding',
-			controller: 'bind',
-			groups: "ab64c397-d323-4133-9541-479bbaaf6c52"
-		}],
 		container: [{
 			name: '启动容器',
 			method: 'get',

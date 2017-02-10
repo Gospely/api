@@ -498,7 +498,7 @@ module.exports = {
         if(application.image == 'nodejs:latest') {
             options.version = application.languageVersion;
         }
-        yield shells.defaultVersion(options);
+        // yield shells.defaultVersion(options);
 		var inserted = yield models.gospel_applications.create(application);
         yield models.gospel_uistates.create({
             application: inserted.id,

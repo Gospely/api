@@ -19,12 +19,13 @@ function render(data,all,cur,code,message) {
 		fields: data
 	}
 }
-domains.bind =  function*() {
+domains.create =  function*() {
 
   if ('POST' != this.method) this.throw(405, "method is not allowed");
     var domain = yield parse(this, {
       limit: '1kb'
     });
+	console.log("dd");
     console.log(domain);
     var options = {
         method: 'domainCreate',
@@ -33,7 +34,9 @@ domains.bind =  function*() {
               domain: domain.domain,
         }
     }
-    var data = dnspod.domainOperate(options);
+    var data = yield dnspod.domainOperate(options);
+
+	console.log(data);
 
     if(data.status.code == '1') {
       //解析
@@ -44,16 +47,18 @@ domains.bind =  function*() {
                 domain: domain,
                 record_type: 'A',
                 record_line: '默认',
-                value:  config.dnspod.baseIp,
+                value: domain.ip,
                 mx: '10'
           }
       }
       var result = yield dnspod.domainOperate(options);
+	  console.log(result);
       if(result.status.code == '1') {
-        domain.sub = false;
-        domain.record = result.record.id;
-        var inserted = models.gospel_domains.create(domain);
-        this.body = render(inserted,null,null,1,'添加域名成功');
+
+			domain.sub = false;
+			domain.record = result.record.id;
+			var inserted = yield models.gospel_domains.create(domain);
+			this.body = render(inserted,null,null,1,'添加域名成功');
       }else{
         this.body = render(inserted,null,null,-1, result.status.message +'添加域名失败');
       }
