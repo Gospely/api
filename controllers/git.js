@@ -71,7 +71,7 @@ gits.gitOrigin = function*() {
 	var application = yield parse(this, {
 			limit: '10kb'
 		});
-	//application = JSON.parse(application);
+	application = JSON.parse(application);
 	console.log(application);
 	var app = yield models.gospel_applications.findById(application.id),
 		options = {
