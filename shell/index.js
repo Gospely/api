@@ -445,6 +445,20 @@ shells.mkdir = function*(options) {
         });
     })
 }
+
+shells.createStorage = function*(options) {
+
+    var host = options.host || '120.76.235.234';
+    return new Promise(function(resolve, reject) {
+        exec("ssh root@" + host + " sh /root/gospely/deploy/shell/volume/createVolume.sh " + options.user + ' ' + options.size,
+            function(err, data) {
+                if (err)
+                    reject(err);
+                resolve(data);
+            });
+    });
+}
+
     //读取数据卷大小
 shells.volumeInfo = function*(options) {
 
