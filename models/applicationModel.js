@@ -96,7 +96,7 @@ module.exports = function(sequelize, DataTypes) {
           if (item.type == "deployfast") {
             return "SELECT count(a.id) AS all FROM gospel_applications a LEFT JOIN gospel_images b ON a.image = b.id WHERE creator = :creator AND type = 'application' AND a.isdeleted = 0";
           } else if (item.type == 'vd') {
-            return "select count(*) as all from (select id from gospel_images where isdeleted=0 and (parent ~ '^vd.?latest' or parent ~ '^hybirdapp.?latest' ) )as a left join (select image from gospel_applications where creator = :creator and isdeleted=0 ) as b on a.id = b.image";
+            return "select count(*) as all from (select id from gospel_images where isdeleted=0 and (parent ~ '^vd.?latest' or parent ~ '^hybridapp.?latest' ) )as a left join (select image from gospel_applications where creator = :creator and isdeleted=0 ) as b on a.id = b.image";
           }
       }
     }
