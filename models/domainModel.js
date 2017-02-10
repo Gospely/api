@@ -42,7 +42,7 @@ module.exports = function(sequelize, DataTypes) {
           method: 'recordCreate',
           opp: 'recordCreate',
           param: {
-            domain: config.dnspod.baseDomain,
+            domain: domain.domain || config.dnspod.baseDomain,
             sub_domain: domain.subDomain,
             record_type: 'A',
             record_line: '默认',
@@ -50,7 +50,7 @@ module.exports = function(sequelize, DataTypes) {
             mx: '10'
           }
         }
-
+        console.log(options);
         try {
           var data = yield dnspod.domainOperate(options);
           if (data.status.code == '1') {

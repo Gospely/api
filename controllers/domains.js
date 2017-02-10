@@ -36,15 +36,15 @@ domains.create =  function*() {
     }
     var data = yield dnspod.domainOperate(options);
 
-	console.log(data);
-
     if(data.status.code == '1') {
       //解析
+      console.log('data');
       var options = {
           method: 'recordCreate',
           opp: 'recordCreate',
           param: {
                 domain: domain,
+				sub_domain: 'www',
                 record_type: 'A',
                 record_line: '默认',
                 value: domain.ip,
@@ -52,6 +52,7 @@ domains.create =  function*() {
           }
       }
       var result = yield dnspod.domainOperate(options);
+	  console.log('c');
 	  console.log(result);
       if(result.status.code == '1') {
 
@@ -63,7 +64,7 @@ domains.create =  function*() {
         this.body = render(inserted,null,null,-1, result.status.message +'添加域名失败');
       }
     }else{
-      this.body = render(inserted,null,null,-1, result.status.message +'添加域名失败');
+      this.body = render(inserted,null,null,-1, data.status.message +'添加域名失败');
     }
   }
 domains.delete = function*() {
