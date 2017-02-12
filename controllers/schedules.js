@@ -7,6 +7,8 @@ var schedules = {};
 schedules.list = function*(){
 
     var token = this.query.token;
+
+
     //校验token
     if(true){
         var result = yield shell.dockerList({
