@@ -106,6 +106,7 @@ function* checkPwd(user, ctx) {
 			group: user.group,
 			limitTime: 24 * 15 * 60 * 60 * 1000
 		});
+		console.log(user);
 		ctx.body = render(user, 1, "登录成功");
 		//记录用户的登录，todo:基于redis实现
 	}

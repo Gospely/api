@@ -3,6 +3,8 @@ var exec = require('child_process').exec;
 var path = require('path');
 var shells = {};
 var scriptDir = '/root/gospely/deploy/shell/';
+var dockerBase = '/var/www/storage/codes/'
+var hostBase =  '/mnt/var/www/storage/codes/'
 
 shells.domain = function*(options) {
 
@@ -56,8 +58,8 @@ shells.fast_deploy = function*(options) {
     console.log(options);
   return new Promise(function(resolve, reject) {
       var bash = "ssh root@" + host + ' docker run -itd --volumes-from docker-volume-' + options.creator + ' -m ' + options.memory +
-        ' -v /var/www/storage/codes/' + options.creator + "/" + options.name +
-        ':/root/workspace -v /var/www/storage/codes/' + options.creator + '/.ssh:/root/.ssh'  + config + ' -p ' + options.socketPort + ':3000 -p ' + options.appPort  +
+        ' -v ' + hostBase + options.creator + "/" + options.name +
+        ':/root/workspace -v ' + hostBase  + options.creator + '/.ssh:/root/.ssh'  + config + ' -p ' + options.socketPort + ':3000 -p ' + options.appPort  +
         ':80 -p ' + options.sshPort + ':22 ' + port +
         ' -h ' + options.hostName +
         ' -w /root/workspace --name="gospel_project_' + options.name + '"  gospel-' +
@@ -134,8 +136,8 @@ shells.initDebug = function*(options){
 
     return new Promise(function(resolve, reject) {
         var bash = "ssh root@" + host + ' docker run -itd --volumes-from docker-volume-' + options.creator +
-          ' -v /var/www/storage/codes/' + options.creator + "/" + options.name +
-          ':/root/workspace -v /var/www/storage/codes/' + options.creator + '/.ssh:/root/.ssh' + config + ' -p ' + options.socketPort + ':3000 -p ' + options.appPort  +
+          ' -v ' + hostBase  + options.creator + "/" + options.name +
+          ':/root/workspace -v ' + hostBase + options.creator + '/.ssh:/root/.ssh' + config + ' -p ' + options.socketPort + ':3000 -p ' + options.appPort  +
           ':'+ options.exposePort +' -p ' + options.sshPort + ':22 ' + port +
           ' -h ' + options.hostName +
           ' -w /root/workspace --name="gospel_project_' + options.name + '" gospel-' +
@@ -151,7 +153,7 @@ shells.gitClone = function(options) {
 
     var host = options.host || '120.76.235.234';
     var bash_clone = "ssh root@" + host + " git clone " + options.gitURL +
-        " --depth=1 /var/www/storage/codes/" + options.user + "/" + options.projectname;
+        " --depth=1 /" + hostBase + options.user + "/" + options.projectname;
     //执行删除命令
     exec(bash_clone, function(err, data) {
 
@@ -404,7 +406,7 @@ shells.createVolume = function*(options) {
         var host = options.host || '120.76.235.234';
         return new Promise(function(resolve, reject) {
             exec("ssh root@" + host +
-                " docker run -itd -v /var/www/storage/codes/" +
+                " docker run -itd -v " + hostBase +
                 options.user +
                 " --name=docker-volume-" + options.user +
                 " ubuntu /bin/bash && echo success",
@@ -420,7 +422,7 @@ shells.sshKey = function*(options) {
     var host = options.host || '120.76.235.234';
     return new Promise(function(resolve, reject) {
         exec("ssh root@" + host +
-            ' \'ssh-keygen -t rsa -P "" -f /var/www/storage/codes/' + options.user + '/.ssh/id_rsa\'',
+            ' \'ssh-keygen -t rsa -P "" -f ' + hostBase + options.user + '/.ssh/id_rsa\'',
             function(err,
                 data) {
                 if (err) reject(err);
@@ -432,11 +434,11 @@ shells.mkdir = function*(options) {
 
     var host = options.host || '120.76.235.234';
     return new Promise(function(resolve, reject) {
-        exec("ssh root@" + host +  ' mkdir /var/www/storage/codes/' + options.user,
+        exec("ssh root@" + host +  ' mkdir ' + hostBase + options.user,
             function(err,
                 data) {
                 if (err) reject(err);
-                exec("ssh root@" + host +  ' mkdir /var/www/storage/codes/' + options.user + '/.ssh ',
+                exec("ssh root@" + host +  ' mkdir ' + hostBase + options.user + '/.ssh ',
                     function(err,
                         data) {
                         if (err) reject(err);
@@ -488,7 +490,7 @@ shells.decomFile = function(options) {
 
     var host = options.host || '120.76.235.234';
     console.log("================"+host+"+++++++++++++++++");
-    var baseDir = '/var/www/storage/codes/';
+    var baseDir = '/mnt/var/www/storage/codes/';
     var comDir = baseDir + 'temp/' + options.comDir;
     console.log(comDir);
     var decomDir = path.join(baseDir, options.folder);
@@ -572,7 +574,7 @@ shells.initFrameWork = function() {
 shells.getKey = function*(options) {
     var host = options.host || '120.76.235.234';
     return new Promise(function(resolve, reject) {
-        exec('ssh root@' + host + ' cat /var/www/storage/codes/' + options.user + '/.ssh/id_rsa.pub' ,
+        exec('cat ' + dockerBase + options.user + '/.ssh/id_rsa.pub' ,
             function(err, data) {
                 if (err)
                     reject(err);
@@ -643,7 +645,7 @@ shells.changePort = function*(options){
 }
 shells.dockerList = function*(options){
     return new Promise(function(resolve, reject) {
-        var bash = 'ssh root@' + options.host + " docker ps -a | awk '$16 ~ /gospel_project/ {print $16}'";
+        var bash = 'ssh root@' + options.host + " docker ps -a | awk '$18 ~ /gospel_project/ {print $18}'";
         console.log(bash);
         exec(bash, function(err,data){
             if (err)
@@ -676,7 +678,7 @@ shells.clearApp = function(options){
 shells.packApp = function(options) {
     return new Promise(function(resolve, reject) {
         console.log(options);
-        var bash = 'cd /var/www/storage/codes/' + options.user + "/" + options.projectFolder +' && zip -x "node_modules*" -r /var/www/storage/codes/temp/' + options.appName + '.zip ' + '.';
+        var bash = 'cd ' + dockerBase + options.user + "/" + options.projectFolder +' && zip -x "node_modules*" -r ' + dockerBase + 'temp/' + options.appName + '.zip ' + '.';
         console.log(bash);
         exec(bash, {
             maxBuffer:  1024 * 1024
