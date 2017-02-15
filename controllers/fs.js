@@ -10,7 +10,6 @@ var send = require('koa-send');
 var exec = require('child_process').exec;
 var dir = require('node-dir');
 var multer = require('koa-multer');
-var path = require('path');
 var shells = require('../shell/index');
 multer({ dest: 'uploads/' });
 
@@ -926,14 +925,14 @@ var fileSystem = {
 	 		});
 
 			yield shells.packApp(options);
-			
+
 			var filepath = path.join(__dirname+'/../uploads/', app.name + '.zip');
 			console.log(filepath);
 			this.set('Content-disposition','attachment;filename='+ app.name + '.zip');
 			var info = yield readData(filepath);
 			console.log(info);
 			this.body = info;
-			
+
 	 		yield shells.rmFile({
 	 			fileName: '/var/www/storage/codes/temp/' + app.name + '.zip',
 	 		});
