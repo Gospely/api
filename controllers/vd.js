@@ -42,8 +42,7 @@ vd.create = function*(){
 
 
     var result = yield writeFile(file,template);
-    console.log(template);
-    this.body = render(file + '##' + page.key, 1, result);
+    this.body = render(result, 1, 'success');
 }
 
 module.exports = vd;
