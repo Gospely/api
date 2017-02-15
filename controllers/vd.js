@@ -26,12 +26,20 @@ vd.create = function*(){
 
     if ('POST' != this.method) this.throw(405, "method is not allowed");
     var page = yield parse(this, {
-        limit: '1kb'
+        limit: '1024kb'
     });
-
     page = JSON.parse(page);
+    var file = __dirname + "/template.html";
+    var template = fs.readFileSync(file, "utf8");
+    template = template.replace(/\{title\}/, page.seo.title);
+    template = template.replace(/\{description\}/, page.seo.description);
+    template = template.replace(/\{head\}/, page.script.head);
+    template = template.replace(/\{script\}/, page.script.script);
 
-    
+    file = baseDir + page.key;
+    var result = yield writeFile(file,template);
+    console.log(template);
+    this.body = render(template, 1, result);
 }
 
 module.exports = vd;
