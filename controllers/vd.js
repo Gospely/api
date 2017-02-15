@@ -37,10 +37,10 @@ vd.create = function*(){
     template = template.replace(/\{head\}/, page.script.head);
     template = template.replace(/\{script\}/, page.script.script);
 
-    file = baseDir +  page.project  + page.key;
+    file = baseDir + page.key;
     var result = yield writeFile(file,template);
     console.log(template);
-    this.body = render(template, 1, result);
+    this.body = render(file + '##' + page.key, 1, result);
 }
 
 module.exports = vd;
