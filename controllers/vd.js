@@ -29,6 +29,7 @@ vd.create = function*(){
         limit: '1024kb'
     });
     page = JSON.parse(page);
+
     var file = __dirname + "/template.html";
     var template = fs.readFileSync(file, "utf8");
     template = template.replace(/\{title\}/, page.seo.title);
@@ -36,7 +37,7 @@ vd.create = function*(){
     template = template.replace(/\{head\}/, page.script.head);
     template = template.replace(/\{script\}/, page.script.script);
 
-    file = baseDir + page.key;
+    file = baseDir +  page.project  + page.key;
     var result = yield writeFile(file,template);
     console.log(template);
     this.body = render(template, 1, result);
