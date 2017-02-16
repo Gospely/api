@@ -23,10 +23,9 @@ module.exports = function(sequelize, DataTypes) {
       associate: (models) => {
       },
       delete: function*(item) {
-        this.destroy({
-          where: item
-          force: false,
-          logging: true
+        yield this.destroy({
+          where: item,
+          force: false
         });
     },
     findById: function*(id) {
