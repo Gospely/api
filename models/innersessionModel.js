@@ -22,12 +22,12 @@ module.exports = function(sequelize, DataTypes) {
     classMethods: {
       associate: (models) => {
       },
-      delete: function*(item) {
-        yield this.destroy({
-          where: item,
-          force: false
-        });
-    },
+    //   delete: function*(item) {
+    //     yield this.destroy({
+    //       where: item,
+    //       force: false
+    //     });
+    // },
     findById: function*(id) {
 
       return yield this.find({
