@@ -23,7 +23,8 @@ module.exports = function(sequelize, DataTypes) {
       associate: (models) => {
       },
       delete: function*(item) {
-        item.destroy({
+        this.destroy({
+          where: item
           force: false,
           logging: true
         });
