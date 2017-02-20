@@ -613,11 +613,15 @@ shells.dockerPush = function*(options){
 shells.moveFile = function*(options){
 
     return new Promise(function(resolve, reject) {
-        var bash = 'ssh root@' + options.host + ' mv ' + options.file  + ' ' + options.distFold;
+        var bash = 'mv ' + options.file  + ' ' + options.distFold;
         console.log(bash);
         exec(bash, function(err,data){
-            console.log(err);
-            console.log(data);
+
+            bash = 'rm -rf ' + options.file;
+            exec(bash, function(err,data){
+                console.log(err);
+                console.log(data);
+            })
             if (err)
                 reject(err);
             resolve(data);
