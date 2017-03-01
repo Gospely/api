@@ -47,10 +47,19 @@ var	writeFile = function(fileName, content) {
 			dir = dir.split('/');
 			var zipFolder = dir.pop();
 			dir = dir.join('/');
-			exec('cp -r ' + __dirname + '/../tmp/weui/style ' + dir + '/' + zipFolder + ' && cd ' + dir + ' && zip -r ' + zipFolder + '.zip ' + zipFolder, function(error, data) {
+			exec('cp -r ' + __dirname + '/../tmp/vdsite/style ' + dir + '/' + zipFolder + ' && cd ' + dir + ' && zip -r ' + zipFolder + '.zip ' + zipFolder, function(error, data) {
 				if (error) reject(error);
 				resolve(data);
 			});
+		});
+	},
+
+	cp = function(dest, origin) {
+		return new Promise(function(resolve, reject) {
+			exec('cp -r ' + __dirname + '/../tmp/vdsite/' + dest + ' ' + origin , function(error, data) {
+				if (error) reject(error);
+				resolve(data);
+			});			
 		});
 	},
 
@@ -65,6 +74,15 @@ var	writeFile = function(fileName, content) {
 
 var vdsite = {
 	pack: function *() {
+
+		var app = yield parse(this);
+
+		console.log('=========================');
+
+		console.log(app.css);
+
+		console.log('=========================');
+
 		this.body = util.resp(500, '云打包失败', '创建项目主文件夹失败');
 	}
 }
