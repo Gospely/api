@@ -64,7 +64,7 @@ var	writeFile = function(fileName, content) {
 	}
 
 var weapp = {
-	pack: function*() {
+	pack: function *() {
 
 		var app = yield parse(this);
 
