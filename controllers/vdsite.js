@@ -65,7 +65,7 @@ var	writeFile = function(fileName, content) {
 
 var vdsite = {
 	pack: function*() {
-
+		this.body = util.resp(500, '云打包失败', '创建项目主文件夹失败');
 	}
 }
 
