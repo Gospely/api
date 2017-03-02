@@ -187,6 +187,12 @@ module.exports = {
 			url: '/vdsite/pack',
 			controller: 'pack',
 			groups: "ab64c397-d323-4133-9541-479bbaaf6c52_100"
+		}, {
+			name: 'vdsite下载包',
+			method: 'get',
+			url: '/vdsite/download/:id',
+			controller: 'download',
+			groups: "ab64c397-d323-4133-9541-479bbaaf6c52_100"
 		}],
 
 		users: [{
