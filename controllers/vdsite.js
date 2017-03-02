@@ -181,25 +181,3 @@ var vdsite = {
 }
 
 module.exports = vdsite;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
