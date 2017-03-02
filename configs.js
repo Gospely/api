@@ -198,7 +198,7 @@ module.exports = {
 			url: '/users/photo',
 			controller: 'updatePhoto',
 			groups: "ab64c397-d323-4133-9541-479bbaaf6c52_100"
-		}, , {
+		}, {
 			name: '邮箱激活',
 			method: 'get',
 			url: '/users/authorization',
