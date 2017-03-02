@@ -166,6 +166,7 @@ module.exports = {
 			controller: 'validate',
 			groups: "ab64c397-d323-4133-9541-479bbaaf6c52_100"
 		}],
+
 		weapp: [{
 			name: '云打包',
 			method: 'post',
@@ -176,6 +177,20 @@ module.exports = {
 			name: '下载包',
 			method: 'get',
 			url: '/weapp/download/:id',
+			controller: 'download',
+			groups: "ab64c397-d323-4133-9541-479bbaaf6c52_100"
+		}],
+
+		vdsite: [{
+			name: 'vdsite云打包',
+			method: 'post',
+			url: '/vdsite/pack',
+			controller: 'pack',
+			groups: "ab64c397-d323-4133-9541-479bbaaf6c52_100"
+		}, {
+			name: 'vdsite下载包',
+			method: 'get',
+			url: '/vdsite/download/:id',
 			controller: 'download',
 			groups: "ab64c397-d323-4133-9541-479bbaaf6c52_100"
 		}],

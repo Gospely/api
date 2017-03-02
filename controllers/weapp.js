@@ -64,7 +64,7 @@ var	writeFile = function(fileName, content) {
 	}
 
 var weapp = {
-	pack: function*() {
+	pack: function *() {
 
 		var app = yield parse(this);
 
@@ -77,13 +77,10 @@ var weapp = {
 		var loopPack = function *(dir, app) {
 
 			try {
-
 				yield mkdir(dir);
-
 				for(var key in app) {
 					var file = app[key],
 						filePath = '';
-
 					try {
 
 						if(typeof file == 'string') {
