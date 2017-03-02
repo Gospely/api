@@ -96,7 +96,7 @@ var vdsite = {
 
 		// 递归生成项目文件
 		var loopPack = function *(dir, app) {
-				if(dir!=randomDir) {
+				if(dir!=randomDir ) {
 					yield mkdir(dir);
 				}
 					for(var key in app) { 
@@ -147,8 +147,7 @@ var vdsite = {
 		}
 		//将pages里面的文件复制出来
 		try {	
-			yield cp ( randomDir, randomDir + 'pages/');
-			console.log( randomDir + 'pages/');
+			yield cp ( randomDir, randomDir + 'pages/*');
 			yield rmdir( randomDir + 'pages');			
 		}catch (err) {
 			console.log( err.toString());
