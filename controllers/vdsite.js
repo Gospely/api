@@ -163,10 +163,17 @@ var vdsite = {
 	},
 
 	download: function *() {
-		this.body = 'Try GET /' + this.params.id;
-		yield send(this, this.params.id, {
-			root: __dirname + '/../tmp/vdsite'
-		});
+
+		try {
+			var randomDir = baseDir + this.query.folder;
+			yield zip(randomDir);
+			this.body = util.resp(200, '云打包成功', dir + '.zip');
+		}catch (err) {
+		}
+		// this.body = 'Try GET /' + this.params.id;
+		// yield send(this, this.params.id, {
+		// 	root: __dirname + '/../tmp/vdsite'
+		// });
 	}
 }
 
