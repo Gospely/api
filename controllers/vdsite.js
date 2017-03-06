@@ -28,8 +28,14 @@ var	writeFile = function(fileName, content) {
 
 	mkdir = function(fileName) {
 		return new Promise(function(resolve, reject) {
-			exec('mkdir ' + fileName, function(error, data) {
-				if (error) reject(error);
+			fs.mkdir(fileName, function(error, data) {
+				if (error) {
+					if (error.code == 'EEXIST') {
+						resolve(data);
+					}else {
+						reject(error);
+					}
+				}
 				resolve(data);
 			});
 		});
@@ -50,6 +56,8 @@ var	writeFile = function(fileName, content) {
 			var zipFolder = dir.pop();
 			dir = dir.join('/');
 			exec('cd ' + dir + ' && zip -r ' + zipFolder + '.zip ' + zipFolder, function(error, data) {
+				console.log(error);
+				console.log(data);
 				if (error) reject(error);
 				resolve(data);
 			});
@@ -58,11 +66,36 @@ var	writeFile = function(fileName, content) {
 
 	cp = function(dest, origin) {
 		return new Promise(function(resolve, reject) {
-			exec('cp -r '+ origin + ' ' + dest , function(error, data) {
+			exec('cp -fr '+ origin + ' ' + dest , function(error, data) {
 				if (error) reject(error);
 				resolve(data);
 			});
 		});
+	},
+	mv = function(origin, dest) {
+		return new Promise(function(resolve, reject) {
+			exec('mv  '+ origin + ' ' + dest , function(error, data) {
+				if (error) reject(error);
+				resolve(data);
+			});
+		});
+	},
+	readData = function (path){
+	    return new Promise(function(resolve,reject){
+	        fs.readFile(path,function(err,data){
+	            if(err){
+	                reject(err);//文件存在返回true
+	            }else{
+	                resolve(data);//文件不存在，这里会抛出异常
+	            }
+	        });
+	    }).then(function(data){
+	            console.log(data);
+	            return data;
+	        },function(err){
+	            console.log(err);
+	            return err;
+	        });
 	},
 
 	beautifyJS = function(fileName, type) {
@@ -88,48 +121,46 @@ var vdsite = {
 		delete app['folder'];
 		// 递归生成项目文件
 		var loopPack = function *(dir, app) {
-				if(dir!=randomDir ) {
-					yield mkdir(dir);
-				}
-					for(var key in app) {
-						var file = app[key],
-						filePath = '';
+			if(dir!=randomDir ) {
+				var data = yield mkdir(dir);
+			}
+			for(var key in app) {
+				var file = app[key],
+				filePath = '';
+				try {
+
+					if(typeof file == 'string') {
 						try {
+							var type = '';
 
-							if(typeof file == 'string') {
-								try {
-									var type = '';
+							if(key == 'css') {
+								var Dir = dir + 'pages/css/styles.css';
+								yield writeFile(Dir, file);
+								type ='css';
+								//yield beautifyJS(Dir, type);
+							}else {
+								filePath = dir + key;
+								yield writeFile(filePath, file);
 
-									if(key == 'css') {
-										var Dir = dir + 'pages/css/styles.css';
-										yield writeFile(Dir, file);
-										type ='css';
-										yield beautifyJS(Dir, type);
-									}
-									else {
-										filePath = dir + key;
-										yield writeFile(filePath, file);
+								var splitKey = key.split('.'),
+									extension = splitKey.pop();
 
-										var splitKey = key.split('.'),
-											extension = splitKey.pop();
+								if(extension == 'html') {
+									type = 'html';
 
-										if(extension == 'html') {
-											type = 'html';
-
-										}
-										yield beautifyJS(filePath, type);
-									}
-								}catch (err) {
-									this.body = util.resp(500, '云打包失败', '创建文件：' + key + '失败: ' + err.toString());
 								}
-							}
-							else {
-								yield loopPack(dir + key + '/', file);
+								//yield beautifyJS(filePath, type);
 							}
 						}catch (err) {
-							this.body = util.resp(500, '云打包失败', '创建文件夹失败: ' + err.toString());
+							this.body = util.resp(500, '云打包失败', '创建文件：' + key + '失败: ' + err.toString());
 						}
+					}else {
+						yield loopPack(dir + key + '/', file);
 					}
+				}catch (err) {
+					this.body = util.resp(500, '云打包失败', '创建文件夹失败: ' + err.toString());
+				}
+			}
 		}
 		try{
 			yield loopPack(randomDir,app);
@@ -165,10 +196,22 @@ var vdsite = {
 	download: function *() {
 
 		try {
-			var randomDir = baseDir + this.query.folder;
+			var folder = this.query.folder;
+			var project = this.query.project
+			var randomDir = baseDir + folder + 'pages';
+			console.log(randomDir);
+			yield cp(baseDir + folder + 'images', randomDir);
 			yield zip(randomDir);
-			this.body = util.resp(200, '云打包成功', dir + '.zip');
+			yield mv(baseDir + folder + 'pages.zip', baseDir + folder + project + '.zip')
+			this.set('Content-disposition','attachment;filename='+ project +'.zip');
+			var info = yield readData(baseDir + folder + project +'.zip');
+			console.log(info);
+			this.body = info;
+			yield shells.rmFile({
+	 			fileName: baseDir + folder +  project + '.zip',
+	 		});
 		}catch (err) {
+			console.log(err);
 			this.body = util.resp(200, '云打包成功'+ err.toString());
 		}
 		// this.body = 'Try GET /' + this.params.id;
