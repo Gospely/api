@@ -85,7 +85,7 @@ var vdsite = {
 		//创建文件夹，随机字符串
 
 		var randomDir = baseDir + app.folder;
-		delete app['user'];
+		delete app['folder'];
 		// 递归生成项目文件
 		var loopPack = function *(dir, app) {
 				if(dir!=randomDir ) {
@@ -101,7 +101,7 @@ var vdsite = {
 									var type = '';
 
 									if(key == 'css') {
-										var Dir = dir + 'css/styles.css';
+										var Dir = dir + 'pages/css/styles.css';
 										yield writeFile(Dir, file);
 										type ='css';
 										yield beautifyJS(Dir, type);
