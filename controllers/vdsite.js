@@ -84,7 +84,8 @@ var vdsite = {
 		}
 		//创建文件夹，随机字符串
 
-		var randomDir = baseDir;
+		var randomDir = baseDir + app.folde;
+		delete app['user'];
 		// 递归生成项目文件
 		var loopPack = function *(dir, app) {
 				if(dir!=randomDir ) {
@@ -132,7 +133,7 @@ var vdsite = {
 		}
 		try{
 			yield loopPack(randomDir,app);
-			this.body = util.resp(500, '云打包失败', '压缩文件包失败:' + err.toString());
+			this.body = util.resp(500, '云打包失败', '压缩文件包失败:');
 		} catch (err) {
 			console.log(err.toString());
 			this.body = util.resp(500, '云打包失败', '压缩文件包失败:' + err.toString());
