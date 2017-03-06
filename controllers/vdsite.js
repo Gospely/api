@@ -84,7 +84,7 @@ var vdsite = {
 		}
 		//创建文件夹，随机字符串
 
-		var randomDir = baseDir + app.folde;
+		var randomDir = baseDir + app.folder;
 		delete app['user'];
 		// 递归生成项目文件
 		var loopPack = function *(dir, app) {
