@@ -200,7 +200,7 @@ var vdsite = {
 			var project = this.query.project
 			var randomDir = baseDir + folder + 'pages';
 			console.log(randomDir);
-			yield cp(baseDir + folder + 'images', randomDir);
+			yield cp(randomDir, baseDir + folder + 'images');
 			yield zip(randomDir);
 			yield mv(baseDir + folder + 'pages.zip', baseDir + folder + project + '.zip')
 			this.set('Content-disposition','attachment;filename='+ project +'.zip');
