@@ -1,9 +1,0 @@
-.body {
-    background-size: false false;
-    background-position: center center;
-    box-shadow: 20px 20px 20px 30px #000000, 10px -5px 10px 10px #dfdfdf;
-    text-shadow: 2px 2px 5px;
-    transition: all 0.2s ease;
-    transform: translate(10px, 20px) scale(1.5, 2.4);
-    transform
-}
