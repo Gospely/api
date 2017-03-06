@@ -133,7 +133,7 @@ var vdsite = {
 		}
 		try{
 			yield loopPack(randomDir,app);
-			this.body = util.resp(500, '云打包失败', '压缩文件包失败:');
+			this.body = util.resp(200, '云打包失败', '压缩文件包失败:');
 		} catch (err) {
 			console.log(err.toString());
 			this.body = util.resp(500, '云打包失败', '压缩文件包失败:' + err.toString());
@@ -169,6 +169,7 @@ var vdsite = {
 			yield zip(randomDir);
 			this.body = util.resp(200, '云打包成功', dir + '.zip');
 		}catch (err) {
+			this.body = util.resp(200, '云打包成功'+ err.toString());
 		}
 		// this.body = 'Try GET /' + this.params.id;
 		// yield send(this, this.params.id, {
