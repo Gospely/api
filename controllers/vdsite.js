@@ -132,8 +132,10 @@ var vdsite = {
 		}
 		try{
 			yield loopPack(randomDir,app);
+			this.body = util.resp(500, '云打包失败', '压缩文件包失败:' + err.toString());
 		} catch (err) {
 			console.log(err.toString());
+			this.body = util.resp(500, '云打包失败', '压缩文件包失败:' + err.toString());
 		}
 		//将pages里面的文件复制出来
 		// try {
