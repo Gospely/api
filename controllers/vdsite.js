@@ -127,7 +127,7 @@ var vdsite = {
 		}
 		//创建文件夹，随机字符串
 
-		var randomDir = baseDir ,
+		var randomDir = baseDir + app.folder,
 			stylesName = 'styles.'+ util.randomString(8, 10) +'.css';
 		delete app['folder'];
 		// 递归生成项目文件
@@ -150,17 +150,18 @@ var vdsite = {
 								var Dir = dir + 'pages/css/' + stylesName;
 								yield writeFile(Dir, file);
 								type ='css';
-								//yield beautifyJS(Dir, type);
+								yield beautifyJS(Dir, type);
 							}else {
 								filePath = dir + key;
 								var splitKey = key.split('.'),
 									extension = splitKey.pop();
+
 								if(extension == 'html') {
 									file = file.replace(/styles.css/, stylesName);
 								}
 								yield writeFile(filePath, file);
 
-								//yield beautifyJS(filePath, type);
+								yield beautifyJS(filePath, type);
 							}
 						}catch (err) {
 							this.body = util.resp(500, '云打包失败', '创建文件：' + key + '失败: ' + err.toString());
