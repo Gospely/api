@@ -181,28 +181,6 @@ var vdsite = {
 			console.log(err.toString());
 			this.body = util.resp(500, '云打包失败', '压缩文件包失败:' + err.toString());
 		}
-		//将pages里面的文件复制出来
-		// try {
-		// 	yield cp ( randomDir, randomDir + 'pages/*');
-		// 	yield rmdir( randomDir + 'pages');
-		// }catch (err) {
-		// 	console.log( err.toString());
-		// 	this.body = util.resp(500, '复制失败' + err.toString());
-		// }
-		// try {
-		//
-		// 	var dir = randomDir.split('/');
-		// 	dir.pop();
-		// 	dir = dir.join('/');
-		// 	console.log(dir);
-		// 	yield zip(dir);
-		// 	yield rmdir(randomDir);
-		// 	this.body = util.resp(200, '云打包成功', dir + '.zip');
-		// }catch (err) {
-		// 	yield rmdir(randomDir);
-		// 	console.log(err.toString());
-		// 	this.body = util.resp(500, '云打包失败', '压缩文件包失败:' + err.toString());
-		// }
 	},
 
 	download: function *() {
