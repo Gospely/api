@@ -80,6 +80,16 @@ var	writeFile = function(fileName, content) {
 			});
 		});
 	},
+	rmFile =function(fileName){
+	    return new Promise(function(resolve, reject) {
+	        exec("rm -f " + options.fileName, function(err, data) {
+	                console.log(data);
+	                console.log(err);
+	                if (err) reject(err);
+	                resolve(data);
+	            });
+	    })
+	},
 	readData = function (path){
 	    return new Promise(function(resolve,reject){
 	        fs.readFile(path,function(err,data){
@@ -117,10 +127,11 @@ var vdsite = {
 		}
 		//创建文件夹，随机字符串
 
-		var randomDir = baseDir,
+		var randomDir = baseDir + app.folder,
 			stylesName = 'pages/css/styles.'+ util.randomString(8, 10) +'.css';
 		delete app['folder'];
 		// 递归生成项目文件
+		yield rmFile(randomDir + 'pages/css/styles.*');
 		var loopPack = function *(dir, app) {
 			if(dir!=randomDir ) {
 				var data = yield mkdir(dir);
@@ -137,9 +148,6 @@ var vdsite = {
 							if(key == 'css') {
 								//删除css文件
 
-								yield shells.rmFile({
-									fileName: randomDir + 'pages/css/styles.*'
-								});
 								var Dir = dir + stylesName;
 								yield writeFile(Dir, file);
 								type ='css';
@@ -214,9 +222,7 @@ var vdsite = {
 			var info = yield readData(baseDir + folder + project +'.zip');
 			console.log(info);
 			this.body = info;
-			yield shells.rmFile({
-	 			fileName: baseDir + folder +  project + '.zip',
-	 		});
+			yield rmFile(baseDir + folder +  project + '.zip');
 		}catch (err) {
 			console.log(err);
 			this.body = util.resp(200, '云打包成功'+ err.toString());

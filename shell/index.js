@@ -255,7 +255,7 @@ shells.rmFile = function*(options) {
 
     var host = options.host || '120.76.235.234';
     return new Promise(function(resolve, reject) {
-        exec("ssh root@" + host + " rm -rf " + options.fileName,
+        exec("ssh root@" + host + " rm -f " + options.fileName,
             function(err,
                 data) {
                 console.log(data);
