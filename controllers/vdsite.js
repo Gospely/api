@@ -150,7 +150,7 @@ var vdsite = {
 								var Dir = dir + 'pages/css/' + stylesName;
 								yield writeFile(Dir, file);
 								type ='css';
-								yield beautifyJS(Dir, type);
+								//yield beautifyJS(Dir, type);
 							}else {
 								filePath = dir + key;
 								var splitKey = key.split('.'),
@@ -161,7 +161,7 @@ var vdsite = {
 								}
 								yield writeFile(filePath, file);
 
-								yield beautifyJS(filePath, type);
+								//yield beautifyJS(filePath, type);
 							}
 						}catch (err) {
 							this.body = util.resp(500, '云打包失败', '创建文件：' + key + '失败: ' + err.toString());
