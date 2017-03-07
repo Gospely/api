@@ -136,7 +136,10 @@ var vdsite = {
 
 							if(key == 'css') {
 								//删除css文件
-								yield rmFile(randomDir + 'pages/css/styles.*');
+
+								yield yield shells.rmFile({
+									fileName: randomDir + 'pages/css/styles.*'
+								});
 								var Dir = dir + stylesName;
 								yield writeFile(Dir, file);
 								type ='css';
