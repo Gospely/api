@@ -82,7 +82,7 @@ var	writeFile = function(fileName, content) {
 	},
 	rmFile =function(fileName){
 	    return new Promise(function(resolve, reject) {
-	        exec("rm -f " + options.fileName, function(err, data) {
+	        exec("rm -f " + fileName, function(err, data) {
 	                console.log(data);
 	                console.log(err);
 	                if (err) reject(err);
@@ -156,8 +156,8 @@ var vdsite = {
 								filePath = dir + key;
 								if(extension == 'html') {
 									file = file.replace(/styles.\w{10}.css/, stylesName);
+									file = file.replace(/styles.css/, stylesName);
 								}
-
 								yield writeFile(filePath, file);
 
 								var splitKey = key.split('.'),
