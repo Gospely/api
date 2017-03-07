@@ -127,8 +127,8 @@ var vdsite = {
 		}
 		//创建文件夹，随机字符串
 
-		var randomDir = baseDir + app.folder,
-			stylesName = 'pages/css/styles.'+ util.randomString(8, 10) +'.css';
+		var randomDir = baseDir ,
+			stylesName = 'styles.'+ util.randomString(8, 10) +'.css';
 		delete app['folder'];
 		// 递归生成项目文件
 		yield rmFile(randomDir + 'pages/css/styles.*');
@@ -148,20 +148,18 @@ var vdsite = {
 							if(key == 'css') {
 								//删除css文件
 
-								var Dir = dir + stylesName;
+								var Dir = dir + 'pages/css/' + stylesName;
 								yield writeFile(Dir, file);
 								type ='css';
 								yield beautifyJS(Dir, type);
 							}else {
 								filePath = dir + key;
+								var splitKey = key.split('.'),
+									extension = splitKey.pop();
 								if(extension == 'html') {
-									file = file.replace(/styles.\w{10}.css/, stylesName);
 									file = file.replace(/styles.css/, stylesName);
 								}
 								yield writeFile(filePath, file);
-
-								var splitKey = key.split('.'),
-									extension = splitKey.pop();
 
 
 								yield beautifyJS(filePath, type);
