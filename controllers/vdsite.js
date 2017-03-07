@@ -117,7 +117,7 @@ var vdsite = {
 		}
 		//创建文件夹，随机字符串
 
-		var randomDir = baseDir + app.folder,
+		var randomDir = baseDir,
 			stylesName = 'pages/css/styles.'+ util.randomString(8, 10) +'.css';
 		delete app['folder'];
 		// 递归生成项目文件
@@ -137,7 +137,7 @@ var vdsite = {
 							if(key == 'css') {
 								//删除css文件
 
-								yield yield shells.rmFile({
+								yield shells.rmFile({
 									fileName: randomDir + 'pages/css/styles.*'
 								});
 								var Dir = dir + stylesName;
