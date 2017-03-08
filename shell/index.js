@@ -138,7 +138,7 @@ shells.initDebug = function*(options){
     return new Promise(function(resolve, reject) {
 
         var bash = "ssh root@" + host + ' docker run -itd --volumes-from docker-volume-' + options.creator +
-          ' -v ' + hostBase  + options.creator + "/" + options.name + ':/root/workspace -v ' +  hostSource + 'vendor' + ':/root/workspace/vendor' + ' -v ' 
+          ' -v ' + hostBase  + options.creator + "/" + options.name + ':/root/workspace -v '
           + hostBase + options.creator + '/.ssh:/root/.ssh' + config + ' -p ' + options.socketPort + ':3000 -p ' + options.appPort  +
           ':'+ options.exposePort +' -p ' + options.sshPort + ':22 ' + port +
           ' -h ' + options.hostName +
@@ -149,7 +149,7 @@ shells.initDebug = function*(options){
 
             var bash = "ssh root@" + host + ' docker run -itd --volumes-from docker-volume-' + options.creator +
               ' -v ' + hostBase  + options.creator + "/" + options.name + ''
-              ':/root/workspace -v ' + hostBase + options.creator + '/.ssh:/root/.ssh' + config + ' -p ' + options.socketPort + ':3000 -p ' + options.appPort  +
+              ':/root/workspace -v ' +  hostSource + 'vendor' + ':/root/workspace/vendor' + ' -v '  + hostBase + options.creator + '/.ssh:/root/.ssh' + config + ' -p ' + options.socketPort + ':3000 -p ' + options.appPort  +
               ':'+ options.exposePort +' -p ' + options.sshPort + ':22 ' + port +
               ' -h ' + options.hostName +
               ' -w /root/workspace --name="gospel_project_' + options.name + '" gospel-' +
