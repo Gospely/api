@@ -128,7 +128,7 @@ var vdsite = {
 		console.log(app);
 		//创建文件夹，随机字符串
 
-		var randomDir = baseDir ,
+		var randomDir = baseDir + app.folder,
 			stylesName = 'styles.'+ util.randomString(8, 10) + '.css';
 			scriptsName = 'main.' + util.randomString(8, 10) + '.js';
 		delete app['folder'];
