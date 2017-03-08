@@ -193,6 +193,12 @@ module.exports = {
 			url: '/vdsite/download',
 			controller: 'download',
 			groups: "ab64c397-d323-4133-9541-479bbaaf6c52_100"
+		},{
+			name: 'vdsite云打包',
+			method: 'post',
+			url: '/vdsite/deploy',
+			controller: 'deploy',
+			groups: "ab64c397-d323-4133-9541-479bbaaf6c52_100"
 		}],
 
 		users: [{

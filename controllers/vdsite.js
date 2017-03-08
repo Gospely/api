@@ -115,17 +115,18 @@ var	writeFile = function(fileName, content) {
 				resolve(data);
 			});
 		});
-	}
+	},
+	pageGenerator = function*(ctx, isBeautify){
 
-var vdsite = {
-	pack: function *() {
-		console.log(this.body);
-		var app = yield parse(this);
-		console.log(app);
+		var app = yield parse(ctx);
+
 		if(typeof app == 'string') {
 			app = JSON.parse(app);
 		}
-		console.log(app);
+		if(app.isBeautify){
+			isBeautify = app.isBeautify;
+			delete app['isBeautify'];
+		}
 		//创建文件夹，随机字符串
 
 		var randomDir = baseDir + app.folder,
@@ -148,17 +149,21 @@ var vdsite = {
 
 					if(typeof file == 'string') {
 						try {
-							var type = '';
 
 							if(key == 'css') {
 
 								var Dir = dir + 'pages/css/' + stylesName;
 								yield writeFile(Dir, file);
 								type ='css';
-								//yield beautifyJS(Dir, type);
+								if(isBeautify){
+									yield beautifyJS(filePath, 'css');
+								}
 							}else if(key == 'scripts') {
 								var Dir = dir + 'pages/js/' + scriptsName;
 								yield writeFile(Dir, file);
+								if(isBeautify){
+									yield beautifyJS(filePath, 'js');
+								}
 							}else {
 								filePath = dir + key;
 								var splitKey = key.split('.'),
@@ -169,27 +174,32 @@ var vdsite = {
 									file = file.replace(/main.js/, scriptsName);
 								}
 								yield writeFile(filePath, file);
-
-								//yield beautifyJS(filePath, type);
+								if(isBeautify) {
+									yield beautifyJS(filePath, 'html');
+								}
 							}
 						}catch (err) {
-							this.body = util.resp(500, '云打包失败', '创建文件：' + key + '失败: ' + err.toString());
+							ctx.body = util.resp(500, '云打包失败', '创建文件：' + key + '失败: ' + err.toString());
 						}
 					}else {
 						yield loopPack(dir + key + '/', file);
 					}
 				}catch (err) {
-					this.body = util.resp(500, '云打包失败', '创建文件夹失败: ' + err.toString());
+					ctx.body = util.resp(500, '云打包失败', '创建文件夹失败: ' + err.toString());
 				}
 			}
 		}
 		try{
 			yield loopPack(randomDir,app);
-			this.body = util.resp(200, '配置预览环境成功', '');
+			ctx.body = util.resp(200, '配置预览环境成功', '');
 		} catch (err) {
 			console.log(err.toString());
-			this.body = util.resp(500, '云打包失败', '压缩文件包失败:' + err.toString());
+			ctx.body = util.resp(500, '云打包失败', '压缩文件包失败:' + err.toString());
 		}
+	}
+var vdsite = {
+	pack: function *() {
+		yield pageGenerator(this, false);
 	},
 
 	download: function *() {
@@ -197,8 +207,9 @@ var vdsite = {
 		try {
 			var folder = this.query.folder;
 			var project = this.query.project
-			var randomDir = baseDir + folder + 'pages';
+			var randomDir = baseDir + folder + project;
 			console.log(randomDir);
+			yield cp(randomDir, baseDir + folder + 'pages');
 			yield cp(randomDir, baseDir + folder + 'images');
 			yield zip(randomDir);
 			yield mv(baseDir + folder + 'pages.zip', baseDir + folder + project + '.zip')
@@ -206,6 +217,7 @@ var vdsite = {
 			var info = yield readData(baseDir + folder + project +'.zip');
 			console.log(info);
 			this.body = info;
+			yield rmFile(randomDir);
 			yield rmFile(baseDir + folder +  project + '.zip');
 		}catch (err) {
 			console.log(err);
@@ -215,6 +227,14 @@ var vdsite = {
 		// yield send(this, this.params.id, {
 		// 	root: __dirname + '/../tmp/vdsite'
 		// });
+	},
+	deploy: function*(){
+		yield pageGenerator(this, false);
+		//发布逻辑
+		var folder = this.query.folder;
+		var randomDir = baseDir + folder + 'pages';
+		yield cp(baseDir + folder, randomDir);
+		this.body = util.resp(200, '发布成功');
 	}
 }
 
