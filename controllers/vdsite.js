@@ -212,7 +212,7 @@ var vdsite = {
 			yield cp(randomDir, baseDir + folder + 'pages');
 			yield cp(randomDir, baseDir + folder + 'images');
 			yield zip(randomDir);
-			yield mv(baseDir + folder + 'pages.zip', baseDir + folder + project + '.zip')
+			// yield mv(baseDir + folder + 'pages.zip', baseDir + folder + project + '.zip')
 			this.set('Content-disposition','attachment;filename='+ project +'.zip');
 			var info = yield readData(baseDir + folder + project +'.zip');
 			console.log(info);
