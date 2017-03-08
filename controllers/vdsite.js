@@ -155,7 +155,7 @@ var vdsite = {
 								type ='css';
 								//yield beautifyJS(Dir, type);
 							}else if(key == 'scripts') {
-								var Dir = dir + 'pages/js' + scriptsName;
+								var Dir = dir + 'pages/js/' + scriptsName;
 								yield writeFile(Dir, file);
 							}else {
 								filePath = dir + key;
