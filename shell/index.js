@@ -75,12 +75,17 @@ shells.fast_deploy = function*(options) {
 shells.mvFiles = function*(options){
     var host = options.host || '120.76.235.234';
     return new Promise(function(resolve, reject) {
-        exec('ssh root@' + host + ' sh '+ scriptDir + 'mv.sh gospel_project_' + options.name,
-            function(err, data) {
-                if (err)
-                    reject(err);
-                resolve(data);
-            });
+
+        try {
+            exec('ssh root@' + host + ' sh '+ scriptDir + 'mv.sh gospel_project_' + options.name,
+                function(err, data) {
+                    if (err)
+                        reject(err);
+                    resolve(data);
+                });
+        } catch (e) {
+
+        } 
     });
 }
 shells.changePWD = function*(options){
