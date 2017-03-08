@@ -147,18 +147,6 @@ shells.initDebug = function*(options){
           ' -h ' + options.hostName +
           ' -w /root/workspace --name="gospel_project_' + options.name + '" gospel-' +
           options.image + " && echo success";
-
-        if(options.image == 'vd:site'){
-
-            var bash = "ssh root@" + host + ' docker run -itd --volumes-from docker-volume-' + options.creator +
-              ' -v ' + hostBase  + options.creator + "/" + options.name +
-              ':/root/workspace -v ' +  hostSource + 'vendor' + ':/root/workspace/vendor' + ' -v '  + hostBase + options.creator + '/.ssh:/root/.ssh' + config + ' -p ' + options.socketPort + ':3000 -p ' + options.appPort  +
-              ':'+ options.exposePort +' -p ' + options.sshPort + ':22 ' + port +
-              ' -h ' + options.hostName +
-              ' -w /root/workspace --name="gospel_project_' + options.name + '" gospel-' +
-              options.image + " && echo success";
-        }
-
           console.log(bash);
         exec(bash, function(err, data) {
             if (err) reject(err);
