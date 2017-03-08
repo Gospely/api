@@ -190,8 +190,10 @@ applications.delete = function*() {
 	});
 	console.log(UIState);
 	if(UIState != null) {
-		UIState = yield models.gospel_uistates.findById(UIState[0].dataValues.id)
-		yield models.gospel_uistates.delete(UIState);
+		if(UIState[0].dataValues) {
+			UIState = yield models.gospel_uistates.findById(UIState[0].dataValues.id)
+			yield models.gospel_uistates.delete(UIState);
+		}
 	}
 	if(application.image == 'wechat:latest'){
 		var inserted = yield models.gospel_applications.delete(application.id);
