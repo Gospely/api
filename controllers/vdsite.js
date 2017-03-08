@@ -135,7 +135,7 @@ var vdsite = {
 
 		yield rmFile(randomDir + 'pages/css/styles.*');
 		yield rmFile(randomDir + 'pages/js/main.*')
-		yield cp(randomDir, randomDir + 'vendor');
+		yield cp(randomDir + 'pages/', randomDir + 'vendor');
 
 		var loopPack = function *(dir, app) {
 			if(dir!=randomDir ) {
