@@ -130,7 +130,7 @@ var vdsite = {
 
 		var randomDir = baseDir ,
 			stylesName = 'styles.'+ util.randomString(8, 10) + '.css';
-			scriptsName = 'main.' + util.randomString(8, 10) + '.css';
+			scriptsName = 'main.' + util.randomString(8, 10) + '.js';
 		delete app['folder'];
 
 		yield rmFile(randomDir + 'pages/css/styles.*');
@@ -154,13 +154,10 @@ var vdsite = {
 								yield writeFile(Dir, file);
 								type ='css';
 								//yield beautifyJS(Dir, type);
-							}
-
-							else if(key == 'scripts') {
+							}else if(key == 'scripts') {
 								var Dir = dir + 'pages/js' + scriptsName;
 								yield writeFile(Dir, file);
-							}
-							else {
+							}else {
 								filePath = dir + key;
 								var splitKey = key.split('.'),
 									extension = splitKey.pop();
