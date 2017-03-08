@@ -79,13 +79,11 @@ shells.mvFiles = function*(options){
         try {
             exec('ssh root@' + host + ' sh '+ scriptDir + 'mv.sh gospel_project_' + options.name,
                 function(err, data) {
-                    if (err)
-                        reject(err);
                     resolve(data);
                 });
         } catch (e) {
-
-        } 
+            resolve(e);
+        }
     });
 }
 shells.changePWD = function*(options){
