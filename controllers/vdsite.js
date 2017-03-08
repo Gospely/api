@@ -228,10 +228,10 @@ var vdsite = {
 		// });
 	},
 	deploy: function*(){
-		yield pageGenerator(this, false);
+		//yield pageGenerator(this, false);
 		//发布逻辑
 		var folder = this.query.folder;
-		var randomDir = baseDir + folder + 'pages';
+		var randomDir = baseDir + folder + 'pages/*';
 		yield cp(baseDir + folder, randomDir);
 		this.body = util.resp(200, '发布成功');
 	}
