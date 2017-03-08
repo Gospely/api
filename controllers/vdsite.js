@@ -156,13 +156,13 @@ var	writeFile = function(fileName, content) {
 								yield writeFile(Dir, file);
 								type ='css';
 								if(isBeautify){
-									yield beautifyJS(filePath, 'css');
+									yield beautifyJS(Dir, 'css');
 								}
 							}else if(key == 'scripts') {
 								var Dir = dir + 'pages/js/' + scriptsName;
 								yield writeFile(Dir, file);
 								if(isBeautify){
-									yield beautifyJS(filePath, 'js');
+									yield beautifyJS(Dir, 'js');
 								}
 							}else {
 								filePath = dir + key;
