@@ -222,13 +222,8 @@ var vdsite = {
 			console.log(err);
 			this.body = util.resp(200, '云打包成功'+ err.toString());
 		}
-		// this.body = 'Try GET /' + this.params.id;
-		// yield send(this, this.params.id, {
-		// 	root: __dirname + '/../tmp/vdsite'
-		// });
 	},
 	deploy: function*(){
-		//yield pageGenerator(this, false);
 		//发布逻辑
 		var folder = this.query.folder;
 		var randomDir = baseDir + folder + 'pages/*';
