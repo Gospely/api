@@ -119,19 +119,22 @@ var	writeFile = function(fileName, content) {
 
 var vdsite = {
 	pack: function *() {
-
+		console.log(this.body);
 		var app = yield parse(this);
-
+		console.log(app);
 		if(typeof app == 'string') {
 			app = JSON.parse(app);
 		}
+		console.log(app);
 		//创建文件夹，随机字符串
 
-		var randomDir = baseDir + app.folder,
-			stylesName = 'styles.'+ util.randomString(8, 10) +'.css';
+		var randomDir = baseDir ,
+			stylesName = 'styles.'+ util.randomString(8, 10) + '.css';
+			scriptsName = 'main.' + util.randomString(8, 10) + '.css';
 		delete app['folder'];
-		// 递归生成项目文件
+
 		yield rmFile(randomDir + 'pages/css/styles.*');
+		yield rmFile(randomDir + 'pages/js/main.*')
 		var loopPack = function *(dir, app) {
 			if(dir!=randomDir ) {
 				var data = yield mkdir(dir);
@@ -151,13 +154,20 @@ var vdsite = {
 								yield writeFile(Dir, file);
 								type ='css';
 								//yield beautifyJS(Dir, type);
-							}else {
+							}
+
+							else if(key == 'scripts') {
+								var Dir = dir + 'pages/js' + scriptsName;
+								yield writeFile(Dir, file);
+							}
+							else {
 								filePath = dir + key;
 								var splitKey = key.split('.'),
 									extension = splitKey.pop();
 
 								if(extension == 'html') {
 									file = file.replace(/styles.css/, stylesName);
+									file = file.replace(/main.js/, scriptsName);
 								}
 								yield writeFile(filePath, file);
 
