@@ -82,7 +82,7 @@ var	writeFile = function(fileName, content) {
 	},
 	rmFile =function(fileName){
 	    return new Promise(function(resolve, reject) {
-	        exec("rm -f " + fileName, function(err, data) {
+	        exec("rm -rf " + fileName, function(err, data) {
 	                console.log(data);
 	                console.log(err);
 	                if (err) reject(err);
@@ -213,12 +213,11 @@ var vdsite = {
 			yield cp(randomDir, baseDir + folder + 'images');
 			yield zip(randomDir);
 			// yield mv(baseDir + folder + 'pages.zip', baseDir + folder + project + '.zip')
-			this.set('Content-disposition','attachment;filename='+ project +'.zip');
-			var info = yield readData(baseDir + folder + project +'.zip');
-			console.log(info);
+			this.set('Content-disposition','attachment;filename=randomDir'+ project +'.zip');
+			var info = yield readData(randomDir +'.zip');
 			this.body = info;
 			yield rmFile(randomDir);
-			yield rmFile(baseDir + folder +  project + '.zip');
+			yield rmFile(randomDir + '.zip');
 		}catch (err) {
 			console.log(err);
 			this.body = util.resp(200, '云打包成功'+ err.toString());
