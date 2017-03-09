@@ -22,8 +22,8 @@ function getWechatAuths(appid_, secret_) {
     var code = yield getCode(this);
     console.log("getcode: " + code);
     var res = yield getAccess_token(code);
-    
-    fs.writeFile('/var/www/storage/log.txt', res.toString(),function(){
+
+    fs.writeFile('/var/www/storage/log.txt', JSON.stringify(res),function(){
 
     });
     if (res == null) return this.status = 400;
