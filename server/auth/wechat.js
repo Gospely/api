@@ -28,6 +28,7 @@ function getWechatAuths(appid_, secret_) {
     console.log("openid: " + res.openid);
     var userBase = yield getInfo(res.access_token, res.openid);
     console.log(userBase);
+    userBase = JSON.parse(userBase);
     if (userBase = null)return this.status = 400;
 
     // var userBase = {
