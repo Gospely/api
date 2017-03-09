@@ -51,17 +51,22 @@ function getWechatAuths(appid_, secret_) {
       //设置登录
       console.log('second');
       var user = data[0].dataValues;
-      var token = uuid.v4();
-      yield models.gospel_innersessions.create({
-        id: token,
-        code: token,
-        creater: user.id,
-        group: user.group,
-        time: Date.now(),
-        limitTime: 30 * 60 * 1000
-      });
+      if(user.name) {
+          var token = uuid.v4();
+          yield models.gospel_innersessions.create({
+            id: token,
+            code: token,
+            creater: user.id,
+            group: user.group,
+            time: Date.now(),
+            limitTime: 30 * 60 * 1000
+          });
 
-      this.redirect("http://dash.gospely.com/#!/?token=" + token + "&user=" + user.id);
+          this.redirect("http://dash.gospely.com/#!/?token=" + token + "&user=" + user.id);
+      }else {
+          this.redirect("http://dash.gospely.com/#!/accounts/register?user=" + user.id);
+      }
+
     }
   }
 }
