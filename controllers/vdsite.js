@@ -201,31 +201,31 @@ var	writeFile = function(fileName, content) {
 
 var vdsite = {
 	pack: function *() {
-		yield pageGenerator(this, false);
+		//yield pageGenerator(this, false);
 
 		//计算打包次数
-		// var app = yield parse(this);
-		// if(typeof app == 'string') {
-		// 	app = JSON.parse(app);
-		// }
-		// var user = app.folder.split('/')[0];
-		// var data = yield models.gospel_counts.getAll({
-		// 	userId: user
-		// });
-		// console.log(data);
-		//
-		// if (data.length !=1) {
-		// 	var inserted = yield models.gospel_counts.create({
-		// 		userId: user,
-		// 		packCount: 1
-		// 	});
-		// } else {
-		// 	var packCount = data[0].dataValues.packCount;
-		// 	var modify = yield models.gospel_counts.modify({
-		// 		userId: user,
-		// 		packCount: packCount+1
-		// 	});
-		// }
+		var app = yield parse(this);
+		if(typeof app == 'string') {
+			app = JSON.parse(app);
+		}
+		var user = app.folder.split('/')[0];
+		var data = yield models.gospel_counts.getAll({
+			userId: user
+		});
+		console.log(data);
+
+		if (data.length !=1) {
+			var inserted = yield models.gospel_counts.create({
+				userId: user,
+				packCount: 1
+			});
+		} else {
+			var packCount = data[0].dataValues.packCount;
+			var modify = yield models.gospel_counts.modify({
+				userId: user,
+				packCount: packCount+1
+			});
+		}
 	},
 
 	download: function *() {
