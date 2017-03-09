@@ -48,7 +48,7 @@ var listenServer = {
                 }
 
             })
-            //.on('error', error => console.log(`Watcher error: ${error}`));
+            .on('error', error => console.log(`test error`));
 
             return watcher;
 
