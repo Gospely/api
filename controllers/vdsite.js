@@ -13,7 +13,8 @@ var multer = require('koa-multer');
 var path = require('path');
 var shells = require('../shell/index');
 
-var baseDir = '/var/www/storage/codes/'
+var baseDir = '/var/www/storage/codes/';
+var models = require('../models');
 
 var	writeFile = function(fileName, content) {
 		return new Promise(function(resolve, reject) {
@@ -197,9 +198,41 @@ var	writeFile = function(fileName, content) {
 			ctx.body = util.resp(500, '云打包失败', '压缩文件包失败:' + err.toString());
 		}
 	}
+
 var vdsite = {
 	pack: function *() {
 		yield pageGenerator(this, false);
+
+		//计算打包次数
+		var app = yield parse(this);
+		if(typeof app == 'string') {
+			app = JSON.parse(app);
+		}
+		var user = app.folder.split('/')[0];
+		var data = yield models.gospel_counts.getAll({
+			userId: user
+		});
+		console.log(data);
+
+		if (data.length !=1) {
+			var inserted = yield models.gospel_counts.create({
+				userId: user,
+				packCount: 1
+			});
+			if(!inserted) {
+				this.throw(405, "不能被成功添加");
+			}
+			this.body = render(inserted, 1, '新增成功');
+		} else {
+			var packCount = data[0].dataValues.packCount;
+			var modify = yield models.gospel_counts.modify({
+				userId: user,
+				packCount: packCount+1
+			});
+			if(!modify) {
+				this.throw(405, "不能修改次数");
+			}
+		}
 	},
 
 	download: function *() {
@@ -222,6 +255,33 @@ var vdsite = {
 			console.log(err);
 			this.body = util.resp(200, '云打包成功'+ err.toString());
 		}
+
+		//计算下载的次数
+		var user =  this.query.folder.split('/')[0];
+		var data = yield models.gospel_counts.getAll({
+			userId: user
+		});
+
+		if (data.length !=1) {
+			var inserted = yield models.gospel_counts.create({
+				userId: user,
+				downloadCount: 1
+			});
+			if(!inserted) {
+				this.throw(405, "不能被成功添加");
+			}
+			this.body = render(inserted, 1, '新增成功');
+		} else {
+			var downloadCount = data[0].dataValues.downloadCount;
+			var modify = yield models.gospel_counts.modify({
+				userId: user,
+				downloadCount: downloadCount+1
+			});
+			if(!modify) {
+				this.throw(405, "不能修改次数");
+			}
+		}
+
 	},
 	deploy: function*(){
 		//发布逻辑
