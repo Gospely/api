@@ -203,7 +203,11 @@ var vdsite = {
 	pack: function *() {
 		//yield pageGenerator(this, false);
 
+<<<<<<< HEAD
 		//计算打包次数
+=======
+		// 计算打包次数
+>>>>>>> e144039f1d9d564f70bbeef5d9a1dbca3bb0ce15
 		var app = yield parse(this);
 		if(typeof app == 'string') {
 			app = JSON.parse(app);
@@ -213,7 +217,11 @@ var vdsite = {
 			userId: user
 		});
 		console.log(data);
+<<<<<<< HEAD
 
+=======
+		
+>>>>>>> e144039f1d9d564f70bbeef5d9a1dbca3bb0ce15
 		if (data.length !=1) {
 			var inserted = yield models.gospel_counts.create({
 				userId: user,
@@ -222,7 +230,11 @@ var vdsite = {
 		} else {
 			var packCount = data[0].dataValues.packCount;
 			var modify = yield models.gospel_counts.modify({
+<<<<<<< HEAD
 				userId: user,
+=======
+				id: data[0].dataValues.id,
+>>>>>>> e144039f1d9d564f70bbeef5d9a1dbca3bb0ce15
 				packCount: packCount+1
 			});
 		}
@@ -267,7 +279,7 @@ var vdsite = {
 		} else {
 			var downloadCount = data[0].dataValues.downloadCount;
 			var modify = yield models.gospel_counts.modify({
-				userId: user,
+				id: data[0].dataValues.id,
 				downloadCount: downloadCount+1
 			});
 			if(!modify) {
