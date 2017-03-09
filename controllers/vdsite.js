@@ -201,43 +201,31 @@ var	writeFile = function(fileName, content) {
 
 var vdsite = {
 	pack: function *() {
-		//yield pageGenerator(this, false);
+		yield pageGenerator(this, false);
 
-<<<<<<< HEAD
 		//计算打包次数
-=======
-		// 计算打包次数
->>>>>>> e144039f1d9d564f70bbeef5d9a1dbca3bb0ce15
-		var app = yield parse(this);
-		if(typeof app == 'string') {
-			app = JSON.parse(app);
-		}
-		var user = app.folder.split('/')[0];
-		var data = yield models.gospel_counts.getAll({
-			userId: user
-		});
-		console.log(data);
-<<<<<<< HEAD
-
-=======
-		
->>>>>>> e144039f1d9d564f70bbeef5d9a1dbca3bb0ce15
-		if (data.length !=1) {
-			var inserted = yield models.gospel_counts.create({
-				userId: user,
-				packCount: 1
-			});
-		} else {
-			var packCount = data[0].dataValues.packCount;
-			var modify = yield models.gospel_counts.modify({
-<<<<<<< HEAD
-				userId: user,
-=======
-				id: data[0].dataValues.id,
->>>>>>> e144039f1d9d564f70bbeef5d9a1dbca3bb0ce15
-				packCount: packCount+1
-			});
-		}
+		// var app = yield parse(this);
+		// if(typeof app == 'string') {
+		// 	app = JSON.parse(app);
+		// }
+		// var user = app.folder.split('/')[0];
+		// var data = yield models.gospel_counts.getAll({
+		// 	userId: user
+		// });
+		// console.log(data);
+		//
+		// if (data.length !=1) {
+		// 	var inserted = yield models.gospel_counts.create({
+		// 		userId: user,
+		// 		packCount: 1
+		// 	});
+		// } else {
+		// 	var packCount = data[0].dataValues.packCount;
+		// 	var modify = yield models.gospel_counts.modify({
+		// 		userId: user,
+		// 		packCount: packCount+1
+		// 	});
+		// }
 	},
 
 	download: function *() {
@@ -262,30 +250,30 @@ var vdsite = {
 		}
 
 		//计算下载的次数
-		var user =  this.query.folder.split('/')[0];
-		var data = yield models.gospel_counts.getAll({
-			userId: user
-		});
-
-		if (data.length !=1) {
-			var inserted = yield models.gospel_counts.create({
-				userId: user,
-				downloadCount: 1
-			});
-			if(!inserted) {
-				this.throw(405, "不能被成功添加");
-			}
-			this.body = render(inserted, 1, '新增成功');
-		} else {
-			var downloadCount = data[0].dataValues.downloadCount;
-			var modify = yield models.gospel_counts.modify({
-				id: data[0].dataValues.id,
-				downloadCount: downloadCount+1
-			});
-			if(!modify) {
-				this.throw(405, "不能修改次数");
-			}
-		}
+		// var user =  this.query.folder.split('/')[0];
+		// var data = yield models.gospel_counts.getAll({
+		// 	userId: user
+		// });
+		//
+		// if (data.length !=1) {
+		// 	var inserted = yield models.gospel_counts.create({
+		// 		userId: user,
+		// 		downloadCount: 1
+		// 	});
+		// 	if(!inserted) {
+		// 		this.throw(405, "不能被成功添加");
+		// 	}
+		// 	this.body = render(inserted, 1, '新增成功');
+		// } else {
+		// 	var downloadCount = data[0].dataValues.downloadCount;
+		// 	var modify = yield models.gospel_counts.modify({
+		// 		userId: user,
+		// 		downloadCount: downloadCount+1
+		// 	});
+		// 	if(!modify) {
+		// 		this.throw(405, "不能修改次数");
+		// 	}
+		// }
 
 	},
 	deploy: function*(){
