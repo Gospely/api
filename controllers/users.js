@@ -722,6 +722,7 @@ users.complete = function*(){
 			name: user.name,
 			sshKey: sshKey,
 			type: user.type,
+			group: user.group,
 			ide: user.ide,
 			ideName: user.ideName,
 			host: user.host,
