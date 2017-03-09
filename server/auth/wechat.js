@@ -34,7 +34,7 @@ function getWechatAuths(appid_, secret_) {
       openId: userBase.openid
     });
     console.log(data);
-    if (!data) {
+    if (data.length < 1) {
 
       //完善信息
       console.log('first');
