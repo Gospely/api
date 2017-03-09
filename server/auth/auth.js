@@ -131,7 +131,8 @@ module.exports = {
 				'/users/validator',
 				'/users/modify',
 				'/users/logout',
-				'schedules'
+				'schedules',
+				'/pack/download'
 			];
 			var isHasNoneAuthRoute = false;
 

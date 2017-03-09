@@ -674,7 +674,79 @@ users.files = function*() {
 	}
 
 }
+//第三方登陆完善信息
+users.complete = function*(){
 
+	if ('POST' != this.method) this.throw(405, "method is not allowed");
+	var user = yield parse(this, {
+		limit: '10kb'
+	});
+	var users = yield models.gospel_users.getAll({
+		name: user.name
+	});
+	console.log(user);
+	if(users.length >= 1) {
+		this.body = render(null, -1, "该用户名已被占用");
+	}else {
+
+		//初始化第三方授权登陆用户
+		user.type = 'common';
+    	user.ide = uuid.v4();
+    	user.ideName = '个人版';
+    	user.group = 'ab64c397-d323-4133-9541-479bbaaf6c52';
+		var hosts = yield models.gospel_hosts.getAll({
+			type: user.type,
+			share: true
+		})
+		var host = selector.select(hosts);
+		user.host = host.ip;
+
+		// var result = yield shells.createVolume({
+		// 	user: user.id,
+		// 	host: user.host
+		// });
+		yield shells.mkdir({
+			user: user.id,
+			host: user.host
+		});
+		yield shells.sshKey({
+			user: user.id,
+			host: user.host
+		});
+		var sshKey = yield shells.getKey({
+			user: user.id,
+			host: user.host
+		});
+		yield models.gospel_users.modify({
+			id: user.id,
+			sshKey: sshKey,
+			type: user.type,
+			ide: user.ide,
+			ideName: user.ideName,
+			host: user.host,
+		});
+		yield models.gospel_ides.create({
+			id: user.ide,
+			name: '个人版',
+			creator: user.id,
+			product: '1'
+		});
+
+		var token = uuid.v4();
+		console.log("user" + token);
+		user.token = token;
+		yield models.gospel_innersessions.create({
+			id: token,
+			code: token,
+			creater: user.id,
+			time: Date.now(),
+			group: user.group,
+			limitTime: 30 * 60 * 1000
+		});
+		this.body = render(user, 1, "注册成功");
+	}
+
+}
 readFile = function(fileName) {
 		return new Promise(function(resolve, reject) {
 			fs.readFile(fileName, {

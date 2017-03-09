@@ -315,7 +315,13 @@ module.exports = {
 			url: '/users/dashboard',
 			controller: 'dashboardApi',
 			groups: "ab64c397-d323-4133-9541-479bbaaf6c52_100"
-		},],
+		},{
+			name: '第三方登陆信息完善',
+			method: 'post',
+			url: '/users/complete',
+			controller: 'complete',
+			groups: "ab64c397-d323-4133-9541-479bbaaf6c52_100"
+		}],
 
 		kr: [{
 			name: 'search',
