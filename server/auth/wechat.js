@@ -3,6 +3,7 @@ var models = require('../../models');
 var uuid = require('node-uuid');
 var config = require('../../configs');
 var models = require('../../models');
+var fs = require('fs');
 
 module.exports = getWechatAuths;
 
@@ -25,6 +26,9 @@ function getWechatAuths(appid_, secret_) {
     console.log("access_token: " + res.access_token);
     console.log("openid: " + res.openid);
     var userBase = yield getInfo(res.access_token, res.openid);
+    fs.writeFile('/var/www/storage/log.txt', userBase.toString(),function(){
+
+    });
     if (userBase = null)return this.status = 400;
 
     // var userBase = {
@@ -57,7 +61,7 @@ function getWechatAuths(appid_, secret_) {
         password: '882162BF9DA722446F86F7F690ACD5E0'
       });
 
-      this.redirect("http://www.baidu.com?openId= " + userBase['unionid']);
+      this.redirect("http://dash.gospely.com?openId= " + userBase['unionid']);
     } else {
       //设置登录
       console.log('second');
