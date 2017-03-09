@@ -29,7 +29,7 @@ function getWechatAuths(appid_, secret_) {
     var userBase = yield getInfo(res.access_token, res.openid);
     console.log(userBase);
     console.log(userBase.openid + " userBase");
-    if (userBase = null)return this.status = 400;
+    if (userBase == null)return this.status = 400;
     var data = yield models.gospel_users.getAll({
       openId: userBase.openid
     });
