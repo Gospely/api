@@ -20,57 +20,47 @@ function getWechatAuths(appid_, secret_) {
   return function*(next) {
     var code = yield getCode(this);
     console.log("getcode: " + code);
-    // var res = yield getAccess_token(code);
-    // if (res == null) return this.status = 400;
-    // console.log("access_token: " + res.access_token);
-    // console.log("openid: " + res.openid);
-    // var userBase = yield getInfo(res.access_token, res.openid);
-    // if (userBase = null)return this.status = 400;
+    var res = yield getAccess_token(code);
+    if (res == null) return this.status = 400;
+    console.log("access_token: " + res.access_token);
+    console.log("openid: " + res.openid);
+    var userBase = yield getInfo(res.access_token, res.openid);
+    if (userBase = null)return this.status = 400;
 
-    var userBase = {
-      "openid": "ouvLcwUfaoXgmY_vr2Xa4a4YDn68",
-      "nickname": "Sharkseven",
-      "sex": 1,
-      "language": "zh_CN",
-      "city": "Nanchang",
-      "province": "Jiangxi",
-      "country": "CN",
-      "headimgurl": "http:\/\/wx.qlogo.cn\/mmopen\/Q3auHgzwzM5ibkUVWRiafgndMU46DVwY4wCoGHskX2HIoicFcKwfKxWU8DZM7Kc2bOqy0auNsowPgErHYD4pJdibYA\/0",
-      "privilege": [],
-      "unionid": "o4y4CvyGj6qXeOsLSWbKawN2YEyQ"
-    };
+    // var userBase = {
+    //   "openid": "ouvLcwUfaoXgmY_vr2Xa4a4YDn68",
+    //   "nickname": "Sharkseven",
+    //   "sex": 1,
+    //   "language": "zh_CN",
+    //   "city": "Nanchang",
+    //   "province": "Jiangxi",
+    //   "country": "CN",
+    //   "headimgurl": "http:\/\/wx.qlogo.cn\/mmopen\/Q3auHgzwzM5ibkUVWRiafgndMU46DVwY4wCoGHskX2HIoicFcKwfKxWU8DZM7Kc2bOqy0auNsowPgErHYD4pJdibYA\/0",
+    //   "privilege": [],
+    //   "unionid": "o4y4CvyGj6qXeOsLSWbKawN2YEyQ"
+    // };
     //获取到了用户的详细信息
 
     var data = yield models.gospel_users.getAll({
       openId: userBase['unionid']
     });
-    if (data.length == 0) {
+    console.log();
+    if (!data) {
 
       //完善信息
-
+      console.log('first');
       var isInsert = yield models.gospel_users.create({
-        name: userBase['nickname'],
+        name: userBase['nickname'] + '_wechat',
         photo: userBase['headimgurl'],
         openId: userBase['unionid'],
         phone: '110',
-        password: '123'
+        password: '882162BF9DA722446F86F7F690ACD5E0'
       });
-
-      var token = uuid.v4();
-
-      this.cookies.set('accessToken', token, config.cookie);
-
-      this.session[token] = {
-        name: userBase['nickname'],
-        photo: userBase['headimgurl'],
-        openId: userBase['unionid'],
-        phone: '110',
-        password: '123'
-      }
 
       this.redirect("http://www.baidu.com?openId= " + userBase['unionid']);
     } else {
       //设置登录
+      console.log('second');
       var user = data[0].dataValues;
       var token = uuid.v4();
       yield models.gospel_innersessions.create({
@@ -81,8 +71,7 @@ function getWechatAuths(appid_, secret_) {
         limitTime: 30 * 60 * 1000
       });
 
-      this.redirect("http://dash.gospely.com?token = " + token);
-      //this.redirect("http://localhost:8088?token = " +token);
+      this.redirect("http://dash.gospely.com?token=" + token);
     }
   }
 }

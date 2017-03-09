@@ -336,7 +336,7 @@ users.phoneCode = function*() {
 	var options = {
 
 		mobile: phone,
-		msg: '【江西龙猫科技】' + randomstr + '，是您的短信验证码，请在10分钟内提交验证码',
+		msg: '【gospel】' + randomstr + '，是您的短信验证码，请在10分钟内提交验证码',
 		needstatus: false
 	}
 
