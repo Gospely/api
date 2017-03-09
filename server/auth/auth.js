@@ -132,7 +132,8 @@ module.exports = {
 				'/users/modify',
 				'/users/logout',
 				'schedules',
-				'/pack/download'
+				'/pack/download',
+				'/users/complete'
 			];
 			var isHasNoneAuthRoute = false;
 
