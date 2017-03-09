@@ -22,17 +22,12 @@ function getWechatAuths(appid_, secret_) {
     var code = yield getCode(this);
     console.log("getcode: " + code);
     var res = yield getAccess_token(code);
-
-    fs.writeFile('/var/www/storage/log.txt', JSON.stringify(res),function(){
-
-    });
+    console.log(res);
     if (res == null) return this.status = 400;
     console.log("access_token: " + res.access_token);
     console.log("openid: " + res.openid);
     var userBase = yield getInfo(res.access_token, res.openid);
-    // fs.writeFile('/var/www/storage/log.txt', userBase.toString(),function(){
-    //
-    // });
+    console.log(userBase);
     if (userBase = null)return this.status = 400;
 
     // var userBase = {
@@ -50,7 +45,7 @@ function getWechatAuths(appid_, secret_) {
     //获取到了用户的详细信息
 
     var data = yield models.gospel_users.getAll({
-      openId: userBase['unionid']
+      openId: userBase['openid']
     });
     console.log();
     if (!data) {
@@ -60,12 +55,12 @@ function getWechatAuths(appid_, secret_) {
       var isInsert = yield models.gospel_users.create({
         name: userBase['nickname'] + '_wechat',
         photo: userBase['headimgurl'],
-        openId: userBase['unionid'],
+        openId: userBase['openid'],
         phone: '110',
         password: '882162BF9DA722446F86F7F690ACD5E0'
       });
 
-      this.redirect("http://dash.gospely.com?openId= " + userBase['unionid']);
+      this.redirect("http://dash.gospely.com?openId= " + userBase['openid']);
     } else {
       //设置登录
       console.log('second');
