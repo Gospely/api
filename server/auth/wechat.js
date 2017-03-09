@@ -30,9 +30,9 @@ function getWechatAuths(appid_, secret_) {
     console.log("access_token: " + res.access_token);
     console.log("openid: " + res.openid);
     var userBase = yield getInfo(res.access_token, res.openid);
-    fs.writeFile('/var/www/storage/log.txt', userBase.toString(),function(){
-
-    });
+    // fs.writeFile('/var/www/storage/log.txt', userBase.toString(),function(){
+    //
+    // });
     if (userBase = null)return this.status = 400;
 
     // var userBase = {
