@@ -45,22 +45,22 @@ function getWechatAuths(appid_, secret_) {
     //获取到了用户的详细信息
 
     var data = yield models.gospel_users.getAll({
-      openId: userBase['openid']
+      openId: userBase.openid
     });
-    console.log();
+    console.log(data);
     if (!data) {
 
       //完善信息
       console.log('first');
       var isInsert = yield models.gospel_users.create({
-        name: userBase['nickname'] + '_wechat',
-        photo: userBase['headimgurl'],
-        openId: userBase['openid'],
+        name: userBase.nickname + '_wechat',
+        photo: userBase.headimgurl,
+        openId: userBase.openid,
         phone: '110',
         password: '882162BF9DA722446F86F7F690ACD5E0'
       });
 
-      this.redirect("http://dash.gospely.com?openId= " + userBase['openid']);
+      this.redirect("http://dash.gospely.com?openId= " + userBase.openid);
     } else {
       //设置登录
       console.log('second');
