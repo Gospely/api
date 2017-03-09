@@ -28,9 +28,19 @@ module.exports = function(sequelize, DataTypes) {
 			field: 'pack_count'
 		},
 
-		application: DataTypes.STRING 
+		application: DataTypes.STRING
 
-	});
+	    },
+	    	
+		{
+    		timestamps: false,
+ 	   		createdAt: 'createat',
+   	     	 updatedAt: 'updateat',
+   	 		classMethods: {
+      	associate: (models) => {
+      		}
+    		}
+  		});
 	return count;
 }
 

@@ -208,6 +208,8 @@ var vdsite = {
 		if(typeof app == 'string') {
 			app = JSON.parse(app);
 		}
+		console.log(app);
+		console.log(app.folder);
 		var user = app.folder.split('/')[0];
 		var data = yield models.gospel_counts.getAll({
 			userId: user
@@ -219,19 +221,12 @@ var vdsite = {
 				userId: user,
 				packCount: 1
 			});
-			if(!inserted) {
-				this.throw(405, "不能被成功添加");
-			}
-			this.body = render(inserted, 1, '新增成功');
 		} else {
 			var packCount = data[0].dataValues.packCount;
 			var modify = yield models.gospel_counts.modify({
-				userId: user,
+				id: data[0].dataValues.id,
 				packCount: packCount+1
 			});
-			if(!modify) {
-				this.throw(405, "不能修改次数");
-			}
 		}
 	},
 
@@ -267,19 +262,12 @@ var vdsite = {
 				userId: user,
 				downloadCount: 1
 			});
-			if(!inserted) {
-				this.throw(405, "不能被成功添加");
-			}
-			this.body = render(inserted, 1, '新增成功');
 		} else {
 			var downloadCount = data[0].dataValues.downloadCount;
 			var modify = yield models.gospel_counts.modify({
-				userId: user,
+				id: data[0].dataValues.id,
 				downloadCount: downloadCount+1
 			});
-			if(!modify) {
-				this.throw(405, "不能修改次数");
-			}
 		}
 
 	},
