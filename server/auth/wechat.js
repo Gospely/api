@@ -46,7 +46,7 @@ function getWechatAuths(appid_, secret_) {
         password: '882162BF9DA722446F86F7F690ACD5E0'
       });
 
-      this.redirect("http://dash.gospely.com?openId= " + userBase.openid);
+      this.redirect("http://dash.gospely.com/#!/accounts/login?user=" + isInsert.id);
     } else {
       //设置登录
       console.log('second');
@@ -60,7 +60,7 @@ function getWechatAuths(appid_, secret_) {
         limitTime: 30 * 60 * 1000
       });
 
-      this.redirect("http://dash.gospely.com?token=" + token);
+      this.redirect("http://dash.gospely.com/#!/?token=" + token);
     }
   }
 }
