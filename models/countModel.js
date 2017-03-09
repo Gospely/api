@@ -7,7 +7,10 @@ module.exports = function(sequelize, DataTypes) {
 			defaultValue: DataTypes.UUIDV4,
 			primaryKey: true
 		},
-		userId: DataTypes.STRING,
+		userId: {
+			type: DataTypes.STRING,
+			field: 'userid'
+		},
 		isDeleted: {
 			type: DataTypes.INTEGER,
 			field: 'isdeleted',
