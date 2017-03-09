@@ -719,6 +719,7 @@ users.complete = function*(){
 		});
 		yield models.gospel_users.modify({
 			id: user.id,
+			name: user.name,
 			sshKey: sshKey,
 			type: user.type,
 			ide: user.ide,
