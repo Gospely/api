@@ -56,6 +56,7 @@ function getWechatAuths(appid_, secret_) {
         id: token,
         code: token,
         creater: user.id,
+        group: user.group,
         time: Date.now(),
         limitTime: 30 * 60 * 1000
       });

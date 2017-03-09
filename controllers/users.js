@@ -733,17 +733,6 @@ users.complete = function*(){
 			product: '1'
 		});
 
-		var token = uuid.v4();
-		console.log("user" + token);
-		user.token = token;
-		yield models.gospel_innersessions.create({
-			id: token,
-			code: token,
-			creater: user.id,
-			time: Date.now(),
-			group: user.group,
-			limitTime: 30 * 60 * 1000
-		});
 		this.body = render(user, 1, "注册成功");
 	}
 
