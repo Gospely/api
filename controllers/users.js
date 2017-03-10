@@ -385,7 +385,7 @@ users.validator = function*() {
 //发送邮箱验证码
 users.getEmailCode = function*() {
 
-	this.body = render('', 1, "暂不开放注册，2017年3月15日左右开放注册");
+	//this.body = render('', 1, "暂不开放注册，2017年3月15日左右开放注册");
 	var range = function(start, end) {
 		var array = [];
 		for (var i = start; i < end; ++i) array.push(i);
