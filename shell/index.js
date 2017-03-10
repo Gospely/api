@@ -29,7 +29,7 @@ shells.docker = function*(options) {
 
     var host = options.host || '120.76.235.234';
     return new Promise(function(resolve, reject) {
-        var bash = "ssh root@" + host + ' docker run -itd --volumes-from docker-volume-' + options.creator +
+        var bash = "ssh root@" + host + ' docker run -itd ' +
         ' -p ' + config + options.socketPort + ':3000 -p ' + options.appPort +
         ':'+ options.exposePort +' -p ' + options.sshPort + ':22 ' + port +
         ' -h ' + options.hostName +
@@ -58,7 +58,7 @@ shells.fast_deploy = function*(options) {
     }
     console.log(options);
   return new Promise(function(resolve, reject) {
-      var bash = "ssh root@" + host + ' docker run -itd --volumes-from docker-volume-' + options.creator + ' -m ' + options.memory +
+      var bash = "ssh root@" + host + ' docker run -itd ' + ' -m ' + options.memory +
         ' -v ' + hostBase + options.creator + "/" + options.name +
         ':/root/workspace -v ' + hostBase  + options.creator + '/.ssh:/root/.ssh'  + config + ' -p ' + options.socketPort + ':3000 -p ' + options.appPort  +
         ':80 -p ' + options.sshPort + ':22 ' + port +
@@ -140,7 +140,7 @@ shells.initDebug = function*(options){
 
     return new Promise(function(resolve, reject) {
 
-        var bash = "ssh root@" + host + ' docker run -itd --volumes-from docker-volume-' + options.creator +
+        var bash = "ssh root@" + host + ' docker run -itd ' +
           ' -v ' + hostBase  + options.creator + "/" + options.name + ':/root/workspace -v '
           + hostBase + options.creator + '/.ssh:/root/.ssh' + config + ' -p ' + options.socketPort + ':3000 -p ' + options.appPort  +
           ':'+ options.exposePort +' -p ' + options.sshPort + ':22 ' + port +
