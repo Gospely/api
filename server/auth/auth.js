@@ -133,7 +133,8 @@ module.exports = {
 				'/users/logout',
 				'schedules',
 				'/pack/download',
-				'/users/complete'
+				'/users/complete',
+				'/fs/image/upload'
 			];
 			var isHasNoneAuthRoute = false;
 
