@@ -134,7 +134,6 @@ module.exports = {
 				'schedules',
 				'/pack/download',
 				'/users/complete',
-				'/fs/image/upload'
 			];
 			var isHasNoneAuthRoute = false;
 
