@@ -701,10 +701,10 @@ users.complete = function*(){
 		var host = selector.select(hosts);
 		user.host = host.ip;
 
-		// var result = yield shells.createVolume({
-		// 	user: user.id,
-		// 	host: user.host
-		// });
+		var result = yield shells.createVolume({
+			user: user.id,
+			host: user.host
+		});
 		yield shells.mkdir({
 			user: user.id,
 			host: user.host

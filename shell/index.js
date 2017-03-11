@@ -452,12 +452,12 @@ shells.mkdir = function*(options) {
         });
     })
 }
-
+//创建用户分区
 shells.createStorage = function*(options) {
 
     var host = options.host || '120.76.235.234';
     return new Promise(function(resolve, reject) {
-        exec("ssh root@" + host + " sh /root/gospely/deploy/shell/volume/createVolume.sh " + options.user + ' ' + options.size,
+        exec("ssh root@" + host + " sh /root/gospely/deploy/shell/volume/createVolume.sh " + options.user,
             function(err, data) {
                 if (err)
                     reject(err);
