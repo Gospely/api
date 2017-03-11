@@ -644,8 +644,6 @@ var fileSystem = {
 	},
 	imageUpload: function*(){
 
-		console.log("upload");
-		console.log(this.req.files.fileUp);
 		var fileName = this.req.files.fileUp.name;
 		var originalname = this.req.files.fileUp.originalname;
 		var folder = this.req.body.folder;
