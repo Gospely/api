@@ -136,7 +136,8 @@ var	writeFile = function(fileName, content) {
 		delete app['folder'];
 
 		yield rmFile(randomDir + 'pages/css/styles.*');
-		yield rmFile(randomDir + 'pages/js/main.*')
+		yield rmFile(randomDir + 'pages/js/main.*');
+		yield rmFile(randomDir + 'js/main.*');
 		yield cp(randomDir + 'pages/', randomDir + 'vendor');
 
 		var loopPack = function *(dir, app) {
