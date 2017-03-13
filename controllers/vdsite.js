@@ -162,6 +162,7 @@ var	writeFile = function(fileName, content) {
 								}
 							}else if(key == 'scripts') {
 								var Dir = dir + 'pages/js/' + scriptsName;
+								file = file.replace('undefined', '');
 								yield writeFile(Dir, file);
 								if(isBeautify){
 									yield beautifyJS(Dir, 'js');
