@@ -1,4 +1,4 @@
 module.exports = {
-  account: 'N6193967',
-  pswd: 'I6pGf4Y1m',
+  un: 'N6193967',
+  pw: 'I6pGf4Y1m',
 }
