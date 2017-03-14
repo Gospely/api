@@ -30,8 +30,8 @@ orders.create = function*() {
     var pay_url = yield pay.wechat.wxpay_pay({
       body: 'Gospel services', //商品描述,
       out_trade_no: order.orderNo, //商户订单号,
-      //total_fee: 1, //金额,
-	  total_fee: order.price * 100, //金额,
+      total_fee: 1, //金额,
+	//   total_fee: order.price * 100, //金额,
       spbill_create_ip: '127.0.0.1', //终端IP,
       product_id: '', //商品id 选,
       detail: 'dodora', //商品详情 选
@@ -47,8 +47,8 @@ orders.create = function*() {
 	  ,
 	  subject: 'Gospel services' //订单名称 必填
 	  ,
-	  //total_fee: 0.01 //付款金额,必填
-	  total_fee: order.price
+	  total_fee: 0.01 //付款金额,必填
+	//   total_fee: order.price
 	  ,
 	  body: "dodora" //订单描述
 	  ,
