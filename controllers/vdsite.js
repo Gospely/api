@@ -241,7 +241,7 @@ var vdsite = {
 			yield cp(randomDir, baseDir + folder + 'images');
 			yield zip(randomDir);
 			// yield mv(baseDir + folder + 'pages.zip', baseDir + folder + project + '.zip')
-			this.set('Content-disposition','attachment;filename='+ project +'.zip');
+			this.set('Content-disposition','attachment;filename='+ encodeURI(project) +'.zip');
 			var info = yield readData(randomDir +'.zip');
 			this.body = info;
 			yield rmFile(randomDir);
