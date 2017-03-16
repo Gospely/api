@@ -26,7 +26,7 @@ module.exports = {
 		//基础验证，即验证用户是否已经是登录状态
 		//获取token
 		var token = '';
-		if(url == '/vdsite/download'){
+		if(url == '/vdsite/download' || url == '/fs/packsrc'){
 			token = this.url.split("?")[1].split('&')[0].split('=')[1];
 		}else {
 			token = this.headers['authorization'];
