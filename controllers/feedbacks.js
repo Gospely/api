@@ -19,10 +19,9 @@ feedbacks.create = function*(){
 	var item = yield parse(this, {
 		limit: '10kb'
 	});
-    var feedback = item
-    if(item.email ==null || item.email != undefined){
+    var feedback = item;
+    if(!item.email){
         feedback = JSON.parse(item);
-
     }
     if(feedback.creator != null && feedback.creator != undefined && feedback.creator != ''){
 
