@@ -301,7 +301,7 @@ applications.create = function*() {
 		name: application.name
 	});
 	if(!isExit && isExit[0].dataValues.all > 0){
-		this.body = render(null, null, null, -1, "不要重复创建");
+		this.body = render(null, null, null, 2, "不要重复创建");
 		return;
 	}
 	if(application.languageType == 'wechat:latest'){
