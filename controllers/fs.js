@@ -945,13 +945,13 @@ var fileSystem = {
 
 			var filepath = path.join(__dirname+'/../uploads/', app.name + '.zip');
 			console.log(filepath);
-			this.set('Content-disposition','attachment;filename='+ app.name + '.zip');
+			this.set('Content-disposition','attachment;filename='+ encodeURI(app.name) + '.zip');
 			var info = yield readData(filepath);
 			console.log(info);
 			this.body = info;
 
 	 		yield shells.rmFile({
-	 			fileName: '/var/www/storage/codes/temp/' + encodeURI(app.name) + '.zip',
+	 			fileName: '/var/www/storage/codes/temp/' + app.name + '.zip',
 	 		});
 		} catch (err) {
 			this.body = util.resp(200, '打包失败', err.toString());
