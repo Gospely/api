@@ -951,7 +951,7 @@ var fileSystem = {
 			this.body = info;
 
 	 		yield shells.rmFile({
-	 			fileName: '/var/www/storage/codes/temp/' + app.name + '.zip',
+	 			fileName: '/var/www/storage/codes/temp/' + encodeURI(app.name) + '.zip',
 	 		});
 		} catch (err) {
 			this.body = util.resp(200, '打包失败', err.toString());
