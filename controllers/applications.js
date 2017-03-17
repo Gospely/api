@@ -293,6 +293,17 @@ applications.create = function*() {
 	var application = yield parse(this, {
 		limit: '10kb'
 	});
+	if(!application.name){
+		application = JSON.parse(application);
+	}
+	var isExit = yield models.gospel_applications.count({
+		creator: application.creator,
+		name: application.name
+	});
+	if(!isExit && isExit[0].dataValues.all > 0){
+		this.body = render(null, null, null, -1, "不要重复创建");
+		return;
+	}
 	if(application.languageType == 'wechat:latest'){
 		var count = yield models.gospel_applications.count({
 			creator: application.creator,
@@ -311,7 +322,6 @@ applications.create = function*() {
 			yield applications.fast_deploy(application,this);
 		}else{
 
-			application = JSON.parse(application);
 			if(application.languageType == 'wechat:latest'){
 				var image = yield models.gospel_images.findById(application.languageType);
 				var inserted = yield models.gospel_applications.create({
