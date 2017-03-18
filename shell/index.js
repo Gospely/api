@@ -244,7 +244,7 @@ shells.rmDocker = function*(options) {
             " docker rm -f " +
             options.name,
             function(err, data) {
-                if (err) reject(err);
+                if (err) resolve(err);
                 resolve(data);
             });
     })
@@ -680,14 +680,6 @@ shells.clearApp = function(options){
 
         console.log(err);
         console.log(data);
-        if(!err){
-            if(options.nginx){
-                exec('ssh root@' + options.host + ' service nginx restart', function(err,data){
-                    console.log(err);
-                    console.log(data);
-                })
-            }
-        }
     })
 
 }
