@@ -38,6 +38,9 @@ var promise = new Promise(function(resolve, reject) {
     }
   });
 });
+
 promise.then(function() {
-}, function(err) {
+}, function(err,data) {
+    console.log(data);
+    console.log('console.err');
 });
