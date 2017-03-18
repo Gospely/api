@@ -48,11 +48,25 @@ schedules.deleteDocker = function*(){
     }
 
 }
+schedules.clearInnersession = function*(){
+    var time = new Date().getTime() -1296000000;
+    console.log(time);
+    var result = yield models.gospel_innersessions.destroy({
+        where: {
+            time: {
+                $lte: time
+            },
+        },
+        force: false
+    });
+    console.log(result);
+}
 schedules.list = function*(){
 
     var token = this.query.token;
-    if(token == '123456'){
-        yield schedules.deleteDocker();
+    console.log(this.query);
+    if(token == 'gospelytokenaasss'){
+        yield schedules[this.query.operation]();
     }
 
     //校验token
