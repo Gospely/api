@@ -445,6 +445,9 @@ module.exports = {
         application.sshPort = ports[2];
         application.dbPort = ports[3];
 
+        yield result = shells.rmDocker({
+            name: en_name + "_" + user.name,
+        })
         var result = yield shells.initDebug({
             host: host,
             name: en_name + "_" + user.name,

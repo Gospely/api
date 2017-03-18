@@ -17,7 +17,7 @@ module.exports = {
 	},
 
 	dnspod: {
-		baseDomain: 'accmeta.com',
+		baseDomain: 'gospely.com',
 		baseIp: '120.76.235.234',
 		config: {
 			login_token: "18845,cf418d9ac9fe775becd700e2496c1809",

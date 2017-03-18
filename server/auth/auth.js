@@ -140,6 +140,7 @@ module.exports = {
 				'schedules',
 				'/pack/download',
 				'/users/complete',
+				'/schedules',
 				'/feedbacks'
 			];
 			var isHasNoneAuthRoute = false;
