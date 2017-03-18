@@ -169,47 +169,55 @@ shells.nginx = function*(options) {
 
     new Promise(function(resolve, reject){
         var host = options.host || '120.76.235.234';
-        exec("ssh root@" + host +
-            " lsof -i:80 | grep 'nginx' | head -1 | awk '{print $2}'",
-            function(err, data) {
-                console.log(console.err);
-                console.log(data);
-                console.log('==========================getPId===================');
-                if(err){
-                    reject(err)
-                }else {
-                    exec("ssh root@" + host +
-                        " kill -9 " + data,
-                        function(err, data) {
-                            console.log(err);
-                            console.log(data);
-                            console.log('==========================kill===================' + data);
-                            if (err) {
-                                exec("ssh root@" + host +
-                                    " service nginx restart",
-                                    function(err, data) {
-                                        console.log(err);
-                                        console.log(data);
-                                        console.log('==========================restart===================' + data);
-                                        if (err) reject(err);
-                                        resolve(data);
-                                    });
-                                reject(err);
-                            }else{
-                                exec("ssh root@" + host +
-                                    " service nginx restart",
-                                    function(err, data) {
-                                        console.log(err);
-                                        console.log(data);
-                                        console.log('==========================restart===================' + data);
-                                        if (err) reject(err);
-                                        resolve(data);
-                                    });
-                            }
-                        });
-                }
-                console.log(data);
-            });
+        return new Promise(function(resolve, reject) {
+            exec("ssh root@" + host + " nginx -s reload",
+                function(err, data) {
+                    if (err) reject(err);
+                    resolve(data);
+                });
+
+        })
+        // exec("ssh root@" + host +
+        //     " lsof -i:80 | grep 'nginx' | head -1 | awk '{print $2}'",
+        //     function(err, data) {
+        //         console.log(console.err);
+        //         console.log(data);
+        //         console.log('==========================getPId===================');
+        //         if(err){
+        //             reject(err)
+        //         }else {
+        //             exec("ssh root@" + host +
+        //                 " kill -9 " + data,
+        //                 function(err, data) {
+        //                     console.log(err);
+        //                     console.log(data);
+        //                     console.log('==========================kill===================' + data);
+        //                     if (err) {
+        //                         exec("ssh root@" + host +
+        //                             " service nginx restart",
+        //                             function(err, data) {
+        //                                 console.log(err);
+        //                                 console.log(data);
+        //                                 console.log('==========================restart===================' + data);
+        //                                 if (err) reject(err);
+        //                                 resolve(data);
+        //                             });
+        //                         reject(err);
+        //                     }else{
+        //                         exec("ssh root@" + host +
+        //                             " service nginx restart",
+        //                             function(err, data) {
+        //                                 console.log(err);
+        //                                 console.log(data);
+        //                                 console.log('==========================restart===================' + data);
+        //                                 if (err) reject(err);
+        //                                 resolve(data);
+        //                             });
+        //                     }
+        //                 });
+        //         }
+        //         console.log(data);
+        //     });
     });
 
 }
