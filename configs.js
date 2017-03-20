@@ -205,7 +205,12 @@ module.exports = {
 			url: '/vdsite/template',
 			controller: 'template',
 			groups: "ab64c397-d323-4133-9541-479bbaaf6c52_100"
-		}],
+		},{
+			name: 'vdsite 模板',
+			method: 'get',
+			url: '/vdsite/template',
+			controller: 'getTemplate',
+			],
 
 		users: [{
 			name: '登录',
