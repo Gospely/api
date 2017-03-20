@@ -1,3 +1,4 @@
+
 var util = require('../utils.js'),
 	fs = require('fs'),
 	path = require('path'),
@@ -298,6 +299,7 @@ var vdsite = {
 	template: function*(){
 
 		var app = yield parse(this);
+		console.log(app);
 		var creator = app.creator || 'admin',
 			type = app.type || 'office',
 			name = app.name || 'template',
@@ -305,7 +307,7 @@ var vdsite = {
 		if(typeof app == 'string') {
 			app = JSON.parse(app);
 		}
-
+		console.log(app);
 		var data = yield models.gospel_templates.getAll({
 			application: app.application
 		})
@@ -316,9 +318,9 @@ var vdsite = {
 
 		if(data.length > 0){
 			yield models.gospel_templates.modify({
+				name: name,
 				id: data[0].dataValues.id,
 				content: JSON.stringify(app),
-				name: name
 			})
 		}else {
 			yield models.gospel_templates.create({
@@ -330,7 +332,7 @@ var vdsite = {
 			})
 		}
 
-		this.body = util.resp(200, '保存成功');
+		this.body = util.resp(200, data);
 	},
 	getTemplate: function*(){
 
