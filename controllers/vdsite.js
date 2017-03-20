@@ -317,7 +317,8 @@ var vdsite = {
 		if(data.length > 0){
 			yield models.gospel_templates.modify({
 				id: data[0].dataValues.id,
-				content: JSON.stringify(app)
+				content: JSON.stringify(app),
+				name: name
 			})
 		}else {
 			yield models.gospel_templates.create({
