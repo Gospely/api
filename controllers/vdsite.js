@@ -284,6 +284,25 @@ var vdsite = {
 		var randomDir = baseDir + folder + 'pages/*';
 		yield cp(baseDir + folder, randomDir);
 		this.body = util.resp(200, '发布成功');
+	},
+	template: function*(){
+
+		var app = yield parse(this);
+		var creator = app.creator || 'admin',
+			type = app.type || 'office';
+		if(typeof app == 'string') {
+			app = JSON.parse(app);
+		}
+
+		delete app['creator'];
+		delete app['type'];
+
+		yield models.gospel_templates.create({
+			creator: creator,
+			type: type,
+			content: JSON.stringify(app)
+		})
+		this.body = util.resp(200, '发布成功');
 	}
 }
 
