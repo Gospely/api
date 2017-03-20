@@ -289,15 +289,18 @@ var vdsite = {
 
 		var app = yield parse(this);
 		var creator = app.creator || 'admin',
-			type = app.type || 'office';
+			type = app.type || 'office',
+			name = app.name || 'template';
 		if(typeof app == 'string') {
 			app = JSON.parse(app);
 		}
 
 		delete app['creator'];
 		delete app['type'];
+		delete app['name'];
 
 		yield models.gospel_templates.create({
+			name: name
 			creator: creator,
 			type: type,
 			content: JSON.stringify(app)
