@@ -294,18 +294,29 @@ var vdsite = {
 		if(typeof app == 'string') {
 			app = JSON.parse(app);
 		}
-
+		var data = yield models.gospel_templates.getAll({
+			application: app.application
+		})
 		delete app['creator'];
 		delete app['type'];
 		delete app['name'];
+		delete app['application'];
 
-		yield models.gospel_templates.create({
-			name: name,
-			creator: creator,
-			type: type,
-			content: JSON.stringify(app)
-		})
-		this.body = util.resp(200, '发布成功');
+		if(data.length > 0){
+			yield models.gospel_templates.modify({
+				id: data[0].dataValues.id,
+				content: JSON.stringify(app)
+			})
+		}else {
+			yield models.gospel_templates.create({
+				name: name,
+				creator: creator,
+				type: type,
+				content: JSON.stringify(app)
+			})
+		}
+
+		this.body = util.resp(200, '保存成功');
 	}
 }
 

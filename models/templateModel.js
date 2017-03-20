@@ -11,6 +11,7 @@ module.exports = function(sequelize, DataTypes) {
     name: DataTypes.STRING,
     status: DataTypes.INTEGER,
     creator: DataTypes.STRING,
+    application: DataTypes.STRING,
     type: {
       type: DataTypes.STRING,
       field: "t_type"
