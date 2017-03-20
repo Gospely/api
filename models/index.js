@@ -122,6 +122,10 @@ var sequelize = new Sequelize('gospel', 'gospel', 'dodoraCN2016@gospely', {
         });
       },
       modify: function*(item) {
+
+        var date = new Date();
+          //date.setHours(date.getHours() + 8);
+        item.updateat = date;
         return yield this.update(item, {
           where: {
             id: item.id
@@ -133,7 +137,7 @@ var sequelize = new Sequelize('gospel', 'gospel', 'dodoraCN2016@gospely', {
         var date = new Date();
         //date.setHours(date.getHours() + 8);
         item.createat = date;
-        item.update = date;
+        item.updateat = date;
         var row = this.build(item);
         return yield row.save();
       },
