@@ -124,7 +124,7 @@ var sequelize = new Sequelize('gospel', 'gospel', 'dodoraCN2016@gospely', {
       modify: function*(item) {
 
         var date = new Date();
-          //date.setHours(date.getHours() + 8);
+        date.setHours(date.getHours() + 8);
         item.updateat = date;
         return yield this.update(item, {
           where: {
@@ -135,7 +135,7 @@ var sequelize = new Sequelize('gospel', 'gospel', 'dodoraCN2016@gospely', {
       create: function*(item) {
 
         var date = new Date();
-        //date.setHours(date.getHours() + 8);
+        date.setHours(date.getHours() + 8);
         item.createat = date;
         item.updateat = date;
         var row = this.build(item);
