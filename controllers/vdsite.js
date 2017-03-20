@@ -300,7 +300,7 @@ var vdsite = {
 		delete app['name'];
 
 		yield models.gospel_templates.create({
-			name: name
+			name: name,
 			creator: creator,
 			type: type,
 			content: JSON.stringify(app)
