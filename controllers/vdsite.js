@@ -15,7 +15,17 @@ var shells = require('../shell/index');
 
 var baseDir = '/var/www/storage/codes/';
 var models = require('../models');
+//数据渲染，todo:分页参数引入，异常信息引入
+function render(data, all, cur, code, message) {
 
+	return {
+		code: code,
+		message: message,
+		all: all,
+		cur: cur,
+		fields: data
+	}
+}
 var	writeFile = function(fileName, content) {
 		return new Promise(function(resolve, reject) {
 			fs.writeFile(fileName, content, function(error) {
@@ -290,10 +300,12 @@ var vdsite = {
 		var app = yield parse(this);
 		var creator = app.creator || 'admin',
 			type = app.type || 'office',
-			name = app.name || 'template';
+			name = app.name || 'template',
+			application = app.application;
 		if(typeof app == 'string') {
 			app = JSON.parse(app);
 		}
+
 		var data = yield models.gospel_templates.getAll({
 			application: app.application
 		})
@@ -312,11 +324,19 @@ var vdsite = {
 				name: name,
 				creator: creator,
 				type: type,
+				application: application,
 				content: JSON.stringify(app)
 			})
 		}
 
 		this.body = util.resp(200, '保存成功');
+	},
+	getTemplate: function*(){
+
+		var data = yield models.gospel_templates.getAll({
+			application: this.query.application
+		})
+		this.body =  render(data, null, null, 1, "");
 	}
 }
 
