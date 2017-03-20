@@ -210,7 +210,7 @@ module.exports = {
 			method: 'get',
 			url: '/vdsite/template',
 			controller: 'getTemplate',
-			],
+		}],
 
 		users: [{
 			name: '登录',
