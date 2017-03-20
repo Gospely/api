@@ -8,6 +8,8 @@ module.exports = function(sequelize, DataTypes) {
       primaryKey: true
     },
     content: DataTypes.STRING,
+    name: DataTypes.STRING,
+    status: DataTypes.INTEGER,
     creator: DataTypes.STRING,
     type: {
       type: DataTypes.STRING,
