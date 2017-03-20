@@ -332,7 +332,7 @@ var vdsite = {
 			})
 		}
 
-		this.body = util.resp(200, data);
+		this.body = util.resp(200, '保存成功');
 	},
 	getTemplate: function*(){
 
