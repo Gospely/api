@@ -327,12 +327,14 @@ var vdsite = {
 				name: name,
 				id: data[0].dataValues.id,
 				content: JSON.stringify(app),
+				url: url,
 			})
 		}else {
 			yield models.gospel_templates.create({
 				name: name,
 				creator: creator,
 				type: type,
+				url: url,
 				application: application,
 				content: JSON.stringify(app)
 			})
