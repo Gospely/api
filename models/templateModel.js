@@ -12,6 +12,7 @@ module.exports = function(sequelize, DataTypes) {
     status: DataTypes.INTEGER,
     creator: DataTypes.STRING,
     application: DataTypes.STRING,
+    url: DataTypes.STRING,
     type: {
       type: DataTypes.STRING,
       field: "t_type"

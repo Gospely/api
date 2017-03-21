@@ -303,6 +303,7 @@ var vdsite = {
 		var creator = app.creator || 'admin',
 			type = app.type || 'office',
 			name = app.name || 'template',
+			url = app.url || '';
 			application = app.application;
 		if(typeof app == 'string') {
 			app = JSON.parse(app);
@@ -315,6 +316,7 @@ var vdsite = {
 		delete app['type'];
 		delete app['name'];
 		delete app['application'];
+		delete app['url'];
 
 		if(data.length > 0){
 			yield models.gospel_templates.modify({
