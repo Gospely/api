@@ -130,7 +130,9 @@ var	writeFile = function(fileName, content) {
 	},
 	pageGenerator = function*(ctx, isBeautify){
 
-		var app = yield parse(ctx);
+		var app = yield parse(ctx,{
+				limit: '30960kb'
+		});
 
 		if(typeof app == 'string') {
 			app = JSON.parse(app);
@@ -298,7 +300,9 @@ var vdsite = {
 	},
 	template: function*(){
 
-		var app = yield parse(this);
+		var app = yield parse(this,{
+				limit: '30960kb'
+		});
 		console.log(app);
 		var creator = app.creator || 'admin',
 			type = app.type || 'office',
