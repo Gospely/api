@@ -13,11 +13,7 @@
 // console.log(!/\d*(%|p\*x)/.test('5ppx'));
 //
 
+var time = [1490229000,14902311000,1488751685694]
 
-function computeMaxCallStackSize(size) {
-    size = size || 1;
-    console.log(size);
-    return computeMaxCallStackSize(size + 1);
-}
 
-computeMaxCallStackSize(2);
+console.log(new Date(1490229000000));

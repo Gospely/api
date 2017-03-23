@@ -11,6 +11,7 @@ var shell = require('../shell');
 var pay = require('../server/pay');
 var validator = require('../utils/validator');
 var transliteration = require('transliteration');
+var md5_f = require('../utils/MD5');
 
 var applications = {};
 //数据渲染，todo:分页参数引入，异常信息引入
@@ -183,7 +184,19 @@ applications.deploy = function*(application,ctx) {
 applications.delete = function*() {
 
 
-	var id = this.params.id;
+	var id = this.params.id.split('@');
+	console.log(id);
+	var password = id[1];
+	var name = id[2];
+	id = id[0];
+
+	var user = yield models.gospel_users.findById(name);
+	console.log(user);
+	 md5_f.md5Sign(password, 'gospel_users')
+	if(user && user.password != md5_f.md5Sign(password, 'gospel_users')) {
+		this.body = render(inserted, null, null, -1, '删除失败，密码错误');
+		return;
+	}
 	var application = yield models.gospel_applications.findById(id);
 	var UIState = yield models.gospel_uistates.getAll({
 		application: application.id
