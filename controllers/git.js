@@ -93,14 +93,15 @@ gits.gitOrigin = function*() {
 			host: app.host,
 			password: application.password
 		});
+	}else {
+		yield models.gospel_applications.modify({
+			id: application.id,
+			git: application.git,
+			gitUser: application.user,
+			gitEmail: application.email,
+			gitPassword: '*******'
+		});
 	}
-	yield models.gospel_applications.modify({
-		id: application.id,
-		git: application.git,
-		gitUser: application.user,
-		gitEmail: application.email,
-		gitPassword: '*******'
-	});
 	this.body = render(null, 1, result);
 }
 gits.gitPush = function*() {
