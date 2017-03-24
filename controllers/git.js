@@ -72,7 +72,7 @@ gits.gitOrigin = function*() {
 			limit: '10kb'
 		});
 	console.log(application);
-	//application = JSON.parse(application);
+	application = JSON.parse(application);
 	var app = yield models.gospel_applications.findById(application.id),
 		options = {
 			docker: app.docker,
