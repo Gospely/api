@@ -91,7 +91,7 @@ gits.gitOrigin = function*() {
 			docker: app.docker,
 			user: application.user,
 			host: app.host,
-			password: application.password
+			gitPassword: application.password
 		});
 	}else {
 		yield models.gospel_applications.modify({
