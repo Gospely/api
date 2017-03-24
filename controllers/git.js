@@ -71,7 +71,8 @@ gits.gitOrigin = function*() {
 	var application = yield parse(this, {
 			limit: '10kb'
 		});
-	application = JSON.parse(application);
+	console.log(application);
+	//application = JSON.parse(application);
 	var app = yield models.gospel_applications.findById(application.id),
 		options = {
 			docker: app.docker,
@@ -91,17 +92,16 @@ gits.gitOrigin = function*() {
 			docker: app.docker,
 			user: application.user,
 			host: app.host,
-			gitPassword: application.password
-		});
-	}else {
-		yield models.gospel_applications.modify({
-			id: application.id,
-			git: application.git,
-			gitUser: application.user,
-			gitEmail: application.email,
-			gitPassword: '*******'
+			password: application.password
 		});
 	}
+	yield models.gospel_applications.modify({
+		id: application.id,
+		git: application.git,
+		gitUser: application.user,
+		gitEmail: application.email,
+		gitPassword: '*******'
+	});
 	this.body = render(null, 1, result);
 }
 gits.gitPush = function*() {
