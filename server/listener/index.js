@@ -14,7 +14,7 @@ var listenServer = {
             .on('ready', () => {
             })
             .on('addDir', path => {
-
+                console.log('addDir');
                 var client = getClient(path, ctx);
                 if(client != null){
                     client.emit( 'message', 'addDir-:-' + path.replace('/var/www/storage/codes', '') )
@@ -28,20 +28,21 @@ var listenServer = {
                 }
             })
             .on('add', path => {
+                console.log('add');
                 var client = getClient(path, ctx);
                 if(client != null){
                     client.emit( 'message', 'add-:-' + path.replace('/var/www/storage/codes', ''))
                 }
             })
             .on('change', path => {
-
+                console.log('change');
                 var client = getClient(path, ctx);
                 if(client != null){
                     client.emit( 'message', 'change-:-' + path.replace('/var/www/storage/codes', ''))
                 }
             })
             .on('unlink', path => {
-
+                console.log('remove');
                 var client = getClient(path, ctx);
                 if(client != null){
                     client.emit( 'message', 'remove-:-' + path.replace('/var/www/storage/codes', '') )
