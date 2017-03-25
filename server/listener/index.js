@@ -49,7 +49,7 @@ var listenServer = {
                 }
 
             })
-            .on('error', error => console.log(`test error`));
+            .on('error', error => console.log(`test error`,error.toString()));
 
             return watcher;
 
