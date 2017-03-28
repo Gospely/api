@@ -188,6 +188,9 @@ users.register = function*() {
  // 						user: inserted.id,
  // 						host: user.host
  // 					});
+ 				// 	yield mkdirNginx({
+					// 	 user: inserted.id
+					//      })
  // 					yield shells.sshKey({
  // 						user: inserted.id,
  // 						host: user.host
@@ -709,6 +712,9 @@ users.complete = function*(){
 			user: user.id,
 			host: user.host
 		});
+		yield mkdirNginx({
+		 	user: user.id
+	    })
 		yield shells.sshKey({
 			user: user.id,
 			host: user.host

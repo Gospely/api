@@ -183,19 +183,20 @@ applications.deploy = function*(application,ctx) {
 
 applications.delete = function*() {
 
+	if(this.params.id.indexof('@') > 0){
+		var id = this.params.id.split('@');
+		console.log(id);
+		var password = id[1];
+		var name = id[2];
+		id = id[0];
 
-	var id = this.params.id.split('@');
-	console.log(id);
-	var password = id[1];
-	var name = id[2];
-	id = id[0];
-
-	var user = yield models.gospel_users.findById(name);
-	console.log(user);
-	 md5_f.md5Sign(password, 'gospel_users')
-	if(user && user.password != md5_f.md5Sign(password, 'gospel_users')) {
-		this.body = render(inserted, null, null, -1, '删除失败，密码错误');
-		return;
+		var user = yield models.gospel_users.findById(name);
+		console.log(user);
+		 md5_f.md5Sign(password, 'gospel_users')
+		if(user && user.password != md5_f.md5Sign(password, 'gospel_users')) {
+			this.body = render(inserted, null, null, -1, '删除失败，密码错误');
+			return;
+		}
 	}
 	var application = yield models.gospel_applications.findById(id);
 	var UIState = yield models.gospel_uistates.getAll({

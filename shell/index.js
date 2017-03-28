@@ -12,13 +12,11 @@ shells.domain = function*(options) {
     var host = options.host || '120.76.235.234';
     var file = __dirname + "/domain.txt";
     var cmd = fs.readFileSync(file, "utf8");
-    if(!fs.existsSync('/etc/nginx/conf.d/' + options.user)){
-        cmd = 'mkdir /etc/nginx/conf.d/' + options.user + ' && ' + cmd
-    }
     cmd = cmd.replace('user', options.user).replace('port', options.port);
     cmd = cmd.replace(new RegExp('domain', 'gm'), options.domain);
     var name = options.domain.replace(new RegExp('-', 'gm'), '_');
     cmd = cmd.replace(new RegExp('projectname', 'gm'), name);
+    console.log(cmd);
     return new Promise(function(resolve, reject) {
         options.user = '';
         cmd = cmd.trim();
@@ -460,6 +458,18 @@ shells.mkdir = function*(options) {
                         if (err) reject(err);
                         resolve(data);
                 });
+        });
+    })
+}
+shells.mkdirNginx = function*(options) {
+
+    var host = options.host || '120.76.235.234';
+    return new Promise(function(resolve, reject) {
+        exec("ssh root@" + host +  ' mkdir /etc/nginx/conf.d/' + options.user,
+            function(err, data) {
+                if(err)
+                    reject(err)
+                resolve(data);
         });
     })
 }
