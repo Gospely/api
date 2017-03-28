@@ -686,6 +686,7 @@ shells.dockerList = function*(options){
 }
 shells.clearApp = function(options){
 
+    options.fileName.replace('-', '_');
     console.log(options);
     var bash = 'ssh root@' + options.host + ' sh '+ scriptDir + 'clear.sh ' + options.user + ' ' + options.fileName + ' ' + options.docker;
     console.log(bash);
