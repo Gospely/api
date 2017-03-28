@@ -12,6 +12,9 @@ shells.domain = function*(options) {
     var host = options.host || '120.76.235.234';
     var file = __dirname + "/domain.txt";
     var cmd = fs.readFileSync(file, "utf8");
+    if(!fs.existsSync('/etc/nginx/conf.d/' + options.creator)){
+        cmd = 'mkdir /etc/nginx/conf.d/' + options.creator + ' && ' + cmd
+    }
     cmd = cmd.replace('user', options.user).replace('port', options.port);
     cmd = cmd.replace(new RegExp('domain', 'gm'), options.domain);
     var name = options.domain.replace(new RegExp('-', 'gm'), '_');

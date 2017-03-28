@@ -142,6 +142,10 @@ module.exports = {
                     fileName: "/var/www/storage/codes/" + application.creator + '/' + self.data.name,
                     host: host,
                 })
+                yield shells.rmFile({
+                    fileName: "/etc/nginx/conf.d/" + application.creator + '/' + self.data.name + '.gospely.com.conf',
+                    host: host,
+                })
                 console.log("undo docker");
             },
         });
@@ -352,15 +356,23 @@ module.exports = {
             undo: function*() {
 
                 var self = this;
+                var self = this;
                 yield shells.stopDocker({
                     host: host,
-                    docker: self.data.name
+                    name: 'gospel_project_' + self.data.name
                 });
                 yield shells.rmDocker({
                     host: host,
-                    docker: self.data.name
+                    name: 'gospel_project_' + self.data.name
                 });
-                yield shells.rmFile("/var/www/storage/codes/" + self.data.name)
+                yield shells.rmFile({
+                    fileName: "/var/www/storage/codes/" + application.creator + '/' + self.data.name,
+                    host: host,
+                })
+                yield shells.rmFile({
+                    fileName: "/etc/nginx/conf.d/" + application.creator + '/' + self.data.name + '.gospely.com.conf',
+                    host: host,
+                })
             },
         });
 

@@ -1,4 +1,4 @@
-tee /etc/nginx/conf.d/projectname.gospely.com.conf <<- 'EOF'
+tee /etc/nginx/conf.d/user/projectname.gospely.com.conf <<- 'EOF'
 upstream nodejs__upstream_projectname {
         server 127.0.0.1:port;
         keepalive 64;
