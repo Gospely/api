@@ -55,6 +55,11 @@ module.exports = function(sequelize, DataTypes) {
           var data = yield dnspod.domainOperate(options);
           if (data.status.code == '1') {
             domain.record = data.record.id;
+            
+            var date = new Date();
+            date.setHours(date.getHours() + 8);
+            domain.createat = date;
+            domain.updateat = date;
             var row = this.build(domain);
             return {
               code: 'success',
