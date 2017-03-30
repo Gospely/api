@@ -62,6 +62,10 @@ var sequelize = new Sequelize('gospel', 'gospel', 'dodoraCN2016@gospely', {
                       type: {
                           $like: '%' + item.likeq + '%'
                       }
+                  },{
+                      author: {
+                          $like: '%' + item.likeq + '%'
+                      }
                   }]
               }
               delete item['likeq'];
