@@ -25,6 +25,8 @@ domains.create =  function*() {
     var domain = yield parse(this, {
       limit: '1kb'
     });
+	var application = yield models.gospel_applications.findById(domain.application);
+	console.log(application.host);
 	console.log("dd");
     console.log(domain);
     var options = {
@@ -35,34 +37,13 @@ domains.create =  function*() {
         }
     }
     var data = yield dnspod.domainOperate(options);
-
-    if(data.status.code == '1') {
-      //解析
-      console.log('data');
-      var options = {
-          method: 'recordCreate',
-          opp: 'recordCreate',
-          param: {
-                domain: domain,
-				sub_domain: 'www',
-                record_type: 'A',
-                record_line: '默认',
-                value: domain.ip,
-                mx: '10'
-          }
-      }
-      var result = yield dnspod.domainOperate(options);
-	  console.log('c');
-	  console.log(result);
-      if(result.status.code == '1') {
-
-			domain.sub = false;
-			domain.record = result.record.id;
-			var inserted = yield models.gospel_domains.create(domain);
-			this.body = render(inserted,null,null,1,'添加域名成功');
-      }else{
-        this.body = render(inserted,null,null,-1, result.status.message +'添加域名失败');
-      }
+	console.log(data);
+	if(data.status.code == '1') {
+		  domain.sub = false;
+		  domain.ip = application.host;
+		  domain.sub_domain = 'www';
+		  var inserted = yield models.gospel_domains.create(domain);
+		  this.body = render(inserted,null,null,1,'添加域名成功');
     }else{
       this.body = render(inserted,null,null,-1, data.status.message +'添加域名失败');
     }
