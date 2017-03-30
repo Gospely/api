@@ -49,7 +49,22 @@ var sequelize = new Sequelize('gospel', 'gospel', 'dodoraCN2016@gospely', {
               delete item['limit'];
               delete item['show'];
 
-
+              if(item.likeq){
+                  item.$or = [{
+                      description: {
+                          $like: '%' + item.likeq + '%'
+                      },
+                  },{
+                      name: {
+                           $like: '%' + item.likeq + '%'
+                      },
+                  },{
+                      type: {
+                          $like: '%' + item.likeq + '%'
+                      }
+                  }]
+              }
+              delete item['likeq'];
 
               return yield this.findAll({
                 offset: offset,
@@ -78,10 +93,22 @@ var sequelize = new Sequelize('gospel', 'gospel', 'dodoraCN2016@gospely', {
             }
 
           }
-          if (item.show != null && item.show != undefined && item.show !=
-            '') {
+          if (item.show != null && item.show != undefined && item.show !='') {
+              console.log('show');
             attributes = item.show.split('_');
             delete item['show'];
+            if(item.likeq){
+                item.description = {
+                    $like: '%' + item.likeq + '%'
+                };
+                item.name = {
+                    $like: '%' + item.likeq + '%'
+                }
+                item.type = {
+                    $like: '%' + item.likeq + '%'
+                }
+            }
+            delete item['likeq'];
             return yield this.findAll({
               where: item,
               attributes: attributes,
