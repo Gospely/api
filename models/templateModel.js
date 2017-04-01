@@ -15,6 +15,7 @@ module.exports = function(sequelize, DataTypes) {
     description: DataTypes.STRING,
     price: DataTypes.DOUBLE,
     url: DataTypes.STRING,
+    src: DataTypes.STRING,
     author: DataTypes.STRING,
     type: {
       type: DataTypes.STRING,
