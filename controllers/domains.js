@@ -2,12 +2,9 @@ var util = require('../utils.js');
 var parse = require('co-body');
 var models = require('../models');
 var dnspod = require('../server/dnspod');
+var shells = require('../shell');
 
 var domains = {};
-
-
-
-
 //域名绑定
 function render(data,all,cur,code,message) {
 
@@ -43,10 +40,23 @@ domains.create =  function*() {
 		  domain.ip = application.host;
 		  domain.sub_domain = 'www';
 		  var inserted = yield models.gospel_domains.create(domain);
+		  //添加Nginx配置文件
+		  yield shells.domain({
+			  user: application.creator,
+			  domain: domain.domain,
+			  port: application.port,
+			  host: application.host,
+		  });
+		  //Nginx 加载配置
+		  yield shells.nginx({
+			  host: application.host
+		  });
 		  this.body = render(inserted,null,null,1,'添加域名成功');
     }else{
       this.body = render(inserted,null,null,-1, data.status.message +'添加域名失败');
     }
+
+
   }
 domains.delete = function*() {
 
