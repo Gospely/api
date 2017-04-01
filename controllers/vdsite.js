@@ -307,9 +307,10 @@ var vdsite = {
 		var creator = app.creator || 'admin',
 			type = app.type || 'office',
 			name = app.name || 'template',
-			url = app.url || '';
-			description = app.description;
+			url = app.url || '',
+			description = app.description,
 			price = app.price,
+			src = app.src,
 			application = app.application;
 		if(typeof app == 'string') {
 			app = JSON.parse(app);
