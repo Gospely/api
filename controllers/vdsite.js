@@ -308,6 +308,8 @@ var vdsite = {
 			type = app.type || 'office',
 			name = app.name || 'template',
 			url = app.url || '';
+			description = app.description;
+			price = app.price,
 			application = app.application;
 		if(typeof app == 'string') {
 			app = JSON.parse(app);
@@ -321,6 +323,9 @@ var vdsite = {
 		delete app['name'];
 		delete app['application'];
 		delete app['url'];
+		delete app['src'];
+		delete app['price'];
+		delete app['description'];
 
 		if(data.length > 0){
 			yield models.gospel_templates.modify({
@@ -328,6 +333,10 @@ var vdsite = {
 				id: data[0].dataValues.id,
 				content: JSON.stringify(app),
 				url: url,
+				type: type,
+				description: description,
+				price: price,
+				src: src,
 			})
 		}else {
 			yield models.gospel_templates.create({
@@ -335,6 +344,9 @@ var vdsite = {
 				creator: creator,
 				type: type,
 				url: url,
+				description: description,
+				price: price,
+				src: src,
 				application: application,
 				content: JSON.stringify(app)
 			})
