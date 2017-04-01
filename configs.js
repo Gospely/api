@@ -17,10 +17,10 @@ module.exports = {
 	},
 
 	dnspod: {
-		baseDomain: 'gospely.com',
+		baseDomain: 'accmeta.com',
 		baseIp: '120.76.235.234',
 		config: {
-			login_token: "18845,cf418d9ac9fe775becd700e2496c1809",
+			login_token: "28487,80941ffc3bd9a359c93fc184c2534e2d",
 			format: "json",
 			lang: "cn",
 			error_on_empty: 'yes'

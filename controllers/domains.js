@@ -38,7 +38,7 @@ domains.create =  function*() {
 	if(data.status.code == '1') {
 		  domain.sub = false;
 		  domain.ip = application.host;
-		  domain.sub_domain = 'www';
+		  domain.subDomain = 'www';
 		  var inserted = yield models.gospel_domains.create(domain);
 		  //添加Nginx配置文件
 		  yield shells.domain({
@@ -46,6 +46,7 @@ domains.create =  function*() {
 			  domain: domain.domain,
 			  port: application.port,
 			  host: application.host,
+			  operate: true
 		  });
 		  //Nginx 加载配置
 		  yield shells.nginx({
@@ -61,9 +62,10 @@ domains.create =  function*() {
 domains.delete = function*() {
 
     var id = this.params.id;
-
+	console.log('delete');
     var domain = yield models.gospel_domains.findById(id);
-    var options = {
+
+	var options = {
       method: 'recordRemove',
       opp: 'recordRemove',
       param: {
@@ -71,9 +73,17 @@ domains.delete = function*() {
             record_id: domain.record
       }
     }
-
-    var result = yield dnspod.domainOperate(options);
-
+	var result = yield dnspod.domainOperate(options);
+	if(!domain.subDomain || domain.subDomain == 'www'){
+		options = {
+	      method: 'domainRemove',
+	      opp: 'domainRemove',
+	      param: {
+	            domain: domain.domain
+	      }
+		}
+	}
+    result = yield dnspod.domainOperate(options);
     if(result.status.code == '1'){
 
       // var options = {
@@ -83,8 +93,7 @@ domains.delete = function*() {
       //         domain: domain.domain,
       //   }
       // }
-      // var deleted = yield models.gospel_domains.delete(id);
-
+      var deleted = yield models.gospel_domains.delete(id);
       this.body = render(result,null,null,1,'删除成功');
     }else{
       this.body = render(result,null,null,-1,result.status.message + ',域名解绑失败');
