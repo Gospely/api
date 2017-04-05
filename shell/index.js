@@ -713,7 +713,7 @@ shells.clearApp = function(options){
 
     options.fileName.replace('-', '_');
     console.log(options);
-    var bash = 'ssh root@' + options.host + ' sh '+ scriptDir + 'clear.sh ' + options.user + ' ' + options.fileName +'.' + config.dnspod.baseDomain + ' ' + options.docker;
+    var bash = 'ssh root@' + options.host + ' sh '+ scriptDir + 'clear.sh ' + options.user + ' ' + options.fileName +'.' + config.dnspod.baseDomain + '.conf' + ' ' + options.docker;
     console.log(bash);
     exec(bash, function(err,data){
 
