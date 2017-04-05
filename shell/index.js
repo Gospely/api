@@ -276,8 +276,25 @@ shells.stopDocker = function*(options) {
 shells.rmFile = function*(options) {
 
     var host = options.host || '120.76.235.234';
+    console.log(options.fileName);
     return new Promise(function(resolve, reject) {
         exec("ssh root@" + host + " rm -f " + options.fileName,
+            function(err,
+                data) {
+                console.log(data);
+                console.log(err);
+                if (err) reject(err);
+                resolve(data);
+            });
+    })
+}
+
+shells.ls = function*(options) {
+
+    var host = options.host || '120.76.235.234';
+    console.log(options.fileName);
+    return new Promise(function(resolve, reject) {
+        exec("ssh root@" + host + " ls -l /etc/nginx/conf.d | awk '{print $9}'",
             function(err,
                 data) {
                 console.log(data);

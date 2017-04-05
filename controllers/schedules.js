@@ -65,37 +65,113 @@ schedules.clearInnersession = function*(){
 },
 schedules.deleteDomains = function*(){
 
+
+    // var domains = yield models.gospel_domains.findAll({
+    //     where: {
+    //         isDeleted: 1
+    //     }
+    // });
+    // console.log(domains);
+    // for (var i = 0; i < domains.length; i++) {
+    //     console.log(domains[i].dataValues.record);
+    //     var options = {
+    //         method: 'recordRemove',
+    //         opp: 'recordRemove',
+    //         param: {
+    //             domain: domains[i].dataValues.domain,
+    //             record_id: domains[i].dataValues.record
+    //         }
+    //     }
+    //     //解绑二级域名
+    //     yield dnspod.domainOperate(options);
+    //     yield shell.rmFile({
+    //         fileName: '/etc/nginx/conf.d/' +  domains[i].dataValues.subDomain.replace('-','_').replace('-','_') + '.' + domains[i].dataValues.domain
+    //     })
+    //     yield shell.rmFile({
+    //         fileName: '/etc/nginx/conf.d/' + domains[i].dataValues.creator  + '/' +domains[i].dataValues.subDomain.replace('-','_').replace('-','_') + '.' + domains[i].dataValues.domain
+    //     })
+    //     yield shell.nginx({});
+    // }
+
+}
+schedules.clearDomains = function*(){
+
+    var data = yield dnspod.domainOperate({
+        method: 'recordList',
+        opp: 'recordList',
+        param: {
+            domain: 'gospely.com'
+        }
+    })
+    console.log(data);
+
+
     var domains = yield models.gospel_domains.findAll({
         where: {
-            isDeleted: 1
+            isDeleted: 0
         }
     });
 
-    for (var i = 0; i < domains.length; i++) {
-        domains[i].daataValues.record;
+    for (var i = 0; i < data.records.length; i++) {
+        var deleteable = true;
+        for (var j = 0; j < domains.length; j++) {
 
-        var domains = yield models.gospel_domains.getAll({
-            subDomain: application.domain,
-            sub: true,
-        })
-        var options = {
-            method: 'recordRemove',
-            opp: 'recordRemove',
-            param: {
-                domain: domains[i].dataValues.domain,
-                record_id: domains[i].dataValues.record
+            if(data.records[i].name == 'api' || data.records[i].name == 'www'|| data.records[i].name == '@'|| data.records[i].name == 'dash' || data.records[i].name == 'ide'|| data.records[i].name == domains[j].dataValues.subDomain){
+                deleteable = false;
+                break;
             }
         }
-        //解绑二级域名
-        yield dnspod.domainOperate(options);
-        yield shells.rmFile({
-            fileName: '/etc/nginx/conf.d/' +  domains[i].dataValues.subDomain + '.' + domains[i].dataValues.domain
-        })
-        yield shells.rmFile({
-            fileName: '/etc/nginx/conf.d/' + domains[i].dataValues.creator  + '/' + domains[i].dataValues.subDomain + '.' + domains[i].dataValues.domain 
-        })
+        if(deleteable){
+            var options = {
+                    method: 'recordRemove',
+                    opp: 'recordRemove',
+                    param: {
+                        domain: 'gospely.com',
+                        record_id: data.records[i].id
+                    }
+                }
+                //解绑二级域名
+                yield dnspod.domainOperate(options);
+                yield shell.rmFile({
+                    fileName: '/etc/nginx/conf.d/' +   data.records[i].name.replace('-','_').replace('-','_') + '.gospely.com'
+                })
+                // yield shell.rmFile({
+                //     fileName: '/etc/nginx/conf.d/' + domains[i].dataValues.creator  + '/' +domains[i].dataValues.subDomain.replace('-','_').replace('-','_') + '.' + domains[i].dataValues.domain
+                // })
+        }
+        console.log(deleteable, data.records[i].name);
     }
+}
+schedules.removeConfig = function*(){
 
+    var data = yield shell.ls({});
+    var data = data.split('\n');
+
+    var domains = yield dnspod.domainOperate({
+        method: 'recordList',
+        opp: 'recordList',
+        param: {
+            domain: 'gospely.com'
+        }
+    })
+    for (var i = 0; i < data.length; i++) {
+
+        var deleteable = true;
+        for (var j = 0; j < domains.records.length; j++) {
+
+            if(data[i].replace('_', '-').replace('_','-') == domains.records[j].name + '.gospely.com.conf' || data[i] == 'gospel.engineer.conf' || data[i] == 'gospely.com.conf' || data[i] == 'gospel.design.conf' || data[i] == 'api.gospey.com.conf' ||  data[i] == 'dash.gospey.com.conf' || data[i] == 'ide.gospey.com.conf') {
+                deleteable = false;
+                break;
+            }
+        }
+        if(deleteable && data[i] != '' && data[i] != 'f0ec0c00-17d1-4593-9d0e-05a71f6fd431'){
+
+            console.log('/etc/nginx/conf.d/' + data[i]);
+            yield shell.rmFile({
+                fileName: '/etc/nginx/conf.d/' + data[i]
+            })
+        }
+    }
 }
 schedules.list = function*(){
 
