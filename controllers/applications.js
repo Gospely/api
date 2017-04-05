@@ -243,7 +243,7 @@ applications.delete = function*() {
 					method: 'recordRemove',
 					opp: 'recordRemove',
 					param: {
-						domain: "gospely.com",
+						domain: config.dnspod.baseDomain,
 						record_id: domains[0].record
 					}
 				}
