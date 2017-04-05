@@ -6,6 +6,7 @@ var scriptDir = '/root/gospely/deploy/shell/';
 var dockerBase = '/var/www/storage/codes/'
 var hostBase =  '/mnt/var/www/storage/codes/';
 var hostSource = '/mnt/gospely/';
+var config = require('../configs')
 
 shells.domain = function*(options) {
 
@@ -18,6 +19,7 @@ shells.domain = function*(options) {
         cmd = cmd.replace(new RegExp('domain.gospely.com', 'gm'), options.domain);
         cmd = cmd.replace(new RegExp('projectname.gospely.com', 'gm'), name);
     }else {
+        cmd = cmd.replace(new RegExp('gospely.com', 'gm'), config.dnspod.baseDomain);
         cmd = cmd.replace(new RegExp('domain', 'gm'), options.domain);
         cmd = cmd.replace(new RegExp('projectname', 'gm'), name);
     }
