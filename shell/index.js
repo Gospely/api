@@ -18,6 +18,7 @@ shells.domain = function*(options) {
     if(options.operate){
         cmd = cmd.replace(new RegExp('domain.gospely.com', 'gm'), options.domain);
         cmd = cmd.replace(new RegExp('projectname.gospely.com', 'gm'), name);
+        cmd = cmd.replace(new RegExp('projectname', 'gm'), options.domain);
     }else {
         cmd = cmd.replace(new RegExp('gospely.com', 'gm'), config.dnspod.baseDomain);
         cmd = cmd.replace(new RegExp('domain', 'gm'), options.domain);
