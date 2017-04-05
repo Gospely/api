@@ -1,6 +1,8 @@
 var util = require('../utils.js');
 var models = require('../models');
 var shell = require('../shell');
+var dnspod = require('../server/dnspod');
+
 
 var schedules = {};
 
@@ -60,6 +62,40 @@ schedules.clearInnersession = function*(){
         force: false
     });
     console.log(result);
+},
+schedules.deleteDomains = function*(){
+
+    var domains = yield models.gospel_domains.findAll({
+        where: {
+            isDeleted: 1
+        }
+    });
+
+    for (var i = 0; i < domains.length; i++) {
+        domains[i].daataValues.record;
+
+        var domains = yield models.gospel_domains.getAll({
+            subDomain: application.domain,
+            sub: true,
+        })
+        var options = {
+            method: 'recordRemove',
+            opp: 'recordRemove',
+            param: {
+                domain: domains[i].dataValues.domain,
+                record_id: domains[i].dataValues.record
+            }
+        }
+        //解绑二级域名
+        yield dnspod.domainOperate(options);
+        yield shells.rmFile({
+            fileName: '/etc/nginx/conf.d/' +  domains[i].dataValues.subDomain + '.' + domains[i].dataValues.domain
+        })
+        yield shells.rmFile({
+            fileName: '/etc/nginx/conf.d/' + domains[i].dataValues.creator  + '/' + domains[i].dataValues.subDomain + '.' + domains[i].dataValues.domain 
+        })
+    }
+
 }
 schedules.list = function*(){
 
