@@ -41,7 +41,7 @@ module.exports = {
                 subDomain: domain + "-" + application.userName,
                 domain: config.dnspod.baseDomain,
                 host: host,
-                ip: '120.76.235.234',
+                ip: host,
                 application: application.id,
                 creator: application.creator,
                 sub: true
@@ -534,7 +534,7 @@ module.exports = {
                 subDomain: en_name + "-" + user.name,
                 domain: config.dnspod.baseDomain,
                 host: host,
-                ip: '120.76.235.234',
+                ip: host,
                 application: inserted.id,
                 creator: application.creator,
                 sub: true
