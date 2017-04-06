@@ -25,6 +25,9 @@ orders.create = function*() {
     limit: '10kB'
   });
   console.log(order);
+  if(!order.price){
+	  order = JSON.parse(order);
+  }
   order.price = order.price.toFixed(2);
 	console.log(order);
     var pay_url = yield pay.wechat.wxpay_pay({
