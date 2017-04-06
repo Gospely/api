@@ -516,7 +516,7 @@ shells.mkdirNginx = function*(options) {
 
     var host = options.host || '120.76.235.234';
     return new Promise(function(resolve, reject) {
-        exec("ssh root@" + host +  ' mkdir /etc/nginx/conf.d/' + options.user,
+        exec("ssh root@" + host +  ' mkdir /mnt/etc/nginx/conf.d/' + options.user,
             function(err, data) {
                 if(err)
                     reject(err)

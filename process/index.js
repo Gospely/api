@@ -143,7 +143,7 @@ module.exports = {
                     host: host,
                 })
                 yield shells.rmFile({
-                    fileName: "/etc/nginx/conf.d/" + application.creator + '/' + self.data.name + '.gospely.com.conf',
+                    fileName: "/mnt/etc/nginx/conf.d/" + application.creator + '/' + self.data.name + '.gospely.com.conf',
                     host: host,
                 })
                 console.log("undo docker");
@@ -370,7 +370,7 @@ module.exports = {
                     host: host,
                 })
                 yield shells.rmFile({
-                    fileName: "/etc/nginx/conf.d/" + application.creator + '/' + self.data.name + '.gospely.com.conf',
+                    fileName: "/mnt/etc/nginx/conf.d/" + application.creator + '/' + self.data.name + '.gospely.com.conf',
                     host: host,
                 })
             },

@@ -86,10 +86,10 @@ schedules.deleteDomains = function*(){
     //     //解绑二级域名
     //     yield dnspod.domainOperate(options);
     //     yield shell.rmFile({
-    //         fileName: '/etc/nginx/conf.d/' +  domains[i].dataValues.subDomain.replace('-','_').replace('-','_') + '.' + domains[i].dataValues.domain
+    //         fileName: '/mnt/etc/nginx/conf.d/' +  domains[i].dataValues.subDomain.replace('-','_').replace('-','_') + '.' + domains[i].dataValues.domain
     //     })
     //     yield shell.rmFile({
-    //         fileName: '/etc/nginx/conf.d/' + domains[i].dataValues.creator  + '/' +domains[i].dataValues.subDomain.replace('-','_').replace('-','_') + '.' + domains[i].dataValues.domain
+    //         fileName: '/mnt/etc/nginx/conf.d/' + domains[i].dataValues.creator  + '/' +domains[i].dataValues.subDomain.replace('-','_').replace('-','_') + '.' + domains[i].dataValues.domain
     //     })
     //     yield shell.nginx({});
     // }
@@ -145,10 +145,10 @@ schedules.clearDomains = function*(){
                 //解绑二级域名
                 yield dnspod.domainOperate(options);
                 yield shell.rmFile({
-                    fileName: '/etc/nginx/conf.d/' +   data.records[i].name.replace('-','_').replace('-','_') + '.gospely.com'
+                    fileName: '/mnt/etc/nginx/conf.d/' +   data.records[i].name.replace('-','_').replace('-','_') + '.gospely.com'
                 })
                 // yield shell.rmFile({
-                //     fileName: '/etc/nginx/conf.d/' + domains[i].dataValues.creator  + '/' +domains[i].dataValues.subDomain.replace('-','_').replace('-','_') + '.' + domains[i].dataValues.domain
+                //     fileName: '/mnt/etc/nginx/conf.d/' + domains[i].dataValues.creator  + '/' +domains[i].dataValues.subDomain.replace('-','_').replace('-','_') + '.' + domains[i].dataValues.domain
                 // })
         }
         console.log(deleteable, data.records[i].name);
@@ -178,9 +178,9 @@ schedules.removeConfig = function*(){
         }
         if(deleteable && data[i] != '' && data[i] != 'f0ec0c00-17d1-4593-9d0e-05a71f6fd431'){
 
-            console.log('/etc/nginx/conf.d/' + data[i]);
+            console.log('/mnt/etc/nginx/conf.d/' + data[i]);
             yield shell.rmFile({
-                fileName: '/etc/nginx/conf.d/' + data[i]
+                fileName: '/mnt/etc/nginx/conf.d/' + data[i]
             })
         }
     }
