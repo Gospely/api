@@ -81,6 +81,7 @@ shells.fast_deploy = function*(options) {
       });
   });
 }
+
 shells.mvFiles = function*(options){
     var host = options.host || '120.76.235.234';
     return new Promise(function(resolve, reject) {
@@ -152,6 +153,31 @@ shells.initDebug = function*(options){
         var bash = "ssh root@" + host + ' docker run -itd ' +
           ' -v ' + hostBase  + options.creator + "/" + options.name + ':/root/workspace -v '
           + hostBase + options.creator + '/.ssh:/root/.ssh' + config + ' -p ' + options.socketPort + ':3000 -p ' + options.appPort  +
+          ':'+ options.exposePort +' -p ' + options.sshPort + ':22 ' + port +
+          ' -h ' + options.hostName +
+          ' -w /root/workspace --name="gospel_project_' + options.name + '" gospel-' +
+          options.image + " && echo success";
+          console.log(bash);
+        exec(bash, function(err, data) {
+            if (err) reject(err);
+            resolve("success");
+        });
+    });
+},
+
+shells.recover = function*(options){
+
+    var host = options.host || '120.76.235.234';
+    console.log(options);
+    var port = '';
+    if(options.dbPort){
+        port = ' -p ' + options.dbPort + ':3306';
+    }
+    return new Promise(function(resolve, reject) {
+
+        var bash = "ssh root@" + host + ' docker run -itd ' +
+          ' -v ' + hostBase  + options.creator + "/" + options.name + ':/root/workspace -v '
+          + hostBase + options.creator + '/.ssh:/root/.ssh' + ' -p ' + options.socketPort + ':3000 -p ' + options.appPort  +
           ':'+ options.exposePort +' -p ' + options.sshPort + ':22 ' + port +
           ' -h ' + options.hostName +
           ' -w /root/workspace --name="gospel_project_' + options.name + '" gospel-' +

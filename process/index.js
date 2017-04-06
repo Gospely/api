@@ -609,4 +609,65 @@ module.exports = {
         });
         return selector.select(hosts);
     },
+
+    recoverBuild: function*(application){
+        console.log(application);
+        //判断应用名是否为中文名，当为中文名时，获取中文拼音
+        if(application.creator == 'f0ec0c00-17d1-4593-9d0e-05a71f6fd431'){
+            var en_name = application.name.toLocaleLowerCase();
+            var user = yield models.gospel_users.findById(application.creator);
+            if(user){
+                var reg = /[\u4e00-\u9FA5]+/;
+                var res = reg.test(en_name);
+
+                if (res) {
+                    var tr = transliteration.transliterate
+                    en_name = tr(en_name).replace(new RegExp(" ", 'gm'), "").toLocaleLowerCase();
+                }
+                //根据用户输入获取镜像名称
+
+                en_name = en_name.replace('_','');
+                user.name = user.name.toLocaleLowerCase();
+                //获取主机
+                var host = application.host;
+                console.log(host);
+                // var result = yield shells.recover({
+                //     host: host,
+                //     name: en_name + "_" + user.name,
+                //     sshPort: application.sshPort,
+                //     socketPort: application.socketPort,
+                //     appPort: application.port,
+                //     password: application.password,
+                //     image: application.image,
+                //     parent: application.image,
+                //     hostName: en_name,
+                //     exposePort: application.exposePort,
+                //     creator: application.creator,
+                //     dbUser: application.dbUser,
+                //     dbPort: application.dbPort
+                // });
+                // console.log(git);
+                // if (application.git == null || application.git == '') {
+                //     yield shells.mvFiles({
+                //         host: host,
+                //         name: en_name + "_" + user.name,
+                //     });
+                // }
+
+                var result = yield shells.domain({
+                    user: application.creator,
+                    domain: en_name + "-" + user.name,
+                    port: application.port,
+                    host: host,
+                });
+                if (result != 'success') {
+                    throw ('创建应用失败');
+                }
+                yield shells.nginx({
+                    host: host
+                });
+            }
+        }
+
+    }
 }

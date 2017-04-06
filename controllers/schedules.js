@@ -2,6 +2,7 @@ var util = require('../utils.js');
 var models = require('../models');
 var shell = require('../shell');
 var dnspod = require('../server/dnspod');
+var processes = require('../process');
 
 
 var schedules = {};
@@ -93,6 +94,17 @@ schedules.deleteDomains = function*(){
     //     yield shell.nginx({});
     // }
 
+}
+schedules.recover = function*(){
+    var applications = yield models.gospel_applications.findAll({
+        where: {
+            isDeleted: 0
+        }
+    });
+
+    for (var i = 0; i < applications.length; i++) {
+        yield processes.recoverBuild(applications[i].dataValues);
+    }
 }
 schedules.clearDomains = function*(){
 
