@@ -128,6 +128,24 @@ var	writeFile = function(fileName, content) {
 			});
 		});
 	},
+	base64Image =  function*(data, namespace){
+
+		yield mkdir('/mnt/static' + namespace);
+		var fileName = Date.now() +'.jpg';
+　　　　 var path = '/mnt/static/'+ namespace + '/' + fileName ;//从app.js级开始找--在我的项目工程里是这样的
+        var base64 = data.replace(/^data:image\/\w+;base64,/, "");//去掉图片base64码前面部分data:image/png;base64
+        var dataBuffer = new Buffer(base64, 'base64'); //把base64码转成buffer对象，
+        console.log('dataBuffer是否是Buffer对象：'+Buffer.isBuffer(dataBuffer));
+        return new Promise(function(resolve, reject){
+			fs.writeFile(path,dataBuffer,function(err){//用fs写入文件
+	            if(err){
+	               reject(err)
+	            }else{
+	               resolve(namespace +'/' + fileName);
+	            }
+	        })
+		})
+	},
 	pageGenerator = function*(ctx, isBeautify){
 
 		var app = yield parse(ctx,{
@@ -319,6 +337,9 @@ var vdsite = {
 		var data = yield models.gospel_templates.getAll({
 			application: app.application
 		})
+
+		var result = yield base64Image(app.src, 'templates');
+		src = 'http://static.gospely.com/' + result;
 		delete app['creator'];
 		delete app['type'];
 		delete app['name'];
@@ -327,6 +348,8 @@ var vdsite = {
 		delete app['src'];
 		delete app['price'];
 		delete app['description'];
+
+
 
 		if(data.length > 0){
 			yield models.gospel_templates.modify({

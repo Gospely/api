@@ -141,111 +141,113 @@ users.register = function*() {
 	var user = yield parse(this, {
 		limit: '1kb'
 	});
-	this.body = render('', 1, "暂不开放注册，2017年3月15日左右开放注册");
-	// var inserted;
-	//
-	// delete user['id'];
- // 	user.password = md5_f.md5Sign(user.password, 'gospel_users');
- // 	user.type = 'common';
- // 	user.ide = uuid.v4();
- // 	user.ideName = '个人版';
- // 	user.group = 'ab64c397-d323-4133-9541-479bbaaf6c52';
- // 	var inserted;
-	//
- // 	if (user.phone != "") {
-	//
- // 		var	reg = /^1[34578]\d{9}$/;
- // 			isok = reg.test(user.phone);
- // 		var token = user.token;
- // 		var authCode = user.authCode;
-	//
- // 		var innersession = yield models.gospel_innersessions.findById(token);
- // 		if (innersession.phone == user.phone) {
- // 			if ((Date.now() - innersession.time) <= innersession.limitTime) {
-	//
- // 				//更新用户状态
- // 				if (innersession.code == authCode) {
- // 					user.volumeSize = 10;
- // 					user.id = uuid.v4();
- // 					user.volume = "docker-volume-" + user.id;
- // 					if (!isok) {
- // 						user.email = user.phone;
- // 						user.phone = '';
- // 					}
- // 					var hosts = yield models.gospel_hosts.getAll({
- // 						type: user.type,
- // 						share: true
- // 					})
- // 					var host = selector.select(hosts);
- // 					user.host = host.ip;
-	// 				user.photo = 'data:image/png;base64,R0lGODlhwADAAOYAANDQ0Le3t/z8/NTU1Pv7+8LCwv39/f7+/rKyst/f383NzfT09PX19fn5+bq6usDAwLy8vNjY2L+/v7W1tbi4uOXl5e/v77Ozs8HBwezs7PPz8+np6dra2tPT07a2trS0tNLS0r29vfb29tbW1s/Pz8nJydzc3O3t7eDg4MzMzOLi4sXFxfHx8dXV1d7e3u7u7uTk5MvLy/Dw8MPDw8jIyOPj48TExPj4+Pr6+s7OztnZ2fLy8ujo6NHR0eHh4efn5+vr68bGxvf399fX17u7u8fHx+bm5tvb28rKyr6+vrm5ud3d3f///7GxsQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAAAAAAALAAAAADAAMAAAAf/gE2Cg4SFhoeIiYqLjI2Oj5CRkpOUlZaXmJmam5ydnp+goaKjpKWmp6ipqqusra6vsLGys7S1tre4ubq7vL2+v8DBwsPExcbHyMnKy8zNzs/Q0dLT1NXW19jZ2tvc3d7f4OHi4+Tl5ufo6err7O3u7/Dx8vP09fb3+Pn6+/z9/v8AAwocWItCCgAcUJgAoMABrgIAOqBA0QLACgTzAgx5waSjR48sIkCQRUNFg48fcVSIgbHdBB0EUMrsaCBBAFczOM6UuQMJuyInd+4kkGPVBBhChQKhkG7EgaRJXbQ05YAFVKEiHpzzcRXqj6mjJATtOlPAinI6yEJdUsqBELVC/wVoFUcDLlQSoy6csCuUgYdwE97yHco0VI/BQhOES4t4p2JQE240nnkgyTcPMSfLNDDyUwTNM2t8AwF6pglQIkqjFPDB217VH0V8kgAbZYluH57W9hjC0+fdHUVzKwDcowJPG4ozYdBNgXImETwxUH7gArcBz114ylz85rYRz314es7E4TbsyrV3wvHcuzbnyodIV24ALDbiylMgV74DtwDl5nHyG3AqeJMccAt8MoNyx3WTQ3HRfTLdbgJM4M0EY6lmQICddADcY960sBuInlwwoYYccnPBArA14N4n8KnGgTgzGFDaAbeNciBoMlgnzmGgjVBKACxq1kBn4wyIGP8KpyhRJGI3zFVODP/xdUAHqQQABGIspEhOAU+SdUMRqyBwBF81tKbOBSNkKBQBR/zVygM7QvWCDe9MEEMF7MkkwA85vOiKBBFYNRMDHBRADwIY0AAACAAggYGatjiAAQmPAlAAkgR16umnoIYq6qiklmrqqaimquqqrLbq6quwxirrrLTWauutuOaq66689urrr8AGK+ywxBYrykEAJKvsssw26+yz0EYr7bTUNqvfNhWQp+1uFXBD2rbgggYCN7SFay5iEnST2rnskiVbNxy0Ky9UM3aD37z4oqSoNxrk6y8TGoCD3r/zDgAOBboRzO4BhX2DlMLswiDOAxCzKyX/OBlUHG4G5AShMbhBlJPxx89xXM69JAO3bznZpswtOhBw5zJoBHBazsAza2ZwOghYkLNmFthnzgMJ/2zXAReng7PRau3cjhFMw2UEPB70G/VVGsj5jgQyXy0TAenKs0KVXq92Fj0l2Fi2RwbkWI8CRV99QIP3KKD21QbQjY8NbubcAJ78QBDmzAvYrE8AI8+cgaD9DEC2xgI4LVAIr1V8Qm+fDtA1vgRI/mkACdwtb02Mg0pEAo+HK0ACRKgaQAtWb6tBC6WjWoAJJ+7GgAkryxpCByrIwKMKHWC+66UJ8GCBBYN7tMDyPCRAAgbGFsIoBUJXr/323Hfv/ffghy/+JPjkl2/++einr/767Lfv/vvwxy///PTXb//9+Oev//789z9LIAA7'
- // 					inserted = yield models.gospel_users.create(user);
- // 					var result = yield shells.createVolume({
- // 						user: inserted.id,
- // 						host: user.host
- // 					});
- // 					yield shells.mkdir({
- // 						user: inserted.id,
- // 						host: user.host
- // 					});
- 				// 	yield mkdirNginx({
-					// 	 user: inserted.id
-					//      })
- // 					yield shells.sshKey({
- // 						user: inserted.id,
- // 						host: user.host
- // 					});
- // 					var sshKey = yield shells.getKey({
- // 						user: inserted.id,
- // 						host: user.host
- // 					});
- // 					yield models.gospel_users.modify({
- // 						id: inserted.id,
- // 						sshKey: sshKey
- // 					});
-	// 				yield models.gospel_innersessions.delete(token);
- // 					this.body = render(user, 1, "注册成功");
- // 				} else {
-	// 				yield models.gospel_innersessions.delete(token);
- // 					this.body = render(null, -1, "验证码错误，请重新获取");
- // 				}
- // 			} else {
-	// 			yield models.gospel_innersessions.delete(token);
- // 				this.body = render(null, -1, "验证码超时，请重新获取");
- // 			}
- // 		} else {
-	// 		yield models.gospel_innersessions.delete(token);
- // 			this.body = render(null, -1, "注册失败，手机号或验证码错误");
- // 		}
- // 	}
-	//
- // 	if (!inserted) {
-	// 	yield models.gospel_innersessions.delete(token);
- // 		this.body = render(null, -1, "注册失败,验证码超时");
- // 	} else {
-	//
- // 		yield models.gospel_ides.create({
- // 			id: user.ide,
- // 			name: '个人版',
- // 			creator: inserted.id,
- // 			product: '1'
- // 		});
-	//
- // 		var token = uuid.v4();
- // 		console.log("user" + token);
-	//
- // 		inserted.dataValues.token = token;
- // 		yield models.gospel_innersessions.create({
- // 			id: token,
- // 			code: token,
- // 			creater: inserted.id,
- // 			time: Date.now(),
- // 			group: inserted.group,
- // 			limitTime: 30 * 60 * 1000
- // 		});
- // 		this.body = render(inserted, 1, "注册成功");
- // 		//注册成功
- // 	}
+	// this.body = render('', 1, "暂不开放注册，2017年3月15日左右开放注册");
+	var inserted;
+
+	delete user['id'];
+ 	user.password = md5_f.md5Sign(user.password, 'gospel_users');
+ 	user.type = 'common';
+ 	user.ide = uuid.v4();
+ 	user.ideName = '个人版';
+ 	user.group = 'ab64c397-d323-4133-9541-479bbaaf6c52';
+ 	var inserted;
+
+ 	if (user.phone != "") {
+
+ 		var	reg = /^1[34578]\d{9}$/;
+ 			isok = reg.test(user.phone);
+ 		var token = user.token;
+ 		var authCode = user.authCode;
+
+ 		var innersession = yield models.gospel_innersessions.findById(token);
+ 		if (innersession.phone == user.phone) {
+ 			if ((Date.now() - innersession.time) <= innersession.limitTime) {
+
+ 				//更新用户状态
+ 				if (innersession.code == authCode) {
+ 					user.volumeSize = 10;
+ 					user.id = uuid.v4();
+ 					user.volume = "docker-volume-" + user.id;
+ 					if (!isok) {
+ 						user.email = user.phone;
+ 						user.phone = '';
+ 					}
+ 					var hosts = yield models.gospel_hosts.getAll({
+ 						type: user.type,
+ 						share: true
+ 					})
+					console.log(hosts);
+ 					var host = selector.select(hosts);
+					console.log(host);
+ 					user.host = host.ip;
+					user.photo = 'data:image/png;base64,R0lGODlhwADAAOYAANDQ0Le3t/z8/NTU1Pv7+8LCwv39/f7+/rKyst/f383NzfT09PX19fn5+bq6usDAwLy8vNjY2L+/v7W1tbi4uOXl5e/v77Ozs8HBwezs7PPz8+np6dra2tPT07a2trS0tNLS0r29vfb29tbW1s/Pz8nJydzc3O3t7eDg4MzMzOLi4sXFxfHx8dXV1d7e3u7u7uTk5MvLy/Dw8MPDw8jIyOPj48TExPj4+Pr6+s7OztnZ2fLy8ujo6NHR0eHh4efn5+vr68bGxvf399fX17u7u8fHx+bm5tvb28rKyr6+vrm5ud3d3f///7GxsQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAAAAAAALAAAAADAAMAAAAf/gE2Cg4SFhoeIiYqLjI2Oj5CRkpOUlZaXmJmam5ydnp+goaKjpKWmp6ipqqusra6vsLGys7S1tre4ubq7vL2+v8DBwsPExcbHyMnKy8zNzs/Q0dLT1NXW19jZ2tvc3d7f4OHi4+Tl5ufo6err7O3u7/Dx8vP09fb3+Pn6+/z9/v8AAwocWItCCgAcUJgAoMABrgIAOqBA0QLACgTzAgx5waSjR48sIkCQRUNFg48fcVSIgbHdBB0EUMrsaCBBAFczOM6UuQMJuyInd+4kkGPVBBhChQKhkG7EgaRJXbQ05YAFVKEiHpzzcRXqj6mjJATtOlPAinI6yEJdUsqBELVC/wVoFUcDLlQSoy6csCuUgYdwE97yHco0VI/BQhOES4t4p2JQE240nnkgyTcPMSfLNDDyUwTNM2t8AwF6pglQIkqjFPDB217VH0V8kgAbZYluH57W9hjC0+fdHUVzKwDcowJPG4ozYdBNgXImETwxUH7gArcBz114ylz85rYRz314es7E4TbsyrV3wvHcuzbnyodIV24ALDbiylMgV74DtwDl5nHyG3AqeJMccAt8MoNyx3WTQ3HRfTLdbgJM4M0EY6lmQICddADcY960sBuInlwwoYYccnPBArA14N4n8KnGgTgzGFDaAbeNciBoMlgnzmGgjVBKACxq1kBn4wyIGP8KpyhRJGI3zFVODP/xdUAHqQQABGIspEhOAU+SdUMRqyBwBF81tKbOBSNkKBQBR/zVygM7QvWCDe9MEEMF7MkkwA85vOiKBBFYNRMDHBRADwIY0AAACAAggYGatjiAAQmPAlAAkgR16umnoIYq6qiklmrqqaimquqqrLbq6quwxirrrLTWauutuOaq66689urrr8AGK+ywxBYrykEAJKvsssw26+yz0EYr7bTUNqvfNhWQp+1uFXBD2rbgggYCN7SFay5iEnST2rnskiVbNxy0Ky9UM3aD37z4oqSoNxrk6y8TGoCD3r/zDgAOBboRzO4BhX2DlMLswiDOAxCzKyX/OBlUHG4G5AShMbhBlJPxx89xXM69JAO3bznZpswtOhBw5zJoBHBazsAza2ZwOghYkLNmFthnzgMJ/2zXAReng7PRau3cjhFMw2UEPB70G/VVGsj5jgQyXy0TAenKs0KVXq92Fj0l2Fi2RwbkWI8CRV99QIP3KKD21QbQjY8NbubcAJ78QBDmzAvYrE8AI8+cgaD9DEC2xgI4LVAIr1V8Qm+fDtA1vgRI/mkACdwtb02Mg0pEAo+HK0ACRKgaQAtWb6tBC6WjWoAJJ+7GgAkryxpCByrIwKMKHWC+66UJ8GCBBYN7tMDyPCRAAgbGFsIoBUJXr/323Hfv/ffghy/+JPjkl2/++einr/767Lfv/vvwxy///PTXb//9+Oev//789z9LIAA7'
+ 					inserted = yield models.gospel_users.create(user);
+ 				// 	var result = yield shells.createVolume({
+ 				// 		user: inserted.id,
+ 				// 		host: user.host
+ 				// 	});
+ 					yield shells.mkdir({
+ 						user: inserted.id,
+ 						host: user.host
+ 					});
+ 					yield shells.mkdirNginx({
+						 user: inserted.id
+					     })
+ 					yield shells.sshKey({
+ 						user: inserted.id,
+ 						host: user.host
+ 					});
+ 					var sshKey = yield shells.getKey({
+ 						user: inserted.id,
+ 						host: user.host
+ 					});
+ 					yield models.gospel_users.modify({
+ 						id: inserted.id,
+ 						sshKey: sshKey
+ 					});
+					yield models.gospel_innersessions.delete(token);
+ 					this.body = render(user, 1, "注册成功");
+ 				} else {
+					yield models.gospel_innersessions.delete(token);
+ 					this.body = render(null, -1, "验证码错误，请重新获取");
+ 				}
+ 			} else {
+				yield models.gospel_innersessions.delete(token);
+ 				this.body = render(null, -1, "验证码超时，请重新获取");
+ 			}
+ 		} else {
+			yield models.gospel_innersessions.delete(token);
+ 			this.body = render(null, -1, "注册失败，手机号或验证码错误");
+ 		}
+ 	}
+
+ 	if (!inserted) {
+		yield models.gospel_innersessions.delete(token);
+ 		this.body = render(null, -1, "注册失败,验证码超时");
+ 	} else {
+
+ 		yield models.gospel_ides.create({
+ 			id: user.ide,
+ 			name: '个人版',
+ 			creator: inserted.id,
+ 			product: '1'
+ 		});
+
+ 		var token = uuid.v4();
+ 		console.log("user" + token);
+
+ 		inserted.dataValues.token = token;
+ 		yield models.gospel_innersessions.create({
+ 			id: token,
+ 			code: token,
+ 			creater: inserted.id,
+ 			time: Date.now(),
+ 			group: inserted.group,
+ 			limitTime: 30 * 60 * 1000
+ 		});
+ 		this.body = render(inserted, 1, "注册成功");
+ 		//注册成功
+ 	}
 }
 users.updatePhoto = function*() {
 
@@ -404,7 +406,7 @@ users.getEmailCode = function*() {
 	//
 	// 	from: "福音计划<account@dodora.cn>", // 发件地址
 	// 	to: email, // 收件列表
-	// 	subject: "修改密码", // 标题
+	// 	subject: "邮箱验证码", // 标题
 	// 	html: "你的验证码是" + randomstr+" ,请在10分钟之内提交验证码" // html 内容
 	// }
 	// mail(mailOptions);
@@ -704,15 +706,15 @@ users.complete = function*(){
 		var host = selector.select(hosts);
 		user.host = host.ip;
 
-		var result = yield shells.createVolume({
-			user: user.id,
-			host: user.host
-		});
+		// var result = yield shells.createVolume({
+		// 	user: user.id,
+		// 	host: user.host
+		// });
 		yield shells.mkdir({
 			user: user.id,
 			host: user.host
 		});
-		yield mkdirNginx({
+		yield shells.mkdirNginx({
 		 	user: user.id
 	    })
 		yield shells.sshKey({

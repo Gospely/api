@@ -651,7 +651,7 @@ shells.initFrameWork = function() {
 shells.getKey = function*(options) {
     var host = options.host || '120.76.235.234';
     return new Promise(function(resolve, reject) {
-        exec('cat ' + dockerBase + options.user + '/.ssh/id_rsa.pub' ,
+        exec('ssh root@'+ host +' cat ' + hostBase + options.user + '/.ssh/id_rsa.pub' ,
             function(err, data) {
                 if (err)
                     reject(err);

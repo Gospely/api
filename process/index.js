@@ -53,7 +53,7 @@ module.exports = {
                     method: 'recordRemove',
                     opp: 'recordRemove',
                     param: {
-                        domain: "gospely.com",
+                        domain: config.dnspod.baseDomain,
                         record_id: self.data.message.record
                     }
                 }
@@ -139,7 +139,7 @@ module.exports = {
                     name: 'gospel_project_' + self.data.name
                 });
                 yield shells.rmFile({
-                    fileName: "/var/www/storage/codes/" + application.creator + '/' + self.data.name,
+                    fileName: "/mnt/var/www/storage/codes/" + application.creator + '/' + self.data.name,
                     host: host,
                 })
                 yield shells.rmFile({
