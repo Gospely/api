@@ -557,7 +557,7 @@ shells.volumeInfo = function*(options) {
 shells.startTerminal = function(options) {
 
     var host = options.host || '120.76.235.234';
-    exec("ssh root@" + host + " sh /root/startTerminal.sh " + options.docker,
+    exec("ssh root@" + host + " sh /root/gospely/deploy/shell/startTerminal.sh " + options.docker,
         function(err, data) {
         });
 }
