@@ -130,7 +130,7 @@ var	writeFile = function(fileName, content) {
 	},
 	base64Image =  function*(data, namespace){
 
-		yield mkdir('/mnt/static' + namespace);
+		yield mkdir('/mnt/static/' + namespace);
 		var fileName = Date.now() +'.jpg';
 　　　　 var path = '/mnt/static/'+ namespace + '/' + fileName ;//从app.js级开始找--在我的项目工程里是这样的
         var base64 = data.replace(/^data:image\/\w+;base64,/, "");//去掉图片base64码前面部分data:image/png;base64
@@ -339,7 +339,7 @@ var vdsite = {
 		})
 
 		var result = yield base64Image(app.src, 'templates');
-		src = 'http://static.gospely.com/' + result;
+		src = 'http://static.gospel.design/' + result;
 		delete app['creator'];
 		delete app['type'];
 		delete app['name'];
