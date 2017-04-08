@@ -339,7 +339,7 @@ shells.buidDB = function*(options) {
             bash =
                 'docker run -p ' + options.port + ':3306  --name ' +
                 options.dbName +
-                ' -v /var/www/storage' + options.user +
+                ' -v /mnt/var/www/storage' + options.user +
                 '/dbs/mysql:/etc/mysql/conf.d -e MYSQL_ROOT_PASSWORD="' +
                 options.password + '" -d mariadb';
         }
