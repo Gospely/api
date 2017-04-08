@@ -70,7 +70,7 @@ module.exports = function(sequelize, DataTypes) {
               return 'SELECT count(a.id) as all  from gospel_templates as a left join (select * from gospel_orders where creator=:creator) as b on a.id=b.products where t_type=:type';
           }
           if(item.prices){
-              return 'SELECT count(a.id) as all   from gospel_templates as a left join (select * from gospel_orders where creator=:creator) as b on a.id=b.products where price=:price';
+              return 'SELECT count(a.id) as all  from gospel_templates as a left join (select * from gospel_orders where creator=:creator) as b on a.id=b.products where price=:price';
           }
 12      }
     }
