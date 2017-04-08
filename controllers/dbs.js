@@ -32,7 +32,7 @@ dbs.create = function*() {
 	}
 	db.port = yield portManager.generatePort();
 	if (db.type == 'mysql') {
-		db.description = '默认用户:root,访问端口:' + db.port;
+		db.description = 'ip: 120.76.235.234 默认用户:root,访问端口:' + db.port;
 	}
 	if (db.type == 'mongodb') {
 		db.httpPort = yield portManager.generatePort();
@@ -49,7 +49,6 @@ dbs.create = function*() {
 		type: db.type,
 		httpPort: db.httpPort
 	});
-
 	var inserted = yield models.gospel_dbs.create(db);
 	this.body = render(inserted, null, null, 1, '创建数据成功');
 }
