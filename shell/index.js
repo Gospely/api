@@ -337,7 +337,7 @@ shells.buidDB = function*(options) {
         var bash = '';
         if (options.type == 'mysql') {
             bash =
-                'docker run -p ' + options.port + ':3306  --name ' +
+                'docker run -p ' + options.port + ':3306  --name '
                 options.dbName +
                 ' -v /mnt/var/www/storage' + options.user +
                 '/dbs/mysql:/etc/mysql/conf.d -e MYSQL_ROOT_PASSWORD="' +
@@ -345,7 +345,7 @@ shells.buidDB = function*(options) {
         }
         if (options.type == 'mongodb') {
             bash =
-                'docker run -d -p ' + options.port + ':27017 -p ' +
+                'docker run -d -p ' + options.port + ':27017 -p ' + ' -m 256m --memory-swap=256m' +
                 options.httpPort +
                 ':28017 --name ' + options.dbName +
                 ' -e MONGODB_PASS="' +
