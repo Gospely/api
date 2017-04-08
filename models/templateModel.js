@@ -44,20 +44,26 @@ module.exports = function(sequelize, DataTypes) {
       },
       getAllInit(item) {
           console.log(item);
-          if(!item.type){
+          if(!item.type && !item.owner){
                return 'select a.name, a.id, a.src, a.creator, a.url, a.author, a.price, a.description, a.t_type as type, b.status from gospel_templates as a left join (select * from gospel_orders where creator=:creator) as b on a.id=b.products';
-          }else {
-               return 'select a.name, a.id, a.src, a.creator, a.url, a.author, a.price, a.description, a.t_type as type, b.status  from gospel_templates as a left join (select * from gospel_orders where creator=:creator) as b on a.id=b.products where t_type=:type';
+          }
+          if(item.owner){
+              return 'SELECT  a.name, a.id, a.src, a.creator, a.url, a.author, a.price, a.description, a.t_type as type, b.status from gospel_templates as a left join (select * from gospel_orders where creator=:creator) as b on a.id=b.products where a.creator=:owner';
+          }
+          if(item.type){
+              return 'select a.name, a.id, a.src, a.creator, a.url, a.author, a.price, a.description, a.t_type as type, b.status from gospel_templates as a left join (select * from gospel_orders where creator=:creator) as b on a.id=b.products where t_type=:type';
           }
 
       },
       countInit: function(item) {
 
-          if(!item.type){
+          if(!item.type && !item.owner){
                return 'SELECT count(a.id) as all  from gospel_templates as a left join (select * from gospel_orders where creator=:creator) as b on a.id=b.products';
-          }else if(item.owner){
+          }
+          if(item.owner){
               return 'SELECT count(a.id) as all  from gospel_templates as a left join (select * from gospel_orders where creator=:creator) as b on a.id=b.products where a.creator=:owner';
-          }else {
+          }
+          if(item.type){
               return 'SELECT count(a.id) as all  from gospel_templates as a left join (select * from gospel_orders where creator=:creator) as b on a.id=b.products where t_type=:type';
           }
 12      }
