@@ -329,7 +329,7 @@ applications.create = function*() {
 	var ide = yield models.gospel_ides.findById(user.dataValues.ide);
 	var product = yield models.gospel_products.findById(ide.dataValues.product);
 	if(count[0].dataValues.all >= product.dataValues.appLimit){
-		this.body = render(null, null, null, -1, "您的版本只允许创建" + product.dataValues.appLimit + ',需要创建更多，请升级版本');
+		this.body = render(null, null, null, -1, "您的版本只允许创建" + product.dataValues.appLimit + '个项目, 需要创建更多，请升级版本');
 		return ;
 	}
 	if(count[0].dataValues.all >= 3){
