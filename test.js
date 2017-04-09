@@ -17,3 +17,8 @@ var time = [1490229000,14902311000,1488751685694]
 
 
 console.log(new Date(1490229000000));
+
+var content = 'http://api.gospely.com/images/test.jpgewrewrew api';
+
+content = content.replace(new RegExp('api', 'gm'), 'http://www.baidu.com');
+ console.log(content);
