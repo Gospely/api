@@ -334,8 +334,11 @@ var vdsite = {
 			app = JSON.parse(app);
 		}
 		console.log(app);
-		var data = yield models.gospel_templates.getAll({
-			application: app.application
+		var data = yield models.gospel_templates.findAll({
+			where: {
+				application: app.application,
+				isDeleted: 0
+			}
 		})
 		var targetApp = yield models.gospel_applications.findById(application)
 		var result = yield base64Image(app.src, 'templates');
