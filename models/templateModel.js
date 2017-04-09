@@ -80,7 +80,7 @@ module.exports = function(sequelize, DataTypes) {
           if(item.price){
               return 'SELECT count(a.id) as all  from gospel_templates as a left join (select * from gospel_orders where creator=:creator) as b on a.id=b.products where a.price=:price';
           }
-12      }
+      }
     }
   });
   return templates;
