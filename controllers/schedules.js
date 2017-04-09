@@ -23,11 +23,12 @@ schedules.deleteDocker = function*(){
                 host: 'gospely.com',
                 name: applications[i].docker,
             });
+
             console.log(result);
             var fileName = applications[i].docker.replace('gospel_project_','');
             function clearApp(){
                 shell.clearApp({
-                    host: 'gospely.com',
+                    host: applications[i].dataValues.host,
                     user: applications[i].creator,
                     fileName: fileName,
                     docker: applications[i].docker,
@@ -45,7 +46,13 @@ schedules.deleteDocker = function*(){
         } catch (e) {
             console.log("exception" + e);
         } finally {
-
+            models.gospel_applications.destroy({
+                where: {
+                    id: applications[i].id,
+                    isDeleted: 1
+                },
+                force: false
+            });
         }
 
     }

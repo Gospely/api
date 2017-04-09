@@ -325,15 +325,15 @@ applications.create = function*() {
 	var count = yield models.gospel_applications.count({
 		creator: application.creator,
 	});
-	var user = yield models.gospel_users.findById(application.creator);
-	var ide = yield models.gospel_ides.findById(user.dataValues.ide);
-	var product = yield models.gospel_products.findById(ide.dataValues.product);
-	if(count[0].dataValues.all >= product.dataValues.appLimit){
-		this.body = render(null, null, null, -1, "您的版本只允许创建" + product.dataValues.appLimit + '个项目, 需要创建更多，请升级版本');
-		return ;
-	}
+	// var user = yield models.gospel_users.findById(application.creator);
+	// var ide = yield models.gospel_ides.findById(user.dataValues.ide);
+	// var product = yield models.gospel_products.findById(ide.dataValues.product);
+	// if(count[0].dataValues.all >= product.dataValues.appLimit){
+	// 	this.body = render(null, null, null, -1, "您的版本只允许创建" + product.dataValues.appLimit + '个项目, 需要创建更多，请升级版本');
+	// 	return ;
+	// }
 	if(count[0].dataValues.all >= 3){
-		this.body = render(null, null, null, -1, "应用创建失败,封测期间每个用户只能创建3个应用");
+		this.body = render(null, null, null, -1, "应用创建失败,内测测期间每个用户只能创建3个应用");
 		return ;
 	}
 
