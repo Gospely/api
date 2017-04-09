@@ -46,7 +46,7 @@ module.exports = function(sequelize, DataTypes) {
           console.log(item);
 
           if(item.application){
-               return 'SELECT a.application, name, id, src, creator, url, author, price, description, t_type as type from gospel_templates where application=:application';
+               return 'SELECT application, name, id, src, creator, url, author, price, description, t_type as type from gospel_templates where application=:application';
           }
           if(!item.type && !item.owner && !item.price){
                return 'select a.application, a.name, a.id, a.src, a.creator, a.url, a.author, a.price, a.description, a.t_type as type, b.status from gospel_templates as a left join (select * from gospel_orders where creator=:creator) as b on a.id=b.products';
