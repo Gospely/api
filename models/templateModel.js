@@ -49,16 +49,16 @@ module.exports = function(sequelize, DataTypes) {
                return 'SELECT application, name, id, src, creator, url, author, price, description, t_type as type from gospel_templates where application=:application';
           }
           if(!item.type && !item.owner && !item.price){
-               return 'select a.application, a.name, a.id, a.src, a.creator, a.url, a.author, a.price, a.description, a.t_type as type, b.status from gospel_templates as a left join (select * from gospel_orders where creator=:creator) as b on a.id=b.products';
+               return 'select a.application, a.name, a.id, a.src, a.creator, a.url, a.author, a.price, a.description, a.t_type as type, b.status from gospel_templates as a left join (select * from gospel_orders where creator=:creator and isdeleted = 0) as b on a.id=b.products where a.isdeleted = 0';
           }
           if(item.owner){
-              return 'SELECT a.application, a.name, a.id, a.src, a.creator, a.url, a.author, a.price, a.description, a.t_type as type, b.status from gospel_templates as a left join (select * from gospel_orders where creator=:creator) as b on a.id=b.products where a.creator=:owner';
+              return 'SELECT a.application, a.name, a.id, a.src, a.creator, a.url, a.author, a.price, a.description, a.t_type as type, b.status from gospel_templates as a left join (select * from gospel_orders where creator=:creator and isdeleted = 0) as b on a.id=b.products where a.creator=:owner and a.isdeleted = 0';
           }
           if(item.type){
-              return 'select a.application, a.name, a.id, a.src, a.creator, a.url, a.author, a.price, a.description, a.t_type as type, b.status from gospel_templates as a left join (select * from gospel_orders where creator=:creator) as b on a.id=b.products where t_type=:type';
+              return 'select a.application, a.name, a.id, a.src, a.creator, a.url, a.author, a.price, a.description, a.t_type as type, b.status from gospel_templates as a left join (select * from gospel_orders where creator=:creator and isdeleted = 0) as b on a.id=b.products where t_type=:type and a.isdeleted = 0';
           }
           if(item.price){
-              return 'select a.application, a.name, a.id, a.src, a.creator, a.url, a.author, a.price, a.description, a.t_type as type, b.status from gospel_templates as a left join (select * from gospel_orders where creator=:creator) as b on a.id=b.products where a.price=:price';
+              return 'select a.application, a.name, a.id, a.src, a.creator, a.url, a.author, a.price, a.description, a.t_type as type, b.status from gospel_templates as a left join (select * from gospel_orders where creator=:creator and isdeleted = 0) as b on a.id=b.products where a.price=:price and a.isdeleted = 0';
           }
 
 
@@ -66,19 +66,19 @@ module.exports = function(sequelize, DataTypes) {
       countInit: function(item) {
 
           if(item.application){
-              return 'SELECT count(id) as all  from gospel_templates where application=:application';
+              return 'SELECT count(id) as all  from gospel_templates where application=:application and a.isdeleted = 0' ;
           }
           if(!item.type && !item.owner && !item.price){
-               return 'SELECT count(a.id) as all  from gospel_templates as a left join (select * from gospel_orders where creator=:creator) as b on a.id=b.products';
+               return 'SELECT count(a.id) as all  from gospel_templates as a left join (select * from gospel_orders where creator=:creator and isdeleted = 0) as b on a.id=b.products where a.isdeleted = 0';
           }
           if(item.owner){
-              return 'SELECT count(a.id) as all  from gospel_templates as a left join (select * from gospel_orders where creator=:creator) as b on a.id=b.products where a.creator=:owner';
+              return 'SELECT count(a.id) as all  from gospel_templates as a left join (select * from gospel_orders where creator=:creator and isdeleted = 0) as b on a.id=b.products where a.creator=:owner and a.isdeleted = 0';
           }
           if(item.type){
-              return 'SELECT count(a.id) as all  from gospel_templates as a left join (select * from gospel_orders where creator=:creator) as b on a.id=b.products where t_type=:type';
+              return 'SELECT count(a.id) as all  from gospel_templates as a left join (select * from gospel_orders where creator=:creator and isdeleted = 0) as b on a.id=b.products where t_type=:type and a.isdeleted = 0';
           }
           if(item.price){
-              return 'SELECT count(a.id) as all  from gospel_templates as a left join (select * from gospel_orders where creator=:creator) as b on a.id=b.products where a.price=:price';
+              return 'SELECT count(a.id) as all  from gospel_templates as a left join (select * from gospel_orders where creator=:creator and isdeleted = 0) as b on a.id=b.products where a.price=:price and a.isdeleted = 0';
           }
       }
     }
