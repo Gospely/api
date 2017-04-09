@@ -29,37 +29,37 @@ Controllers.prototype.route = function(router) {
         name: modelsName + "根据ID获取信息",
         method: 'DELETE',
         router: "/" + modelsName + "/:id",
-        groups: "ab64c397-d323-4133-9541-479bbaaf6c52_100"
+        groups: "common_100"
       }).save().then(function(res) {}, function(err) {});
       models.gospel_privileges.build({
         name: modelsName + "查询",
         method: 'GET',
         router: "/" + modelsName,
-        groups: "ab64c397-d323-4133-9541-479bbaaf6c52_100"
+        groups: "common_100"
       }).save().then(function(res) {}, function(err) {});
       models.gospel_privileges.build({
         name: modelsName + "根据ID获取信息",
         method: 'GET',
         router: "/" + modelsName + "/:id",
-        groups: "ab64c397-d323-4133-9541-479bbaaf6c52_100"
+        groups: "common_100"
       }).save().then(function(res) {}, function(err) {});
       models.gospel_privileges.build({
         name: modelsName + "新增",
         method: 'POST',
         router: "/" + modelsName,
-        groups: "ab64c397-d323-4133-9541-479bbaaf6c52_100"
+        groups: "common_100"
       }).save().then(function(res) {}, function(err) {});
       models.gospel_privileges.build({
         name: modelsName + "修改",
         method: 'PUT',
         router: "/" + modelsName,
-        groups: "ab64c397-d323-4133-9541-479bbaaf6c52_100"
+        groups: "common_100"
       }).save().then(function(res) {}, function(err) {});
       models.gospel_privileges.build({
         name: modelsName + "数据条数",
         method: 'POST',
         router: "/" + modelsName + "/number",
-        groups: "ab64c397-d323-4133-9541-479bbaaf6c52_100"
+        groups: "common_100"
       }).save().then(function(res) {}, function(err) {});
     }
     //根据controllers下的文件配置单表的增删改查路由

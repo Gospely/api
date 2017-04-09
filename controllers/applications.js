@@ -322,16 +322,21 @@ applications.create = function*() {
 		this.body = render(null, null, null, 2, "不要重复创建");
 		return;
 	}
-	if(application.languageType == 'wechat:latest'){
-		var count = yield models.gospel_applications.count({
-			creator: application.creator,
-			host: '120.76.235.234'
-		});
-		if(count[0].dataValues.all >= 10){
-			this.body = render(null, null, null, -1, "应用创建失败,封测期间每个用户只能创建3个应用");
-			return ;
-		}
+	var count = yield models.gospel_applications.count({
+		creator: application.creator,
+	});
+	var user = yield models.gospel_users.findById(id);
+	var product = yield models.gospel_products.findById(user.dataValues.ide);
+	if(count[0].dataValues.all >= product.dataValues.appLimit){
+		this.body = render(null, null, null, -1, "您的版本只允许创建" + product.dataValues.appLimit + ',需要创建更多，请升级版本');
+		return ;
 	}
+	if(count[0].dataValues.all >= 3){
+		this.body = render(null, null, null, -1, "应用创建失败,封测期间每个用户只能创建3个应用");
+		return ;
+	}
+
+	//判断数量
 	if(application.id !=null && application.id != undefined && application.id != ''){
 		yield applications.deploy(application,this);
 	}else {

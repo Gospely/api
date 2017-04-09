@@ -149,7 +149,7 @@ users.register = function*() {
  	user.type = 'common';
  	user.ide = uuid.v4();
  	user.ideName = '个人版';
- 	user.group = 'ab64c397-d323-4133-9541-479bbaaf6c52';
+ 	user.group = 'common';
  	var inserted;
 
  	if (user.phone != "") {
@@ -315,36 +315,36 @@ users.authCode = function*() {
 //手机验证码
 users.phoneCode = function*() {
 
-	this.body = render('', 1, "暂不开放注册，2017年3月15日左右开放注册");
-	// var range = function(start, end) {
-	// 	var array = [];
-	// 	for (var i = start; i < end; ++i) array.push(i);
-	// 	return array;
-	// };
-	// var randomstr = range(0, 6).map(function(x) {
-	// 	return Math.floor(Math.random() * 10);
-	// }).join('');
-	//
-	// var phone = this.query.phone;
-	//
-	// var options = {
-	//
-	// 	phone: phone,
-	// 	msg: '【Gospel福音计划】' + randomstr + '，是您的短信验证码，请在10分钟内提交验证码',
-	// 	rd: false
-	// }
-	//
-	//
-	// message(options);
-	// var id = uuid.v4();
-	// var innersession = yield models.gospel_innersessions.create({
-	// 	id: id,
-	// 	code: randomstr,
-	// 	time: Date.now(),
-	// 	limitTime: 600 * 1000,
-	// 	phone: phone
-	// })
-	// this.body = render(id, 1, "获取验证码成功");
+	// this.body = render('', 1, "暂不开放注册，2017年3月15日左右开放注册");
+	var range = function(start, end) {
+		var array = [];
+		for (var i = start; i < end; ++i) array.push(i);
+		return array;
+	};
+	var randomstr = range(0, 6).map(function(x) {
+		return Math.floor(Math.random() * 10);
+	}).join('');
+
+	var phone = this.query.phone;
+
+	var options = {
+
+		phone: phone,
+		msg: '【Gospel福音计划】' + randomstr + '，是您的短信验证码，请在10分钟内提交验证码',
+		rd: false
+	}
+
+
+	message(options);
+	var id = uuid.v4();
+	var innersession = yield models.gospel_innersessions.create({
+		id: id,
+		code: randomstr,
+		time: Date.now(),
+		limitTime: 600 * 1000,
+		phone: phone
+	})
+	this.body = render(id, 1, "获取验证码成功");
 }
 //验证手机验证码
 users.verifyPhoneCode=function*(){
@@ -390,36 +390,36 @@ users.validator = function*() {
 //发送邮箱验证码
 users.getEmailCode = function*() {
 
-	this.body = render('', 1, "暂不开放注册，2017年3月15日左右开放注册");
-	// var range = function(start, end) {
-	// 	var array = [];
-	// 	for (var i = start; i < end; ++i) array.push(i);
-	// 	return array;
-	// };
-	// var randomstr = range(0, 6).map(function(x) {
-	// 	return Math.floor(Math.random() * 10);
-	// }).join('');
-	//
-	// var email = this.query.email;
-	//
-	// var mailOptions = {
-	//
-	// 	from: "福音计划<account@dodora.cn>", // 发件地址
-	// 	to: email, // 收件列表
-	// 	subject: "邮箱验证码", // 标题
-	// 	html: "你的验证码是" + randomstr+" ,请在10分钟之内提交验证码" // html 内容
-	// }
-	// mail(mailOptions);
-	//
-	// var id = uuid.v4();
-	// var innersession = yield models.gospel_innersessions.create({
-	// 	id: id,
-	// 	code: randomstr,
-	// 	time: Date.now(),
-	// 	limitTime: 10 * 60 * 1000,//一个小时的过期时间
-	// 	phone: email
-	// })
-	// this.body=render(id,1,"发送邮箱验证码成功");
+	// this.body = render('', 1, "暂不开放注册，2017年3月15日左右开放注册");
+	var range = function(start, end) {
+		var array = [];
+		for (var i = start; i < end; ++i) array.push(i);
+		return array;
+	};
+	var randomstr = range(0, 6).map(function(x) {
+		return Math.floor(Math.random() * 10);
+	}).join('');
+
+	var email = this.query.email;
+
+	var mailOptions = {
+
+		from: "福音计划<account@dodora.cn>", // 发件地址
+		to: email, // 收件列表
+		subject: "邮箱验证码", // 标题
+		html: "你的验证码是" + randomstr+" ,请在10分钟之内提交验证码" // html 内容
+	}
+	mail(mailOptions);
+
+	var id = uuid.v4();
+	var innersession = yield models.gospel_innersessions.create({
+		id: id,
+		code: randomstr,
+		time: Date.now(),
+		limitTime: 10 * 60 * 1000,//一个小时的过期时间
+		phone: email
+	})
+	this.body=render(id,1,"发送邮箱验证码成功");
 }
 
 //验证邮箱验证码
@@ -739,7 +739,7 @@ users.complete = function*(){
 			id: user.ide,
 			name: '个人版',
 			creator: user.id,
-			product: '1'
+			product: 'common'
 		});
 
 		this.body = render(user, 1, "注册成功");

@@ -61,6 +61,7 @@ var operate = {
 		yield models.gospel_users.modify({
 			id: order.creator,
 			ide: ide.id,
+			group: ide.id,
 			ideName: product.name
 		});
 	},
