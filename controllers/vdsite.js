@@ -383,7 +383,7 @@ var vdsite = {
 			})
 		}
 		yield shells.cp({
-			host: host,
+			host: targetApp.dataValues.host,
 			target: '/mnt/var/www/storage/codes/' + targetApp.dataValues.creator + "/" + targetApp.dataValues.docker.replace('gospel_project_') + '/images/*',
 			dist: '/mnt/static/vd/' + application
 		})
