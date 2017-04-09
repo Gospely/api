@@ -66,7 +66,7 @@ module.exports = function(sequelize, DataTypes) {
       countInit: function(item) {
 
           if(item.application){
-              return 'SELECT count(id) as all  from gospel_templates where application=:application and a.isdeleted = 0' ;
+              return 'SELECT count(id) as all  from gospel_templates where application=:application and isdeleted = 0' ;
           }
           if(!item.type && !item.owner && !item.price){
                return 'SELECT count(a.id) as all  from gospel_templates as a left join (select * from gospel_orders where creator=:creator and isdeleted = 0) as b on a.id=b.products where a.isdeleted = 0';
