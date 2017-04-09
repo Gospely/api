@@ -337,7 +337,7 @@ var vdsite = {
 		var data = yield models.gospel_templates.getAll({
 			application: app.application
 		})
-
+		var targetApp = yield models.gospel_applications.findById(application)
 		var result = yield base64Image(app.src, 'templates');
 		src = 'http://static.gospel.design/' + result;
 		delete app['creator'];
@@ -362,6 +362,10 @@ var vdsite = {
 				price: price,
 				src: src,
 			})
+			yield shells.mkFolder({
+				host: targetApp.host,
+				fileName: '/mnt/static/vd/' + application
+			})
 		}else {
 			yield models.gospel_templates.create({
 				name: name,
@@ -375,7 +379,11 @@ var vdsite = {
 				content: JSON.stringify(app)
 			})
 		}
-
+		yield shells.cp({
+			host: host,
+			target: '/mnt/var/www/storage/codes/' + targetApp.creator + "/" + targetApp.docker.replace('gospel_project_') + '/images/*',
+			dist: '/mnt/static/vd/' + application
+		})
 		this.body = util.resp(200, '保存成功');
 	},
 	getTemplate: function*(){

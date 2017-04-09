@@ -512,6 +512,32 @@ shells.mkdir = function*(options) {
         });
     })
 }
+shells.mkFolder = function*(options) {
+
+    var host = options.host || '120.76.235.234';
+    return new Promise(function(resolve, reject) {
+        exec("ssh root@" + host +  ' mkdir ' + options.fileName,
+            function(err,
+                data) {
+                    if(err)
+                        reject(err)
+                    resolve(data);
+        });
+    })
+}
+shells.cp = function*(options) {
+
+    var host = options.host || '120.76.235.234';
+    return new Promise(function(resolve, reject) {
+        exec("ssh root@" + host +  ' cp -rf ' + options.target + " " + options.dist,
+            function(err,
+                data) {
+                    if(err)
+                        reject(err)
+                    resolve(data);
+        });
+    })
+}
 shells.mkdirNginx = function*(options) {
 
     var host = options.host || '120.76.235.234';
