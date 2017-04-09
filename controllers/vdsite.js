@@ -353,10 +353,7 @@ var vdsite = {
 		delete app['description'];
 
 
-		yield shells.mkFolder({
-			host: targetApp.dataValues.host,
-			fileName: '/mnt/static/vd/' + application
-		})
+
 		if(data.length > 0){
 			yield models.gospel_templates.modify({
 				name: name,
@@ -386,7 +383,7 @@ var vdsite = {
 			})
 		}
 		yield shells.cp({
-			host: targetApp.dataValues.host,
+			host: host,
 			target: '/mnt/var/www/storage/codes/' + targetApp.dataValues.creator + "/" + targetApp.dataValues.docker.replace('gospel_project_') + '/images/*',
 			dist: '/mnt/static/vd/' + application
 		})
