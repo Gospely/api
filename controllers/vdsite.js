@@ -363,7 +363,7 @@ var vdsite = {
 				src: src,
 			})
 			yield shells.mkFolder({
-				host: targetApp.host,
+				host: targetApp.dataValues.host,
 				fileName: '/mnt/static/vd/' + application
 			})
 		}else {
@@ -381,7 +381,7 @@ var vdsite = {
 		}
 		yield shells.cp({
 			host: host,
-			target: '/mnt/var/www/storage/codes/' + targetApp.creator + "/" + targetApp.docker.replace('gospel_project_') + '/images/*',
+			target: '/mnt/var/www/storage/codes/' + targetApp.dataValues.creator + "/" + targetApp.dataValues.docker.replace('gospel_project_') + '/images/*',
 			dist: '/mnt/static/vd/' + application
 		})
 		this.body = util.resp(200, '保存成功');
