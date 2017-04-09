@@ -212,6 +212,11 @@ module.exports = {
 			method: 'get',
 			url: '/vdsite/template',
 			controller: 'getTemplate',
+		},{
+			name: 'vdsite 模板创建静态资源初始化',
+			method: 'get',
+			url: '/vdsite/static',
+			controller: 'staticCopy',
 		}],
 
 		users: [{

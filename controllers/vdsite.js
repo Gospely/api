@@ -395,6 +395,15 @@ var vdsite = {
 			application: this.query.application
 		})
 		this.body =  render(data, null, null, 1, "");
+	},
+	staticCopy: function*(){
+
+		yield shells.cp({
+			host: this.query.host,
+			dist: '/mnt/var/www/storage/codes/' + this.query.creator + "/" + this.query.folder,
+			target: '/mnt/static/vd/' + this.query.template + '/images'
+		})
+		this.body = util.resp(200, '资源配置成功');
 	}
 }
 
