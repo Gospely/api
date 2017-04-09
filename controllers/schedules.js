@@ -34,25 +34,25 @@ schedules.deleteDocker = function*(){
                     docker: applications[i].docker,
                     nginx: false
                 });
-                models.gospel_applications.destroy({
-                    where: {
-                        id: applications[i].id,
-                        isDeleted: 1
-                    },
-                    force: false
-                });
+                // models.gospel_applications.destroy({
+                //     where: {
+                //         id: applications[i].id,
+                //         isDeleted: 1
+                //     },
+                //     force: false
+                // });
             }
             setTimeout(clearApp, 200);
         } catch (e) {
             console.log("exception" + e);
         } finally {
-            models.gospel_applications.destroy({
-                where: {
-                    id: applications[i].id,
-                    isDeleted: 1
-                },
-                force: false
-            });
+            // models.gospel_applications.destroy({
+            //     where: {
+            //         id: applications[i].id,
+            //         isDeleted: 1
+            //     },
+            //     force: false
+            // });
         }
 
     }
