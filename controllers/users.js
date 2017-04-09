@@ -230,7 +230,7 @@ users.register = function*() {
  			id: user.ide,
  			name: '个人版',
  			creator: inserted.id,
- 			product: '1'
+ 			product: 'common'
  		});
 
  		var token = uuid.v4();
