@@ -329,6 +329,7 @@ var vdsite = {
 			description = app.description,
 			price = app.price,
 			src = app.src,
+			author = app.userName,
 			application = app.application;
 		if(typeof app == 'string') {
 			app = JSON.parse(app);
@@ -351,6 +352,8 @@ var vdsite = {
 		delete app['src'];
 		delete app['price'];
 		delete app['description'];
+		delete app['author'];
+
 
 
 
@@ -364,6 +367,7 @@ var vdsite = {
 				description: description,
 				price: price,
 				src: src,
+				author: author
 			})
 		}else {
 			yield shells.mkFolder({
@@ -379,6 +383,7 @@ var vdsite = {
 				price: price,
 				src: src,
 				application: application,
+				author: author,
 				content: JSON.stringify(app)
 			})
 		}
