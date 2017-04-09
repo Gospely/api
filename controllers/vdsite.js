@@ -365,11 +365,11 @@ var vdsite = {
 				price: price,
 				src: src,
 			})
+		}else {
 			yield shells.mkFolder({
 				host: targetApp.dataValues.host,
 				fileName: '/mnt/static/vd/' + application
 			})
-		}else {
 			yield models.gospel_templates.create({
 				name: name,
 				creator: creator,
