@@ -55,7 +55,10 @@ module.exports = {
 							url = url + ":id";
 						}
 					}
-
+					if(excape(url)){
+						yield next;
+						return;
+					}
 				}
 				console.log(url);
 				if (token == null || token == undefined || token == '') {
