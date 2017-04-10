@@ -42,7 +42,7 @@ function getWechatAuths(appid_, secret_) {
         name: userBase.nickname + '_wechat',
         photo: userBase.headimgurl,
         openId: userBase.openid,
-        phone: '110',
+        phone: '',
         password: '882162BF9DA722446F86F7F690ACD5E0'
       });
 
