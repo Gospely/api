@@ -45,6 +45,10 @@ schedules.deleteDocker = function*(){
             setTimeout(clearApp, 200);
         } catch (e) {
             console.log("exception" + e);
+            if(applications[i].docker){
+                var fileName = applications[i].docker.replace('gospel_project_','');
+                setTimeout(clearApp, 200);
+            }
         } finally {
             // models.gospel_applications.destroy({
             //     where: {
