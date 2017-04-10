@@ -141,7 +141,8 @@ module.exports = {
 				'/pack/download',
 				'/users/complete',
 				'/schedules',
-				'/feedbacks'
+				'/feedbacks',
+				'/users/:id'
 			];
 			var isHasNoneAuthRoute = false;
 
