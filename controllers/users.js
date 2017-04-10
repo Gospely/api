@@ -698,7 +698,7 @@ users.complete = function*(){
 		user.type = 'common';
     	user.ide = uuid.v4();
     	user.ideName = '个人版';
-    	user.group = 'comon';
+    	user.group = 'common';
 		var hosts = yield models.gospel_hosts.getAll({
 			type: user.type,
 			share: true
