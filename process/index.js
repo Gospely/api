@@ -17,7 +17,7 @@ module.exports = {
         //var host = yield this.hostFilter(user, false);
         host = user.host;
 
-        application.userName = user.name;
+        application.userName = user.name.replace(' ', '');
         var reg = /[\u4e00-\u9FA5]+/;
         var res = reg.test(domain);
 
@@ -225,7 +225,7 @@ module.exports = {
 
 
 
-        application.userName = user.name;
+        application.userName = user.name.replace(' ', '');
         var reg = /[\u4e00-\u9FA5]+/;
         var res = reg.test(domain);
 
@@ -431,6 +431,7 @@ module.exports = {
         application.image = application.languageType;
 		en_name = en_name.replace('_','');
 		user.name = user.name.toLocaleLowerCase();
+        user.name = user.name;
 
         if (application.image == 'nodejs:latest' && application.framework == null) {
             application.version = 'latest';
