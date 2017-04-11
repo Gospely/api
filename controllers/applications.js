@@ -207,7 +207,9 @@ applications.delete = function*() {
 		application: application.id
 	});
 	console.log(UIState);
-	if(UIState != null) {
+
+	try {
+		if(UIState[0].dataValues != null) {
 		if(UIState[0].dataValues) {
 			UIState = yield models.gospel_uistates.findById(UIState[0].dataValues.id)
 			yield models.gospel_uistates.delete(UIState);
@@ -224,7 +226,6 @@ applications.delete = function*() {
 		var domain = application.domain;
 		var projectFolder = application.docker.replace('gospel_project_','');
 
-		try {
 			if(domain != null) {
 				// var reg = /[\u4e00-\u9FA5]+/;
 				// var res = reg.test(domain);
@@ -270,18 +271,18 @@ applications.delete = function*() {
 				}, 1000)
 			}
 			//删除docker
-
-		} catch (e) {
-			console.log(e);
-		} finally {
-
-			var inserted = yield models.gospel_applications.delete(application.id);
-			if (!inserted) {
-				this.throw(405, "couldn't be delete.");
-			}
-			this.body = render(inserted, null, null, 1, '删除成功');
-		}
 	}
+	} catch (e) {
+			console.log(e);
+	} finally {
+
+		var inserted = yield models.gospel_applications.delete(application.id);
+		if (!inserted) {
+			this.throw(405, "couldn't be delete.");
+		}
+		this.body = render(inserted, null, null, 1, '删除成功');
+	}
+
 
 }
 applications.killPID = function*(){
