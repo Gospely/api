@@ -106,34 +106,34 @@ module.exports = {
 				method: 'get',
 				url: '/git/change/:id',
 				controller: 'gitChange',
-				groups: "common_100"
+				groups: "common_standard_basic_company_100"
 			},
 			{
 				name: 'git commit',
 				method: 'get',
 				url: '/git/commit/:id',
 				controller: 'gitCommit',
-				groups: "common_100"
+				groups: "common_standard_basic_company_100"
 			},
 			{
 				name: 'git push',
 				method: 'get',
 				url: '/git/push/:id',
 				controller: 'gitPush',
-				groups: "common_100"
+				groups: "common_standard_basic_company_100"
 			},{
 				name: 'git pull',
 				method: 'get',
 				url: '/git/pull/:id',
 				controller: 'gitPull',
-				groups: "common_100"
+				groups: "common_standard_basic_company_100"
 			},
 			,{
 				name: 'git origin',
 				method: 'post',
 				url: '/git/origin',
 				controller: 'gitOrigin',
-				groups: "common_100"
+				groups: "common_standard_basic_company_100"
 			}
 		],
 		applications: [{
@@ -141,32 +141,32 @@ module.exports = {
 			method: 'get',
 			url: '/applications/killpid',
 			controller: 'killPID',
-			groups: "common_100"
+			groups: "common_standard_basic_company_100"
 		},{
 			name: '启动应用',
 			method: 'get',
 			url: '/applications/start/:id',
 			controller: 'startApp',
-			groups: "common_100"
+			groups: "common_standard_basic_company_100"
 		},
 		,{
 			name: '中断应用运行',
 			method: 'get',
 			url: '/applications/stop/:id',
 			controller: 'stopApp',
-			groups: "common_100"
+			groups: "common_standard_basic_company_100"
 		},{
 			name: '重启终端',
 			method: 'get',
 			url: '/applications/startTerminal',
 			controller: 'startTerminal',
-			groups: "common_100"
+			groups: "common_standard_basic_company_100"
 		},{
 			name: '名称校验',
 			method: 'get',
 			url: '/applications/validator',
 			controller: 'validate',
-			groups: "common_100"
+			groups: "common_standard_basic_company_100"
 		}],
 
 		weapp: [{
@@ -174,13 +174,13 @@ module.exports = {
 			method: 'post',
 			url: '/weapp/pack',
 			controller: 'pack',
-			groups: "common_100"
+			groups: "common_standard_basic_company_100"
 		}, {
 			name: '下载包',
 			method: 'get',
 			url: '/weapp/download/:id',
 			controller: 'download',
-			groups: "common_100"
+			groups: "common_standard_basic_company_100"
 		}],
 
 		vdsite: [{
@@ -188,35 +188,43 @@ module.exports = {
 			method: 'post',
 			url: '/vdsite/pack',
 			controller: 'pack',
-			groups: "common_100"
+			groups: "common_standard_basic_company_100"
+		},{
+			name: 'vdsite预览',
+			method: 'post',
+			url: '/vdsite/preview',
+			controller: 'pack',
+			groups: "common_standard_basic_company_100"
 		}, {
 			name: 'vdsite下载包',
 			method: 'get',
 			url: '/vdsite/download',
 			controller: 'download',
-			groups: "common_100"
+			groups: "common_standard_basic_company_100"
 		},{
-			name: 'vdsite云打包',
+			name: 'vdsite发布',
 			method: 'get',
 			url: '/vdsite/deploy',
 			controller: 'deploy',
-			groups: "common_100"
+			groups: "common_standard_basic_company_100"
 		},{
 			name: 'vdsite 模板',
 			method: 'post',
 			url: '/vdsite/template',
 			controller: 'template',
-			groups: "common_100"
+			groups: "common_standard_basic_company_100"
 		},{
 			name: 'vdsite 模板',
 			method: 'get',
 			url: '/vdsite/template',
 			controller: 'getTemplate',
+			groups: "common_standard_basic_company_100"
 		},{
 			name: 'vdsite 模板创建静态资源初始化',
 			method: 'get',
 			url: '/vdsite/static',
 			controller: 'staticCopy',
+			groups: "common_standard_basic_company_100"
 		}],
 
 		users: [{
@@ -224,121 +232,121 @@ module.exports = {
 			method: 'post',
 			url: '/users/login',
 			controller: 'login',
-			groups: "common_100"
+			groups: "common_standard_basic_company_100"
 		}, {
 			name: '注册',
 			method: 'post',
 			url: '/users/register',
 			controller: 'register',
-			groups: "common_100"
+			groups: "common_standard_basic_company_100"
 		}, {
 			name: '修改头像',
 			method: 'post',
 			url: '/users/photo',
 			controller: 'updatePhoto',
-			groups: "common_100"
+			groups: "common_standard_basic_company_100"
 		}, {
 			name: '邮箱激活',
 			method: 'get',
 			url: '/users/authorization',
 			controller: 'authorization',
-			groups: "common"
+			groups: "common_standard_basic_company"
 		}, {
 			name: '微信登录',
 			method: 'get',
 			url: '/users/wechat',
 			controller: 'weixinLogin',
-			groups: "common"
+			groups: "common_standard_basic_company"
 		}, {
 			name: '退出',
 			method: 'post',
 			url: '/users/logout',
 			controller: 'logout',
-			groups: "common"
+			groups: "common_standard_basic_company"
 		}, {
 			name: '获取验证码',
 			method: 'get',
 			url: '/users/code',
 			controller: 'authCode',
-			groups: "common"
+			groups: "common_standard_basic_company"
 		}, {
 			name: '获取手机验证码',
 			method: 'get',
 			url: '/users/phone/code',
 			controller: 'phoneCode',
-			groups: "common"
+			groups: "common_standard_basic_company"
 		}, {
 			name: '验证手机验证码',
 			method: 'post',
 			url: '/users/verifyphonecode',
 			controller: 'verifyPhoneCode',
-			groups: "common"
+			groups: "common_standard_basic_company"
 		},{
 			name: '获取邮箱验证码',
 			method: 'get',
 			url: '/users/email/code',
 			controller: 'getEmailCode',
-			groups: "common"
+			groups: "common_standard_basic_company"
 		}, {
 			name: '验证邮箱验证码',
 			method: 'post',
 			url: '/users/verifyemailcode',
 			controller: 'verifyEmailCode',
-			groups: "common"
+			groups: "common_standard_basic_company"
 		}, {
 			name: '忘记密码',
 			method: 'post',
 			url: '/users/modify',
 			controller: 'modify',
-			groups: "common"
+			groups: "common_standard_basic_company"
 		},{
 			name: '获取文件流',
 			method: 'get',
 			url: '/users/files/:file',
 			controller: 'files',
-			groups: "common_100"
+			groups: "common_standard_basic_company_100"
 		}, {
 			name: '检查是否被注册',
 			method: 'get',
 			url: '/users/validator',
 			controller: 'validator',
-			groups: "common_100"
+			groups: "common_standard_basic_company_100"
 		}, {
 			name: '登录验证',
 			method: 'get',
 			url: '/users/validator',
 			controller: 'validator',
-			groups: "common_100"
+			groups: "common_standard_basic_company_100"
 		}, {
 			name: '用户数据卷大小',
 			method: 'get',
 			url: '/users/volume/:id',
 			controller: 'volume',
-			groups: "common_100"
+			groups: "common_standard_basic_company_100"
 		}, {
 			name: '订单统计',
 			method: 'get',
 			url: '/users/chart/orderscount',
 			controller: 'chartOrdersCount',
-			groups: "common_100"
+			groups: "common_standard_basic_company_100"
 		},{
 			name: '用户统计',
 			method: 'get',
 			url: '/users/chart/userscount',
 			controller: 'chartUsersCount',
-			groups: "common_100"
+			groups: "common_standard_basic_company_100"
 		},{
 			name: '控制面板api',
 			method: 'get',
 			url: '/users/dashboard',
 			controller: 'dashboardApi',
-			groups: "common_100"
+			groups: "common_standard_basic_company_100"
 		},{
 			name: '第三方登陆信息完善',
 			method: 'post',
 			url: '/users/complete',
 			controller: 'complete',
-			groups: "common_100"
+			groups: "common_standard_basic_company_100"
 		}],
 
 		kr: [{
@@ -346,13 +354,13 @@ module.exports = {
 			method: 'get',
 			url: '/kr/search/:page',
 			controller: 'search',
-			groups: "common"
+			groups: "common_standard_basic_company"
 		}, {
 			name: 'article',
 			method: 'get',
 			url: '/kr/article/:id',
 			controller: 'article',
-			groups: "common"
+			groups: "common_standard_basic_company"
 		}],
 
 		container: [{
@@ -360,152 +368,152 @@ module.exports = {
 			method: 'get',
 			url: '/container/start/:containerName',
 			controller: 'start',
-			groups: "common"
+			groups: "common_standard_basic_company"
 		}, {
 			name: '停止容器',
 			method: 'get',
 			url: '/container/stop/:containerName',
 			controller: 'stop',
-			groups: "common"
+			groups: "common_standard_basic_company"
 		}, {
 			name: '重启容器',
 			method: 'get',
 			url: '/container/restart/:containerName',
 			controller: 'restart',
-			groups: "common"
+			groups: "common_standard_basic_company"
 		}, {
 			name: '查看容器信息',
 			method: 'get',
 			url: '/container/inspect/:containerName',
 			controller: 'inspect',
-			groups: "common"
+			groups: "common_standard_basic_company"
 		}, {
 			name: '监控容器运行状态',
 			method: 'get',
 			url: '/container/stats/:containerName',
 			controller: 'stats',
-			groups: "common"
+			groups: "common_standard_basic_company"
 		}],
 		fs: [{
 			name: '读文件',
 			method: 'post',
 			url: '/fs/read',
 			controller: 'read',
-			groups: "common_100"
+			groups: "common_standard_basic_company_100"
 		}, {
 			name: '写文件',
 			method: 'post',
 			url: '/fs/write',
 			controller: 'write',
-			groups: "common_100"
+			groups: "common_standard_basic_company_100"
 		}, {
 			name: '追加文件',
 			method: 'post',
 			url: '/fs/append',
 			controller: 'append',
-			groups: "common_100"
+			groups: "common_standard_basic_company_100"
 		}, {
 			name: '删除文件',
 			method: 'post',
 			url: '/fs/remove',
 			controller: 'remove',
-			groups: "common_100"
+			groups: "common_standard_basic_company_100"
 		}, {
 			name: '复制文件',
 			method: 'post',
 			url: '/fs/copy',
 			controller: 'copy',
-			groups: "common_100"
+			groups: "common_standard_basic_company_100"
 		}, {
 			name: '移动文件',
 			method: 'post',
 			url: '/fs/move',
 			controller: 'rename',
-			groups: "common_100"
+			groups: "common_standard_basic_company_100"
 		}, {
 			name: '重命名文件',
 			method: 'post',
 			url: '/fs/rename',
 			controller: 'rename',
-			groups: "common_100"
+			groups: "common_standard_basic_company_100"
 		}, {
 			name: '创建文件夹',
 			method: 'post',
 			url: '/fs/mkdir',
 			controller: 'mkdir',
-			groups: "common_100"
+			groups: "common_standard_basic_company_100"
 		}, {
 			name: '删除文件夹',
 			method: 'post',
 			url: '/fs/rmdir',
 			controller: 'rmdir',
-			groups: "common_100"
+			groups: "common_standard_basic_company_100"
 		}, {
 			name: '复制文件夹',
 			method: 'post',
 			url: '/fs/copydir',
 			controller: 'copy',
-			groups: "common_100"
+			groups: "common_standard_basic_company_100"
 		}, {
 			name: '移动文件夹',
 			method: 'post',
 			url: '/fs/dir/move',
 			controller: 'rename',
-			groups: "common_100"
+			groups: "common_standard_basic_company_100"
 		}, {
 			name: '重命名文件夹',
 			method: 'post',
 			url: '/fs/dir/rename',
 			controller: 'rename',
-			groups: "common_100"
+			groups: "common_standard_basic_company_100"
 		}, {
 			name: '读取文件夹',
 			method: 'get',
 			url: '/fs/ls/:dirName',
 			controller: 'ls',
-			groups: "common_100"
+			groups: "common_standard_basic_company_100"
 		}, {
 			name: '按需读取文件或文件夹',
 			method: 'get',
 			url: '/fs/list/file',
 			controller: 'list',
-			groups: "common_100"
+			groups: "common_standard_basic_company_100"
 		}, {
 			name: '按需读取文件或文件夹(无参数)',
 			method: 'get',
 			url: '/fs/list/optional',
 			controller: 'list',
-			groups: "common_100"
+			groups: "common_standard_basic_company_100"
 		}, {
 			name: '读取所有文件',
 			method: 'get',
 			url: '/fs/list/all',
 			controller: 'all',
-			groups: "common_100"
+			groups: "common_standard_basic_company_100"
 		}, {
 			name: '上传文件',
 			method: 'post',
 			url: '/fs/upload',
 			controller: 'upload',
-			groups: "common_100"
+			groups: "common_standard_basic_company_100"
 		}, {
 			name: '上传图片',
 			method: 'post',
 			url: '/fs/image/upload',
 			controller: 'imageUpload',
-			groups: "common_100"
+			groups: "common_standard_basic_company_100"
 		},{
 			name: '执行shell命令',
 			method: 'post',
 			url: '/fs/shell/',
 			controller: 'shell',
-			groups: "common_100"
+			groups: "common_standard_basic_company_100"
 		}, {
 			name: '打包源代码',
 			method: 'get',
 			url: '/fs/packsrc',
 			controller: 'packsrc',
-			groups: "common_100"
+			groups: "common_standard_basic_company_100"
 		}]
 	},
 	file: {
