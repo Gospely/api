@@ -2,6 +2,7 @@
 exports = module.exports = {
 	getFormatDate:function(day){
 		var date = new Date();
+        date.setHours(date.getHours() + 8);
 		if (day != null) {
 			date.setDate(date.getDate() + day);
 		}
