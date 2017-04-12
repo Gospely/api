@@ -461,7 +461,7 @@ module.exports = {
         yield result = shells.rmDocker({
             name: en_name + "_" + user.name,
         })
-
+        var insertedResult = {};
         var node = processes.init({
             do: function*() {
                 var result = yield shells.initDebug({
@@ -518,9 +518,9 @@ module.exports = {
                     options.version = application.languageVersion;
                 }
                 // yield shells.defaultVersion(options);
-                var inserted = yield models.gospel_applications.create(application);
+                insertedResult = yield models.gospel_applications.create(application);
                 yield models.gospel_uistates.create({
-                    application: inserted.id,
+                    application: insertedResult.id,
                     creator: application.creator,
                     configs: image.defaultConfig
                 });
