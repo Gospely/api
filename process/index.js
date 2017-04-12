@@ -579,7 +579,7 @@ module.exports = {
                 domain: config.dnspod.baseDomain,
                 host: host,
                 ip: host,
-                application: inserted.id,
+                application: insertedResult.id,
                 creator: application.creator,
                 sub: true
             },
