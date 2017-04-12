@@ -957,6 +957,20 @@ shells.percent = function*(options){
         });
     });
 }
+shells.getLogs = function*(options){
 
+    return new Promise(function(resolve, reject) {
+        console.log(options);
+        var bash = "cat /var/www/api/logs/development*.log | grep'" + options.key + "''";
+        console.log(bash);
+        exec(bash, function(err, data) {
+            console.log(err);
+            console.log(data);
+            if (err)
+                reject(err);
+            resolve(data);
+        });
+    });
+}
 //shells.isGit = function()
 module.exports = shells;

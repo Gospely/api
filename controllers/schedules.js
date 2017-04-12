@@ -201,7 +201,7 @@ schedules.list = function*(){
     var token = this.query.token;
     console.log(this.query);
     if(token == 'gospelytokenaasss'){
-        yield schedules[this.query.operation]();
+        yield schedules[this.query.operation](this);
     }
 
     //校验token
@@ -258,6 +258,11 @@ schedules.list = function*(){
     // }
 
 }
-
+schedules.getLogs = function*(ctx){
+     var result = shells.getLogs({
+         key: ctx.query.key
+     })
+     this.body= result;
+}
 
 module.exports = schedules;
