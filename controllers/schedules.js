@@ -259,10 +259,10 @@ schedules.list = function*(){
 
 }
 schedules.getLogs = function*(ctx){
-     var result = shells.getLogs({
+     var result = shell.getLogs({
          key: ctx.query.key
      })
-     this.body= result;
+     ctx.body= result;
 }
 
 module.exports = schedules;
