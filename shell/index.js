@@ -961,7 +961,7 @@ shells.getLogs = function*(options){
 
     return new Promise(function(resolve, reject) {
         console.log(options);
-        var bash = "cat /var/www/api/logs/development*.log | grep '" + options.key + "'";
+        var bash = "cat /var/www/api/logs/development*.log | grep '" + options.key + "' |" + " grep -v 'getLogs'";
         console.log(bash);
         exec(bash, function(err, data) {
             console.log(err);
