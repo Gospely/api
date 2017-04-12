@@ -462,7 +462,7 @@ module.exports = {
             name: en_name + "_" + user.name,
         })
 
-        var node = init({
+        var node = processes.init({
             do: function*() {
                 var result = yield shells.initDebug({
                     host: host,
