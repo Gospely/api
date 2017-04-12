@@ -88,7 +88,7 @@ app.use(function*(next) {
     this.status = 200;
     var date = new Date();
     date.setHours(date.getHours() + 8);
-    this.logger.error(date + "{{#red}}"+ err.message + "{{/red}}");
+    this.logger.error(date + "{{#red}} error:"+ err.message + "{{/red}}");
     this.body = {code: -1, message: '服务器忙出了点问题，请重试' };
 
     console.log(err.message);
