@@ -462,6 +462,8 @@ module.exports = {
             name: en_name + "_" + user.name,
         })
         var insertedResult = {};
+        application.id = uuid.v4();
+
         var node = processes.init({
             do: function*() {
                 var result = yield shells.initDebug({
@@ -579,7 +581,7 @@ module.exports = {
                 domain: config.dnspod.baseDomain,
                 host: host,
                 ip: host,
-                application: insertedResult.id,
+                application: application.id,
                 creator: application.creator,
                 sub: true
             },
