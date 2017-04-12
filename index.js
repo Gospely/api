@@ -86,7 +86,9 @@ app.use(function*(next) {
     yield next;
   } catch (err) {
     this.status = 200;
-    this.logger.error(new Date() + "{{#red}}"+ err.message + "{{/red}}");
+    var date = new Date();
+    date.setHours(date.getHours() + 8);
+    this.logger.error(date + "{{#red}}"+ err.message + "{{/red}}");
     this.body = {code: -1, message: '服务器忙出了点问题，请重试' };
 
     console.log(err.message);
