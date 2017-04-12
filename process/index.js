@@ -461,66 +461,109 @@ module.exports = {
         yield result = shells.rmDocker({
             name: en_name + "_" + user.name,
         })
-        var result = yield shells.initDebug({
-            host: host,
-            name: en_name + "_" + user.name,
-            sshPort: application.sshPort,
-            socketPort: application.socketPort,
-            appPort: application.port,
-            password: application.password,
-            image: image.id,
-            parent: application.image,
-            framework: application.framework,
-            hostName: en_name,
-            exposePort: image.port,
-            creator: application.creator,
-            db: application.databaseType,
-            dbUser: application.dbUser,
-            version: application.languageVersion,
-            dbPort: application.dbPort
-        });
-        if (application.git == null || application.git == '') {
-            yield shells.mvFiles({
+
+        var node = init({
+            do: function*() {
+                var result = yield shells.initDebug({
+                    host: host,
+                    name: en_name + "_" + user.name,
+                    sshPort: application.sshPort,
+                    socketPort: application.socketPort,
+                    appPort: application.port,
+                    password: application.password,
+                    image: image.id,
+                    parent: application.image,
+                    framework: application.framework,
+                    hostName: en_name,
+                    exposePort: image.port,
+                    creator: application.creator,
+                    db: application.databaseType,
+                    dbUser: application.dbUser,
+                    version: application.languageVersion,
+                    dbPort: application.dbPort
+                });
+                if (application.git == null || application.git == '') {
+                    yield shells.mvFiles({
+                        host: host,
+                        name: en_name + "_" + user.name,
+                    });
+                }
+
+                if (application.framework != null && application.framework != undefined && application.framework != '') {
+                    application.image = application.framework;
+                } else {
+                    if(application.image == 'html:latest') {
+
+                    }else{
+                        application.image = application.image.split(":")[0] + ":" + application.languageVersion;
+                    }
+                }
+
+                application.host = host;
+                application.status = -1;
+                application.docker = 'gospel_project_' + en_name + "_" + user.name;
+                delete application['languageType'];
+                delete application['languageVersion'];
+                delete application['databaseType'];
+                console.log(application);
+
+                application.domain = en_name + "-" + user.name;
+
+                //设置默认版本
+                var options = {
+                    docker: application.docker,
+                    version: '6'
+                }
+                if(application.image == 'nodejs:latest') {
+                    options.version = application.languageVersion;
+                }
+                // yield shells.defaultVersion(options);
+                var inserted = yield models.gospel_applications.create(application);
+                yield models.gospel_uistates.create({
+                    application: inserted.id,
+                    creator: application.creator,
+                    configs: image.defaultConfig
+                });
+            },
+            data: {
                 host: host,
                 name: en_name + "_" + user.name,
-            });
-        }
-
-        if (application.framework != null && application.framework != undefined && application.framework != '') {
-            application.image = application.framework;
-        } else {
-            if(application.image == 'html:latest') {
-
-            }else{
-                application.image = application.image.split(":")[0] + ":" + application.languageVersion;
+                sshPort: application.sshPort,
+                socketPort: application.socketPort,
+                appPort: application.port,
+                password: application.password,
+                image: image.id,
+                parent: application.image,
+                framework: application.framework,
+                hostName: en_name,
+                exposePort: image.port,
+                creator: application.creator,
+                db: application.databaseType,
+                dbUser: application.dbUser,
+                version: application.languageVersion,
+                dbPort: application.dbPort
+            },
+            undo: function*() {
+                var self = this;
+                yield shells.stopDocker({
+                    host: host,
+                    name: 'gospel_project_' + self.data.name
+                });
+                yield shells.rmDocker({
+                    host: host,
+                    name: 'gospel_project_' + self.data.name
+                });
+                yield shells.rmFile({
+                    fileName: "/mnt/var/www/storage/codes/" + application.creator + '/' + self.data.name,
+                    host: host,
+                })
+                yield shells.rmFile({
+                    fileName: "/mnt/etc/nginx/conf.d/" + application.creator + '/' + self.data.name + '.gospely.com.conf',
+                    host: host,
+                })
+                console.log("undo docker");
             }
-        }
-
-        application.host = host;
-        application.status = -1;
-        application.docker = 'gospel_project_' + en_name + "_" + user.name;
-        delete application['languageType'];
-        delete application['languageVersion'];
-        delete application['databaseType'];
-        console.log(application);
-
-		application.domain = en_name + "-" + user.name;
-
-        //设置默认版本
-        var options = {
-            docker: application.docker,
-            version: '6'
-        }
-        if(application.image == 'nodejs:latest') {
-            options.version = application.languageVersion;
-        }
-        // yield shells.defaultVersion(options);
-		var inserted = yield models.gospel_applications.create(application);
-        yield models.gospel_uistates.create({
-            application: inserted.id,
-            creator: application.creator,
-            configs: image.defaultConfig
-        });
+        })
 
 		var node = processes.init({
             do: function*() {
