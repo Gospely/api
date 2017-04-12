@@ -565,7 +565,7 @@ module.exports = {
             }
         })
 
-		processes.buildNext(node,{
+		node = processes.buildNext(node,{
             do: function*() {
                 var self = this;
                 var inserted = yield models.gospel_domains.create(self.data);
