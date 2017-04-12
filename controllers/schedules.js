@@ -259,7 +259,7 @@ schedules.list = function*(){
 
 }
 schedules.getLogs = function*(ctx){
-     var result = shell.getLogs({
+     var result = yield shell.getLogs({
          key: ctx.query.key
      })
      ctx.body= result;
