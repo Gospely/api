@@ -26,6 +26,7 @@
     "koa-i18n": "^1.2.0",
     "koa-locale": "^1.2.0",
     "koa-logger": "^1.3.0",
+    "koa-logs-full": "^0.0.8",
     "koa-mount": "^1.3.0",
     "koa-multer": "^0.0.2",
     "koa-pg": "^1.0.0",

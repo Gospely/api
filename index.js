@@ -16,7 +16,10 @@ var container = require('./container/index.js');
 var mount = require('koa-mount');
 var multer = require('koa-multer');
 var models = require('./models');
-var watcher = require('./server/listener')
+var watcher = require('./server/listener');
+var path = require('path');
+var logRecord = require('koa-logs-full');
+
 
 
 var test = 'test';
@@ -69,6 +72,9 @@ io.on('leave', (ctx, data) => {
     delete app.context.clients[data];
 });
 
+app.use(logRecord(app,{
+  logdir: path.join(__dirname, 'logs')
+}));
 app.use(function*(next) {
   try {
     global.appDomain = 'http://localhost:8089';
@@ -80,7 +86,9 @@ app.use(function*(next) {
     yield next;
   } catch (err) {
     this.status = 200;
-    this.body = {code: -1, message: '服务器忙请重试：' + err.message };
+    this.logger.error(new Date() + "{{#red}}"+ err.message + "{{/red}}");
+    this.body = {code: -1, message: '服务器忙出了点问题，请重试' };
+
     console.log(err.message);
   }
 });

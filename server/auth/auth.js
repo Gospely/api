@@ -18,7 +18,7 @@ function render(data, code, message) {
 module.exports = {
 
 	basicAuth: function* basicAuth(next) {
-
+		
 		var url = this.url.split("?")[0];
 		var method = this.method;
 
