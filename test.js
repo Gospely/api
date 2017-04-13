@@ -22,3 +22,6 @@ var content = 'http://api.gospely.com/images/test.jpgewrewrew api';
 
 content = content.replace(new RegExp('api', 'gm'), 'http://www.baidu.com');
  console.log(content);
+var phone = '937257166@qq.com'
+ var email = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/.test(phone)? phone : '';
+console.log(email);

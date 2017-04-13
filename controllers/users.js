@@ -738,6 +738,8 @@ users.complete = function*(){
 		yield models.gospel_ides.create({
 			id: user.ide,
 			name: '个人版',
+			phone: user.phone,
+			email: user.email,
 			creator: user.id,
 			product: 'common'
 		});
