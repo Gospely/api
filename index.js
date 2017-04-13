@@ -73,7 +73,9 @@ io.on('leave', (ctx, data) => {
 });
 
 app.use(logRecord(app,{
-  logdir: path.join(__dirname, 'logs')
+  logdir: path.join(__dirname, 'logs'),
+  env: 'product',
+  skipStatic: false
 }));
 app.use(function*(next) {
   try {
