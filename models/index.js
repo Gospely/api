@@ -19,6 +19,7 @@ var sequelize = new Sequelize('gospel', 'gospel', 'dodoraCN2016@gospely', {
 
 
         item.isDeleted = 0;
+        delete item ['deployfast']
         var offset = (item.cur - 1) * item.limit;
         var limit = item.limit;
         //判断是否是分页
