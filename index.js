@@ -134,11 +134,11 @@ app
 
 //上传文件模块
 //文件监听
-watcher.buildListener('/var/www/storage/codes',[/(^|[\/\\])\../,'**/node_modules/**','**/lost+found'], app);
-app.on('error', function(err, ctx) {
-  log.error('server error', err, ctx);
-  this.body = fun.resp('500', err, ctx);
-});
+// watcher.buildListener('/var/www/storage/codes',[/(^|[\/\\])\../,'**/node_modules/**','**/lost+found'], app);
+// app.on('error', function(err, ctx) {
+//   log.error('server error', err, ctx);
+//   this.body = fun.resp('500', err, ctx);
+// });
 var setupDb;
 if (configs.sync) {
   setupDb = db.sequelize.sync({
