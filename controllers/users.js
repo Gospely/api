@@ -732,14 +732,14 @@ users.complete = function*(){
 			type: user.type,
 			group: user.group,
 			ide: user.ide,
+			phone: user.phone,
+			email: user.email,
 			ideName: user.ideName,
 			host: user.host,
 		});
 		yield models.gospel_ides.create({
 			id: user.ide,
 			name: '个人版',
-			phone: user.phone,
-			email: user.email,
 			creator: user.id,
 			product: 'common'
 		});
