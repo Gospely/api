@@ -750,7 +750,7 @@ users.complete = function*(){
 		yield models.gospel_innersessions.create({
 			id: token,
 			code: token,
-			creater: inserted.id,
+			creater: user.id,
 			time: Date.now(),
 			group: user.group,
 			limitTime: 30 * 60 * 1000
