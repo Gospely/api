@@ -1,4 +1,5 @@
 var exec = require('child_process').exec;
+var models = require('../models');
 var port = {};
 
 function genNumber(n, m) {
@@ -27,15 +28,33 @@ port.generatePorts = function*(host, size) {
 
     var ports = new Array();
     var port = yield this.generatePort(host);
-    ports.push(port);
-
-    for (var i = 0; i <= size; i++) {
+    
+    for (var i = 0; i < size; i++) {
         var available = true;
         port = yield this.generatePort(host);
         for (var j = 0; j < ports.length; j++) {
             if(port == ports[j]){
                 available = false
             }
+        }
+        yield data = models.gospel_applications.findAll({
+            where:{
+                isDeleted: 0,
+                $or:[{
+                    port: port + '',
+                },{
+                    exposePort: port + '',
+                },{
+                    sshPort: port + '',
+                },,{
+                    socketPort: port + '',
+                },,{
+                    dbPort: port + '',
+                }]
+            }
+        })
+        if(data.length > 0){
+            available = false
         }
         if(available){
             ports.push(port)

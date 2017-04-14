@@ -3,6 +3,8 @@ var models = require('../models');
 var shell = require('../shell');
 var dnspod = require('../server/dnspod');
 var processes = require('../process');
+var portManager = require('../port');
+
 
 
 var schedules = {};
@@ -204,6 +206,10 @@ schedules.checkDocker = function*(ctx){
         code: -1000,
         message: ''
     }
+}
+schedules.test= function*(ctx){
+    var ports = yield portManager.generatePorts('119.23.9.249', 4);
+    console.log(ports);
 }
 schedules.list = function*(){
 
