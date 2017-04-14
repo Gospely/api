@@ -24,53 +24,53 @@ var logRecord = require('koa-logs-full');
 
 var test = 'test';
 const app =  new Koa();
-const io = new IO();
+// const io = new IO();
 
-io.attach(app);
-/**
- * Socket middlewares
- * @type {string}
- */
-app.context.clients = {} ;
-io.use(co.wrap(function *(ctx,next) {
-    const start = new Date;
-    yield next();
-    const ms = new Date - start;
-    console.log( `WS ${ ms }ms` );
-}));
-
-io.on('connection',ctx=>{
-    io.broadcast('connections',{
-        num:io.connections.size
-    })
-});
-
-io.on( 'disconnect', ctx => {
-    io.broadcast( 'connections', {
-        num: io.connections.size
-    })
-});
-
-io.on( 'data', ( ctx, data ) => {
-    ctx.socket.emit( 'response', {
-        message: 'response from server'
-    })
-});
-io.on( 'message', ( ctx, data ) => {
-
-    app.context.clients[data] = ctx.socket;
-    console.log(app.context.clients);
-});
-io.on( 'ack', ( ctx, data ) => {
-    ctx.acknowledge( 'received' )
-});
-io.on( 'numConnections', packet => {
-    console.log( `Number of connections: ${ io.connections.size }` )
-});
-io.on('leave', (ctx, data) => {
-    console.log('leave');
-    delete app.context.clients[data];
-});
+// io.attach(app);
+// /**
+//  * Socket middlewares
+//  * @type {string}
+//  */
+// app.context.clients = {} ;
+// io.use(co.wrap(function *(ctx,next) {
+//     const start = new Date;
+//     yield next();
+//     const ms = new Date - start;
+//     console.log( `WS ${ ms }ms` );
+// }));
+//
+// io.on('connection',ctx=>{
+//     io.broadcast('connections',{
+//         num:io.connections.size
+//     })
+// });
+//
+// io.on( 'disconnect', ctx => {
+//     io.broadcast( 'connections', {
+//         num: io.connections.size
+//     })
+// });
+//
+// io.on( 'data', ( ctx, data ) => {
+//     ctx.socket.emit( 'response', {
+//         message: 'response from server'
+//     })
+// });
+// io.on( 'message', ( ctx, data ) => {
+//
+//     app.context.clients[data] = ctx.socket;
+//     console.log(app.context.clients);
+// });
+// io.on( 'ack', ( ctx, data ) => {
+//     ctx.acknowledge( 'received' )
+// });
+// io.on( 'numConnections', packet => {
+//     console.log( `Number of connections: ${ io.connections.size }` )
+// });
+// io.on('leave', (ctx, data) => {
+//     console.log('leave');
+//     delete app.context.clients[data];
+// });
 
 app.use(logRecord(app,{
   logdir: path.join(__dirname, 'logs'),
