@@ -972,5 +972,36 @@ shells.getLogs = function*(options){
         });
     });
 }
+shells.checkDocker = function*(options){
+
+    var host = options.host || '120.76.235.234';
+    var bash = "ssh root@" + host + ' docker info';
+    console.log(bash);
+    exec(bash, function(err, data) {
+
+        console.log('docker info');
+        console.log(data);
+        console.log(err);
+    });
+}
+
+shells.getCode = function*(options){
+
+    var host = options.host || '120.76.235.234';
+    return new Promise(function(resolve, reject) {
+        console.log(options);
+        var bash = "ssh root@" + host + ' echo $? ';
+        console.log(bash);
+        setTimeout(function(){
+            exec(bash, function(err, data) {
+                console.log(err);
+                console.log(data);
+                if (err)
+                    reject(err);
+                resolve(data);
+            });
+        }, 4000)
+    });
+}
 //shells.isGit = function()
 module.exports = shells;

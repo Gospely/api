@@ -196,6 +196,12 @@ schedules.removeConfig = function*(){
         }
     }
 }
+schedules.checkDocker = function*(ctx){
+
+    shell.checkDocker({});
+    var data = yield shell.getCode({});
+    ctx.body = data;
+}
 schedules.list = function*(){
 
     var token = this.query.token;

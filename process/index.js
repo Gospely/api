@@ -662,7 +662,7 @@ module.exports = {
                 gitURL: application.git,
             });
         }
-        return application;
+        return insertedResult;
     },
     //根据用户的ide版本获取对应配置的主机
     hostFilter: function*(user, share) {
