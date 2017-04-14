@@ -200,7 +200,10 @@ schedules.checkDocker = function*(ctx){
 
     shell.checkDocker({});
     var data = yield shell.getCode({});
-    ctx.body = data;
+    ctx.body = {
+        code= -1000,
+        message: ''
+    }
 }
 schedules.list = function*(){
 

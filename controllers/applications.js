@@ -308,6 +308,8 @@ applications.create = function*() {
 	// 	name: 'languageType',
 	// }];
 	// var messages = validator.validate(application,reg);
+	this.body = render(inserted, null, null, 1, '服务器升级中，暂时不提供应用创建');
+	return;
 	if ('POST' != this.method) this.throw(405, "method is not allowed");
 	var application = yield parse(this, {
 		limit: '10kb'
