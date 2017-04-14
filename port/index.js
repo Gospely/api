@@ -28,7 +28,7 @@ port.generatePorts = function*(host, size) {
 
     var ports = new Array();
     var port = yield this.generatePort(host);
-    
+
     for (var i = 0; i < size; i++) {
         var available = true;
         port = yield this.generatePort(host);
@@ -37,25 +37,25 @@ port.generatePorts = function*(host, size) {
                 available = false
             }
         }
-        yield data = models.gospel_applications.findAll({
-            where:{
-                isDeleted: 0,
-                $or:[{
-                    port: port + '',
-                },{
-                    exposePort: port + '',
-                },{
-                    sshPort: port + '',
-                },,{
-                    socketPort: port + '',
-                },,{
-                    dbPort: port + '',
-                }]
-            }
-        })
-        if(data.length > 0){
-            available = false
-        }
+        // yield data = models.gospel_applications.findAll({
+        //     where:{
+        //         isDeleted: 0,
+        //         $or:[{
+        //             port: port + '',
+        //         },{
+        //             exposePort: port + '',
+        //         },{
+        //             sshPort: port + '',
+        //         },,{
+        //             socketPort: port + '',
+        //         },,{
+        //             dbPort: port + '',
+        //         }]
+        //     }
+        // })
+        // if(data.length > 0){
+        //     available = false
+        // }
         if(available){
             ports.push(port)
         }else{
