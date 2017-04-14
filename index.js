@@ -19,7 +19,10 @@ var models = require('./models');
 var watcher = require('./server/listener');
 var path = require('path');
 var logRecord = require('koa-logs-full');
-
+var cluster = require('cluster');
+var http = require('http');
+var numCPUs = require('os').cpus().length;
+var fs =  require('fs')
 
 
 var test = 'test';
@@ -141,6 +144,7 @@ app
 //   log.error('server error', err, ctx);
 //   this.body = fun.resp('500', err, ctx);
 // });
+var i = 0;
 var setupDb;
 if (configs.sync) {
   setupDb = db.sequelize.sync({
@@ -148,10 +152,27 @@ if (configs.sync) {
   });
 }
 
-Promise.resolve(setupDb)
-  .then(function() {
-    app.listen(configs.port, function() {
-      console.log(new Date() +
-        ': gospel api is running, listening on port ' + configs.port);
+if (cluster.isMaster) {
+
+    require('os').cpus().forEach(function(){
+        cluster.fork();
     });
-  });
+    cluster.on('exit', function(worker, code, signal) {
+        console.log('worker ' + worker.process.pid + ' died');
+    });
+    cluster.on('listening', function(worker, address) {
+
+        console.log("A worker with #"+worker.id+" is now connected to " +
+        address.address +
+        ":" + address.port);
+    });
+} else {
+    Promise.resolve(setupDb)
+   .then(function() {
+        app.listen(configs.port, function() {
+            console.log('Worker #' + cluster.worker.id + ' make a response');
+          console.log(new Date() +
+            ': gospel api is running, listening on port ' + configs.port);
+        });
+   });
+}
