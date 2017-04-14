@@ -72,11 +72,11 @@ io.on('leave', (ctx, data) => {
     delete app.context.clients[data];
 });
 
-// app.use(logRecord(app,{
-//   logdir: path.join(__dirname, 'logs'),
-//   env: 'product',
-//   exportGlobalLogger: true
-// }));
+app.use(logRecord(app,{
+  logdir: path.join(__dirname, 'logs'),
+  env: 'product',
+  exportGlobalLogger: true
+}));
 app.use(function*(next) {
   try {
     global.appDomain = 'http://localhost:8089';
@@ -89,7 +89,7 @@ app.use(function*(next) {
   } catch (err) {
     this.status = 200;
     var date = new Date();
-    // this.logger.error(date + "{{#red}} error:"+ err.message + "{{/red}}");
+    this.logger.error(date + "{{#red}} error:"+ err.message + "{{/red}}");
     this.body = {code: -1, message: '服务器忙出了点问题，请重试' };
 
     console.log(err.message);
