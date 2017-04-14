@@ -26,10 +26,16 @@ module.exports = {
             domain = tr(domain).replace(new RegExp(" ", 'gm'), "").toLocaleLowerCase();
         }
         application.userName = application.userName.toLocaleLowerCase();
+        try {
+            yield shells.rmDocker({
+                name: 'gospel_project_' + domain + "_" + application.userName,
+            })
+        } catch (e) {
 
-        yield shells.rmDocker({
-            name: 'gospel_project_' + domain + "_" + application.userName,
-        })
+        } finally {
+
+        }
+
         domain = domain.replace('_', '');
         //二级域名解析
         var node = processes.init({
@@ -462,9 +468,16 @@ module.exports = {
         application.sshPort = ports[2];
         application.dbPort = ports[3];
 
-        yield shells.rmDocker({
-            name: 'gospel_project_' + en_name + "_" + user.name,
-        })
+        try {
+            yield shells.rmDocker({
+                name: 'gospel_project_' + en_name + "_" + user.name,
+            })
+        } catch (e) {
+
+        } finally {
+
+        }
+
         var insertedResult = {};
         application.id = uuid.v4();
 
