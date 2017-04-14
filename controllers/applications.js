@@ -315,7 +315,6 @@ applications.create = function*() {
 	if(!application.name){
 		application = JSON.parse(application);
 	}
-	console.log(application);
 	var isExit = yield models.gospel_applications.count({
 		creator: application.creator,
 		name: application.name
