@@ -26,7 +26,7 @@ module.exports = {
 						}
 					} catch (e) {
 						logger.error(new Date() + "{{#red}} error:"+ self.data +"{{/red}}");
-						logger.error(new Date() + "{{#red}} error:"+e.messge+"{{/red}}");
+						logger.error(new Date() + "{{#red}} error:"+e.message+"{{/red}}");
 						return yield self.rollback();
 					}
 
@@ -69,7 +69,7 @@ module.exports = {
 						return yield self.next.excute();
 					} catch (e) {
 						logger.error(new Date() + "{{#red}} error:"+ self.data +"{{/red}}");
-						logger.error(new Date() + "{{#red}} error:"+e.messge+"{{/red}}");
+						logger.error(new Date() + "{{#red}} error:"+e.message+"{{/red}}");
 						return yield self.rollback();
 					} finally {
 
