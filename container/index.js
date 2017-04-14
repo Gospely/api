@@ -31,6 +31,7 @@ containers.filter = function*(next){
     var application = yield models.gospel_applications.findById(id);
     this.containerName = application.docker;
     this.remoteIp = application.host;
+    this.image = application.images;
     yield next;
 
 }
