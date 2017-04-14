@@ -979,7 +979,7 @@ shells.checkDocker = function*(options){
     console.log(bash);
     exec(bash, function(err, data) {
 
-        console.log('docker info');
+        console.log('');
         console.log(data);
         console.log(err);
     });
