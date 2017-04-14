@@ -369,7 +369,7 @@ applications.create = function*() {
 					return ;
 				}
 
-				var result = yield processes.initDebug(application, client);
+				var result = yield processes.initDebug(application);
 
 				if (result) {
 					this.body = render(result, null, null, 1, "应用创建成功");

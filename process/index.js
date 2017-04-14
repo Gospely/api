@@ -417,7 +417,7 @@ module.exports = {
         return result;
     },
     //构建
-    initDebug: function*(application, client) {
+    initDebug: function*(application) {
 
         console.log(application);
         //判断应用名是否为中文名，当为中文名时，获取中文拼音
