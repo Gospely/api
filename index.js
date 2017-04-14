@@ -75,6 +75,7 @@ io.on('leave', (ctx, data) => {
 app.use(logRecord(app,{
   logdir: path.join(__dirname, 'logs'),
   env: 'product',
+  exportGlobalLogger: true
 }));
 app.use(function*(next) {
   try {

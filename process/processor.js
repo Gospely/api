@@ -25,7 +25,8 @@ module.exports = {
 							return true;
 						}
 					} catch (e) {
-
+						logger.error(new Date() + "{{#red}} error:"+ self.data +"{{/red}}");
+						logger.error(new Date() + "{{#red}} error:"+e.messge+"{{/red}}");
 						return yield self.rollback();
 					}
 
@@ -67,6 +68,8 @@ module.exports = {
 						yield options.do();
 						return yield self.next.excute();
 					} catch (e) {
+						logger.error(new Date() + "{{#red}} error:"+ self.data +"{{/red}}");
+						logger.error(new Date() + "{{#red}} error:"+e.messge+"{{/red}}");
 						return yield self.rollback();
 					} finally {
 
