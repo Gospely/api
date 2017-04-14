@@ -179,7 +179,6 @@ if (configs.sync) {
 Promise.resolve(setupDb)
 .then(function() {
     app.listen(configs.port, function() {
-    console.log('Worker #' + cluster.worker.id + ' make a response');
       console.log(new Date() +
         ': gospel api is running, listening on port ' + configs.port);
     });
