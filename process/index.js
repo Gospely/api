@@ -456,7 +456,7 @@ module.exports = {
         application.cmds = image.cmds;
         application.exposePort = image.port;
         //端口生成
-        var ports = yield portManager.generatePorts(host, 3);
+        var ports = yield portManager.generatePorts(host, 4);
         application.port = ports[0];
         application.socketPort = ports[1];
         application.sshPort = ports[2];
