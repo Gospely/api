@@ -39,16 +39,12 @@ var container = {
 		try {
 			yield execCMD('docker start ' + this.containerName, this.remoteIp);
 
-			// if(this.image != 'vd:site'){
-			// 	shell.startTerminal({
-			// 		host: this.remoteIp,
-			// 		docker: this.containerName
-			// 	});
-			// }
-			shell.startTerminal({
-				host: this.remoteIp,
-				docker: this.containerName
-			});
+			if(this.image != 'vd:site'){
+				shell.startTerminal({
+					host: this.remoteIp,
+					docker: this.containerName
+				});
+			}
 			this.body = util.resp(200, '启动成功', this.containerName);
 		}catch(err) {
 			this.body = util.resp(500, '启动失败', err.toString());
