@@ -290,12 +290,17 @@ applications.killPID = function*(){
 	var docker = this.query.docker,
 		pid = this.query.pid,
 		host = this.query.host;
+	try {
+		yield shell.killPID({
+			docker: docker,
+			pid: pid,
+			host: host
+		});
+	} catch (e) {
+		this.body = render(null, null, null, 1, 'success');
+	} finally {
 
-	yield shell.killPID({
-		docker: docker,
-		pid: pid,
-		host: host
-	});
+	}
 	this.body = render(null, null, null, 1, 'success');
 }
 //新建应用
