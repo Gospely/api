@@ -18,13 +18,14 @@ shells.domain = function*(options) {
     var name = options.domain.replace(new RegExp('-', 'gm'), '_');
     if(options.operate){
         cmd = cmd.replace(new RegExp('domain.gospely.com', 'gm'), options.domain);
-        cmd = cmd.replace(new RegExp('projectname.gospely.com', 'gm'), name + uuid.v4()));
+        cmd = cmd.replace(new RegExp('projectname.gospely.com', 'gm'), name);
         cmd = cmd.replace(new RegExp('projectname', 'gm'), options.domain + uuid.v4());
     }else {
         cmd = cmd.replace(new RegExp('gospely.com', 'gm'), config.dnspod.baseDomain);
         cmd = cmd.replace(new RegExp('domain', 'gm'), options.domain);
-        cmd = cmd.replace(new RegExp('projectname', 'gm'), name + uuid.v4()));
+        cmd = cmd.replace(new RegExp('projectname', 'gm'), name);
     }
+    cmd = cmd.replace(new RegExp('upstreamname', 'gm'), uuid.v4());
     console.log(cmd);
     return new Promise(function(resolve, reject) {
         options.user = '';
