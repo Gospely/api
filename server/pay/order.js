@@ -58,10 +58,11 @@ var operate = {
 			expireAt: date,
 			name: product.name
 		});
+
 		yield models.gospel_users.modify({
 			id: order.creator,
 			ide: ide.id,
-			group: ide.id,
+			group: product.id,
 			ideName: product.name
 		});
 	},

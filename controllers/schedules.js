@@ -274,6 +274,10 @@ schedules.list = function*(){
 
 }
 schedules.getLogs = function*(ctx){
+
+    var user = yield models.gospel_users.findById('38b66490-1c2c-40b2-9e5a-86fe093b2ea2');
+    console.log(user.host);
+    console.log(user);
      var result = yield shell.getLogs({
          key: ctx.query.key
      })
