@@ -27,7 +27,9 @@ var sequelize = new Sequelize('gospel', 'gospel', 'dodoraCN2016@gospely', {
           var sql = this.getAllInit(item);
 
           if (sql != null && sql != undefined) {
-            sql = sql + " offset " + offset + " limit " + limit;
+              if(item.cur && item.limit) {
+                  sql = sql + " offset " + offset + " limit " + limit;
+              }
             delete item['isDeleted'];
             return yield sequelize.query(sql, {
               replacements: item,
