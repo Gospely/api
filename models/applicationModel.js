@@ -100,15 +100,15 @@ module.exports = function(sequelize, DataTypes) {
 
               var sql = "select *  from gospel_applications where image in (select id from gospel_images where parent=:parent and type!='application' and isdeleted=0) and creator = :creator and isdeleted=0";
               for (var key in item) {
-                  if(key != 'parent' && key != 'creator'&& key!='isDeleted'){
+                  if(key != 'parent' && key != 'creator'&& key!='isDeleted' && key!= 'limit' && key !='cur'){
                       sql = sql + ' and ' + key + ':'+key;
                   }
               }
               return sql;
           }else {
-              var sql =  "select *  from gospel_applications where creator = :creator and isdeleted=0"
+              var sql =  "select *  from gospel_applications where  isdeleted=0"
               for (var key in item) {
-                  if(key!='isDeleted'){
+                  if(key!='isDeleted' && key!= 'limit' && key !='cur' ){
                       sql = sql + ' and ' + key + '=:'+key;
                   }
               }
@@ -123,19 +123,20 @@ module.exports = function(sequelize, DataTypes) {
         }else if (item.parent) {
             var sql = "select count(id) as all from gospel_applications where image in (select id from gospel_images where parent=:parent and type!='application' and isdeleted=0) and creator = :creator and isdeleted=0";
             for (var key in item) {
-                if(key != 'parent' && key != 'creator' && key!='isDeleted'){
+                if(key != 'parent' && key != 'creator' && key!='isDeleted' && key!= 'limit' && key !='cur'){
                     sql = sql + ' and ' + key + '=:'+key;
                 }
             }
             return sql;
         }else {
 
-            var sql = "select count(id) as all from gospel_applications where creator = :creator and isdeleted=0";
+            var sql = "select count(id) as all from gospel_applications where isdeleted=0";
             for (var key in item) {
-                if(key!='isDeleted'){
+                if(key!='isDeleted' && key!= 'limit' && key !='cur'){
                     sql = sql + ' and ' + key + '=:'+key;
                 }
             }
+            console.log(sql);
             return sql;
         }
 
