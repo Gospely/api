@@ -98,7 +98,6 @@ module.exports = function(sequelize, DataTypes) {
             return "SELECT * FROM gospel_applications a LEFT JOIN gospel_images b ON a.image = b.id WHERE creator = :creator AND type = 'application' AND a.isdeleted = 0";
           } else if(item.parent){
 
-
               var sql = "select *  from gospel_applications where image in (select id from gospel_images where parent=:parent and type!='application' and isdeleted=0) and creator = :creator and isdeleted=0";
               for (var key in item) {
                   if(key != 'parent' && key != 'creator'&& key!='isDeleted'){
@@ -107,7 +106,13 @@ module.exports = function(sequelize, DataTypes) {
               }
               return sql;
           }else {
-              return "select *  from gospel_applications where creator = :creator and isdeleted=0"
+              var sql =  "select *  from gospel_applications where creator = :creator and isdeleted=0"
+              for (var key in item) {
+                  if(key!='isDeleted'){
+                      sql = sql + ' and ' + key + '=:'+key;
+                  }
+              }
+              return sql;
           }
       },
       countInit(item){
@@ -124,7 +129,14 @@ module.exports = function(sequelize, DataTypes) {
             }
             return sql;
         }else {
-            return "select count(id) as all from gospel_applications where creator = :creator and isdeleted=0"
+
+            var sql = "select count(id) as all from gospel_applications where creator = :creator and isdeleted=0";
+            for (var key in item) {
+                if(key!='isDeleted'){
+                    sql = sql + ' and ' + key + '=:'+key;
+                }
+            }
+            return sql;
         }
 
       }
