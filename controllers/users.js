@@ -315,6 +315,14 @@ users.authCode = function*() {
 //手机验证码
 users.phoneCode = function*() {
 
+	var data = yield models.gospel_users.getAll({
+		phone: this.query.phone
+	});
+
+	if(data.length >= 1 ){
+		this.body = render(id, 1, "该手机号已注册");
+		return;
+	}
 	// this.body = render('', 1, "暂不开放注册，2017年3月15日左右开放注册");
 	var range = function(start, end) {
 		var array = [];
@@ -375,6 +383,7 @@ users.verifyPhoneCode=function*(){
 users.validator = function*() {
 
 	var user = this.query;
+
 	var data = yield models.gospel_users.findAll({
 		where: user
 	});
