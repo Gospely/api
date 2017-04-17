@@ -39,7 +39,6 @@ function getWechatAuths(appid_, secret_) {
       //完善信息
       console.log('first');
       var isInsert = yield models.gospel_users.create({
-        name: userBase.nickname + '_wechat',
         photo: userBase.headimgurl,
         openId: userBase.openid,
         phone: '',
