@@ -98,6 +98,8 @@ module.exports = function(sequelize, DataTypes) {
             return "SELECT * FROM gospel_applications a LEFT JOIN gospel_images b ON a.image = b.id WHERE creator = :creator AND type = 'application' AND a.isdeleted = 0";
           } else if(item.parent){
               return "select *  from gospel_applications where image in (select id from gospel_images where parent=:parent and type!='application' and isdeleted=0) and creator = :creator and isdeleted=0"
+          }else {
+              return "select *  from gospel_applications where creator = :creator and isdeleted=0"
           }
       },
       countInit(item){
