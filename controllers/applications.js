@@ -326,7 +326,7 @@ applications.create = function*() {
 		name: application.name
 	});
 	console.log(isExit);
-	if(!isExit && isExit[0].dataValues.all > 0){
+	if(!isExit && isExit[0].all > 0){
 		this.body = render(null, null, null, 2, "不要重复创建");
 		return;
 	}
@@ -334,7 +334,7 @@ applications.create = function*() {
 		creator: application.creator,
 	});
 	console.log(count);
-	if(count[0].dataValues.all >= 3){
+	if(count[0].all >= 3){
 		this.body = render(null, null, null, -1, "应用创建失败,内测测期间每个用户只能创建3个应用");
 		return ;
 	}
