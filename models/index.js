@@ -175,7 +175,7 @@ var sequelize = new Sequelize('gospel', 'gospel', 'dodoraCN2016@gospely', {
       count: function*(item) {
         item.isDeleted = 0;
         if(this.name == 'gospel_applications'){
-            if(item.type != null){
+            if(item.type != null || item.parent){
                 var sql = this.countInit(item);
                 if (sql != null && sql != undefined) {
                   return yield sequelize.query(sql, {
