@@ -97,7 +97,15 @@ module.exports = function(sequelize, DataTypes) {
           if (item.type == "deployfast") {
             return "SELECT * FROM gospel_applications a LEFT JOIN gospel_images b ON a.image = b.id WHERE creator = :creator AND type = 'application' AND a.isdeleted = 0";
           } else if(item.parent){
-              return "select *  from gospel_applications where image in (select id from gospel_images where parent=:parent and type!='application' and isdeleted=0) and creator = :creator and isdeleted=0"
+
+
+              var sql = "select *  from gospel_applications where image in (select id from gospel_images where parent=:parent and type!='application' and isdeleted=0) and creator = :creator and isdeleted=0";
+              for (var key in item) {
+                  if(key != 'parent' && key != 'creator'&& key!='isDeleted'){
+                      sql = sql + ' and ' + key + ':'+key;
+                  }
+              }
+              return sql;
           }else {
               return "select *  from gospel_applications where creator = :creator and isdeleted=0"
           }
@@ -108,7 +116,13 @@ module.exports = function(sequelize, DataTypes) {
           } else if (item.type == 'vd') {
             return "select count(*) as all from (select id from gospel_images where isdeleted=0 and (parent ~ '^vd.?latest' or parent ~ '^hybridapp.?latest' ) )as a inner join (select image from gospel_applications where creator = :creator and isdeleted=0 ) as b on a.id = b.image";
         }else if (item.parent) {
-            return "select count(id) as all from gospel_applications where image in (select id from gospel_images where parent=:parent and type!='application' and isdeleted=0) and creator = :creator and isdeleted=0"
+            var sql = "select count(id) as all from gospel_applications where image in (select id from gospel_images where parent=:parent and type!='application' and isdeleted=0) and creator = :creator and isdeleted=0";
+            for (var key in item) {
+                if(key != 'parent' && key != 'creator' && key!='isDeleted'){
+                    sql = sql + ' and ' + key + '=:'+key;
+                }
+            }
+            return sql;
         }else {
             return "select count(id) as all from gospel_applications where creator = :creator and isdeleted=0"
         }
