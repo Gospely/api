@@ -109,6 +109,8 @@ module.exports = function(sequelize, DataTypes) {
             return "select count(*) as all from (select id from gospel_images where isdeleted=0 and (parent ~ '^vd.?latest' or parent ~ '^hybridapp.?latest' ) )as a inner join (select image from gospel_applications where creator = :creator and isdeleted=0 ) as b on a.id = b.image";
         }else if (item.parent) {
             return "select count(id) as all from gospel_applications where image in (select id from gospel_images where parent=:parent and type!='application' and isdeleted=0) and creator = :creator and isdeleted=0"
+        }else {
+            return "select count(id) as all from gospel_applications where creator = :creator and isdeleted=0"
         }
 
       }
