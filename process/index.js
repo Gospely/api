@@ -569,6 +569,10 @@ module.exports = {
             }
         })
 
+        if(!application.domain) {
+            application.domain =  en_name + "-" + user.name,
+        }
+
 		node = processes.buildNext(node,{
             do: function*() {
                 var self = this;
