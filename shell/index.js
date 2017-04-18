@@ -149,6 +149,9 @@ shells.initDebug = function*(options){
              options.exposePort = 80;
         }
     }
+    if(options.parent == 'python:latest') {
+        options.image = options.parent.split(":")[0] + ':' + options.version;
+    }
 
     return new Promise(function(resolve, reject) {
 
