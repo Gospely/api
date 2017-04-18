@@ -191,7 +191,7 @@ users.register = function*() {
  						host: user.host
  					});
  					yield shells.mkdirNginx({
-						host: user.host
+						host: user.host,
 						 user: inserted.id
 					     })
  					yield shells.sshKey({
