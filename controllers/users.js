@@ -610,10 +610,10 @@ users.dashboardApi = function* (){
 	yesterdayOrder[0][0].type='yesterdayOrder';
 	data.push(yesterdayOrder[0][0]);
 
-	appCount[0].dataValues.count=appCount[0].dataValues.all;
-	delete appCount[0].dataValues.all;
-	appCount[0].dataValues.type='appCount';
-	data.push(appCount[0].dataValues);
+	appCount[0].count=appCount[0].all;
+	delete appCount[0].all;
+	appCount[0].type='appCount';
+	data.push(appCount[0]);
 
 	domainCount[0].dataValues.count=domainCount[0].dataValues.all;
 	delete domainCount[0].dataValues.all;
