@@ -383,6 +383,7 @@ users.verifyPhoneCode=function*(){
 users.validator = function*() {
 
 	var user = this.query;
+	user.isDeleted = 0;
 
 	var data = yield models.gospel_users.findAll({
 		where: user
