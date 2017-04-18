@@ -150,7 +150,7 @@ shells.initDebug = function*(options){
         }
     }
     if(options.parent == 'python:latest') {
-        options.image = options.parent.split(":")[0] + ':' + options.version;
+        options.image = 'debug-' + options.parent.split(":")[0] + ':' + options.version;
     }
 
     return new Promise(function(resolve, reject) {
