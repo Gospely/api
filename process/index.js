@@ -16,7 +16,13 @@ module.exports = {
         var user = yield models.gospel_users.findById(application.creator);
         //var host = yield this.hostFilter(user, false);
         host = user.host;
+
         user.name = user.name.replace(new RegExp(" ", 'gm'), '');
+        var illegalLetter = ['!',' ', '@', '#', '$', '%', '^', '&', '*', '(', ')', '+', '=', '[', ']',
+                            '{', '}', '\\', '|', ':', ';', '\'', '"', '<', '>', ',', '.', '/', '?'];
+        for (var i = 0; i < illegalLetter.length; i++) {
+            user.name = user.name.replace(new RegExp(illegalLetter[i], 'gm'), '');
+        }
         application.userName = user.name;
         var reg = /[\u4e00-\u9FA5]+/;
         var res = reg.test(domain);
@@ -436,6 +442,11 @@ module.exports = {
 		en_name = en_name.replace('_','');
 		user.name = user.name.toLocaleLowerCase();
         user.name = user.name.replace(new RegExp(" ", 'gm'), '');
+        var illegalLetter = ['!',' ', '@', '#', '$', '%', '^', '&', '*', '(', ')', '+', '=', '[', ']',
+                            '{', '}', '\\', '|', ':', ';', '\'', '"', '<', '>', ',', '.', '/', '?'];
+        for (var i = 0; i < illegalLetter.length; i++) {
+            user.name = user.name.replace(new RegExp(illegalLetter[i], 'gm'), '');
+        }
 
         if (application.image == 'nodejs:latest' && application.framework == null) {
             application.version = 'latest';
