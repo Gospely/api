@@ -18,7 +18,7 @@ function render(data, code, message) {
 module.exports = {
 
 	basicAuth: function* basicAuth(next) {
-		
+
 		var url = this.url.split("?")[0];
 		var method = this.method;
 
@@ -145,7 +145,8 @@ module.exports = {
 				'/users/complete',
 				'/schedules',
 				'/feedbacks',
-				'/users/:id'
+				'/users/:id',
+				'/users/chart/userscount'
 			];
 			var isHasNoneAuthRoute = false;
 
