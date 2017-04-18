@@ -513,8 +513,6 @@ module.exports = {
                 delete application['databaseType'];
                 console.log(application);
 
-                application.domain = en_name + "-" + user.name;
-
                 //设置默认版本
                 var options = {
                     docker: application.docker,
@@ -581,7 +579,7 @@ module.exports = {
                 }
             },
             data: {
-                subDomain: en_name + "-" + user.name,
+                subDomain: application.domain,
                 domain: config.dnspod.baseDomain,
                 host: host,
                 ip: host,
@@ -596,7 +594,7 @@ module.exports = {
                     method: 'recordRemove',
                     opp: 'recordRemove',
                     param: {
-                        domain: "gospely.com",
+                        domain: config.dnspod.baseDomain,
                         record_id: self.data.message.record
                     }
                 }
@@ -623,14 +621,14 @@ module.exports = {
             },
             data: {
                 user: application.creator,
-                domain: en_name + "-" + user.name,
+                domain: application.domain,
                 port: application.port,
                 host: host,
             },
             undo: function*() {
 
                 var self = this;
-                var name = self.data.domain.replace('-', '_');
+                var name = self.data.domain.replace('-', '_') + '.' + config.dnspod.baseDomain;
 
                 yield shells.delNginxConf({
                     name: name,
