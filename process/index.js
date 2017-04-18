@@ -570,7 +570,7 @@ module.exports = {
         })
 
         if(!application.domain) {
-            application.domain =  en_name + "-" + user.name,
+            application.domain =  en_name + "-" + user.name
         }
 
 		node = processes.buildNext(node,{
