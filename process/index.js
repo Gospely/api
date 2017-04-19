@@ -26,7 +26,9 @@ module.exports = {
             domain = tr(domain).replace(new RegExp(" ", 'gm'), "").toLocaleLowerCase();
         }
         application.userName = application.userName.toLocaleLowerCase();
-
+        if(!application.domain) {
+            application.domain = domain + "-" + application.userName;
+        }
         yield shells.rmDocker({
             name: 'gospel_project_' + domain + "_" + application.userName,
         })
@@ -42,7 +44,7 @@ module.exports = {
                 }
             },
             data: {
-                subDomain: domain + "-" + application.userName,
+                subDomain: application.domain,
                 domain: config.dnspod.baseDomain,
                 host: host,
                 ip: host,
@@ -188,7 +190,6 @@ module.exports = {
         //将应用记录存储到数据库
         application.docker = 'gospel_project_' + domain + "_" + application.userName;
         application.status = 1;
-        application.domain = domain + "-" + application.userName;
         delete application['memory'];
         node = processes.buildNext(node, {
             do: function*() {

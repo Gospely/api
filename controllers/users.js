@@ -638,8 +638,8 @@ users.modify = function*() {
 	var email = yield models.gospel_users.getAll({
 		email: user.phone
 	});
-	if(phone.length != 1 && email.length != 1){
-		this.body = render(null, -1, "该账号未注册,请注册");
+	if(phone.length >0 || email.length > 0){
+		this.body = render(null, -1, "该账号已被注册,请注册");
 		return false;
 	}
 	var id = '';
