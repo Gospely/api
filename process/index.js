@@ -171,7 +171,7 @@ module.exports = {
             },
             data: {
                 user: application.creator,
-                domain: domain + "-" + application.userName,
+                domain: application.domain,
                 port: application.port,
                 host: host,
             },
