@@ -581,6 +581,22 @@ shells.volumeInfo = function*(options) {
             })
     });
 }
+shells.initUser = function*(options) {
+    var host = options.host || '120.76.235.234';
+    var bash = "ssh root@" + host + " sh /root/gospely/deploy/shell/initUser.sh " + options.user;
+    console.log(bash);
+    return new Promise(function(resolve, reject) {
+        exec(bash, function(err, data) {
+                if (err)
+                    reject(err);
+                    exec('ssh root@' + options.host + ' cat ' + hostBase + options.user + '/.ssh/id_rsa.pub' , function(err, data) {
+                        if (err)
+                            reject(err);
+                        resolve(data);
+                    })
+            })
+    });
+}
 
 //启动terminal
 shells.startTerminal = function(options) {

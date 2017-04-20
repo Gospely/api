@@ -12,19 +12,19 @@
 //
 // console.log(!/\d*(%|p\*x)/.test('5ppx'));
 //
-var portManager = require('./port');
-
-var time = [1490229000,14902311000,1488751685694]
-
-
-console.log(new Date(1490229000000));
-
-var content = 'http://api.gospely.com/images/test.jpgewrewrew api';
-
-content = content.replace(new RegExp('api', 'gm'), 'http://www.baidu.com');
- console.log(content);
-var phone = '937257166@qq.com'
- var email = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/.test(phone)? phone : '';
-console.log(email);
-
-var ports = yield portManager.generatePorts('119.23.9.249', 4);
+// var portManager = require('./port');
+//
+// var time = [1490229000,14902311000,1488751685694]
+//
+//
+// console.log(new Date(1490229000000));
+//
+// var content = 'http://api.gospely.com/images/test.jpgewrewrew api';
+//
+// content = content.replace(new RegExp('api', 'gm'), 'http://www.baidu.com');
+//  console.log(content);
+// var phone = '937257166@qq.com'
+//  var email = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/.test(phone)? phone : '';
+// console.log(email);
+//
+// var ports = yield portManager.generatePorts('119.23.9.249', 4);

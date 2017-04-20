@@ -186,19 +186,19 @@ users.register = function*() {
  				// 		user: inserted.id,
  				// 		host: user.host
  				// 	});
- 					yield shells.mkdir({
- 						user: inserted.id,
- 						host: user.host
- 					});
- 					yield shells.mkdirNginx({
-						host: user.host,
-						 user: inserted.id
-					     })
- 					yield shells.sshKey({
- 						user: inserted.id,
- 						host: user.host
- 					});
- 					var sshKey = yield shells.getKey({
+ 				// 	yield shells.mkdir({
+ 				// 		user: inserted.id,
+ 				// 		host: user.host
+ 				// 	});
+ 				// 	yield shells.mkdirNginx({
+					// 	host: user.host,
+					// 	 user: inserted.id
+					//      })
+ 				// 	yield shells.sshKey({
+ 				// 		user: inserted.id,
+ 				// 		host: user.host
+ 				// 	});
+ 					var sshKey = yield shells.initUser({
  						user: inserted.id,
  						host: user.host
  					});
@@ -721,19 +721,19 @@ users.complete = function*(){
 		// 	user: user.id,
 		// 	host: user.host
 		// });
-		yield shells.mkdir({
-			user: user.id,
-			host: user.host
-		});
-		yield shells.mkdirNginx({
-			host: user.host,
-		 	user: user.id
-	    })
-		yield shells.sshKey({
-			user: user.id,
-			host: user.host
-		});
-		var sshKey = yield shells.getKey({
+		// yield shells.mkdir({
+		// 	user: user.id,
+		// 	host: user.host
+		// });
+		// yield shells.mkdirNginx({
+		// 	host: user.host,
+		//  	user: user.id
+	    // })
+		// yield shells.sshKey({
+		// 	user: user.id,
+		// 	host: user.host
+		// });
+		var sshKey = yield shells.initUser({
 			user: user.id,
 			host: user.host
 		});

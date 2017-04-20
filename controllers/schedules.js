@@ -208,8 +208,13 @@ schedules.checkDocker = function*(ctx){
     }
 }
 schedules.test= function*(ctx){
-    var ports = yield portManager.generatePorts('119.23.9.249', 4);
-    console.log(ports);
+    // var ports = yield portManager.generatePorts('119.23.9.249', 4);
+    // var data = yield shell.initUser({
+    //     host: '120.76.235.234',
+    //     user: 'test5'
+    // })
+    // console.log('test');
+    // console.log('sadas' + data);
 }
 schedules.list = function*(){
 
