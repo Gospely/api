@@ -92,7 +92,7 @@ function* checkPwd(user, ctx) {
 		});
 		if (innersessions.length == 1) {
 			var innersession = data[0].dataValues;
-			models.gospel_innersessions.delete(innersession);
+			yield models.gospel_innersessions.delete(innersession.id);
 		}
 		var token = uuid.v4();
 		var user = data[0].dataValues;
@@ -294,6 +294,9 @@ users.weixinLogin = function*() {
 
 users.authCode = function*() {
 
+	if(this.query.token){
+		yield models.gospel_innersessions.delete(this.query.token);
+	}
 	var ary = ccap.get();
 
 	var txt = ary[0];
@@ -316,6 +319,14 @@ users.authCode = function*() {
 //手机验证码
 users.phoneCode = function*() {
 
+	if(this.query.token) {
+		var data = yield models.gospel_innersessions.findById(this.query.token);
+		console.log(data.code);
+		if(data.code.toUpperCase()  != this.query.code.toUpperCase()){
+			this.body = render(null, -1, "图片验证码错误,请重新输入");
+			return;
+		}
+	}
 	var data = yield models.gospel_users.getAll({
 		phone: this.query.phone
 	});
@@ -659,17 +670,17 @@ users.modify = function*() {
 					id: id,
 					password: md5_f.md5Sign(user.password, 'gospel_users'),
 				});
-				models.gospel_innersessions.delete(user.token);
+				yield models.gospel_innersessions.delete(user.token);
 				this.body = render(user, 1, "密码修改成功");
 			} else {
 				this.body = render(null, -1, "验证码错误");
 			}
 		} else {
-			models.gospel_innersessions.delete(user.token);
+			yield models.gospel_innersessions.delete(user.token);
 			this.body = render(null, -1, "邮箱或手机号错误");
 		}
 	} else {
-		models.gospel_innersessions.delete(user.token);
+		yield models.gospel_innersessions.delete(user.token);
 		this.body = render(null, -1, "密码修改失败，手机号或验证码错误");
 	}
 }

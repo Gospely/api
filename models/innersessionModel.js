@@ -25,7 +25,7 @@ module.exports = function(sequelize, DataTypes) {
       delete: function*(item) {
         yield this.destroy({
           where: {
-              id: item.id
+              id: item
           },
           force: false
         });

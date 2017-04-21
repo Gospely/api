@@ -335,15 +335,16 @@ shells.ls = function*(options) {
 }
 shells.buidDB = function*(options) {
 
+    console.log(options);
     var host = options.host || '120.76.235.234';
     return new Promise(function(resolve, reject) {
         var bash = '';
         if (options.type == 'mysql') {
             bash =
-                'docker run -p ' + options.port + ':3306  --name '
+                'docker run -p ' + options.port + ':3306  --name '+
                 options.dbName +
                 ' -v /mnt/var/www/storage' + options.user +
-                '/dbs/mysql:/etc/mysql/conf.d -e MYSQL_ROOT_PASSWORD="' +
+                '/dbs/mysql/' + options.dbName + ':/etc/mysql/conf.d -e MYSQL_ROOT_PASSWORD="' +
                 options.password + '" -d mariadb';
         }
         if (options.type == 'mongodb') {
