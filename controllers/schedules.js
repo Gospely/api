@@ -77,6 +77,44 @@ schedules.clearInnersession = function*(){
     });
     console.log(result);
 },
+schedules.moveData = function*(){
+
+
+    var users = yield gospel_users.findAll({
+        where: {
+            host: '119.23.9.249',
+            isDeleted: 0
+        }
+    });
+
+    for (var i = 0; i < users.length; i++) {
+        users[i]
+        //创建文件夹
+        var sshKey = yield shells.initUser({
+            user: inserted.id,
+            host: '120.76.235.234'
+        });
+        yield models.gospel_users.modify({
+            id: users[i].dataValues.id,
+            sshKey: sshKey
+        });
+        //获取该用户创建的应用
+
+        var applications =  yield models.gospel_applications.findAll({
+            where: {
+                creator: users[i].dataValues.id,
+                isDeleted: 0
+            }
+        })
+        for (var i = 0; i < applications.length; i++) {
+            applications[i]
+            //在 master 上 创建该应用
+            //update 该应用的 host
+        }
+    }
+    //update 该用户的host
+
+}
 schedules.deleteDomains = function*(){
 
 
