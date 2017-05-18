@@ -79,38 +79,69 @@ schedules.clearInnersession = function*(){
 },
 schedules.moveData = function*(){
 
-
-    var users = yield gospel_users.findAll({
-        where: {
-            host: '119.23.9.249',
-            isDeleted: 0
-        }
+    // var result = yield shell.dockerList({
+    //        //host: '192.168.0.1'
+    //        host: '119.23.9.249'
+    //    });
+    // console.log(result);
+    // var dockers = result.split('\n');
+    // console.log(dockers);
+    // var applications = yield models.gospel_applications.getAll({
+    //     host: '119.23.9.249'
+    // })
+    //
+    // for (var i = 0; i < dockers.length; i++) {
+    //
+    //     for (var j = 0; j < applications.length; j++) {
+    //         if(applications[j].docker == docker[i]){
+    //
+    //         }else {
+    //             // models.gospel_applications.delete(applications[j].dataValues.id);
+    //         }
+    //     }
+    //     dockers[i]
+    // }
+    var users = yield models.gospel_users.getAll({
+        host: '119.23.9.249'
     });
-
+    console.log(users.length);
     for (var i = 0; i < users.length; i++) {
-        users[i]
-        //创建文件夹
-        var sshKey = yield shells.initUser({
-            user: inserted.id,
-            host: '120.76.235.234'
-        });
-        yield models.gospel_users.modify({
-            id: users[i].dataValues.id,
-            sshKey: sshKey
-        });
-        //获取该用户创建的应用
 
-        var applications =  yield models.gospel_applications.findAll({
-            where: {
-                creator: users[i].dataValues.id,
-                isDeleted: 0
-            }
-        })
-        for (var i = 0; i < applications.length; i++) {
-            applications[i]
-            //在 master 上 创建该应用
-            //update 该应用的 host
+        //创建文件夹
+        try {
+            var sshKey = yield shell.initUser({
+                user: users[i].dataValues.id,
+                host: '120.76.235.234'
+            });
+            // yield models.gospel_users.modify({
+            //     id: users[i].dataValues.id,
+            //     sshKey: sshKey
+            // });
+            yield models.gospel_users.modify({
+                id: users[i].dataValues.id,
+                sshKey: sshKey,
+                host: '120.76.235.234'
+            });
+        } catch (e) {
+
+        } finally {
+
         }
+
+        // //获取该用户创建的应用
+        //
+        // var applications =  yield models.gospel_applications.findAll({
+        //     where: {
+        //         creator: users[i].dataValues.id,
+        //         isDeleted: 0
+        //     }
+        // })
+        // //console.log(applications);
+        // for (var i = 0; i < applications.length; i++) {
+        //     applications[i]
+        //     //在 master 上 创建该应用
+        //     //update 该应用的 host
+        // }
     }
     //update 该用户的host
 

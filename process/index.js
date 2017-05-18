@@ -100,6 +100,9 @@ module.exports = {
                     name: domain + "_" + application.userName,
                 });
                 console.log(application.sshPassword);
+                if(!application.sshPassword) {
+                    application.sshPassword = uuid.v4()
+                }
                 yield shells.changePWD({
                     host: host,
                     name: domain + "_" + application.userName,
