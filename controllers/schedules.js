@@ -146,6 +146,17 @@ schedules.moveData = function*(){
     //update 该用户的host
 
 }
+schedules.changePWD = function*() {
+
+    var applications = yield models.gospel_applications.findAll({
+        where:{
+            sshPassword: '',
+            isDeleted: 0
+        }
+    }
+    )
+    console.log(applications);
+}
 schedules.deleteDomains = function*(){
 
 
