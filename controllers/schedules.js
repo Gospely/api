@@ -4,6 +4,7 @@ var shell = require('../shell');
 var dnspod = require('../server/dnspod');
 var processes = require('../process');
 var portManager = require('../port');
+var uuid = require('node-uuid');
 
 
 
@@ -150,12 +151,35 @@ schedules.changePWD = function*() {
 
     var applications = yield models.gospel_applications.findAll({
         where:{
-            sshPassword: '',
-            isDeleted: 0
+            isDeleted: 0,
+            sshPassword: '123456'
         }
     }
     )
     console.log(applications);
+
+    for (var i = 0; i < applications.length; i++) {
+
+        if(applications[i].dataValues.docker){
+            try {
+                var password = uuid.v4();
+                yield shell.changePWD2({
+                    password: password,
+                    name: applications[i].dataValues.docker,
+                    status: applications[i].dataValues.status
+                })
+                yield models.gospel_applications.modify({
+                    id: applications[i].dataValues.id,
+                    sshPassword: password
+                })
+            } catch (e) {
+                console.log(e);
+            } finally {
+
+            }
+        }
+    }
+    console.log('finish');
 }
 schedules.deleteDomains = function*(){
 

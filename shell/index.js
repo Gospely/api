@@ -102,6 +102,7 @@ shells.changePWD = function*(options){
     console.log(options);
     var host = options.host || '120.76.235.234';
     return new Promise(function(resolve, reject) {
+
         exec('ssh root@' + host + ' sh '+ scriptDir + 'changePWD.sh gospel_project_' + options.name + " " + options.password,
             function(err, data) {
                 console.log(err);
@@ -109,6 +110,44 @@ shells.changePWD = function*(options){
                 if (err)
                     reject(err);
                 resolve(data);
+            });
+
+    });
+}
+shells.changePWD2 = function*(options){
+    console.log(options);
+    var host = options.host || '120.76.235.234';
+    return new Promise(function(resolve, reject) {
+
+        exec("ssh root@" + host + " docker start " + options.name +
+            " && echo success",
+            function(err,
+                data) {
+                console.log(err);
+                console.log(data);
+                if (err) reject(err);
+                exec('ssh root@' + host + ' sh '+ scriptDir + 'changePWD.sh ' + options.name + " " + options.password,
+                    function(err, data) {
+                        console.log(err);
+                        console.log(data);
+                        if (err)
+                            reject(err);
+                        if(options.status != 1) {
+                            console.log('stop');
+                            exec("ssh root@" + host + " docker stop " + options.name +
+                                " && echo success",
+                                function(err, data) {
+                                    console.log(err);
+                                    console.log(data);
+                                    if (err)
+                                        reject(err);
+                                    resolve(data);
+                                });
+                        }else {
+                            resolve(data);
+                        }
+
+                    });
             });
     });
 }
@@ -414,7 +453,8 @@ shells.restartDB = function*(options) {
             " && echo success",
             function(err,
                 data) {
-
+                console.log(err);
+                console.log(data);
                 if (err) reject(err);
                 resolve(data);
             });
@@ -426,11 +466,12 @@ shells.startDB = function*(options) {
 
     var host = options.host || '120.76.235.234';
     return new Promise(function(resolve, reject) {
-        exec("ssh root@" + host + " docker stop " + options.docker +
+        exec("ssh root@" + host + " docker start " + options.docker +
             " && echo success",
             function(err,
                 data) {
-
+                console.log(err);
+                console.log(data);
                 if (err) reject(err);
                 resolve(data);
             });

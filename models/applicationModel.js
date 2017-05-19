@@ -35,7 +35,6 @@ module.exports = function(sequelize, DataTypes) {
     sshPassword: {
         type: DataTypes.STRING,
         field: 'ssh_password',
-        defaultValue: '123456',
     },
     source: DataTypes.STRING,
     domain: DataTypes.STRING,
