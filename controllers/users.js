@@ -649,10 +649,7 @@ users.modify = function*() {
 	var email = yield models.gospel_users.getAll({
 		email: user.phone
 	});
-	if(phone.length <= 0){
-		this.body = render(null, -1, "该账号未注册,请注册");
-		return false;
-	}
+
 	var id = '';
 	if(phone.length == 1) {
 		id = phone[0].dataValues.id;
