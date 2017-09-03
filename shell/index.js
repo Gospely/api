@@ -631,15 +631,19 @@ shells.initUser = function*(options) {
         exec(bash, function(err, data) {
                 if (err)
                     reject(err);
-                    exec('ssh root@' + options.host + ' cat ' + hostBase + options.user + '/.ssh/id_rsa.pub' , function(err, data) {
-                        if (err)
-                            reject(err);
-                        resolve(data);
-                    })
+                resolve(data);
             })
     });
 }
-
+shells.getSshKey = function*(options) {
+    return new Promise(function(resolve, reject) {
+        exec('ssh root@' + options.host + ' cat ' + hostBase + options.user + '/.ssh/id_rsa.pub' , function(err, data) {
+            if (err)
+                reject(err);
+            resolve(data);
+        })
+    });
+}
 //启动terminal
 shells.startTerminal = function(options) {
 
