@@ -152,34 +152,40 @@ if (configs.sync) {
   });
 }
 
-if (cluster.isMaster) {
+// if (cluster.isMaster) {
 
-    require('os').cpus().forEach(function(){
-        cluster.fork();
-    });
-    cluster.on('exit', function(worker, code, signal) {
-        console.log('worker ' + worker.process.pid + ' died');
-    });
-    cluster.on('listening', function(worker, address) {
-
-        console.log("A worker with #"+worker.id+" is now connected to " +
-        address.address +
-        ":" + address.port);
-    });
-} else {
-    Promise.resolve(setupDb)
-   .then(function() {
-        app.listen(configs.port, function() {
-        console.log('Worker #' + cluster.worker.id + ' make a response');
-          console.log(new Date() +
-            ': gospel api is running, listening on port ' + configs.port);
-        });
-   });
-}
-// Promise.resolve(setupDb)
-// .then(function() {
-//     app.listen(configs.port, function() {
-//       console.log(new Date() +
-//         ': gospel api is running, listening on port ' + configs.port);
+//     require('os').cpus().forEach(function(){
+//         cluster.fork();
 //     });
-// });
+//     cluster.on('exit', function(worker, code, signal) {
+//         console.log('worker ' + worker.process.pid + ' died');
+//     });
+//     cluster.on('listening', function(worker, address) {
+
+//         console.log("A worker with #"+worker.id+" is now connected to " +
+//         address.address +
+//         ":" + address.port);
+
+//         cluster.on('message', function(worker, address) {
+
+//             console.log("A worker with #"+worker.id+" is now connected to " +
+//             address.address +
+//             ":" + address.port);
+//     });
+// } else {
+//     Promise.resolve(setupDb)
+//    .then(function() {
+//         app.listen(configs.port, function() {
+//         console.log('Worker #' + cluster.worker.id + ' make a response');
+//           console.log(new Date() +
+//             ': gospel api is running, listening on port ' + configs.port);
+//         });
+//    });
+// }
+Promise.resolve(setupDb)
+.then(function() {
+    app.listen(configs.port, function() {
+      console.log(new Date() +
+        ': gospel api is running, listening on port ' + configs.port);
+    });
+});
