@@ -629,6 +629,7 @@ shells.initUser = function*(options) {
     console.log(bash);
     return new Promise(function(resolve, reject) {
         exec(bash, function(err, data) {
+                console.log(err);
                 if (err)
                     reject(err);
                 resolve(data);
