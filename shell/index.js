@@ -629,22 +629,17 @@ shells.initUser = function*(options) {
     console.log(bash);
     return new Promise(function(resolve, reject) {
         exec(bash, function(err, data) {
-                console.log(err);
                 if (err)
                     reject(err);
-                resolve(data);
+                    exec('ssh root@' + options.host + ' cat ' + hostBase + options.user + '/.ssh/id_rsa.pub' , function(err, data) {
+                        if (err)
+                            reject(err);
+                        resolve(data);
+                    })
             })
     });
 }
-shells.getSshKey = function*(options) {
-    return new Promise(function(resolve, reject) {
-        exec('cat ' + hostBase + options.user + '/.ssh/id_rsa.pub' , function(err, data) {
-            if (err)
-                reject(err);
-            resolve(data);
-        })
-    });
-}
+
 //启动terminal
 shells.startTerminal = function(options) {
 

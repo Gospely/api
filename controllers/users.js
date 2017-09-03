@@ -198,11 +198,7 @@ users.register = function*() {
  				// 		user: inserted.id,
  				// 		host: user.host
  				// 	});
- 					yield shells.initUser({
- 						user: inserted.id,
- 						host: user.host
- 					});
-					var sshKey = yield shells.getSshKey({
+ 					var sshKey = yield shells.initUser({
  						user: inserted.id,
  						host: user.host
  					});
