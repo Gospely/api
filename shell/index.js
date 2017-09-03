@@ -637,7 +637,7 @@ shells.initUser = function*(options) {
 }
 shells.getSshKey = function*(options) {
     return new Promise(function(resolve, reject) {
-        exec('ssh root@' + options.host + ' cat ' + hostBase + options.user + '/.ssh/id_rsa.pub' , function(err, data) {
+        exec('cat ' + hostBase + options.user + '/.ssh/id_rsa.pub' , function(err, data) {
             if (err)
                 reject(err);
             resolve(data);
