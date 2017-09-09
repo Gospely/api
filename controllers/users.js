@@ -236,7 +236,6 @@ users.register = function*() {
  		});
 
  		var token = uuid.v4();
- 		console.log("user" + token);
 
  		inserted.dataValues.token = token;
  		yield models.gospel_innersessions.create({
