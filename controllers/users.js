@@ -229,7 +229,7 @@ users.register = function*() {
 
  		yield models.gospel_ides.create({
  			id: user.ide,
- 			name: '个人版',
+ 			name: '免费试用版',
  			creator: inserted.id,
  			product: 'common',
 			expireAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
