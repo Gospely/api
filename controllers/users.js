@@ -231,7 +231,8 @@ users.register = function*() {
  			id: user.ide,
  			name: '个人版',
  			creator: inserted.id,
- 			product: 'common'
+ 			product: 'common',
+			expireat: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
  		});
 
  		var token = uuid.v4();
