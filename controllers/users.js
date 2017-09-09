@@ -716,7 +716,7 @@ users.complete = function*(){
 		//初始化第三方授权登陆用户
 		user.type = 'common';
     	user.ide = uuid.v4();
-    	user.ideName = '个人版';
+    	user.ideName = '免费试用版';
     	user.group = 'common';
 		var hosts = yield models.gospel_hosts.getAll({
 			type: user.type,
