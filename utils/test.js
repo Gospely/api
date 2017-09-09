@@ -8,11 +8,11 @@ var selector = require('./selector');
 // file = file.replace('user','luowenhui').replace('port','8080');
 // file = file.replace(new RegExp('domain','gm'),"test.gospely.com");
 // // exec("ssh root@gospely.com " + file,function(error,data){
-// //   console.log(error);
-// //   console.log(data);
+// //   ;
+// //   ;
 // // });
-// console.log(file);
-// console.log(cmd);
+// ;
+// ;
 // console.log(__dirname);
 // var options = { name: 'test13',
 //   sshPort: 4031,
@@ -22,10 +22,10 @@ var selector = require('./selector');
 //   memory: '200m'
 //  };
 // var bash = "ssh root@gospely.com " + "/root/test/allocate/start.js -n " + options.name + " -p " + options.socketPort + " -m " + options.memory + " -s " + options.sshPort + " -a " + options.appPort + " -w " + options.password;
-// console.log(bash);
+// ;
 //   exec(bash, function(err,data){
-//     console.log(err);
-//     console.log(data);
+//     ;
+//     ;
 //
 //   });
 
@@ -47,7 +47,7 @@ var selector = require('./selector');
 //     reg: 'isURL',
 //     message: '地址非法'
 // }]);
-// console.log(message);
+// ;
 var result = selector.select([{
     priority: '2',
     name: '1'
@@ -61,4 +61,4 @@ var result = selector.select([{
     priority: '8',
     name: '4'
 }]);
-console.log(result);
+;

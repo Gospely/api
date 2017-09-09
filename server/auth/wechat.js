@@ -22,18 +22,18 @@ function getWechatAuths(appid_, secret_) {
     var code = yield getCode(this);
     console.log("getcode: " + code);
     var res = yield getAccess_token(code);
-    console.log(res);
+    ;
     if (res == null) return this.status = 400;
     console.log("access_token: " + res.access_token);
     console.log("openid: " + res.openid);
     var userBase = yield getInfo(res.access_token, res.openid);
-    console.log(userBase);
+    ;
     console.log(userBase.openid + " userBase");
     if (userBase == null)return this.status = 400;
     var data = yield models.gospel_users.getAll({
       openId: userBase.openid
     });
-    console.log(data);
+    ;
     if (data.length < 1) {
 
       //完善信息

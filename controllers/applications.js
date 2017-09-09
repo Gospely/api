@@ -185,14 +185,14 @@ applications.delete = function*() {
 
 
 	var id = this.params.id.split('@');
-	console.log(id);
+	;
 	if(id.length == 3) {
 
 		var password = id[1];
 		var name = id[2];
 		id = id[0];
 		var user = yield models.gospel_users.findById(name);
-		console.log(user);
+		;
 		 md5_f.md5Sign(password, 'gospel_users')
 		if(user && user.password != md5_f.md5Sign(password, 'gospel_users')) {
 			this.body = render(inserted, null, null, -1, '删除失败，密码错误');
@@ -206,7 +206,7 @@ applications.delete = function*() {
 	var UIState = yield models.gospel_uistates.getAll({
 		application: application.id
 	});
-	console.log(UIState);
+	;
 
 	try {
 		if(UIState[0].dataValues != null) {
@@ -273,7 +273,7 @@ applications.delete = function*() {
 			//删除docker
 	}
 	} catch (e) {
-			console.log(e);
+			;
 	} finally {
 
 		var inserted = yield models.gospel_applications.delete(application.id);
@@ -320,12 +320,12 @@ applications.create = function*() {
 	if(!application.name){
 		application = JSON.parse(application);
 	}
-	console.log(application);
+	;
 	var isExit = yield models.gospel_applications.count({
 		creator: application.creator,
 		name: application.name
 	});
-	console.log(isExit);
+	;
 	if(!isExit && isExit[0].all > 0){
 		this.body = render(null, null, null, 2, "不要重复创建");
 		return;
@@ -341,7 +341,7 @@ applications.create = function*() {
 	var count = yield models.gospel_applications.count({
 		creator: application.creator,
 	});
-	console.log(count);
+	;
 	if(count[0].all >= ide[0].dataValues.count){
 		this.body = render(null, null, null, -1, "超出" + ide[0].dataValues.name + "创建数量");
 		return ;
@@ -443,7 +443,7 @@ applications.update = function* update() {
 	if (item.id == null || item.id == undefined) this.throw(405,
 		"method is not allowed");
 	var inserted;
-	console.log(item);
+	;
 	if (item.exposePort != null && item.exposePort != undefined && item.exposePort !=
 		'') {
 		var application = yield models.gospel_applications.findById(item.id);
@@ -454,7 +454,7 @@ applications.update = function* update() {
 				port: item.exposePort,
 				oldPort: application.exposePort
 			});
-			console.log(result);
+			;
 			if(result){
 				inserted = yield models.gospel_applications.modify(item);
 			}
@@ -472,7 +472,7 @@ applications.startApp = function*(){
 
 	var id = this.params.id;
     var application = yield models.gospel_applications.findById(id);
-	console.log(application);
+	;
 	var cmds = JSON.parse(application.cmds),
 		cmd = cmds.default;
 	if(application.version != null){
@@ -485,7 +485,7 @@ applications.startApp = function*(){
 		cmd: cmd
     });
 
-	console.log(result);
+	;
 	if(result == 'success'){
 
 	}
@@ -494,7 +494,7 @@ applications.stopApp = function*(){
 
 	var id = this.params.id;
     var application = yield models.gospel_applications.findById(id);
-	console.log(application);
+	;
     var result = yield shell.stopApp({
         docker: application.docker,
         host: application.host,

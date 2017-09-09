@@ -131,7 +131,7 @@ WxpayNotify.prototype.getHttpsResponsePOST = function(parsed_url, postData, info
             }).parseString)(body).then(function(body) {
                 if (body.return_code != 'SUCCESS' || body.result_code != 'SUCCESS')
                     reject(_.pick(body, ['return_msg', 'err_code', 'err_code_des']));
-                    console.log(body);
+                    ;
                 self.verifyNotifyCallback(body, function(verify_result) {
                     console.log(verify_result);
                     if (verify_result) { //验证成功

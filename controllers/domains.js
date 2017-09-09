@@ -25,7 +25,7 @@ domains.create =  function*() {
 	var application = yield models.gospel_applications.findById(domain.application);
 	console.log(application.host);
 	console.log("dd");
-    console.log(domain);
+    ;
     var options = {
         method: 'domainCreate',
         opp: 'domainCreate',
@@ -34,7 +34,7 @@ domains.create =  function*() {
         }
     }
     var data = yield dnspod.domainOperate(options);
-	console.log(data);
+	;
 	if(data.status.code == '1') {
 		  domain.sub = false;
 		  domain.ip = application.host;

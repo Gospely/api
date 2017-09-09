@@ -68,8 +68,8 @@ var	writeFile = function(fileName, content) {
 			var zipFolder = dir.pop();
 			dir = dir.join('/');
 			exec('cd ' + dir + ' && zip -r ' + zipFolder + '.zip ' + zipFolder, function(error, data) {
-				console.log(error);
-				console.log(data);
+				;
+				;
 				if (error) reject(error);
 				resolve(data);
 			});
@@ -95,8 +95,8 @@ var	writeFile = function(fileName, content) {
 	rmFile =function(fileName){
 	    return new Promise(function(resolve, reject) {
 	        exec("rm -rf " + fileName, function(err, data) {
-	                console.log(data);
-	                console.log(err);
+	                ;
+	                ;
 	                if (err) reject(err);
 	                resolve(data);
 	            });
@@ -112,10 +112,10 @@ var	writeFile = function(fileName, content) {
 	            }
 	        });
 	    }).then(function(data){
-	            console.log(data);
+	            ;
 	            return data;
 	        },function(err){
-	            console.log(err);
+	            ;
 	            return err;
 	        });
 	},
@@ -245,7 +245,7 @@ var vdsite = {
 		// var data = yield models.gospel_counts.getAll({
 		// 	userId: user
 		// });
-		// console.log(data);
+		// ;
 		//
 		// if (data.length !=1) {
 		// 	var inserted = yield models.gospel_counts.create({
@@ -267,7 +267,7 @@ var vdsite = {
 			var folder = this.query.folder;
 			var project = this.query.project
 			var randomDir = baseDir + folder + project;
-			console.log(randomDir);
+			;
 			yield cp(randomDir, baseDir + folder + 'pages');
 			yield cp(randomDir, baseDir + folder + 'images');
 			yield zip(randomDir);
@@ -278,7 +278,7 @@ var vdsite = {
 			yield rmFile(randomDir);
 			yield rmFile(randomDir + '.zip');
 		}catch (err) {
-			console.log(err);
+			;
 			this.body = util.resp(200, '云打包成功'+ err.toString());
 		}
 
@@ -321,7 +321,7 @@ var vdsite = {
 		var app = yield parse(this,{
 				limit: '30960kb'
 		});
-		console.log(app);
+		;
 		var creator = app.creator || 'admin',
 			type = app.type || 'office',
 			name = app.name || 'template',
@@ -334,7 +334,7 @@ var vdsite = {
 		if(typeof app == 'string') {
 			app = JSON.parse(app);
 		}
-		console.log(app);
+		;
 		var data = yield models.gospel_templates.findAll({
 			where: {
 				application: app.application,

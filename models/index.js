@@ -8,6 +8,8 @@ var db = {};
 var sequelize = new Sequelize('gospel', 'gospel', 'dodoraCN2016@gospely', {
   host: 'gospely.com',
   dialect: 'postgresql',
+  logging: function() {
+  },
   pool: {
     max: 5,
     min: 0,
@@ -177,7 +179,7 @@ var sequelize = new Sequelize('gospel', 'gospel', 'dodoraCN2016@gospely', {
       count: function*(item) {
         item.isDeleted = 0;
         if(this.name == 'gospel_applications'){
-            
+
             var sql = this.countInit(item);
             if (sql != null && sql != undefined) {
               return yield sequelize.query(sql, {

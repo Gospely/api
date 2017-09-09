@@ -57,10 +57,10 @@ var
 	            }
 	        });
 	    }).then(function(data){
-	            console.log(data);
+	            ;
 	            return data;
 	        },function(err){
-	            console.log(err);
+	            ;
 	            return err;
 	        });
 	}
@@ -597,8 +597,8 @@ var fileSystem = {
 		var extension = this.req.files.fileUp.extension;
 		var isOver = this.req.body.isOverSameFile || 'false';
 		var host = this.req.body.remoteIp || '120.76.235.234';
-		console.log(fileName);
-		console.log(folder);
+		;
+		;
 
 		var supDir = path.resolve(__dirname, '..');
 		var baseDir = config.baseDir;
@@ -614,7 +614,7 @@ var fileSystem = {
 		};
 		//获取文件后缀名
 		//var suffix = path.extname(fileName);
-        console.log(options);
+        ;
 		var needCompress = false;
 		compressionSuffix.forEach(function (e) {
 			if(extension==e){
@@ -627,7 +627,7 @@ var fileSystem = {
 		}else{
 			var file = baseDir + 'temp/'+fileName;
 			var distFold = baseDir + folder + '/' + originalname;
-			console.log(distFold);
+			;
 			yield shells.moveFile({
 				file: file,
 				distFold: distFold,
@@ -649,8 +649,8 @@ var fileSystem = {
 		var folder = this.req.body.folder;
 		var extension = this.req.files.fileUp.extension;
 		var host = this.req.body.remoteIp || '120.76.235.234';
-		console.log(fileName);
-		console.log(folder);
+		;
+		;
 
 		var supDir = path.resolve(__dirname, '..');
 		var file = config.baseDir + 'temp/'+fileName;
@@ -944,10 +944,10 @@ var fileSystem = {
 			yield shells.packApp(options);
 
 			var filepath = path.join(__dirname+'/../uploads/', app.name + '.zip');
-			console.log(filepath);
+			;
 			this.set('Content-disposition','attachment;filename='+ encodeURI(app.name) + '.zip');
 			var info = yield readData(filepath);
-			console.log(info);
+			;
 			this.body = info;
 
 	 		yield shells.rmFile({

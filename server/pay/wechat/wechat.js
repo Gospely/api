@@ -51,7 +51,7 @@ Wxpay.prototype.route = function(app) {
       encoding: this.charset || 'utf-8'
     });
     var data = yield self.wxpay_notify(data, this);
-    console.log(data);
+    ;
   });
 }
 
@@ -71,7 +71,7 @@ Wxpay.prototype.route = function(app) {
 Wxpay.prototype.wxpay_pay = function(data, ctx) {
   var wxpaySubmit = new WxpaySubmit(this.wxpay_config);
   var wxpayNotify = new WxpayNotify(this.wxpay_config);
-  console.log(data);
+  ;
   var infoList = ['prepay_id', 'code_url'];
 
   data.out_trade_no = data.out_trade_no;
@@ -89,7 +89,7 @@ Wxpay.prototype.wxpay_pay = function(data, ctx) {
   _.merge(parameter, data);
 
   var postData = wxpaySubmit.buildRequestPara(parameter);
-  console.log(postData);
+  ;
   return wxpayNotify.getHttpResponsePOST(this.wxpay_config.wxpay_pay_url,
     postData, infoList).then(result => {
 
@@ -179,11 +179,11 @@ Wxpay.prototype.wxpay_notify = function*(data, ctx) {
             explicitArray: false,
             explicitRoot: false
         });
-        console.log(data);
+        ;
         return new Promise(function(resolve,reject){
             parser.parseString(data,function(err,_POST){
-                console.log(data);
-              console.log(err);
+                ;
+              ;
                   console.log(_POST);
                   if(_POST.return_code != 'SUCCESS' || _POST.result_code != 'SUCCESS'){
                       reject("error");

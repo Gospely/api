@@ -74,7 +74,7 @@ module.exports = {
         //docker 创建
 
         //var data = yield shells.nginx();
-        // console.log(data);
+        // ;
         //创建并启动docker
         var ports = yield portManager.generatePorts(host, 4);
         application.port = ports[0];
@@ -321,7 +321,7 @@ module.exports = {
         //docker 创建
 
         //var data = yield shells.nginx();
-        // console.log(data);
+        // ;
         //创建并启动docker
 
         var unit = "";
@@ -423,7 +423,7 @@ module.exports = {
     //构建
     initDebug: function*(application) {
 
-        console.log(application);
+        ;
         //判断应用名是否为中文名，当为中文名时，获取中文拼音
         var en_name = application.name.toLocaleLowerCase();
         var user = yield models.gospel_users.findById(application.creator);
@@ -515,7 +515,7 @@ module.exports = {
                 delete application['languageType'];
                 delete application['languageVersion'];
                 delete application['databaseType'];
-                console.log(application);
+                ;
 
                 //设置默认版本
                 var options = {
@@ -667,7 +667,7 @@ module.exports = {
     },
 
     recoverBuild: function*(application){
-        console.log(application);
+        ;
         //判断应用名是否为中文名，当为中文名时，获取中文拼音
         if(application.creator == 'f0ec0c00-17d1-4593-9d0e-05a71f6fd431'){
             var en_name = application.name.toLocaleLowerCase();
@@ -687,7 +687,7 @@ module.exports = {
                 user.name = user.name.replace(new RegExp(" ", 'gm'), '');
                 //获取主机
                 var host = application.host;
-                console.log(host);
+                ;
                 // var result = yield shells.recover({
                 //     host: host,
                 //     name: en_name + "_" + user.name,
@@ -703,7 +703,7 @@ module.exports = {
                 //     dbUser: application.dbUser,
                 //     dbPort: application.dbPort
                 // });
-                // console.log(git);
+                // ;
                 // if (application.git == null || application.git == '') {
                 //     yield shells.mvFiles({
                 //         host: host,

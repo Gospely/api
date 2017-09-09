@@ -24,12 +24,12 @@ orders.create = function*() {
   var order = yield parse(this, {
     limit: '10kB'
   });
-  console.log(order);
+  ;
   if(!order.price){
 	  order = JSON.parse(order);
   }
   order.price = order.price.toFixed(2);
-	console.log(order);
+	;
     var pay_url = yield pay.wechat.wxpay_pay({
       body: 'Gospel IDE', //商品描述,
       out_trade_no: order.orderNo, //商户订单号,

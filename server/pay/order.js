@@ -6,7 +6,7 @@ var orders = {
 
 	order_success: function*(orderNo, ctx, type) {
 
-		console.log(orderNo);
+		;
 		var orders = yield models.gospel_orders.getAll({
 			orderNo: orderNo,
 			status: 1
@@ -37,7 +37,7 @@ var operate = {
 	ide: function*(order, ctx) {
 		console.log(order.products);
 		var product = yield models.gospel_products.findById(order.products);
-		console.log(product);
+		;
 
 		var ides = yield models.gospel_ides.getAll({
 			creator: order.creator

@@ -26,7 +26,7 @@ shells.domain = function*(options) {
         cmd = cmd.replace(new RegExp('projectname', 'gm'), name);
     }
     cmd = cmd.replace(new RegExp('upstreamname', 'gm'), uuid.v4());
-    console.log(cmd);
+    ;
     return new Promise(function(resolve, reject) {
         options.user = '';
         cmd = cmd.trim();
@@ -67,7 +67,7 @@ shells.fast_deploy = function*(options) {
             options.image = options.image + "-" + options.db;
         }
     }
-    console.log(options);
+    ;
   return new Promise(function(resolve, reject) {
       var bash = "ssh root@" + host + ' docker run -itd ' + ' -m ' + options.memory +
         ' -v ' + hostBase + options.creator + "/" + options.name +
@@ -76,7 +76,7 @@ shells.fast_deploy = function*(options) {
         ' -h ' + options.hostName +
         ' -w /root/workspace --name="gospel_project_' + options.name + '"  gospel-' +
         options.image + " && echo success";
-        console.log(bash);
+        ;
       exec(bash, function(err, data) {
           if (err) reject(err);
           resolve("success");
@@ -99,14 +99,14 @@ shells.mvFiles = function*(options){
     });
 }
 shells.changePWD = function*(options){
-    console.log(options);
+    ;
     var host = options.host || '120.76.235.234';
     return new Promise(function(resolve, reject) {
 
         exec('ssh root@' + host + ' sh '+ scriptDir + 'changePWD.sh gospel_project_' + options.name + " " + options.password,
             function(err, data) {
-                console.log(err);
-                console.log(data);
+                ;
+                ;
                 if (err)
                     reject(err);
                 resolve(data);
@@ -115,7 +115,7 @@ shells.changePWD = function*(options){
     });
 }
 shells.changePWD2 = function*(options){
-    console.log(options);
+    ;
     var host = options.host || '120.76.235.234';
     return new Promise(function(resolve, reject) {
 
@@ -123,13 +123,13 @@ shells.changePWD2 = function*(options){
             " && echo success",
             function(err,
                 data) {
-                console.log(err);
-                console.log(data);
+                ;
+                ;
                 if (err) reject(err);
                 exec('ssh root@' + host + ' sh '+ scriptDir + 'changePWD.sh ' + options.name + " " + options.password,
                     function(err, data) {
-                        console.log(err);
-                        console.log(data);
+                        ;
+                        ;
                         if (err)
                             reject(err);
                         if(options.status != 1) {
@@ -137,8 +137,8 @@ shells.changePWD2 = function*(options){
                             exec("ssh root@" + host + " docker stop " + options.name +
                                 " && echo success",
                                 function(err, data) {
-                                    console.log(err);
-                                    console.log(data);
+                                    ;
+                                    ;
                                     if (err)
                                         reject(err);
                                     resolve(data);
@@ -153,7 +153,7 @@ shells.changePWD2 = function*(options){
 }
 shells.initDebug = function*(options){
 
-    console.log(options);
+    ;
     var host = options.host || '120.76.235.234';
     var port = '',
         config = '';
@@ -201,7 +201,7 @@ shells.initDebug = function*(options){
           ' -h ' + options.hostName +
           ' -w /root/workspace --name="gospel_project_' + options.name + '" gospel-' +
           options.image + " && echo success";
-          console.log(bash);
+          ;
         exec(bash, function(err, data) {
             if (err) reject(err);
             resolve("success");
@@ -212,7 +212,7 @@ shells.initDebug = function*(options){
 shells.recover = function*(options){
 
     var host = options.host || '120.76.235.234';
-    console.log(options);
+    ;
     var port = '';
     if(options.dbPort){
         port = ' -p ' + options.dbPort + ':3306';
@@ -226,7 +226,7 @@ shells.recover = function*(options){
           ' -h ' + options.hostName +
           ' -w /root/workspace --name="gospel_project_' + options.name + '" gospel-' +
           options.image + " && echo success";
-          console.log(bash);
+          ;
         exec(bash, function(err, data) {
             if (err) reject(err);
             resolve("success");
@@ -260,7 +260,7 @@ shells.nginx = function*(options) {
         //     " lsof -i:80 | grep 'nginx' | head -1 | awk '{print $2}'",
         //     function(err, data) {
         //         console.log(console.err);
-        //         console.log(data);
+        //         ;
         //         console.log('==========================getPId===================');
         //         if(err){
         //             reject(err)
@@ -268,15 +268,15 @@ shells.nginx = function*(options) {
         //             exec("ssh root@" + host +
         //                 " kill -9 " + data,
         //                 function(err, data) {
-        //                     console.log(err);
-        //                     console.log(data);
+        //                     ;
+        //                     ;
         //                     console.log('==========================kill===================' + data);
         //                     if (err) {
         //                         exec("ssh root@" + host +
         //                             " service nginx restart",
         //                             function(err, data) {
-        //                                 console.log(err);
-        //                                 console.log(data);
+        //                                 ;
+        //                                 ;
         //                                 console.log('==========================restart===================' + data);
         //                                 if (err) reject(err);
         //                                 resolve(data);
@@ -286,8 +286,8 @@ shells.nginx = function*(options) {
         //                         exec("ssh root@" + host +
         //                             " service nginx restart",
         //                             function(err, data) {
-        //                                 console.log(err);
-        //                                 console.log(data);
+        //                                 ;
+        //                                 ;
         //                                 console.log('==========================restart===================' + data);
         //                                 if (err) reject(err);
         //                                 resolve(data);
@@ -295,7 +295,7 @@ shells.nginx = function*(options) {
         //                     }
         //                 });
         //         }
-        //         console.log(data);
+        //         ;
         //     });
     });
 
@@ -334,8 +334,8 @@ shells.stopDocker = function*(options) {
             " docker stop " +
             options.name,
             function(err, data) {
-                console.log(err);
-                console.log(data);
+                ;
+                ;
                 if (err) reject(err);
                     resolve(data);
             });
@@ -349,8 +349,8 @@ shells.rmFile = function*(options) {
         exec("ssh root@" + host + " rm -f " + options.fileName,
             function(err,
                 data) {
-                console.log(data);
-                console.log(err);
+                ;
+                ;
                 if (err) reject(err);
                 resolve(data);
             });
@@ -365,8 +365,8 @@ shells.ls = function*(options) {
         exec("ssh root@" + host + " ls -l /etc/nginx/conf.d | awk '{print $9}'",
             function(err,
                 data) {
-                console.log(data);
-                console.log(err);
+                ;
+                ;
                 if (err) reject(err);
                 resolve(data);
             });
@@ -374,7 +374,7 @@ shells.ls = function*(options) {
 }
 shells.buidDB = function*(options) {
 
-    console.log(options);
+    ;
     var host = options.host || '120.76.235.234';
     return new Promise(function(resolve, reject) {
         var bash = '';
@@ -453,8 +453,8 @@ shells.restartDB = function*(options) {
             " && echo success",
             function(err,
                 data) {
-                console.log(err);
-                console.log(data);
+                ;
+                ;
                 if (err) reject(err);
                 resolve(data);
             });
@@ -470,8 +470,8 @@ shells.startDB = function*(options) {
             " && echo success",
             function(err,
                 data) {
-                console.log(err);
-                console.log(data);
+                ;
+                ;
                 if (err) reject(err);
                 resolve(data);
             });
@@ -626,7 +626,7 @@ shells.volumeInfo = function*(options) {
 shells.initUser = function*(options) {
     var host = options.host || '120.76.235.234';
     var bash = "ssh root@" + host + " sh /root/gospely/deploy/shell/initUser.sh " + options.user;
-    console.log(bash);
+    ;
     return new Promise(function(resolve, reject) {
         exec(bash, function(err, data) {
                 if (err)
@@ -656,9 +656,9 @@ shells.decomFile = function(options) {
     console.log("================"+host+"+++++++++++++++++");
     var baseDir = '/mnt/var/www/storage/codes/';
     var comDir = baseDir + 'temp/' + options.comDir;
-    console.log(comDir);
+    ;
     var decomDir = path.join(baseDir, options.folder);
-    console.log(decomDir);
+    ;
     return {
         zip: function() {
 
@@ -778,13 +778,13 @@ shells.moveFile = function*(options){
 
     return new Promise(function(resolve, reject) {
         var bash = 'mv ' + options.file  + ' ' + options.distFold;
-        console.log(bash);
+        ;
         exec(bash, function(err,data){
 
             bash = 'rm -rf ' + options.file;
             exec(bash, function(err,data){
-                console.log(err);
-                console.log(data);
+                ;
+                ;
             })
             if (err)
                 reject(err);
@@ -797,15 +797,15 @@ shells.changePort = function*(options){
     return new Promise(function(resolve, reject) {
         var bash = 'ssh root@' + options.host + ' docker exec  ' + options.docker  + ' sed -i -e "s/127.0.0.1:' + options.oldPort +
         '/127.0.0.1:' + options.port + '/" /etc/nginx/host.d/default.conf && echo success' ;
-        console.log(bash);
+        ;
         exec(bash, function(err,data){
-            console.log(err);
-            console.log(data);
+            ;
+            ;
             if (err)
                 reject(err);
             exec('ssh root@' + options.host + ' docker stop ' + options.docker + ' && echo success', function(err,data){
-                console.log(err);
-                console.log(data);
+                ;
+                ;
                 resolve(data);
             })
         })
@@ -814,7 +814,7 @@ shells.changePort = function*(options){
 shells.dockerList = function*(options){
     return new Promise(function(resolve, reject) {
         var bash = 'ssh root@' + options.host + " docker ps -a | awk '$18 ~ /gospel_project/ {print $18}'";
-        console.log(bash);
+        ;
         exec(bash, function(err,data){
             if (err)
                 reject(err);
@@ -825,22 +825,22 @@ shells.dockerList = function*(options){
 shells.clearApp = function(options){
 
     options.fileName.replace('-', '_');
-    console.log(options);
+    ;
     var bash = 'ssh root@' + options.host + ' sh '+ scriptDir + 'clear.sh ' + options.user + ' ' + options.fileName +'.' + config.dnspod.baseDomain + '.conf' + ' ' + options.docker;
-    console.log(bash);
+    ;
     exec(bash, function(err,data){
 
-        console.log(err);
-        console.log(data);
+        ;
+        ;
     })
 
 }
 
 shells.packApp = function(options) {
     return new Promise(function(resolve, reject) {
-        console.log(options);
+        ;
         var bash = 'cd ' + dockerBase + options.user + "/" + options.projectFolder +' && zip -x "node_modules*" -r ' + dockerBase + 'temp/' + options.appName + '.zip ' + '.';
-        console.log(bash);
+        ;
         exec(bash, {
             maxBuffer:  1024 * 1024
         },function(err, data) {
@@ -854,12 +854,12 @@ shells.packApp = function(options) {
 shells.gitChange = function*(options){
 
     return new Promise(function(resolve, reject) {
-        console.log(options);
+        ;
         var bash = 'ssh root@' + options.host + " sh "+ scriptDir + "git/status.sh " + options.docker;
-        console.log(bash);
+        ;
         exec(bash, function(err, data) {
-            console.log(err);
-            console.log(data);
+            ;
+            ;
             if (err)
                 reject(err);
             resolve(data);
@@ -869,12 +869,12 @@ shells.gitChange = function*(options){
 shells.gitCommit = function*(options){
 
     return new Promise(function(resolve, reject) {
-        console.log(options);
+        ;
         var bash = 'ssh root@' + options.host + " sh " + scriptDir + "git/commit.sh " + options.docker + ' ' + options.message;
-        console.log(bash);
+        ;
         exec(bash, function(err, data) {
-            console.log(err);
-            console.log(data);
+            ;
+            ;
             if (err)
                 reject(err);
             resolve(data);
@@ -884,15 +884,15 @@ shells.gitCommit = function*(options){
 shells.gitOrigin = function*(options){
 
     return new Promise(function(resolve, reject) {
-        console.log(options);
+        ;
         var bash = 'ssh root@' + options.host + " sh " + scriptDir + "git/addOrigin.sh " + options.docker + " " + options.git + ' ' + options.user + ' ' + options.email;
         if(!options.addOrigin){
              bash = 'ssh root@' + options.host + " sh " + scriptDir + "git/resetOrigin.sh " + options.docker + " " + options.git + ' ' + options.user + ' ' + options.email;
         }
-        console.log(bash);
+        ;
         exec(bash, function(err, data) {
-            console.log(err);
-            console.log(data);
+            ;
+            ;
             if (err)
                 reject(err);
             resolve(data);
@@ -902,12 +902,12 @@ shells.gitOrigin = function*(options){
 shells.gitRemeberPwd = function*(options) {
 
     return new Promise(function(resolve, reject) {
-        console.log(options);
+        ;
         var bash = 'ssh root@' + options.host + " sh " + scriptDir + "git/rememberPwd.sh " + options.docker + ' ' + options.user + ' ' + options.password;
-        console.log(bash);
+        ;
         exec(bash, function(err, data) {
-            console.log(err);
-            console.log(data);
+            ;
+            ;
             if (err)
                 reject(err);
             resolve(data);
@@ -917,12 +917,12 @@ shells.gitRemeberPwd = function*(options) {
 shells.gitPush = function*(options){
 
     return new Promise(function(resolve, reject) {
-        console.log(options);
+        ;
         var bash = 'ssh root@' + options.host + " sh " + scriptDir + "git/push.sh " + options.docker + ' ' + options.branch;
-        console.log(bash);
+        ;
         exec(bash, function(err, data) {
-            console.log(err);
-            console.log(data);
+            ;
+            ;
             if (err)
                 reject(err);
             resolve(data);
@@ -932,12 +932,12 @@ shells.gitPush = function*(options){
 shells.gitPull = function*(options){
 
     return new Promise(function(resolve, reject) {
-        console.log(options);
+        ;
         var bash = 'ssh root@' + options.host + " sh "+ scriptDir + "git/pull.sh " + options.docker + ' ' + options.branch;
-        console.log(bash);
+        ;
         exec(bash, function(err, data) {
-            console.log(err);
-            console.log(data);
+            ;
+            ;
             if (err)
                 reject(err);
             resolve(data);
@@ -947,12 +947,12 @@ shells.gitPull = function*(options){
 shells.defaultVersion = function*(options){
 
     return new Promise(function(resolve, reject) {
-        console.log(options);
+        ;
         var bash = 'ssh root@' + options.host + " sh /root/gospely/deploy/shell/boot/start.sh " + options.docker + " 'nvm alias default v" + options.version + "'";
-        console.log(bash);
+        ;
         exec(bash, function(err, data) {
-            console.log(err);
-            console.log(data);
+            ;
+            ;
             if (err)
                 reject(err);
             resolve(data);
@@ -962,12 +962,12 @@ shells.defaultVersion = function*(options){
 shells.startApp = function*(options){
 
     return new Promise(function(resolve, reject) {
-        console.log(options);
+        ;
         var bash = 'ssh root@' + options.host + " sh /root/gospely/deploy/shell/boot/start.sh " + options.docker + " '"+ options.cmd + "'";
-        console.log(bash);
+        ;
         exec(bash, function(err, data) {
-            console.log(err);
-            console.log(data);
+            ;
+            ;
             if (err)
                 reject(err);
             resolve(data);
@@ -977,18 +977,18 @@ shells.startApp = function*(options){
 shells.stopApp = function*(options){
 
     return new Promise(function(resolve, reject) {
-        console.log(options);
+        ;
         var bash = 'ssh root@' + options.host + " docker exec -it " + options.docker + " netstat -anp | grep " + options.port + " | awk '{printf $7}'|cut -d/ -f1";
-        console.log(bash);
+        ;
         exec(bash, function(err, data) {
-            console.log(err);
-            console.log(data);
+            ;
+            ;
             if (err){
                 reject(err)
             }else{
                 if(data != ''){
                     bash = 'ssh root@' + options.host + " docker exec " + options.docker + "kill -9"  + data;
-                    console.log(bash);
+                    ;
                     exec(bash, function(err, data) {
                         if (err)
                             reject(err);
@@ -1006,12 +1006,12 @@ shells.stopApp = function*(options){
 shells.percent = function*(options){
 
     return new Promise(function(resolve, reject) {
-        console.log(options);
+        ;
         var bash = 'ssh root@' + options.host + " df -h | awk '$6 ~ /var\/www\/storage\/codes\/" + options.user + "/ {print $5}'";
-        console.log(bash);
+        ;
         exec(bash, function(err, data) {
-            console.log(err);
-            console.log(data);
+            ;
+            ;
             if (err)
                 reject(err);
             resolve(data);
@@ -1021,12 +1021,12 @@ shells.percent = function*(options){
 shells.getLogs = function*(options){
 
     return new Promise(function(resolve, reject) {
-        console.log(options);
+        ;
         var bash = "cat /var/www/api/logs/product*.log | grep '" + options.key + "' |" + " grep -v 'getLogs'";
-        console.log(bash);
+        ;
         exec(bash, function(err, data) {
-            console.log(err);
-            console.log(data);
+            ;
+            ;
             if (err)
                 reject(err);
             resolve(data);
@@ -1037,12 +1037,12 @@ shells.checkDocker = function*(options){
 
     var host = options.host || '120.76.235.234';
     var bash = "ssh root@" + host + ' docker info';
-    console.log(bash);
+    ;
     exec(bash, function(err, data) {
 
         console.log('');
-        console.log(data);
-        console.log(err);
+        ;
+        ;
     });
 }
 
@@ -1050,13 +1050,13 @@ shells.getCode = function*(options){
 
     var host = options.host || '120.76.235.234';
     return new Promise(function(resolve, reject) {
-        console.log(options);
+        ;
         var bash = "ssh root@" + host + ' echo $? ';
-        console.log(bash);
+        ;
         setTimeout(function(){
             exec(bash, function(err, data) {
-                console.log(err);
-                console.log(data);
+                ;
+                ;
                 if (err)
                     reject(err);
                 resolve(data);

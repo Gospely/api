@@ -43,7 +43,7 @@ module.exports = function(sequelize, DataTypes) {
 
       },
       getAllInit(item) {
-          console.log(item);
+          ;
 
           if(item.application){
                return 'SELECT application, name, id, src, creator, url, author, price, description, t_type as type from gospel_templates where application=:application';

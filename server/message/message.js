@@ -29,6 +29,6 @@ module.exports = function(options) {
       url: url
     },
     function(err, httpResponse, body) {
-        console.log(body);
+        ;
     });
 }

@@ -3,7 +3,7 @@ var Dnspod = require('./dns_client');
 var client = new Dnspod();
 
 var getData = function(err, data) {
-  console.log(data);
+  ;
   if (err) {
     throw err;
   } else {}
@@ -29,7 +29,7 @@ var promise = new Promise(function(resolve, reject) {
     mx: '10'
   });
   fn.on('recordCreate', function(err, data) {
-    console.log(data);
+    ;
     if (err) {
       reject();
       throw err;
@@ -41,6 +41,6 @@ var promise = new Promise(function(resolve, reject) {
 
 promise.then(function() {
 }, function(err,data) {
-    console.log(data);
+    ;
     console.log('console.err');
 });

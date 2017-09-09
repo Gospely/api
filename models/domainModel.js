@@ -50,7 +50,7 @@ module.exports = function(sequelize, DataTypes) {
             mx: '10'
           }
         }
-        console.log(options);
+        ;
         try {
           var data = yield dnspod.domainOperate(options);
           if (data.status.code == '1') {

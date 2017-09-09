@@ -135,7 +135,7 @@ module.exports = function(sequelize, DataTypes) {
                     sql = sql + ' and ' + key + '=:'+key;
                 }
             }
-            console.log(sql);
+            ;
             return sql;
         }
 

@@ -53,7 +53,7 @@ var kr = {
 	article: function* () {
 		var id = this.params.id;;
 
-		console.log(id);
+		;
 
 		try {
 			var info = yield article(id);

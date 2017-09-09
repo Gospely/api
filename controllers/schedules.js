@@ -27,7 +27,7 @@ schedules.deleteDocker = function*(){
                 name: applications[i].docker,
             });
 
-            console.log(result);
+            ;
             var fileName = applications[i].docker.replace('gospel_project_','');
             function clearApp(){
                 shell.clearApp({
@@ -67,7 +67,7 @@ schedules.deleteDocker = function*(){
 }
 schedules.clearInnersession = function*(){
     var time = new Date().getTime() -1296000000;
-    console.log(time);
+    ;
     var result = yield models.gospel_innersessions.destroy({
         where: {
             time: {
@@ -76,7 +76,7 @@ schedules.clearInnersession = function*(){
         },
         force: false
     });
-    console.log(result);
+    ;
 },
 schedules.moveData = function*(){
 
@@ -84,9 +84,9 @@ schedules.moveData = function*(){
     //        //host: '192.168.0.1'
     //        host: '119.23.9.249'
     //    });
-    // console.log(result);
+    // ;
     // var dockers = result.split('\n');
-    // console.log(dockers);
+    // ;
     // var applications = yield models.gospel_applications.getAll({
     //     host: '119.23.9.249'
     // })
@@ -137,7 +137,7 @@ schedules.moveData = function*(){
         //         isDeleted: 0
         //     }
         // })
-        // //console.log(applications);
+        // //;
         // for (var i = 0; i < applications.length; i++) {
         //     applications[i]
         //     //在 master 上 创建该应用
@@ -156,7 +156,7 @@ schedules.changePWD = function*() {
         }
     }
     )
-    console.log(applications);
+    ;
 
     for (var i = 0; i < applications.length; i++) {
 
@@ -173,7 +173,7 @@ schedules.changePWD = function*() {
                     sshPassword: password
                 })
             } catch (e) {
-                console.log(e);
+                ;
             } finally {
 
             }
@@ -189,7 +189,7 @@ schedules.deleteDomains = function*(){
     //         isDeleted: 1
     //     }
     // });
-    // console.log(domains);
+    // ;
     // for (var i = 0; i < domains.length; i++) {
     //     console.log(domains[i].dataValues.record);
     //     var options = {
@@ -232,7 +232,7 @@ schedules.clearDomains = function*(){
             domain: 'gospely.com'
         }
     })
-    console.log(data);
+    ;
 
 
     var domains = yield models.gospel_domains.findAll({
@@ -335,7 +335,7 @@ schedules.list = function*(){
     //         host: 'gospely.com'
     //     });
     //     var dockers = result.split('\n');
-    //     console.log(dockers);
+    //     ;
     //     for (var i = 0; i < dockers.length; i++) {
     //
     //         try {
@@ -347,7 +347,7 @@ schedules.list = function*(){
     //                     }
     //                 });
     //                 var fileName = application[0].dataValues.docker.replace('gospel_project_','');
-    //                 console.log(application);
+    //                 ;
     //                 if(application.length != 1){
     //                 }else {
     //                     if(application != null && application[0].dataValues != null && application[0].dataValues != undefined){
@@ -386,7 +386,7 @@ schedules.getLogs = function*(ctx){
 
     var user = yield models.gospel_users.findById('38b66490-1c2c-40b2-9e5a-86fe093b2ea2');
     console.log(user.host);
-    console.log(user);
+    ;
      var result = yield shell.getLogs({
          key: ctx.query.key
      })

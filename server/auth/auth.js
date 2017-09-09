@@ -45,7 +45,7 @@ module.exports = {
 				if (method == "GET" || method == "DELETE") {
 
 					var replacements = url.split('/');
-					console.log(replacements);
+					;
 					if (replacements.length >= 3 && replacements[1] != 'fs') {
 						url = url.replace(replacements[replacements.length - 1], "");
 
@@ -60,7 +60,7 @@ module.exports = {
 						return;
 					}
 				}
-				console.log(url);
+				;
 				if (token == null || token == undefined || token == '') {
 
 					this.status = 200;

@@ -3,7 +3,7 @@
 //
 // var content = "height: 200%;";
 // content = content.replace(/height: \d*(%|px);/,"height: " + 100);
-// console.log(content);
+// ;
 //
 // console.log(fs.existsSync("/var"));
 //
@@ -22,9 +22,9 @@
 // var content = 'http://api.gospely.com/images/test.jpgewrewrew api';
 //
 // content = content.replace(new RegExp('api', 'gm'), 'http://www.baidu.com');
-//  console.log(content);
+//  ;
 // var phone = '937257166@qq.com'
 //  var email = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/.test(phone)? phone : '';
-// console.log(email);
+// ;
 //
 // var ports = yield portManager.generatePorts('119.23.9.249', 4);
