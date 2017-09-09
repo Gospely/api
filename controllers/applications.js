@@ -334,7 +334,7 @@ applications.create = function*() {
 	var ide = yield models.gospel_ides.getAll({
 		creator: application.creator,
 	});
-	if((ide[0].product === 'common') && new Date(ide[0].dataValues.createat).getTime() < (Date.now() - 24 * 60 * 60 * 1000)) {
+	if((ide[0].product === 'common') && new Date(ide[0].dataValues.createat).getTime() < (Date.now() - 7 * 24 * 60 * 60 * 1000)) {
 		this.body = render(null, null, null, 2, "免费试用期七天到期，请及时购买授权版本");
 		return;
 	}
