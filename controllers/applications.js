@@ -331,22 +331,19 @@ applications.create = function*() {
 		return;
 	};
 
-	var ide = yield models.gospel_ides.findAll({
+	var ide = yield models.gospel_ides.getAll({
 		creator: application.creator,
 	});
-	console.log(ide);
-	if(new Date(ide[0].dataValues.expireat).getTime() < Date.now()) {
+	if((ide[0].product === 'common') && (ide[0].dataValues.expireAt || new Date(ide[0].dataValues.expireAt).getTime() < Date.now())) {
 		this.body = render(null, null, null, 2, "免费试用期到期，请及时购买授权版本");
 		return;
-	}else {
-
 	}
 	var count = yield models.gospel_applications.count({
 		creator: application.creator,
 	});
 	console.log(count);
 	if(count[0].all >= ide[0].dataValues.count){
-		this.body = render(null, null, null, -1, "应用创建失败,内测测期间每个用户只能创建3个应用");
+		this.body = render(null, null, null, -1, "超出" + ide[0].dataValues.name + "创建数量");
 		return ;
 	}
 
