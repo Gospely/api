@@ -455,7 +455,11 @@ module.exports = {
             //初始化应用框架
             image = yield models.gospel_images.findById(application.framework);
         } else {
-            image = yield models.gospel_images.findById(application.image);
+            if(image === 'python:latest') {
+                image = yield models.gospel_images.findById(application.image.replace('latest', application.languageVersion));
+            } else {
+                image = yield models.gospel_images.findById(application.image);
+            }
         }
         application.cmds = image.cmds;
         application.exposePort = image.port;
