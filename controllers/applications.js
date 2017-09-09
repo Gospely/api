@@ -334,6 +334,7 @@ applications.create = function*() {
 	var ide = yield models.gospel_ides.findAll({
 		creator: application.creator,
 	});
+	console.log(ide);
 	if(new Date(ide[0].dataValues.expireat).getTime() < Date.now()) {
 		this.body = render(null, null, null, 2, "免费试用期到期，请及时购买授权版本");
 		return;
@@ -344,7 +345,7 @@ applications.create = function*() {
 		creator: application.creator,
 	});
 	console.log(count);
-	if(count[0].all >= ide.dataValues.count){
+	if(count[0].all >= ide[0].dataValues.count){
 		this.body = render(null, null, null, -1, "应用创建失败,内测测期间每个用户只能创建3个应用");
 		return ;
 	}
