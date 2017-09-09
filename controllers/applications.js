@@ -341,7 +341,7 @@ applications.create = function*() {
 	var count = yield models.gospel_applications.count({
 		creator: application.creator,
 	});
-	const product = models.gospel_products.findById(ide[0].product);
+	const product = yield models.gospel_products.findById(ide[0].product);
 	console.log(product);
 	if(count[0].all >= product.dataValues.count){
 		this.body = render(null, null, null, -1, "超出" + ide[0].dataValues.name + "创建数量");
