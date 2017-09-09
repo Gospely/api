@@ -342,8 +342,7 @@ applications.create = function*() {
 		creator: application.creator,
 	});
 	const product = yield models.gospel_products.findById(ide[0].product);
-	console.log(product);
-	if(count[0].all >= product.dataValues.count){
+	if(count[0].all >= product.dataValues.appLimit){
 		this.body = render(null, null, null, -1, "超出" + ide[0].dataValues.name + "创建数量");
 		return ;
 	}
