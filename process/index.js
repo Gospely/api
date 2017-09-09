@@ -455,7 +455,7 @@ module.exports = {
             //初始化应用框架
             image = yield models.gospel_images.findById(application.framework);
         } else {
-            if(image === 'python:latest') {
+            if(application.languageType === 'python:latest') {
                 image = yield models.gospel_images.findById(application.image.replace('latest', application.languageVersion));
             } else {
                 image = yield models.gospel_images.findById(application.image);
