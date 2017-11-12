@@ -9,7 +9,7 @@ var exec = require('child_process').exec,
 var execCMD = function(cmd, host) {
 
 		remoteIp = host || '120.76.235.234';
-		baseCMD = 'ssh root@' + remoteIp + ' ';
+		baseCMD = 'ssh root@' +  remoteIp + ' -p 12021' + ' ';
 		return new Promise(function(resolve, reject) {
 			exec(baseCMD + cmd, function(error, data) {
 				if(error) reject(error);
