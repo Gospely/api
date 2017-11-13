@@ -30,13 +30,15 @@ schedules.deleteDocker = function*(){
             ;
             var fileName = applications[i].docker.replace('gospel_project_','');
             function clearApp(){
-                shell.clearApp({
-                    host: applications[i].dataValues.host,
-                    user: applications[i].creator,
-                    fileName: fileName,
-                    docker: applications[i].docker,
-                    nginx: false
-                });
+                if(applications[i].dataValues) {
+                    shell.clearApp({
+                        host: applications[i].dataValues.host,
+                        user: applications[i].creator,
+                        fileName: fileName,
+                        docker: applications[i].docker,
+                        nginx: false
+                    });
+                }
                 // models.gospel_applications.destroy({
                 //     where: {
                 //         id: applications[i].id,
