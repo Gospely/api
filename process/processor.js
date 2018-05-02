@@ -87,7 +87,12 @@ module.exports = {
 			rollback: function*() {
 
 				var self = this;
-				yield options.undo();
+				try {
+					yield options.undo();
+				}
+				catch (err) {
+
+				}
 				return false;
 			}
 		};
