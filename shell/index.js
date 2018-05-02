@@ -1,5 +1,5 @@
 var fs = require('fs');
-var uuid = require('uuid');
+var uuid = require('node-uuid');
 var exec = require('child_process').exec;
 var path = require('path');
 var shells = {};
