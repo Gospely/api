@@ -5,7 +5,7 @@ var reader = require('../utils/reader');
 
 var db = {};
 
-var sequelize = new Sequelize('gospel', 'gospel', 'dodoraCN2016@gospely', {
+var sequelize = new Sequelize('postgres', 'postgres', 'dodoraCN2016@gospely', {
   host: 'gospely.com',
   dialect: 'postgresql',
   logging: function() {
