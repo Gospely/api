@@ -202,6 +202,7 @@ shells.initDebug = function*(options){
           ' -w /root/workspace --name="gospel_project_' + options.name + '" gospel-' +
           options.image + " && echo success";
           ;
+          console.log(bash);
         exec(bash, function(err, data) {
             if (err) reject(err);
             resolve("success");
