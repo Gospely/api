@@ -7,7 +7,7 @@ var selector = require('./selector');
 // var file = fs.readFileSync(cmd, "utf8");
 // file = file.replace('user','luowenhui').replace('port','8080');
 // file = file.replace(new RegExp('domain','gm'),"test.gospely.com");
-// // exec("ssh root@gospely.com -p 12021 " + file,function(error,data){
+// // exec("ssh root@gospely.com -p 22 " + file,function(error,data){
 // //   ;
 // //   ;
 // // });
@@ -21,7 +21,7 @@ var selector = require('./selector');
 //   password: '111111',
 //   memory: '200m'
 //  };
-// var bash = "ssh root@gospely.com -p 12021 " + "/root/test/allocate/start.js -n " + options.name + " -p " + options.socketPort + " -m " + options.memory + " -s " + options.sshPort + " -a " + options.appPort + " -w " + options.password;
+// var bash = "ssh root@gospely.com -p 22 " + "/root/test/allocate/start.js -n " + options.name + " -p " + options.socketPort + " -m " + options.memory + " -s " + options.sshPort + " -a " + options.appPort + " -w " + options.password;
 // ;
 //   exec(bash, function(err,data){
 //     ;
