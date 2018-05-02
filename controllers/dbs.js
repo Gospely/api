@@ -32,7 +32,7 @@ dbs.create = function*() {
 	}
 	db.port = yield portManager.generatePort();
 	if (db.type == 'mysql') {
-		db.description = 'ip: 120.76.235.234 默认用户:root,访问端口:' + db.port;
+		db.description = 'ip: 120.79.150.56 默认用户:root,访问端口:' + db.port;
 	}
 	if (db.type == 'mongodb') {
 		db.httpPort = yield portManager.generatePort();

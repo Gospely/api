@@ -114,7 +114,7 @@ schedules.moveData = function*(){
         try {
             var sshKey = yield shell.initUser({
                 user: users[i].dataValues.id,
-                host: '120.76.235.234'
+                host: '120.79.150.56'
             });
             // yield models.gospel_users.modify({
             //     id: users[i].dataValues.id,
@@ -123,7 +123,7 @@ schedules.moveData = function*(){
             yield models.gospel_users.modify({
                 id: users[i].dataValues.id,
                 sshKey: sshKey,
-                host: '120.76.235.234'
+                host: '120.79.150.56'
             });
         } catch (e) {
 
@@ -316,7 +316,7 @@ schedules.checkDocker = function*(ctx){
 schedules.test= function*(ctx){
     // var ports = yield portManager.generatePorts('119.23.9.249', 4);
     // var data = yield shell.initUser({
-    //     host: '120.76.235.234',
+    //     host: '120.79.150.56',
     //     user: 'test5'
     // })
     // console.log('test');

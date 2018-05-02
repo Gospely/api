@@ -596,7 +596,7 @@ var fileSystem = {
 		var folder = this.req.body.folder;
 		var extension = this.req.files.fileUp.extension;
 		var isOver = this.req.body.isOverSameFile || 'false';
-		var host = this.req.body.remoteIp || '120.76.235.234';
+		var host = this.req.body.remoteIp || '120.79.150.56';
 		;
 		;
 
@@ -648,7 +648,7 @@ var fileSystem = {
 		var originalname = this.req.files.fileUp.originalname;
 		var folder = this.req.body.folder;
 		var extension = this.req.files.fileUp.extension;
-		var host = this.req.body.remoteIp || '120.76.235.234';
+		var host = this.req.body.remoteIp || '120.79.150.56';
 		;
 		;
 
@@ -670,7 +670,7 @@ var fileSystem = {
 				params = JSON.parse(params);
 			}
 			var cmd = params.cmd,
-			host = params.remoteIp || '120.76.235.234';
+			host = params.remoteIp || '120.79.150.56';
 
 		} catch (err) {
 			var cmd = GetQueryString(params, 'cmd');
@@ -694,7 +694,7 @@ var fileSystem = {
 				params = JSON.parse(params);
 			}
 			var dir = params.dir,
-			host = params.remoteIp || '120.76.235.234';
+			host = params.remoteIp || '120.79.150.56';
 
 		} catch (err) {
 			var dir = GetQueryString(params, 'dir');
@@ -727,7 +727,7 @@ var fileSystem = {
 				params = JSON.parse(params);
 			}
 			var dir = params.dir,
-			host = params.remoteIp || '120.76.235.234';
+			host = params.remoteIp || '120.79.150.56';
 
 
 		} catch (err) {
@@ -773,7 +773,7 @@ var fileSystem = {
 				params = JSON.parse(params);
 			}
 			var dir = params.dir,
-			host = params.remoteIp || '120.76.235.234';
+			host = params.remoteIp || '120.79.150.56';
 
 		} catch (err) {
 			var dir = GetQueryString(params, 'dir');
@@ -797,7 +797,7 @@ var fileSystem = {
 				params = JSON.parse(params);
 			}
 			var dir = params.dir,
-			host = params.remoteIp || '120.76.235.234';
+			host = params.remoteIp || '120.79.150.56';
 
 		} catch (err) {
 			var dir = GetQueryString(params, 'dir');
@@ -822,7 +822,7 @@ var fileSystem = {
 			}
 			var origin = params.origin,
 				dir = params.dir,
-				host = params.remoteIp || '120.76.235.234';
+				host = params.remoteIp || '120.79.150.56';
 
 		} catch (err) {
 			var origin = GetQueryString(params, 'origin');
@@ -846,7 +846,7 @@ var fileSystem = {
 			}
 			var origin = params.origin,
 				dir = params.dir,
-				host = params.remoteIp || '120.76.235.234';
+				host = params.remoteIp || '120.79.150.56';
 
 		} catch (err) {
 			var origin = GetQueryString(params, 'origin');

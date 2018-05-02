@@ -66,7 +66,7 @@ port.generatePorts = function*(host, size) {
 }
 function* checkBind(options) {
 
-    var host = options.host || '120.76.235.234'
+    var host = options.host || '120.79.150.56'
     return new Promise(function(resolve, reject) {
 
         exec("ssh root@"+ host + "  lsof -i:" + options.port, function(err, data) {
